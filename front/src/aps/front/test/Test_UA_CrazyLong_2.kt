@@ -25,7 +25,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
     val filesShortcutMode1 = FilesShortcutMode.B
 //    val startPoint = 1
-    val startPoint = 7
+    val startPoint = 8
     init {
 //        TestGlobal.describeStateConfig = DescribeStateConfig(showBanners = true, autoResumeAfterMs = null)
 //        TestGlobal.describeStateConfig = DescribeStateConfig(showBanners = true, autoResumeAfterMs = 2000)
@@ -273,18 +273,20 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
         definePoint(5) {
             assertScreenHTML(aid = "9459385d-4fe1-49b8-a403-6f265c758e8c")
             twoStepSequence({buttonClick(buttons.sendForApproval_testRef)}, "7293affa-0102-4cca-935c-b5a2adc66692")
-            tabSequence(tabs.order.files_testRef,
-                        aidHalfway = "e5515942-f102-4f21-85a3-1d3b71f3c715",
-                        done = DescribedAssertionID("No file modification controls", "754ffb00-fad3-4d66-97a4-db82485599f1"))
+            tabSequence(tabs.order.files_testRef, "e5515942-f102-4f21-85a3-1d3b71f3c715", "754ffb00-fad3-4d66-97a4-db82485599f1")
+            describeState("No controls to edit files")
         }
 
-        definePoint(6) { // Admin comes into play
-            val ivo1 = Morda("dasja1", url = fconst.test.url.writer, fillTypedStorageLocal = {}, fillRawStorageLocal = {})
-            ivo1.coitizeAndBootAsserting(assertStatic = {assertAnonymousWriterStaticIndexScreen()}, assertDynamic = {assertAnonymousWriterDynamicIndexScreen()})
-            topNavItemSequence(page = pages.uaWriter.signIn_testRef, aid = "aea03aff-9c1a-4aaa-9786-ce4be57018fd")
-            inputSetValue(fields.emailInSignInForm_testRef, "dasja@test.shit.ua")
-            inputSetValue(fields.passwordInSignInForm_testRef, "dasja-secret")
-            submitFormSequence(testShit, aid = "0132de44-85ca-41a5-b926-859e2bd07461")
+        definePoint(6) {
+            run { // Admin comes into play
+                val dasja1 = Morda("dasja1", url = fconst.test.url.writer, fillTypedStorageLocal = {}, fillRawStorageLocal = {})
+                dasja1.coitizeAndBootAsserting(assertStatic = {assertAnonymousWriterStaticIndexScreen()}, assertDynamic = {assertAnonymousWriterDynamicIndexScreen()})
+                topNavItemSequence(page = pages.uaWriter.signIn_testRef, aid = "aea03aff-9c1a-4aaa-9786-ce4be57018fd")
+                inputSetValue(fields.emailInSignInForm_testRef, "dasja@test.shit.ua")
+                inputSetValue(fields.passwordInSignInForm_testRef, "dasja-secret")
+                askMiranda(MirandaTestImposeNextGeneratedUserToken("dasja-fucking-token"))
+                submitFormSequence(testShit, aid = "0132de44-85ca-41a5-b926-859e2bd07461")
+            }
 
             run { // Error loading orders to approve
                 imposeNextRequestGenericError()
@@ -315,9 +317,10 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
             }
         }
 
+//        TestGlobal.skipAllFreakingAssertions = true
+//        TestGlobal.describeStateConfig = DescribeStateConfig(showBanners = false)
+
         definePoint(7) {
-            TestGlobal.skipAllFreakingAssertions = true
-            TestGlobal.describeStateConfig = DescribeStateConfig(showBanners = false)
             run { // Customer refreshes order page
                 val ivo4 = Morda("ivo4",
                                  url = fconst.test.url.customer + "/" + makeURL(pages.uaCustomer.order_testRef, listOf(
@@ -328,13 +331,50 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 ivo4.coitizeAndBootAsserting(assertStatic = {assertScreenHTML(aid = "b47798c3-e6cb-4821-82f2-93022cfeed4a")},
                                              assertDynamic = {assertScreenHTML(aid = "fb1a72f2-8f96-4d6f-a021-a5afc4c083cd")})
                 describeState("Customer sees what should be fixed")
+            }
 
+            run { // Kill damn files
                 tabSequence(tabs.order.files_testRef, aidHalfway = "8d64fd56-a914-42f9-a522-791b8f2ac7ae", aidDone = "a9588231-f5fc-480c-9739-72cd438f2589")
-                for (id in listOf(28L, 27L, 25L, 24L, 23L, 22L, 21L, 20L)) {
+                for (id in listOf(28L, 27L, 25L, 24L, 23L, 22L, 21L, 20L))
                     testDeleteFile(id, "3ef8d439-c6cd-41d0-9e87-11c74df4a22e--$id", deleteWithoutConfirmation = id < 28L)
-                }
+                testShowMore("12e7ef61-8647-407a-8f03-df4b584f99e4")
+                for (id in listOf(17L, 16L, 15L, 14L, 13L, 12L, 11L, 10L, 9L, 8L))
+                    testDeleteFile(id, "bb8fa207-9dca-4eaa-8f86-5b4c9a0fed43--$id", deleteWithoutConfirmation = true)
+                testShowMore("99a09289-39c1-42a7-8610-21009b25500d")
+                for (id in listOf(7L, 6L, 5L, 4L))
+                    testDeleteFile(id, "ce15fe6f-3bad-44ce-bedb-ec550e22cb23--$id", deleteWithoutConfirmation = true)
+                scrollBodyToTopGradually()
+                describeState("Enough murders")
+            }
+
+            run { // Submit shit for review
+                twoStepSequence({buttonClick(buttons.sendForApprovalAfterFixing_testRef)}, "dd154f35-efcc-4510-acd0-0e49d8029fd1")
             }
         }
+
+        definePoint(8) {
+            run { // Admin refreshes orders page
+                val dasja2 = Morda(
+                    "dasja2",
+                    url = fconst.test.url.writer + "/" + makeURL(pages.uaAdmin.orders_testRef, listOf(
+                        URLParamValue(UAAdminOrdersPage().makeBoobs().urlQuery.filter, AdminOrderFilter.TO_APPROVE)
+                    )),
+                    fillTypedStorageLocal = {it.token = "dasja-fucking-token"},
+                    fillRawStorageLocal = {})
+                dasja2.coitizeAndBootAsserting(assertStatic = {assertScreenHTML(aid = "acdb0c44-d1a9-4289-8f96-29eecbc8ebad")},
+                                               assertDynamic = {assertScreenHTML(aid = "abde2753-78f0-4354-b9fb-9b63991ff374")})
+                describeState("Admin sees the order in the list of shit to be approved again")
+            }
+
+            run { // Admin makes some minor changes by herself and moves order to store
+                twoStepSequence({linkClick(links.lips_testRef, subscript = 1L)}, "394199d1-73da-4a7d-b462-13d5e8e0a789")
+                tabSequence(tabs.order.files_testRef, "d3461e3e-4a41-42f5-8cec-451b70e4bfbb", "63b49f23-604a-4184-8ac8-28c73027473b")
+            }
+        }
+    }
+
+    private fun enableStatePauses() {
+        TestGlobal.describeStateConfig = DescribeStateConfig(showBanners = true, autoResumeAfterMs = null)
     }
 
     private suspend fun testDeleteFile(subscript: Long, aid: String, deleteWithoutConfirmation: Boolean = false) {

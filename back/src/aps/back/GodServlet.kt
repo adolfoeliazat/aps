@@ -34,6 +34,8 @@ val RequestGlobus
 fun isRequestThread() =
     requestGlobusThreadLocal.get() != null
 
+val requestUser get()= RequestGlobus.procedureCtx.user!!
+
 class RequestGlobusType {
     val stamp by lazy {
         TestServerFiddling.nextRequestTimestamp.getAndReset()

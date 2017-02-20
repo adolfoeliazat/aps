@@ -52,6 +52,11 @@ suspend fun askMiranda(params: MirandaParams): MirandaRequest.Response =
         o.params.value = params
     })
 
+suspend fun askRegina(params: ReginaParams): FormResponse2<ReginaRequest.Response> =
+    _send3SofteningShit(ReginaRequest()-{o->
+        o.params.value = params
+    })
+
 private fun <T, R> sendDangerousJSONProcedure(req: T): Promisoid<R> = async {
     val jpreq = JsonProcedureRequest()-{o->
         o.json.value = jsonize(req)
@@ -72,6 +77,7 @@ private suspend fun <Req: RequestMatumba, Meat> _send3SofteningShit(req: Req, pr
     return try {
         _send2(Globus.worldMaybe?.tokenMaybe, req, procName = procName)
     } catch (e: dynamic) {
+        console.error("_send3SofteningShit", e)
         FormResponse2.Shitty<Meat>(const.msg.serviceFuckedUp, fieldErrors = listOf())
     }
 }

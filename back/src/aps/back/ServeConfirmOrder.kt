@@ -13,6 +13,7 @@ import java.util.*
 
 @Servant class ServeConfirmOrder(val orderRepo: UAOrderRepository, val userRepo: UserRepository, val userTokenRepo: UserTokenRepository) : BitchyProcedure() {
     override fun serve() {
+
         fuckCustomer(FuckCustomerParams(
             bpc = bpc,
             makeRequest = {ConfirmOrderRequest()},
@@ -48,8 +49,7 @@ import java.util.*
 
                         val userToken = UserToken(
                             user = newCustomer,
-                            token = TestServerFiddling.nextGeneratedUserToken.getAndReset()
-                                ?: UUID.randomUUID().toString()
+                            token = generateUserToken()
                         )
                         userTokenRepo.save(userToken)
 

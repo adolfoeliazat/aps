@@ -24,7 +24,7 @@ import java.util.*
 
                 if (!BCrypt.checkpw(req.password.value, user.passwordHash)) bitchExpectedly(vagueFuckYouMessage)
 
-                val token = UUID.randomUUID().toString()
+                val token = generateUserToken()
                 tokenRepo.save(UserToken(token, user))
                 return SignInResponse(token, user.toRTO())
             }

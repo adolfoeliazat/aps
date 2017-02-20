@@ -38,7 +38,7 @@ object pages {
     }
 
     object uaAdmin : Fuckers<PageSpec>(null) {
-        val orders by namedFucker {privatePage(it, t("Orders", "Заказы")) {UAAdminOrdersPage(it).load()}}; val orders_testRef = TestRef(orders)
+        val orders by namedFucker {privatePage(it, t("Orders", "Заказы")) {UAAdminOrdersPage().load()}}; val orders_testRef = TestRef(orders)
         val order by namedFucker {privatePage(it) {UASingleOrderPage(it).load()}}; val order_testRef = TestRef(orders)
         val dashboard by namedFucker {privatePage(it) {DashboardPage(it).load()}}; val dashboard_testRef = TestRef(dashboard)
     }

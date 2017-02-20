@@ -61,7 +61,7 @@ class UACustomerSingleOrderPageFilesTab(val page: UASingleOrderPage, val world: 
         private inner class FileLipsState(val downloadActive: Boolean)
 
         override fun makeLipsInterface(viewRootID: String, tongue: MelindaTongueInterface<UAOrderFileRTO>): MelindaLipsInterface {
-            if (world.user.kind != UserKind.CUSTOMER) imf("order vaginalInterface for ${world.user.kind}")
+            // if (world.user.kind != UserKind.CUSTOMER) imf("order vaginalInterface for ${world.user.kind}")
 
             val cloudIconID = puid()
             return makeUsualMelindaLips(

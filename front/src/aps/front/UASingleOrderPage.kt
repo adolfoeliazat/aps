@@ -53,7 +53,7 @@ class UASingleOrderPage(val world: World) {
                                             reloadOrderPage()
                                         })))))
                 UserKind.ADMIN -> NOTRE
-                UserKind.WRITER -> wtf()
+                UserKind.WRITER -> wtf("8eb54f3c-eafe-46dc-8ee9-7ad70adecee7")
             }
 
             UAOrderState.WAITING_ADMIN_APPROVAL -> when (world.user.kind) {
@@ -89,13 +89,13 @@ class UASingleOrderPage(val world: World) {
                             title = t("TOTE", "В стор"), level = Button.Level.PRIMARY, key = buttons.moveToStore,
                             onClick = sendingDollyButtonHandler(
                                 sendRequest = {
-                                    imf("3333")
+                                    imf("9861881b-cab7-4a91-bcd9-6fce68699fe0")
                                 },
                                 onSuccess = {
-                                    imf("4444")
+                                    imf("05a2be59-739d-4ca7-9ab0-7d19879d770d")
                                     reloadOrderPage()
                                 })))))
-                UserKind.WRITER -> wtf()
+                UserKind.WRITER -> wtf("a1f98aad-8f31-40da-8d93-0f48208bcb5c")
             }
 
             UAOrderState.RETURNED_TO_CUSTOMER_FOR_FIXING -> when (world.user.kind) {
@@ -107,14 +107,13 @@ class UASingleOrderPage(val world: World) {
                             title = t("TOTE", "Исправил"), level = Button.Level.PRIMARY, key = buttons.sendForApprovalAfterFixing,
                             onClick = sendingDollyButtonHandler(
                                 sendRequest = {
-                                    imf("55555")
+                                    askRegina(ReginaCustomerSendOrderForApprovalAfterFixing(orderID = order.id))
                                 },
                                 onSuccess = {
-                                    imf("66666")
                                     reloadOrderPage()
                                 })))))
-                UserKind.ADMIN -> imf()
-                UserKind.WRITER -> wtf()
+                UserKind.ADMIN -> NOTRE
+                UserKind.WRITER -> wtf("56a7d6ae-96c6-41f4-bc67-0780c2c12a2d")
             }
 
             else -> NOTRE
@@ -153,15 +152,17 @@ class UASingleOrderPage(val world: World) {
                     o- order.title
                 }
 
-                val whatShouldBeFixed = order.whatShouldBeFixedByCustomer
-                if (whatShouldBeFixed != null) {
-                    val c = css.order.whatShouldBeFixed
-                    o- kdiv(className = c.container){o->
-                        o- kdiv(className = c.title){o->
-                            o- t("TOTE", "Что нужно исправить")
-                        }
-                        o- kdiv(className = c.body){o->
-                            o- whatShouldBeFixed
+                if (order.state != UAOrderState.WAITING_ADMIN_APPROVAL) {
+                    val whatShouldBeFixed = order.whatShouldBeFixedByCustomer
+                    if (whatShouldBeFixed != null) {
+                        val c = css.order.whatShouldBeFixed
+                        o- kdiv(className = c.container){o->
+                            o- kdiv(className = c.title){o->
+                                o- t("TOTE", "Что нужно исправить")
+                            }
+                            o- kdiv(className = c.body){o->
+                                o- whatShouldBeFixed
+                            }
                         }
                     }
                 }

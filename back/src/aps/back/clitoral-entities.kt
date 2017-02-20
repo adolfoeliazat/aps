@@ -10,6 +10,8 @@ import javax.persistence.*
 private const val MAX_STRING = 10000
 private const val MAX_BLOB = 10 * 1024 * 1024
 
+val uaOrderRepository get() = springctx.getBean(UAOrderRepository::class.java)!!
+
 @MappedSuperclass
 abstract class ClitoralEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

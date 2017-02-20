@@ -1,9 +1,8 @@
 package aps.front
 
 import aps.*
-import into.kommon.*
 
-class UAAdminOrdersPage(val world: World) {
+class UAAdminOrdersPage {
     object urlQuery : URLQueryParamsMarker {
         val filter by EnumURLParam(AdminOrderFilter.values(), default = AdminOrderFilter.ALL)
     }
@@ -11,21 +10,33 @@ class UAAdminOrdersPage(val world: World) {
     private var bint by notNullOnce<MelindaBoobsInterface>()
 
     suspend fun load(): PageLoadingError? {
-        val boobs = MelindaBoobs<UAOrderRTO, AdminOrderFilter, UACreateOrderRequest, UACreateOrderRequest.Response, UAUpdateOrderRequest, UAUpdateOrderRequest.Response>(
+        val boobs = makeBoobs()
+
+        bint = boobs.boobsInterface
+        boobs.load()?.let {return PageLoadingError(it.error)}
+        Globus.world.setPage(Page(header = usualHeader(t("TOTE", "Заказы")),
+                                  headerControls = kdiv{o->
+                                      o- bint.controlsContent
+                                  },
+                                  body = bint.mainContent))
+        return pageLoadedFineResult
+    }
+
+    fun makeBoobs(): MelindaBoobs<UAOrderRTO, AdminOrderFilter, UACreateOrderRequest, UACreateOrderRequest.Response, UAUpdateOrderRequest, UAUpdateOrderRequest.Response> {
+        return MelindaBoobs(
             hasCreateButton = false,
             createModalTitle = t("TOTE", "Новый заказ"),
             makeCreateRequest = {UACreateOrderRequest()},
             makeURLAfterCreation = {
                 makeURL(pages.uaAdmin.order, listOf())
             },
-            makeURLForReload = {boobsParams->
+            makeURLForReload = {boobsParams ->
                 makeURL(pages.uaAdmin.order, boobsParams)
             },
             filterValues = AdminOrderFilter.values(),
             defaultFilterValue = AdminOrderFilter.ALL,
             filterSelectKey = selects.adminOrderFilter,
-            vaginalInterface = object:MelindaVaginalInterface<UAOrderRTO, AdminOrderFilter, UAUpdateOrderRequest, UAUpdateOrderRequest.Response>
-            {
+            vaginalInterface = object : MelindaVaginalInterface<UAOrderRTO, AdminOrderFilter, UAUpdateOrderRequest, UAUpdateOrderRequest.Response> {
                 suspend override fun sendItemsRequest(req: ItemsRequest<AdminOrderFilter>) = sendUAAdminGetOrders(req)
                 override fun shouldShowFilter() = true
                 override fun getParentEntityID() = null
@@ -34,7 +45,7 @@ class UAAdminOrdersPage(val world: World) {
                 override fun getItemFromUpdateItemResponse(res: UAUpdateOrderRequest.Response) = res.updatedOrder
 
                 override fun makeUpdateItemRequest(item: UAOrderRTO): UAUpdateOrderRequest {
-                    return UAUpdateOrderRequest()-{o->
+                    return UAUpdateOrderRequest() - {o ->
                         // TODO:vgrechka ...
                     }
                 }
@@ -42,7 +53,7 @@ class UAAdminOrdersPage(val world: World) {
                 override fun makeLipsInterface(viewRootID: String, tongue: MelindaTongueInterface<UAOrderRTO>): MelindaLipsInterface {
                     return makeUsualMelindaLips(
                         tongue, viewRootID, bint, icon = fa.folderOpen, initialState = Unit,
-                        renderContent = {o->
+                        renderContent = {o ->
                             renderOrderParams(o, tongue.getItem())
                         },
                         titleLinkURL = makeURL(pages.uaAdmin.order, listOf(
@@ -54,15 +65,6 @@ class UAAdminOrdersPage(val world: World) {
                 }
             }
         )
-
-        bint = boobs.boobsInterface
-        boobs.load()?.let {return PageLoadingError(it.error)}
-        world.setPage(Page(header = usualHeader(t("TOTE", "Заказы")),
-                           headerControls = kdiv{o->
-                               o- bint.controlsContent
-                           },
-                           body = bint.mainContent))
-        return pageLoadedFineResult
     }
 }
 

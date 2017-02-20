@@ -123,6 +123,17 @@ import java.util.*
     }
 }
 
+fun serveReginaCustomerSendOrderForApprovalAfterFixing(p: ReginaCustomerSendOrderForApprovalAfterFixing): ReginaRequest.Response {
+    check(requestUser.kind == UserKind.CUSTOMER){"70630d2d-6796-4af8-8ac6-16e09a8b37e1"}
+    // TODO:vgrechka Security checks
+    dwarnStriking("aaaaaaaaaaaaaaaaaaaaa", p.orderID)
+    val order = uaOrderRepository.findOrDie(p.orderID)
+    check(order.state == UAOrderState.RETURNED_TO_CUSTOMER_FOR_FIXING){"698dd409-f382-45df-9e65-fff590302dd0"}
+    order.state = UAOrderState.WAITING_ADMIN_APPROVAL
+    return ReginaRequest.Response()
+}
+
+
 
 
 

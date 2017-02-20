@@ -231,6 +231,8 @@ fun jsonize2(shit: Any?): String {
 }
 
 fun jsonizeToObject2(shit: Any?): Any? {
+    fun noise(vararg xs: Any?) {/*dlog("jsonizeToObject2", *xs)*/}
+
     gloshit.jsonizeToObject_shit = shit
     if (shit == null) return null
     val jsType = jsTypeOf(shit)
@@ -243,16 +245,21 @@ fun jsonizeToObject2(shit: Any?): Any? {
                 jsonizeToObject2(shit[i])
             }
         }
-
+        is Long -> {
+            return shit.toString()
+        }
         else -> {
             val out = json()
-            out["\$\$\$class"] = "aps." + shit!!::class.simpleName
+            val className = shit::class.simpleName
+            noise("className", className)
+            out["\$\$\$class"] = "aps." + className
 
             val props = JSObject.getOwnPropertyNames(shit.asDynamic())
             val protoProps = JSObject.getOwnPropertyNames(shit.asDynamic().__proto__).toSet() - setOf("constructor")
-            for (protoProp in protoProps + props) {
-                val value = shit.asDynamic()[protoProp]
-                out[protoProp] = jsonizeToObject2(value)
+            for (prop in protoProps + props) {
+                val value = shit.asDynamic()[prop]
+                noise("prop", prop, value)
+                out[prop] = jsonizeToObject2(value)
             }
 
             return out

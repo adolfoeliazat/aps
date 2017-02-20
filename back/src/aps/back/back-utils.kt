@@ -11,6 +11,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.io.PrintWriter
 import java.io.StringWriter
+import java.util.*
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
@@ -66,4 +67,12 @@ private class VolatileNotNullVar<T: Any>() : ReadWriteProperty<Any?, T> {
         this.value = value
     }
 }
+
+fun generateUserToken() =
+    TestServerFiddling.nextGeneratedUserToken.getAndReset()
+    ?: UUID.randomUUID().toString()
+
+
+
+
 

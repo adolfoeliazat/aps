@@ -33,6 +33,7 @@ fun sendingDollyButtonHandler(
     val res = sendRequest()
     exhaustive / when (res) {
         is FormResponse2.Shitty -> {
+            console.error("SHITTY RESPONSE", res.error)
             imf("Handle shitty response in lalala")
         }
         is FormResponse2.Hunky -> {

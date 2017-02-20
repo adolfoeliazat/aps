@@ -181,6 +181,10 @@ private fun snapshotFileNameBase(snapshotName: String) =
     }
 }
 
+fun serveMirandaTestImposeNextGeneratedUserToken(p: MirandaTestImposeNextGeneratedUserToken): MirandaRequest.Response {
+    TestServerFiddling.nextGeneratedUserToken.set(p.token)
+    return MirandaRequest.Response()
+}
 
 
 

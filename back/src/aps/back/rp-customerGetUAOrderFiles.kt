@@ -30,7 +30,7 @@ import org.springframework.data.repository.findOrDie
 
 @Servant class ServeUACustomerGetOrderFiles(val orderRepo: UAOrderRepository) : BitchyProcedure() {
     override fun serve() {
-        fuckCustomer(FuckCustomerParams(
+        fuckAnyUser(FuckAnyUserParams(
             bpc = bpc,
             makeRequest = {ItemsRequest(CustomerFileFilter.values())},
             runShit = fun(ctx, req): ItemsResponse<UAOrderFileRTO> {
