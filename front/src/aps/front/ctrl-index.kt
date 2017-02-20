@@ -17,6 +17,7 @@ object tabs                              : Fuckers<TabKey>(null) {
 
 object buttons                           : Fuckers<ButtonKey>(null) {
     val sendForApproval                  by namedFucker(::ButtonKey); val sendForApproval_testRef = TestRef(sendForApproval)
+    val sendForApprovalAfterFixing       by namedFucker(::ButtonKey); val sendForApprovalAfterFixing_testRef = TestRef(sendForApprovalAfterFixing)
     val moveToStore                      by namedFucker(::ButtonKey); val moveToStore_testRef = TestRef(moveToStore)
     val returnToCustomerForFixing        by namedFucker(::ButtonKey); val returnToCustomerForFixing_testRef = TestRef(returnToCustomerForFixing)
     val edit                             by namedFucker(::ButtonKey); val edit_testRef = TestRef(edit)

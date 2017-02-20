@@ -101,6 +101,8 @@ class UAOrder(
             id = id!!,
             title = title,
             titleHighlightRanges = listOf(), // TODO:vgrechka ...
+            detailsHighlightRanges = listOf(), // TODO:vgrechka ...
+            editable = true, // TODO:vgrechka ...
             createdAt = createdAt.time,
             updatedAt = updatedAt.time,
             customer = customer!!.toRTO(),
@@ -109,13 +111,12 @@ class UAOrder(
             numPages = numPages,
             numSources = numSources,
             details = details,
-            detailsHighlightRanges = listOf(), // TODO:vgrechka ...
             adminNotes = "boobs",
             state = state,
             customerPhone = customerPhone,
             customerFirstName = customerFirstName,
             customerLastName = customerLastName,
-            editable = true // TODO:vgrechka ...
+            whatShouldBeFixedByCustomer = whatShouldBeFixedByCustomer
         )
     }
 }

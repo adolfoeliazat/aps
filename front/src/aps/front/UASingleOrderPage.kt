@@ -105,6 +105,25 @@ class UASingleOrderPage(val world: World) {
                 UserKind.WRITER -> wtf()
             }
 
+            UAOrderState.RETURNED_TO_CUSTOMER_FOR_FIXING -> when (world.user.kind) {
+                UserKind.CUSTOMER -> Dolly(DollyParams(
+                    styles = css.dolly.normal,
+                    message = t("TOTE", "Админ завернул твой заказ на доработку. Когда исправишь, жми..."),
+                    buttons = listOf(
+                        DollyButton(
+                            title = t("TOTE", "Исправил"), level = Button.Level.PRIMARY, key = buttons.sendForApprovalAfterFixing,
+                            onClick = sendingDollyButtonHandler(
+                                sendRequest = {
+                                    imf("3333")
+                                },
+                                onSuccess = {
+                                    imf("4444")
+                                    reloadOrderPage()
+                                })))))
+                UserKind.ADMIN -> imf()
+                UserKind.WRITER -> wtf()
+            }
+
             else -> NOTRE
         }
 
@@ -139,6 +158,19 @@ class UASingleOrderPage(val world: World) {
                 o- dolly
                 o- h4(marginBottom = "0.7em"){o->
                     o- order.title
+                }
+
+                val whatShouldBeFixed = order.whatShouldBeFixedByCustomer
+                if (whatShouldBeFixed != null) {
+                    val c = css.order.whatShouldBeFixed
+                    o- kdiv(className = c.container){o->
+                        o- kdiv(className = c.title){o->
+                            o- t("TOTE", "Что нужно исправить")
+                        }
+                        o- kdiv(className = c.body){o->
+                            o- whatShouldBeFixed
+                        }
+                    }
                 }
 
                 o- Tabs2(
