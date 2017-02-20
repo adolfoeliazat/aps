@@ -44,7 +44,30 @@ suspend fun waitAndCheckDownload(orderFileID: Long, expectedFileName: String) {
     assertEquals(TestData.sha256[expectedFileName], ctx.shit.sha256)
 }
 
+class DescribeStateConfig(
+    val showBanners: Boolean,
+    val autoResumeAfterMs: Int? = null
+)
 
+suspend fun describeState(descr: String) {
+    val cfg = TestGlobal.describeStateConfig
+    if (!cfg.showBanners) return
+
+    val ctx = ShowTestBannerContext()-{o->
+        o.verticalPosition = VerticalPosition.BOTTOM
+        o.horizontalPosition = HorizontalPosition.RIGHT
+    }
+
+    val autoResumeAfterMs = cfg.autoResumeAfterMs
+    if (autoResumeAfterMs != null) {
+        async {
+            sleep(autoResumeAfterMs)
+            resumeTestBannerPause()
+        }
+    }
+
+    showTestBanner(ctx, title = descr, subtitle = "", kind = TestBannerKind.PAUSE)
+}
 
 
 

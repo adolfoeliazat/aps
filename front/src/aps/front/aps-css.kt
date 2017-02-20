@@ -312,8 +312,6 @@ object css {
         object popup : Group(this) {
             val pause by Style("""
                 position: fixed;
-                bottom: 0px;
-                left: 0px;
                 width: $width;
                 min-height: 10rem;
                 background-color: $LIME_100;

@@ -13,15 +13,16 @@ import kotlin.properties.Delegates.notNull
 private var testPausedOnAssertion = false
 private var pausedOnAssertion = ResolvableShit<Unit>()
 private var assertionBannerPause by notNull<ResolvableShit<Unit>>()
-private var _currentAssertionBannerKind by notNull<AssertionBannerKind>()
+private var _currentAssertionBannerKind by notNull<TestBannerKind>()
 
 val currentAssertionBannerKind get() = _currentAssertionBannerKind
 private var prevDiffResult: RenderDiffResult? = null
 
-enum class AssertionBannerKind(val className: String) {
+enum class TestBannerKind(val className: String) {
     NOT_HARDENED(css.test.popup.assertion.notHardened),
     CORRECT(css.test.popup.assertion.correct),
-    INCORRECT(css.test.popup.assertion.incorrect)
+    INCORRECT(css.test.popup.assertion.incorrect),
+    PAUSE(css.test.popup.pause)
 }
 
 enum class VerticalPosition {
@@ -36,7 +37,7 @@ fun isTestPausedOnAssertion() = testPausedOnAssertion
 
 fun tillPausedOnAssertion() = pausedOnAssertion.promise
 
-fun resumePausedAssertion() = assertionBannerPause.resolve()
+fun resumeTestBannerPause() = assertionBannerPause.resolve()
 
 fun killTestButton(): Button {
     return Button(icon = fa.bomb, onClick = {
@@ -61,8 +62,7 @@ suspend fun assertScreenHTML(descr: String? = null, aid: String, opts: AssertScr
 
 suspend fun assertScreenHTML(p: AssertScreenHTMLParams) {
     if (TestGlobal.skipAllFreakingAssertions) return
-    val stackCapture: CaptureStackException? = CaptureStackException()
-    val assertionDescr = p.descr ?: "Describe me"
+
     val opts = p.opts ?: TestGlobal.defaultAssertScreenOpts
 //    lastAssertScreenHTMLParams = p
 //    act {TestGlobal.testShitBeingAssertedID = p.assertionID}
@@ -74,7 +74,8 @@ suspend fun assertScreenHTML(p: AssertScreenHTMLParams) {
     TestGlobal.testShitBeingAssertedID = p.assertionID
     val expected = await(fuckingRemoteCall.loadTestShit(p.assertionID))
 
-    val scrollTopBeforeTakingHTML = document.body!!.scrollTop
+    val ctx = ShowTestBannerContext()
+    ctx.assertionDescr = p.descr ?: "Describe me"
 
     val actual = buildString {
         append("-------------------- URL --------------------\n\n")
@@ -113,16 +114,16 @@ suspend fun assertScreenHTML(p: AssertScreenHTMLParams) {
 
     if (testOpts().stopOnAssertions) {
         await(object {
-            val bannerButtonStyle = Style()
 
-            var banner by notNull<Control2>()
-            var verticalPosition = opts.bannerVerticalPosition
-            var horizontalPosition = opts.bannerHorizontalPosition
+            init {
+                ctx.verticalPosition = opts.bannerVerticalPosition
+                ctx.horizontalPosition = opts.bannerHorizontalPosition
+            }
+
             var capturedVisualShit = false
-            var descriptionPanel by notNull<Placeholder>()
 
             suspend fun acceptCurrentShit() {
-                descriptionPanel.setContent(kdiv{o->
+                ctx.descriptionPanel.setContent(kdiv{o->
                     o- span("Accepting...", Style(fontStyle = "italic"))
                 })
 
@@ -134,20 +135,22 @@ suspend fun assertScreenHTML(p: AssertScreenHTMLParams) {
                 }))
                 assertionBannerPause.resolve()
             }
+            init {ctx.acceptCurrentShit = {acceptCurrentShit()}}
 
             val shit = async {
                 when {
                     expected == null || TestGlobal.pretendAllAssertionsNotHardened -> {
-                        await(showTestBanner(
-                            AssertionBannerKind.NOT_HARDENED,
+                        showAssertionTestBanner(
+                            ctx, p,
+                            TestBannerKind.NOT_HARDENED,
                             renderSpecificButtons = {o ->
                                 o- acceptButton()
-                            }))
+                            })
                     }
 
                     actual == expected -> {
                         if (!testOpts().dontStopOnCorrectAssertions) {
-                            await(showTestBanner(AssertionBannerKind.CORRECT))
+                            showAssertionTestBanner(ctx, p, TestBannerKind.CORRECT)
                         }
                     }
 
@@ -182,25 +185,26 @@ suspend fun assertScreenHTML(p: AssertScreenHTMLParams) {
                                 o.id = p.assertionID
                             })).exists
 
-                            await(showTestBanner(
-                                AssertionBannerKind.INCORRECT,
+                            showAssertionTestBanner(
+                                ctx, p,
+                                TestBannerKind.INCORRECT,
                                 renderSpecificButtons = {o ->
-                                    o- Button(title = "Diff", style = bannerButtonStyle, onClick = {
-                                        verticalPosition = opts.bannerVerticalPosition
-                                        horizontalPosition = opts.bannerHorizontalPosition
-                                        banner.update()
+                                    o- Button(title = "Diff", style = ctx.bannerButtonStyle, onClick = {
+                                        ctx.verticalPosition = opts.bannerVerticalPosition
+                                        ctx.horizontalPosition = opts.bannerHorizontalPosition
+                                        ctx.banner.update()
 //                                                byid("fuckingDiff").scrollBodyToShit()
                                         nextDiff().scrollBodyToShit(dy = -70)
                                     })
                                     if (captureExists) {
-                                        o- Button(title = "VDiff", style = bannerButtonStyle, key = buttons.assertionBanner.vdiff, onClicka = {
+                                        o- Button(title = "VDiff", style = ctx.bannerButtonStyle, key = buttons.assertionBanner.vdiff, onClicka = {
                                             async<Unit> {
                                                 openVisualDiff()
                                             }
                                         })
                                     }
                                     o- acceptButton()
-                                }))
+                                })
                         } finally {
                             old_debugPanes.remove(pane)
                         }
@@ -269,7 +273,7 @@ suspend fun assertScreenHTML(p: AssertScreenHTMLParams) {
 
                     fun renderButton() = Button(
                         title = buttonTitle,
-                        style = bannerButtonStyle.copy(
+                        style = ctx.bannerButtonStyle.copy(
                             borderLeft = if (mode != this) null else
                                 "1rem solid $ORANGE_300"
                         ),
@@ -338,11 +342,11 @@ suspend fun assertScreenHTML(p: AssertScreenHTMLParams) {
                                         o- m.renderButton()
                                     }
                                     o- kdiv(width = "1rem")
-                                    o- Button(icon = fa.check, title = "Accept", style = bannerButtonStyle, key = buttons.assertionBanner.accept, onClicka = {
+                                    o- Button(icon = fa.check, title = "Accept", style = ctx.bannerButtonStyle, key = buttons.assertionBanner.accept, onClicka = {
                                         old_debugPanes.remove(visualDiffPane)
                                         acceptCurrentShit()
                                     })
-                                    o- Button(icon = fa.close, style = bannerButtonStyle, onClick = {
+                                    o- Button(icon = fa.close, style = ctx.bannerButtonStyle, onClick = {
                                         old_debugPanes.remove(visualDiffPane)
                                     })
                                 }
@@ -372,110 +376,10 @@ suspend fun assertScreenHTML(p: AssertScreenHTMLParams) {
             fun acceptButton() = Button(
                 key = buttons.assertionBanner.accept,
                 icon = fa.check,
-                style = bannerButtonStyle,
+                style = ctx.bannerButtonStyle,
                 onClicka = {acceptCurrentShit()})
 
 
-            fun showTestBanner(kind: AssertionBannerKind, renderSpecificButtons: (ElementBuilder) -> Unit = {}) = async {
-                _currentAssertionBannerKind = kind
-                val className = kind.className
-                assertionBannerPause = ResolvableShit<Unit>()
-                banner = Control2.from {
-                    val style = Style()
-                    exhaustive / when (verticalPosition) {
-                        VerticalPosition.TOP -> style.top = 0
-                        VerticalPosition.BOTTOM -> style.bottom = 0
-                    }
-                    exhaustive / when (horizontalPosition) {
-                        HorizontalPosition.LEFT -> style.left = 0
-                        HorizontalPosition.RIGHT -> style.right = 0
-                    }
-                    kdiv(className = className, baseStyle = style){o->
-                        o- hor1(marginBottom = "0.5rem"){o->
-                            o- Button(key = buttons.assertionBanner.play, icon = fa.play, style = bannerButtonStyle, onClick = {
-                                assertionBannerPause.resolve()
-                            })
-                            o- killTestButton()
-                            o- Button(
-                                icon = when (verticalPosition) {
-                                    VerticalPosition.TOP -> fa.arrowDown
-                                    VerticalPosition.BOTTOM -> fa.arrowUp
-                                },
-                                style = bannerButtonStyle,
-                                onClick = {
-                                    verticalPosition = when (verticalPosition) {
-                                        VerticalPosition.TOP -> VerticalPosition.BOTTOM
-                                        VerticalPosition.BOTTOM -> VerticalPosition.TOP
-                                    }
-                                    banner.update()
-                                })
-                            o- Button(
-                                icon = when (horizontalPosition) {
-                                    HorizontalPosition.LEFT -> fa.arrowRight
-                                    HorizontalPosition.RIGHT -> fa.arrowLeft
-                                },
-                                style = bannerButtonStyle,
-                                onClick = {
-                                    horizontalPosition = when (horizontalPosition) {
-                                        HorizontalPosition.LEFT -> HorizontalPosition.RIGHT
-                                        HorizontalPosition.RIGHT -> HorizontalPosition.LEFT
-                                    }
-                                    banner.update()
-                                })
-                            o- rerunTestButton()
-                            o- rerunTestSlowlyButton()
-                            renderSpecificButtons(o)
-                        }
-
-                        descriptionPanel = Placeholder(kdiv{o->
-                            o- kdiv{o->
-                                o- link(title = /*"Assertion: " + */"${assertionDescr}", color = BLACK, onClick = {
-                                    if (stackCapture != null) {
-                                        revealStack(stackCapture, muteConsole = true)
-                                    } else {
-                                        bitch("No fucking stack capture")
-                                    }
-                                })
-                            }
-                            o- kdiv(fontSize = "75%", fontWeight = "normal"){o->
-                                o- p.assertionID
-                            }
-                        })
-                        o- descriptionPanel
-                    }
-                }
-                val bannerPane = old_debugPanes.put(banner)
-
-                val keyListener = fun(e: Event) {
-                    e as KeyboardEvent
-                    when (e.key) {
-                        "n" -> assertionBannerPause.resolve()
-                        "N" -> {
-                            TestGlobal.forcedTestOpts = testOpts().copy(
-                                stopOnAssertions = false,
-                                ignoreIncorrect = true,
-                                ignoreNotHardened = true)
-                            assertionBannerPause.resolve()
-                        }
-                        "y" -> {
-                            asu {acceptCurrentShit()}
-                        }
-                    }
-                }
-                window.addEventListener("keydown", keyListener)
-
-                try {
-                    testPausedOnAssertion = true
-                    pausedOnAssertion.resolve()
-                    await(assertionBannerPause.promise)
-                } finally {
-                    testPausedOnAssertion = false
-                    pausedOnAssertion = ResolvableShit()
-                    window.removeEventListener("keydown", keyListener)
-                    old_debugPanes.remove(bannerPane)
-                    document.body!!.scrollTop = scrollTopBeforeTakingHTML
-                }
-            }
         }.shit)
     } else {
         when {
@@ -484,7 +388,7 @@ suspend fun assertScreenHTML(p: AssertScreenHTMLParams) {
             actual != expected -> {
                 if (!testOpts().ignoreIncorrect) {
                     throw ArtAssertionError(
-                        bang(assertionDescr),
+                        bang(ctx.assertionDescr),
                         visualPayload = renderDiff(
                             expected = expected ?: "--- Not yet hardened ---",
                             actual = actual,
@@ -497,6 +401,120 @@ suspend fun assertScreenHTML(p: AssertScreenHTMLParams) {
     }
 
     TestGlobal.testShitBeingAssertedID = null
+}
+
+class ShowTestBannerContext {
+    val stackCapture = CaptureStackException()
+    val initialScrollTop = document.body!!.scrollTop
+    val bannerButtonStyle = Style()
+
+    var banner by notNullOnce<Control2>()
+    var verticalPosition by notNull<VerticalPosition>()
+    var horizontalPosition by notNull<HorizontalPosition>()
+    var descriptionPanel by notNullOnce<Placeholder>()
+    var acceptCurrentShit by notNullOnce<suspend () -> Unit>()
+    var assertionDescr by notNullOnce<String>()
+}
+
+suspend fun showAssertionTestBanner(ctx: ShowTestBannerContext, p: AssertScreenHTMLParams, kind: TestBannerKind, renderSpecificButtons: (ElementBuilder) -> Unit = {}) {
+    showTestBanner(ctx, ctx.assertionDescr, p.assertionID, kind, renderSpecificButtons)
+}
+
+suspend fun showTestBanner(ctx: ShowTestBannerContext, title: String, subtitle: String, kind: TestBannerKind, renderSpecificButtons: (ElementBuilder) -> Unit = {}) {
+    _currentAssertionBannerKind = kind
+    val className = kind.className
+    assertionBannerPause = ResolvableShit<Unit>()
+    ctx.banner = Control2.from {
+        val style = Style()
+        exhaustive / when (ctx.verticalPosition) {
+            VerticalPosition.TOP -> style.top = 0
+            VerticalPosition.BOTTOM -> style.bottom = 0
+        }
+        exhaustive / when (ctx.horizontalPosition) {
+            HorizontalPosition.LEFT -> style.left = 0
+            HorizontalPosition.RIGHT -> style.right = 0
+        }
+        kdiv(className = className, baseStyle = style){o->
+            o- hor1(marginBottom = "0.5rem"){o->
+                o- Button(key = buttons.assertionBanner.play, icon = fa.play, style = ctx.bannerButtonStyle, onClick = {
+                    assertionBannerPause.resolve()
+                })
+                o- killTestButton()
+                o- Button(
+                    icon = when (ctx.verticalPosition) {
+                        VerticalPosition.TOP -> fa.arrowDown
+                        VerticalPosition.BOTTOM -> fa.arrowUp
+                    },
+                    style = ctx.bannerButtonStyle,
+                    onClick = {
+                        ctx.verticalPosition = when (ctx.verticalPosition) {
+                            VerticalPosition.TOP -> VerticalPosition.BOTTOM
+                            VerticalPosition.BOTTOM -> VerticalPosition.TOP
+                        }
+                        ctx.banner.update()
+                    })
+                o- Button(
+                    icon = when (ctx.horizontalPosition) {
+                        HorizontalPosition.LEFT -> fa.arrowRight
+                        HorizontalPosition.RIGHT -> fa.arrowLeft
+                    },
+                    style = ctx.bannerButtonStyle,
+                    onClick = {
+                        ctx.horizontalPosition = when (ctx.horizontalPosition) {
+                            HorizontalPosition.LEFT -> HorizontalPosition.RIGHT
+                            HorizontalPosition.RIGHT -> HorizontalPosition.LEFT
+                        }
+                        ctx.banner.update()
+                    })
+                o- rerunTestButton()
+                o- rerunTestSlowlyButton()
+                renderSpecificButtons(o)
+            }
+
+            ctx.descriptionPanel = Placeholder(kdiv{o->
+                o- kdiv{o->
+                    o- link(title = title, color = BLACK, onClick = {
+                        revealStack(ctx.stackCapture, muteConsole = true)
+                    })
+                }
+                o- kdiv(fontSize = "75%", fontWeight = "normal"){o->
+                    o- subtitle
+                }
+            })
+            o- ctx.descriptionPanel
+        }
+    }
+    val bannerPane = old_debugPanes.put(ctx.banner)
+
+    val keyListener = fun(e: Event) {
+        e as KeyboardEvent
+        when (e.key) {
+            "n" -> assertionBannerPause.resolve()
+            "N" -> {
+                TestGlobal.forcedTestOpts = testOpts().copy(
+                    stopOnAssertions = false,
+                    ignoreIncorrect = true,
+                    ignoreNotHardened = true)
+                assertionBannerPause.resolve()
+            }
+            "y" -> {
+                asu {ctx.acceptCurrentShit()}
+            }
+        }
+    }
+    window.addEventListener("keydown", keyListener)
+
+    try {
+        testPausedOnAssertion = true
+        pausedOnAssertion.resolve()
+        await(assertionBannerPause.promise)
+    } finally {
+        testPausedOnAssertion = false
+        pausedOnAssertion = ResolvableShit()
+        window.removeEventListener("keydown", keyListener)
+        old_debugPanes.remove(bannerPane)
+        document.body!!.scrollTop = ctx.initialScrollTop
+    }
 }
 
 

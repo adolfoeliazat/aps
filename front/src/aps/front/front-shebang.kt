@@ -69,6 +69,7 @@ object TestGlobal {
     val orderFileIDToDownloadContext = mutableMapOf<Long, TestDownloadContext>()
     val disabledActionHitLock by notNullNamed(TestLock())
     val pageLoadedLock by notNullNamed(TestLock())
+    var describeStateConfig = DescribeStateConfig(showBanners = true)
 }
 
 fun requestAnimationFrame(block: () -> Unit) {

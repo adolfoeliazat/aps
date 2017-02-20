@@ -239,9 +239,9 @@ suspend fun topNavItemClick(page: TestRef<PageSpec>, handOpts: HandOpts = HandOp
 }
 
 suspend fun topNavItemSequence(
-    descr: String? = null,
     page: TestRef<PageSpec>,
-    aid: String
+    aid: String,
+    descr: String? = null
 ) {
     sequence(
         action = {

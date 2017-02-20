@@ -24,17 +24,23 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
     }
 
     val filesShortcutMode1 = FilesShortcutMode.B
-    val startPoint = 1
-//    val startPoint = 6
+//    val startPoint = 1
+    val startPoint = 6
+    init {
+//        TestGlobal.describeStateConfig = DescribeStateConfig(showBanners = true, autoResumeAfterMs = null)
+//        TestGlobal.describeStateConfig = DescribeStateConfig(showBanners = true, autoResumeAfterMs = 2000)
+        TestGlobal.describeStateConfig = DescribeStateConfig(showBanners = false)
+
+        TestGlobal.skipAllFreakingAssertions = true
+        TestGlobal.defaultAssertScreenOpts = AssertScreenOpts(bannerVerticalPosition = VerticalPosition.TOP, bannerHorizontalPosition = HorizontalPosition.RIGHT)
+    }
+
     var currentPoint = 0
 
+
     override suspend fun run1() {
-        TestGlobal.defaultAssertScreenOpts = AssertScreenOpts(
-            bannerVerticalPosition = VerticalPosition.TOP,
-            bannerHorizontalPosition = HorizontalPosition.RIGHT)
 
         forceFast()
-        TestGlobal.skipAllFreakingAssertions = true
         initialTestShit(this)
 
         definePoint(1) {
@@ -273,6 +279,8 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
         definePoint(6) { // Admin comes into play
             TestGlobal.skipAllFreakingAssertions = true
+            TestGlobal.describeStateConfig = DescribeStateConfig(showBanners = false)
+
             val ivo1 = Morda("dasja1", url = fconst.test.url.writer, fillTypedStorageLocal = {}, fillRawStorageLocal = {})
             ivo1.coitizeAndBootAsserting(assertStatic = {assertAnonymousWriterStaticIndexScreen()}, assertDynamic = {assertAnonymousWriterDynamicIndexScreen()})
             topNavItemSequence(page = pages.uaWriter.signIn_testRef, aid = "aea03aff-9c1a-4aaa-9786-ce4be57018fd")
@@ -287,10 +295,9 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                                          aid = "fccbd4aa-bdf9-49b2-9589-ddc93c769e3e")
             }
 
-            run { // Describe me
+            run { // Admin rejects order
                 twoStepSequence({linkClick(links.adminDashboard.ordersToApprove_testRef)}, "e1cdd9ea-7ad0-467e-9add-c9d67c19b883")
                 twoStepSequence({linkClick(links.lips_testRef, subscript = 1L)}, "4d382cc9-c529-47bc-9026-0ceec0716a5c")
-                // TestGlobal.skipAllFreakingAssertions = false
                 step({buttonClick(buttons.returnToCustomerForFixing_testRef)}, TestGlobal.modalShownLock, "0417ea80-b99b-498e-9e51-c4f829d08499")
                 formSubmissionAttemptsThenPageLoad(
                     testShit, aid = "e07d4eab-e003-4149-bfc9-9b3557aacfb5",
@@ -298,6 +305,13 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                         badTextFieldValuesThenValid(fields.rejectionReason_testRef, "А не дохуя ты файлов позаливал? Оставь пару штук где-то...")
                     ))
                 )
+                describeState("Order state changed in order screen")
+
+                topNavItemSequence(pages.uaAdmin.orders_testRef, "11fc416d-1b43-4778-85a0-290b66a384af")
+                describeState("Order state changed in order list screen")
+
+                topNavItemSequence(pages.uaAdmin.dashboard_testRef, "e7ccd08e-03fa-4d8a-a541-d0a623381f40")
+                describeState("No more work to do")
             }
         }
     }

@@ -53,8 +53,8 @@ fun addWindowAltSomethingListener(code: String, block: suspend () -> Unit) {
 private object DebugShitToIgnite {
     fun nothing() = async {}
 
-    fun skipNonFailedAssertions() = skipAssertionsUntil {currentAssertionBannerKind == AssertionBannerKind.INCORRECT}
-    fun skipCorrectAssertions() = skipAssertionsUntil {currentAssertionBannerKind != AssertionBannerKind.CORRECT}
+    fun skipNonFailedAssertions() = skipAssertionsUntil {currentAssertionBannerKind == TestBannerKind.INCORRECT}
+    fun skipCorrectAssertions() = skipAssertionsUntil {currentAssertionBannerKind != TestBannerKind.CORRECT}
 
     private fun skipAssertionsUntil(condition: () -> Boolean): Promisoid<Unit> {
         return async<Unit> {
@@ -62,7 +62,7 @@ private object DebugShitToIgnite {
                 await(tillPausedOnAssertion())
                 if (condition())
                     break
-                resumePausedAssertion()
+                resumeTestBannerPause()
             }
         }
     }
