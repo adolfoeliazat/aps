@@ -1,0 +1,6 @@
+- Error during loadPageForURL() can be presented in two ways:
+      1) Show error modal and stay on same page
+      2) Go to new page and show error banner there
+  Should support both (currently only (1) is implemented).
+
+

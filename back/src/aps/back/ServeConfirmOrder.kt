@@ -48,7 +48,8 @@ import java.util.*
 
                         val userToken = UserToken(
                             user = newCustomer,
-                            token = UUID.randomUUID().toString()
+                            token = TestServerFiddling.nextGeneratedUserToken.getAndReset()
+                                ?: UUID.randomUUID().toString()
                         )
                         userTokenRepo.save(userToken)
 

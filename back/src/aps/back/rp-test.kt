@@ -41,6 +41,7 @@ object TestServerFiddling {
     val nextGeneratedPassword = SetGetResetShit<String>()
     val nextRequestError = SetGetResetShit<String>()
     val nextGeneratedConfirmationSecret = SetGetResetShit<String>()
+    val nextGeneratedUserToken = SetGetResetShit<String>()
     @Volatile var rejectAllRequestsNeedingDB: Boolean = false
 }
 

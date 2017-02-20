@@ -224,6 +224,42 @@ fun jsonizeToObject(shit: Any?): Any? {
     }
 }
 
+fun jsonize2(shit: Any?): String {
+    val out = jsonizeToObject2(shit)
+    val json = js("JSON").stringify(out)
+    return json
+}
+
+fun jsonizeToObject2(shit: Any?): Any? {
+    gloshit.jsonizeToObject_shit = shit
+    if (shit == null) return null
+    val jsType = jsTypeOf(shit)
+    if (jsType.oneOf("string", "number", "boolean")) return shit
+    if (jsType != "object") wtf("jsType: $jsType")
+
+    when (shit) {
+        is List<*> -> {
+            return Array(shit.size) {i->
+                jsonizeToObject2(shit[i])
+            }
+        }
+
+        else -> {
+            val out = json()
+            out["\$\$\$class"] = "aps." + shit!!::class.simpleName
+
+            val props = JSObject.getOwnPropertyNames(shit.asDynamic())
+            val protoProps = JSObject.getOwnPropertyNames(shit.asDynamic().__proto__).toSet() - setOf("constructor")
+            for (protoProp in protoProps + props) {
+                val value = shit.asDynamic()[protoProp]
+                out[protoProp] = jsonizeToObject2(value)
+            }
+
+            return out
+        }
+    }
+}
+
 fun <Res> callRemoteProcedurePassingJSONObject(procedureName: String, requestJSONObject: CommonRequestFields, wideClientKind: WideClientKind, descr: String? = null): Promisoid<Res> = async {
     requestJSONObject.rootRedisLogMessageID = Globus.rootRedisLogMessageID
     requestJSONObject.databaseID = ExternalGlobus.DB

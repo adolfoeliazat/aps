@@ -178,6 +178,14 @@ annotation class Front
     }
 }
 
+@Front class ObjectHiddenField(container: RequestMatumba, name: String): HiddenFormFieldFront(container, name) {
+    var value by notNull<Any>()
+
+    override fun populateRemote(json: Json) = async {
+        json[name] = jsonize2(value)
+    }
+}
+
 @Front fun intHiddenField() = eagerEx<RequestMatumba, IntHiddenField> {thisRef, property ->
     IntHiddenField(thisRef, property.name)
 }

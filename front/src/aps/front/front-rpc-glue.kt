@@ -29,8 +29,8 @@ fun send(req: GetSentEmailsRequest): Promisoid<GetSentEmailsRequest.Response> = 
 fun send(req: ClearSentEmailsRequest): Promisoid<GenericResponse> = callDangerousMatumba(req)
 suspend fun send(req: LoadUAOrderRequest): FormResponse2<LoadUAOrderRequest.Response> = _send3SofteningShit(req)
 suspend fun send(req: TestSQLFiddleRequest): TestSQLFiddleRequest.Response = callDangerousMatumba2(req)
-suspend fun send(req: ImposeNextRequestErrorRequest): GenericResponse = callDangerousMatumba2(req)
 suspend fun send(req: ImposeNextGeneratedPasswordRequest): ImposeNextGeneratedPasswordRequest.Response = callDangerousMatumba2(req)
+suspend fun send(req: ImposeNextRequestErrorRequest): GenericResponse = callDangerousMatumba2(req)
 suspend fun send(req: ImposeNextGeneratedConfirmationSecretRequest): ImposeNextGeneratedConfirmationSecretRequest.Response = callDangerousMatumba2(req)
 suspend fun send(req: ImposeNextRequestTimestampRequest): ImposeNextRequestTimestampRequest.Response = callDangerousMatumba2(req)
 suspend fun send(req: ConfirmOrderRequest): FormResponse2<ConfirmOrderRequest.Response> = _send2(null, req)
@@ -46,6 +46,7 @@ suspend fun send(req: UACreateOrderFileRequest): FormResponse2<UACreateOrderFile
 suspend fun send(req: UADownloadOrderFileRequest): FormResponse2<DownloadFileResponse> = _send3(req)
 suspend fun send(req: UACustomerSendOrderDraftForApprovalRequest): FormResponse2<UACustomerSendOrderDraftForApprovalRequest.Response> = _send3(req)
 suspend fun send(req: UAAdminGetStuffToDoRequest): FormResponse2<UAAdminGetStuffToDoRequest.Response> = _send3(req)
+suspend fun send(req: MirandaRequest): MirandaRequest.Response = callDangerousMatumba2(req)
 
 private fun <T, R> sendDangerousJSONProcedure(req: T): Promisoid<R> = async {
     val jpreq = JsonProcedureRequest()-{o->

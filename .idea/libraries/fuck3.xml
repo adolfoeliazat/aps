@@ -121,6 +121,8 @@
       <root url="jar://$USER_HOME$/.ideaLibSources/h2-1.4.193-sources.jar!/" />
       <root url="jar://$USER_HOME$/.ideaLibSources/hibernate-jpa-2.1-api-1.0.0.Final-sources.jar!/" />
       <root url="jar://$USER_HOME$/.ideaLibSources/hibernate-core-5.2.6.Final-sources.jar!/" />
+      <root url="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/" />
+      <root url="jar://$USER_HOME$/.ideaLibSources/jackson-core-2.8.3-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

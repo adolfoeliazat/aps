@@ -18,6 +18,14 @@ val objectMapper = ObjectMapper()-{o->
     o.enableDefaultTyping(NON_FINAL, JsonTypeInfo.As.PROPERTY)
 }
 
+val mirandaInputObjectMapper = ObjectMapper()-{o->
+    val typer = ObjectMapper.DefaultTypeResolverBuilder(NON_FINAL)
+        .init(JsonTypeInfo.Id.CLASS, null)
+        .inclusion(JsonTypeInfo.As.PROPERTY)
+        .typeProperty("\$\$\$class")
+    o.setDefaultTyping(typer)
+}
+
 val shittyObjectMapper = object:ObjectMapper() {
 
     override fun createDeserializationContext(p: JsonParser, cfg: DeserializationConfig): DefaultDeserializationContext {

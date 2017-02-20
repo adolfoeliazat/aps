@@ -24,8 +24,8 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
     }
 
     val filesShortcutMode1 = FilesShortcutMode.B
-//    val startPoint = 1
-    val startPoint = 6
+    val startPoint = 1
+//    val startPoint = 6
     init {
 //        TestGlobal.describeStateConfig = DescribeStateConfig(showBanners = true, autoResumeAfterMs = null)
 //        TestGlobal.describeStateConfig = DescribeStateConfig(showBanners = true, autoResumeAfterMs = 2000)
@@ -51,6 +51,10 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                                  fillRawStorageLocal = {})
                 ivo1.coitizeAndBootAsserting(assertStatic = {assertAnonymousCustomerStaticIndexScreen()},
                                              assertDynamic = {assertAnonymousCustomerDynamicIndexScreen()})
+                send(MirandaRequest()-{o->
+                    o.payload.value = MirandaTestImposeNextGeneratedUserToken("ivo-fucking-token", Vagina(size = "huge"))
+                }); sleepTillEndOfTime()
+
                 topNavItemSequence(page = pages.uaCustomer.makeOrder_testRef,
                                    aid = "00c34b38-a47d-4ae5-a8f3-6cceadb0d481")
                 debugMailboxClear()
@@ -278,9 +282,6 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
         }
 
         definePoint(6) { // Admin comes into play
-            TestGlobal.skipAllFreakingAssertions = true
-            TestGlobal.describeStateConfig = DescribeStateConfig(showBanners = false)
-
             val ivo1 = Morda("dasja1", url = fconst.test.url.writer, fillTypedStorageLocal = {}, fillRawStorageLocal = {})
             ivo1.coitizeAndBootAsserting(assertStatic = {assertAnonymousWriterStaticIndexScreen()}, assertDynamic = {assertAnonymousWriterDynamicIndexScreen()})
             topNavItemSequence(page = pages.uaWriter.signIn_testRef, aid = "aea03aff-9c1a-4aaa-9786-ce4be57018fd")
@@ -312,7 +313,22 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
                 topNavItemSequence(pages.uaAdmin.dashboard_testRef, "e7ccd08e-03fa-4d8a-a541-d0a623381f40")
                 describeState("No more work to do")
+
+                // TODO:vgrechka Email about order rejection should be sent to customer
             }
+        }
+
+        TestGlobal.skipAllFreakingAssertions = true
+        TestGlobal.describeStateConfig = DescribeStateConfig(showBanners = false)
+        run { // Customer refreshes order page
+            val ivo4 = Morda("ivo4",
+                             url = fconst.test.url.customer + "/" + makeURL(pages.uaCustomer.order_testRef, listOf(
+                                 URLParamValue(UASingleOrderPage.urlQuery.id, 1L)
+                             )),
+                             fillTypedStorageLocal = {},
+                             fillRawStorageLocal = {})
+            ivo4.coitizeAndBootAsserting(assertStatic = {assertScreenHTML(aid = "b47798c3-e6cb-4821-82f2-93022cfeed4a")},
+                                         assertDynamic = {assertScreenHTML(aid = "fb1a72f2-8f96-4d6f-a021-a5afc4c083cd")})
         }
     }
 

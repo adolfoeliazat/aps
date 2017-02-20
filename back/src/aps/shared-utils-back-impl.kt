@@ -7,9 +7,11 @@
 package aps
 
 import aps.back.*
+import com.fasterxml.jackson.annotation.JsonTypeInfo
 import into.kommon.*
 import kotlin.properties.Delegates
 import kotlin.properties.Delegates.notNull
+import kotlin.reflect.full.createInstance
 import kotlin.system.exitProcess
 
 //fun bitch(msg: String = "Just bitching..."): Nothing = throw Exception(msg)
@@ -88,6 +90,29 @@ fun <T> culprit(culprit: Culprit, f: () -> T): T {
         if (!possiblyUnspecified || specified) {
             value = input[name] as String
         }
+    }
+}
+
+
+@Back class ObjectHiddenField(
+    container: RequestMatumba,
+    name: String
+) : FormFieldBack(container, name) {
+    lateinit var value: Any
+
+    override fun loadOrBitch(input: Map<String, Any?>, fieldErrors: MutableList<FieldError>) {
+//        run {
+//            dwarnStriking("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+//            val json = """{"___class":"aps.MirandaTestImposeNextGeneratedUserToken", "token":"holy shit"}"""
+//            val obj = mirandaInputObjectMapper.readValue(json, Object::class.java)
+//            dlog("class", obj.`class`)
+//            dlog("obj2.token", (obj as MirandaTestImposeNextGeneratedUserToken).token)
+//            dwarnStriking("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb")
+//        }
+
+        val json = input[name] as String
+        dwarnStriking("json", json)
+        value = mirandaInputObjectMapper.readValue(json, Object::class.java)
     }
 }
 

@@ -1,1 +1,0 @@
-* Include client stack to "Can't fucking service ..." log message

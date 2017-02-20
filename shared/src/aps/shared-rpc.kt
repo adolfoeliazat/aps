@@ -1,5 +1,7 @@
 package aps
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo
+import com.fasterxml.jackson.annotation.JsonTypeInfoAlias
 import kotlin.properties.Delegates.notNull
 
 class BrowserShot {
@@ -230,6 +232,25 @@ class ReturnOrderToCustomerForFixingRequest : RequestMatumba() {
     val rejectionReason = TextField(this, fields.rejectionReason)
     class Response : CommonResponseFieldsImpl()
 }
+
+
+class MirandaRequest : RequestMatumba() {
+    val payload = ObjectHiddenField(this, "payload")
+    class Response : CommonResponseFieldsImpl()
+}
+
+annotation class NoArgCtor
+annotation class AllOpen
+annotation class Ser
+
+// XXX `hack` param is necessary to actually generate no-arg constructor here
+@Ser sealed class MirandaPayload(hack: Unit = Unit)
+
+@Ser class Vagina(val size: String)
+@Ser class MirandaTestImposeNextGeneratedUserToken(val token: String, val vagina: Vagina) : MirandaPayload()
+
+
+
 
 
 
