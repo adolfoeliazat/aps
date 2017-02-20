@@ -233,9 +233,8 @@ class ReturnOrderToCustomerForFixingRequest : RequestMatumba() {
     class Response : CommonResponseFieldsImpl()
 }
 
-
 class MirandaRequest : RequestMatumba() {
-    val payload = ObjectHiddenField(this, "payload")
+    val params = ObjectHiddenField<MirandaParams>(this, "params")
     class Response : CommonResponseFieldsImpl()
 }
 
@@ -244,10 +243,9 @@ annotation class AllOpen
 annotation class Ser
 
 // XXX `hack` param is necessary to actually generate no-arg constructor here
-@Ser sealed class MirandaPayload(hack: Unit = Unit)
+@Ser sealed class MirandaParams(hack: Unit = Unit)
 
-@Ser class Vagina(val size: String)
-@Ser class MirandaTestImposeNextGeneratedUserToken(val token: String, val vagina: Vagina) : MirandaPayload()
+@Ser class MirandaTestImposeNextGeneratedUserToken(val token: String) : MirandaParams()
 
 
 

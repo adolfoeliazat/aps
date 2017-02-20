@@ -178,8 +178,8 @@ annotation class Front
     }
 }
 
-@Front class ObjectHiddenField(container: RequestMatumba, name: String): HiddenFormFieldFront(container, name) {
-    var value by notNull<Any>()
+@Front class ObjectHiddenField<T : Any>(container: RequestMatumba, name: String): HiddenFormFieldFront(container, name) {
+    var value by notNull<T>()
 
     override fun populateRemote(json: Json) = async {
         json[name] = jsonize2(value)

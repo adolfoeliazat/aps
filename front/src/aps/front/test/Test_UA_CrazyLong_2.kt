@@ -24,8 +24,8 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
     }
 
     val filesShortcutMode1 = FilesShortcutMode.B
-    val startPoint = 1
-//    val startPoint = 6
+//    val startPoint = 1
+    val startPoint = 7
     init {
 //        TestGlobal.describeStateConfig = DescribeStateConfig(showBanners = true, autoResumeAfterMs = null)
 //        TestGlobal.describeStateConfig = DescribeStateConfig(showBanners = true, autoResumeAfterMs = 2000)
@@ -51,9 +51,6 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                                  fillRawStorageLocal = {})
                 ivo1.coitizeAndBootAsserting(assertStatic = {assertAnonymousCustomerStaticIndexScreen()},
                                              assertDynamic = {assertAnonymousCustomerDynamicIndexScreen()})
-                send(MirandaRequest()-{o->
-                    o.payload.value = MirandaTestImposeNextGeneratedUserToken("ivo-fucking-token", Vagina(size = "huge"))
-                }); sleepTillEndOfTime()
 
                 topNavItemSequence(page = pages.uaCustomer.makeOrder_testRef,
                                    aid = "00c34b38-a47d-4ae5-a8f3-6cceadb0d481")
@@ -92,6 +89,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                                  url = makeConfirmationURL("top-fucking-secret"),
                                  fillTypedStorageLocal = {},
                                  fillRawStorageLocal = {})
+                askMiranda(MirandaTestImposeNextGeneratedUserToken("ivo-fucking-token"))
                 ivo3.coitizeAndBootAsserting(assertStatic = {assertScreenHTML("Static confirmOrder", "2acbad6a-e169-4c0d-9938-99fac621fef5")},
                                              assertDynamic = {assertScreenHTML("Dynamic confirmOrder", "a6a44d05-7c1d-4dbf-82a2-3b42e0ca98f3")})
             }
@@ -318,17 +316,19 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
             }
         }
 
-        TestGlobal.skipAllFreakingAssertions = true
-        TestGlobal.describeStateConfig = DescribeStateConfig(showBanners = false)
-        run { // Customer refreshes order page
-            val ivo4 = Morda("ivo4",
-                             url = fconst.test.url.customer + "/" + makeURL(pages.uaCustomer.order_testRef, listOf(
-                                 URLParamValue(UASingleOrderPage.urlQuery.id, 1L)
-                             )),
-                             fillTypedStorageLocal = {},
-                             fillRawStorageLocal = {})
-            ivo4.coitizeAndBootAsserting(assertStatic = {assertScreenHTML(aid = "b47798c3-e6cb-4821-82f2-93022cfeed4a")},
-                                         assertDynamic = {assertScreenHTML(aid = "fb1a72f2-8f96-4d6f-a021-a5afc4c083cd")})
+        definePoint(7) {
+            TestGlobal.skipAllFreakingAssertions = true
+            TestGlobal.describeStateConfig = DescribeStateConfig(showBanners = false)
+            run { // Customer refreshes order page
+                val ivo4 = Morda("ivo4",
+                                 url = fconst.test.url.customer + "/" + makeURL(pages.uaCustomer.order_testRef, listOf(
+                                     URLParamValue(UASingleOrderPage.urlQuery.id, 1L)
+                                 )),
+                                 fillTypedStorageLocal = {it.token = "ivo-fucking-token"},
+                                 fillRawStorageLocal = {})
+                ivo4.coitizeAndBootAsserting(assertStatic = {assertScreenHTML(aid = "b47798c3-e6cb-4821-82f2-93022cfeed4a")},
+                                             assertDynamic = {assertScreenHTML(aid = "fb1a72f2-8f96-4d6f-a021-a5afc4c083cd")})
+            }
         }
     }
 

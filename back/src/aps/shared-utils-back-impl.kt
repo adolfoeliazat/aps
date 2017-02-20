@@ -94,25 +94,17 @@ fun <T> culprit(culprit: Culprit, f: () -> T): T {
 }
 
 
-@Back class ObjectHiddenField(
+@Back class ObjectHiddenField<T : Any>(
     container: RequestMatumba,
     name: String
 ) : FormFieldBack(container, name) {
-    lateinit var value: Any
+    lateinit var value: T
 
     override fun loadOrBitch(input: Map<String, Any?>, fieldErrors: MutableList<FieldError>) {
-//        run {
-//            dwarnStriking("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
-//            val json = """{"___class":"aps.MirandaTestImposeNextGeneratedUserToken", "token":"holy shit"}"""
-//            val obj = mirandaInputObjectMapper.readValue(json, Object::class.java)
-//            dlog("class", obj.`class`)
-//            dlog("obj2.token", (obj as MirandaTestImposeNextGeneratedUserToken).token)
-//            dwarnStriking("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb")
-//        }
-
         val json = input[name] as String
-        dwarnStriking("json", json)
-        value = mirandaInputObjectMapper.readValue(json, Object::class.java)
+        // dwarnStriking("ObjectHiddenField input json", json)
+        @Suppress("UNCHECKED_CAST")
+        value = mirandaInputObjectMapper.readValue(json, Object::class.java) as T
     }
 }
 

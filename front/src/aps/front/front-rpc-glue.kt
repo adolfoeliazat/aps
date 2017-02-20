@@ -46,7 +46,11 @@ suspend fun send(req: UACreateOrderFileRequest): FormResponse2<UACreateOrderFile
 suspend fun send(req: UADownloadOrderFileRequest): FormResponse2<DownloadFileResponse> = _send3(req)
 suspend fun send(req: UACustomerSendOrderDraftForApprovalRequest): FormResponse2<UACustomerSendOrderDraftForApprovalRequest.Response> = _send3(req)
 suspend fun send(req: UAAdminGetStuffToDoRequest): FormResponse2<UAAdminGetStuffToDoRequest.Response> = _send3(req)
-suspend fun send(req: MirandaRequest): MirandaRequest.Response = callDangerousMatumba2(req)
+
+suspend fun askMiranda(params: MirandaParams): MirandaRequest.Response =
+    callDangerousMatumba2(MirandaRequest()-{o->
+        o.params.value = params
+    })
 
 private fun <T, R> sendDangerousJSONProcedure(req: T): Promisoid<R> = async {
     val jpreq = JsonProcedureRequest()-{o->
