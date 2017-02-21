@@ -37,14 +37,14 @@ class UAOrderRTO(
     val numSources: Int,
     val details: String,
     val detailsHighlightRanges: List<IntRangeRTO>,
-    val adminNotes: String,
+    override var adminNotes: String,
     val state: UAOrderState,
     val customerPhone: String,
     val customerFirstName: String,
     val customerLastName: String,
     val whatShouldBeFixedByCustomer: String?,
     val customerEmail: String
-) : MelindaItemRTO
+) : MelindaItemRTO, RTOWithAdminNotes
 
 data class IntRangeRTO(
     val start: Int,
@@ -52,11 +52,16 @@ data class IntRangeRTO(
 )
 
 interface MelindaItemRTO {
-    // XXX `var`s are needed because of KJS "reflection" hack...
+    // XXX `var`s are needed by 5d324703-9255-4a67-ba25-ecc865194418
     var id: Long
     var title: String
     var editable: Boolean
     var titleHighlightRanges: List<IntRangeRTO>
+}
+
+interface RTOWithAdminNotes {
+    // XXX `var`s are needed by 5d324703-9255-4a67-ba25-ecc865194418
+    var adminNotes: String
 }
 
 class UAOrderFileRTO(
@@ -71,8 +76,10 @@ class UAOrderFileRTO(
     override var titleHighlightRanges: List<IntRangeRTO>,
     val details: String,
     val detailsHighlightRanges: List<IntRangeRTO>,
+    override var adminNotes: String,
+    val adminNotesHighlightRanges: List<IntRangeRTO>,
     val sizeBytes: Int
-) : MelindaItemRTO
+) : MelindaItemRTO, RTOWithAdminNotes
 
 enum class UADocumentType(override val title: String) : Titled {
     ABSTRACT(t("TOTE", "Реферат")),

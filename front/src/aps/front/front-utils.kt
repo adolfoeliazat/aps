@@ -261,9 +261,9 @@ fun scrollBodyToShitGradually(
     check(shit[0] != null) {"Shit to scroll to is not found"}
 
     if (dontScrollToTopItem) {
-        if (shit.hasClass(css.item)) {
+        if (shit.hasClass(css.lipsItem)) {
             var topItem = shit[0]!!
-            jq(".${css.item}").each {_, el ->
+            jq(".${css.lipsItem}").each {_, el ->
                 if (el.offsetTop < topItem.offsetTop)
                     topItem = el
             }

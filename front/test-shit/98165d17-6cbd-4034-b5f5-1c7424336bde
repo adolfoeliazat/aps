@@ -15,7 +15,7 @@
           ×
         </button>
         <h4 class="modal-title">
-          Новый файл
+          Файл №3
         </h4>
       </div>
       <div class="modal-body">
@@ -24,12 +24,15 @@
             <label>
               Файл
             </label>
-            <div>
-              <button class="btn btn-default ">
+            <div style="display: flex; align-items: center;">
+              <span>
+                pussy story.rtf (3 КБ)
+              </span>
+              <button class="btn btn-default " style="margin-left: 1em;">
                 <i class="fa fa-cloud-upload">
                 </i>
                 &nbsp;
-                Выбрать...
+                Изменить...
               </button>
             </div>
           </div>
@@ -40,7 +43,7 @@
               </label>
             </div>
             <div style="position: relative;">
-              <input type="text" rows="5" class="form-control" value="" style="resize: none;">
+              <input type="text" rows="5" class="form-control" value="Методичка какая-то левая" style="resize: none;">
               </div>
             </div>
             <div class="form-group">
@@ -51,6 +54,7 @@
               </div>
               <div style="position: relative;">
                 <textarea rows="5" type="text" class="form-control" style="resize: none;">
+                  В комнате он тотчас же стал выдвигать ящики стола; там был образцовый  порядок,  но  удостоверение  личности,  которое  он искал, он от волнения никак найти  не  мог.  Наконец  он  нашел удостоверение на велосипед и уже хотел идти с ним к стражам, но потом  эта  бумажка  показалась  ему неубедительной, и он снова стал искать, пока не нашел свою метрику.
                 </textarea>
               </div>
             </div>

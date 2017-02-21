@@ -73,6 +73,21 @@ fun generateUserToken() =
     ?: UUID.randomUUID().toString()
 
 
+val requestUserMaybe get() = RequestGlobus.procedureCtx.user
+val requestUser get()= requestUserMaybe!!
+
+fun isAdmin() = requestUserMaybe?.kind == UserKind.ADMIN
+
+fun adminNotesForCreate(req: RequestWithAdminNotes) = when {
+    isAdmin() -> req.adminNotes.value
+    else -> ""
+}
+
+fun updateAdminNotes(entity: EntityWithAdminNotes, req: RequestWithAdminNotes) {
+    if (isAdmin())
+        entity.adminNotes = req.adminNotes.value
+}
+
 
 
 

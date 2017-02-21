@@ -226,11 +226,10 @@ class MelindaBoobs<
         }
 
         return kdiv(id = containerID){o->
-            var topPlace = Placeholder()
-            o- topPlace
-
-            for ((fileIndex, _orderFile) in meat.items.withIndex()) {
-                MelindaTongue(_orderFile, o)
+            o- kdiv(className = css.lipsItemContainer){o->
+                for ((fileIndex, _orderFile) in meat.items.withIndex()) {
+                    MelindaTongue(_orderFile, o)
+                }
             }
 
             meat.moreFromID?.let {moreFromID ->
@@ -367,7 +366,7 @@ object MelindaTools {
     fun detailsRow(value: String, highlightRanges: List<IntRangeRTO>, title: String? = null): ToReactElementable {
         return row{o->
             o- col(12, title ?: t("Details", "Детали"), Style(whiteSpace = "pre-wrap")){o->
-                o- highlightedShit(value, highlightRanges)
+                o- highlightedShit(value, highlightRanges, style = Style(marginBottom = "0px"))
             }
         }
     }
@@ -396,7 +395,7 @@ fun <ItemRTO : MelindaItemRTO, LipsState> makeUsualMelindaLips(
         override fun renderItem(): ToReactElementable {
             val m = MelindaTools
             val item = tongueInterface.getItem()
-            return kdiv(id = viewRootID, className = css.item, opacity = 1.0){o->
+            return kdiv(id = viewRootID, className = css.lipsItem, opacity = 1.0){o->
                 o- m.row{o->
                     o- kdiv(className = "col-md-12"){o->
                         val c = css.cunt.header

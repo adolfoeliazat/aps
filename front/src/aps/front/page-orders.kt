@@ -51,6 +51,7 @@ class UAAdminOrdersPage {
                     return UAOrderParamsRequest(isAdmin = Globus.world.user.kind == UserKind.ADMIN,
                                                 isUpdate = true)-{o->
                         // TODO:vgrechka ...
+                        populateWithAdminNotes(o, item)
                     }
                 }
 

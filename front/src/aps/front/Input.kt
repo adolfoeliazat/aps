@@ -396,8 +396,8 @@ suspend fun inputPrependValue(field: TestRef<TextFieldSpec>, value: String) {
     inputPrependValue(FieldSpecToCtrlKey[field.it], value)
 }
 
-suspend fun inputAppendValue(key: InputKey, value: String) {
-    Input.instance(key).testAppendValue(value)
+suspend fun inputAppendValue(field: TestRef<TextFieldSpec>, value: String) {
+    Input.instance(FieldSpecToCtrlKey[field.it]).testAppendValue(value)
 }
 
 //fun TestScenarioBuilder.inputAppendShitToExceedLength(key: String, maxLen: Int) {

@@ -24,12 +24,15 @@
             <label>
               Файл
             </label>
-            <div>
-              <button class="btn btn-default ">
+            <div style="display: flex; align-items: center;">
+              <span>
+                idiot.rtf (3 КБ)
+              </span>
+              <button class="btn btn-default " style="margin-left: 1em;">
                 <i class="fa fa-cloud-upload">
                 </i>
                 &nbsp;
-                Выбрать...
+                Изменить...
               </button>
             </div>
           </div>

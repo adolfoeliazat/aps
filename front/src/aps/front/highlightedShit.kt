@@ -4,12 +4,12 @@ import aps.*
 import into.kommon.*
 import kotlin.js.json
 
-fun highlightedShit(text: String, ranges: List<IntRangeRTO>, backgroundColor: Color? = null, tag: String? = null): ToReactElementable {
-    return highlightedShit(text, ranges.map {it.start..it.endInclusive}, backgroundColor, tag)
+fun highlightedShit(text: String, ranges: List<IntRangeRTO>, backgroundColor: Color? = null, tag: String? = null, style: Style = Style()): ToReactElementable {
+    return highlightedShit(text, ranges.map {it.start..it.endInclusive}, backgroundColor, tag, style = style)
 }
 
-fun highlightedShit(text: String, ranges: List<IntRange>, backgroundColor: Color? = null, tag: String? = null): ToReactElementable {
-    return rawHTML(highlightedHTML(text, ranges, backgroundColor ?: Color.AMBER_200), tag ?: "p").toToReactElementable()
+fun highlightedShit(text: String, ranges: List<IntRange>, backgroundColor: Color? = null, tag: String? = null, style: Style = Style()): ToReactElementable {
+    return rawHTML(highlightedHTML(text, ranges, backgroundColor ?: Color.AMBER_200), tag ?: "p", style = style).toToReactElementable()
 }
 
 fun highlightedHTML(text: String, ranges: List<IntRange>, backgroundColor: Color): String {

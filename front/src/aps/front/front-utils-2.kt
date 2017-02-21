@@ -42,6 +42,33 @@ fun disableableHandler(disabled: Boolean, f: suspend () -> Unit) = when {
     else -> f
 }
 
+fun isAdmin() = Globus.world.userMaybe?.kind == UserKind.ADMIN
+
+fun populateWithAdminNotes(o: RequestWithAdminNotes, rto: RTOWithAdminNotes) {
+    if (isAdmin()) {
+        o.adminNotes.value = rto.adminNotes
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

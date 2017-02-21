@@ -91,7 +91,7 @@ interface Xlobal {
     val user: UserRTO?
 }
 
-class UAOrderParamsRequest(isAdmin: Boolean, isUpdate: Boolean) : RequestMatumba() {
+class UAOrderParamsRequest(isAdmin: Boolean, isUpdate: Boolean) : RequestMatumba(), RequestWithAdminNotes {
     val orderID by longHiddenField(include = isUpdate)
     val documentType = SelectField(this, fields.uaDocumentType)
     val documentTitle = TextField(this, fields.documentTitle)
@@ -102,7 +102,7 @@ class UAOrderParamsRequest(isAdmin: Boolean, isUpdate: Boolean) : RequestMatumba
     val lastName = TextField(this, fields.orderCustomerLastName)
     val email = TextField(this, fields.orderCustomerEmail)
     val phone = TextField(this, fields.orderCustomerPhone)
-    val adminNotes = TextField(this, fields.adminNotes, include = isAdmin)
+    override val adminNotes = TextField(this, fields.adminNotes, include = isAdmin)
 }
 
 class UACreateOrderResponse(val orderID: Long) : CommonResponseFieldsImpl()
@@ -157,13 +157,17 @@ class TestGetFileUploadDataRequest : RequestMatumba() {
     val fileName by stringHiddenField()
 }
 
-class UAOrderFileParamsRequest(isAdmin: Boolean, isUpdate: Boolean) : RequestMatumba() {
+interface RequestWithAdminNotes {
+    val adminNotes: TextField
+}
+
+class UAOrderFileParamsRequest(isAdmin: Boolean, isUpdate: Boolean) : RequestMatumba(), RequestWithAdminNotes {
     val orderID by longHiddenField(include = !isUpdate)
     val fileID by longHiddenField(include = isUpdate)
     val file = FileField(this, if (isUpdate) fields.fileFile_update else fields.fileFile_create)
     val title = TextField(this, fields.fileTitle)
     val details = TextField(this, fields.fileDetails)
-    val adminNotes = TextField(this, fields.adminNotes, include = isAdmin)
+    override val adminNotes = TextField(this, fields.adminNotes, include = isAdmin)
 }
 
 class UACreateOrderFileResponse(val fileID: Long) : CommonResponseFieldsImpl()

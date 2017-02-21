@@ -72,6 +72,10 @@ interface UserRepository : CrudRepository<User, Long> {
     fun findByEmail(x: String): User?
 }
 
+interface EntityWithAdminNotes {
+    var adminNotes: String
+}
+
 @Entity @Table(name = "ua_orders",
                indexes = arrayOf(
                    Index(columnList = "confirmationSecret")
@@ -89,12 +93,12 @@ class UAOrder(
     @Column(length = MAX_STRING) var customerPhone: String,
     @Column(length = MAX_STRING) var customerEmail: String,
     @Column(length = MAX_STRING) var whatShouldBeFixedByCustomer : String? = null,
-    @Column(length = MAX_STRING) var adminNotes : String = "",
+    override @Column(length = MAX_STRING) var adminNotes : String = "",
 
     @ManyToOne(fetch = FetchType.EAGER) @JoinColumn(name = "customerID", nullable = true)
     var customer: User? // TODO:vgrechka Think about nullability of this shit. Order can be draft, before customer even confirmed herself
 )
-    : ClitoralEntity(), MeganItem<UAOrderRTO>
+    : ClitoralEntity(), MeganItem<UAOrderRTO>, EntityWithAdminNotes
 {
     override fun toString() = "UAOrder(id=$id, title='$title', documentType=$documentType, numPages=$numPages, numSources=$numSources, details='$details', state=$state)"
 
@@ -155,7 +159,7 @@ class UAOrderFile(
     @Column(length = MAX_STRING) var title: String,
     @Column(length = MAX_STRING) var mime: String,
     @Column(length = MAX_STRING) var details: String,
-    @Column(length = MAX_STRING) var adminNotes: String,
+    override @Column(length = MAX_STRING) var adminNotes: String,
     @Column(length = MAX_STRING) var sha256: String,
     var sizeBytes: Int,
     @Column(length = MAX_BLOB) var content: ByteArray,
@@ -168,7 +172,7 @@ class UAOrderFile(
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "orderID", nullable = false)
     var order: UAOrder
 )
-    : ClitoralEntity(), MeganItem<UAOrderFileRTO>
+    : ClitoralEntity(), MeganItem<UAOrderFileRTO>, EntityWithAdminNotes
 {
     override val idBang get()= id!!
 
@@ -210,6 +214,11 @@ class UAOrderFile(
             titleHighlightRanges = when {
                 searchWords.isEmpty() -> listOf()
                 else -> luceneHighlightRanges(title, searchWords, analyzer)
+            },
+            adminNotes = adminNotes,
+            adminNotesHighlightRanges = when {
+                searchWords.isEmpty() -> listOf()
+                else -> luceneHighlightRanges(adminNotes, searchWords, analyzer)
             }
         )
     }

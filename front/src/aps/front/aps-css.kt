@@ -574,7 +574,9 @@ object css {
         }
     }
 
-    val item by Style("")
+
+    val lipsItemContainer by Style("")
+    val lipsItem by Style("margin-bottom: 1.5rem;")
 
     init {touchObjectGraph(this)}
 }

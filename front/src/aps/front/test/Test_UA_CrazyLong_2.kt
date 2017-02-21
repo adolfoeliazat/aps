@@ -378,9 +378,12 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 scrollBodyGradually(500.0) // Item #3
                 step({kicClick(kics.order.file.edit_testRef, subscript = 3L)}, TestGlobal.modalShownLock, "98165d17-6cbd-4034-b5f5-1c7424336bde")
                 inputPrependValue(fields.fileDetails_testRef, "Следовать тупо этой инструкции. ")
-                inputPrependValue(fields.adminNotes_testRef, "Добавил немного порожняка к деталям...")
+                inputPrependValue(fields.adminNotes_testRef, "Добавил немного порожняка к деталям.")
                 submitFormSequence(testShit, aid = "5c5f9391-b835-4be2-9402-d9c140d8e781")
-                stopHereAndEverywhereLater()
+                //
+                step({kicClick(kics.order.file.edit_testRef, subscript = 3L)}, TestGlobal.modalShownLock, "9c2d9386-ce07-4d88-ada3-773062477f98")
+                inputAppendValue(fields.adminNotes_testRef, " Ля-ля-ля...")
+                submitFormSequence(testShit, aid = "19b4abbe-9f88-4ec8-9cb6-5aa636122933")
                 //
                 scrollBodyToTopGradually()
                 addFile(AddFileParams(fileName = "idiot.rtf",
@@ -390,6 +393,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
                 tabSequence(tabs.order.params_testRef, "3b9c64a7-8fc4-49eb-bd2a-0694eaac63e0", "2fff0364-e77d-4b3a-b6f0-cd9cc0077acb")
                 describeState("Admin can edit params")
+                ___stopHereAndEverywhereLater()
                 step({buttonClick(buttons.edit_testRef)}, TestGlobal.modalShownLock, "da55889e-1ce2-4789-a957-1238bf809924")
             }
         }
@@ -536,7 +540,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
         submitFormSequence(testShit, aid = "${p.aid}--2")
     }
 
-    private suspend fun stopHereAndEverywhereLater() {
+    private suspend fun ___stopHereAndEverywhereLater() {
         stopEverywhere()
         describeState("Doing stopHereAndEverywhereLater()...")
     }

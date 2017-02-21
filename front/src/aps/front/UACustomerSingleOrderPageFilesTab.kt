@@ -113,6 +113,9 @@ class UACustomerSingleOrderPageFilesTab(val page: UASingleOrderPage, val world: 
                         }
                     }
                     o- m.detailsRow(item.details, item.detailsHighlightRanges)
+                    if (Globus.world.user.kind == UserKind.ADMIN && item.adminNotes.isNotBlank()) {
+                        o- m.detailsRow(item.adminNotes, item.adminNotesHighlightRanges, title = fields.adminNotes.title)
+                    }
                 },
                 titleLinkURL = null,
                 hasEditControl = {true},
@@ -158,6 +161,7 @@ class UACustomerSingleOrderPageFilesTab(val page: UASingleOrderPage, val world: 
                 o.file.content = FileField.Content.Unchanged(item.name, item.sizeBytes)
                 o.title.value = item.title
                 o.details.value = item.details
+                populateWithAdminNotes(o, item)
             }
         }
 

@@ -105,7 +105,7 @@ fun <T> dejsonize(json: String, descr: String? = null): T {
 }
 
 fun <T> dejsonizeValue(jsThing: dynamic, descr: String? = null): T {
-//    if (JSON.stringify(jsThing).contains("UAOrderRTO")) console.error("xxxxxxxxxxxxxx", jsThing)
+    // XXX 5d324703-9255-4a67-ba25-ecc865194418
     try {
         gloshit.pizda = TestSQLFiddleRequest.Response("qqq", true)
         val logShit = false

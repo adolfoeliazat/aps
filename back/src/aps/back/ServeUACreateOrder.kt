@@ -17,8 +17,7 @@ import java.util.*
     override fun serve() {
         fuckCustomer(FuckCustomerParams(
             bpc = bpc,
-            makeRequest = {UAOrderParamsRequest(isAdmin = requestUserMaybe?.kind == UserKind.ADMIN,
-                                                isUpdate = false)},
+            makeRequest = {UAOrderParamsRequest(isAdmin = isAdmin(), isUpdate = false)},
             needsUser = NeedsUser.MAYBE,
             runShit = fun (ctx, req: UAOrderParamsRequest): UACreateOrderResponse {
                 val user = ctx.user
@@ -37,7 +36,8 @@ import java.util.*
                     customer = user,
                     customerFirstName = req.firstName.value,
                     customerLastName = req.lastName.value,
-                    customerEmail = req.email.value
+                    customerEmail = req.email.value,
+                    adminNotes = adminNotesForCreate(req)
                 ))
 
                 val vspacing = "0.5em"
@@ -107,6 +107,7 @@ import java.util.*
                     o.numSources = req.numSources.value
                     o.details = req.documentDetails.value
                     o.customerPhone = req.phone.value
+                    updateAdminNotes(o, req)
                 }
                 repo.save(order)
                 return UAUpdateOrderResponse()

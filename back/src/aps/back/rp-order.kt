@@ -15,7 +15,7 @@ import java.util.*
 @Servant class ServeUACreateOrderFile : BitchyProcedure() {
     override fun serve() {
         fuckAnyUser(FuckAnyUserParams(
-            bpc = bpc, makeRequest = {UAOrderFileParamsRequest(isAdmin = requestUser.kind == UserKind.ADMIN,
+            bpc = bpc, makeRequest = {UAOrderFileParamsRequest(isAdmin = isAdmin(),
                                                                isUpdate = false)},
             runShit = fun(ctx, req): UACreateOrderFileResponse {
                 val order = uaOrderRepo.findOrDie(req.orderID.value)
@@ -28,7 +28,7 @@ import java.util.*
                     title = req.title.value,
                     mime = "application/octet-stream",
                     details = req.details.value,
-                    adminNotes = "",
+                    adminNotes = adminNotesForCreate(req),
                     sha256 = Hashing.sha256().hashBytes(content).toString(),
                     sizeBytes = content.size,
                     content = content,
@@ -52,16 +52,19 @@ import java.util.*
                 val file = uaOrderFileRepo.findOrDie(req.fileID.value)
                 // TODO:vgrechka Permissions
 
-                file.title = req.title.value
-                file.details = req.details.value
-                if (req.file.valueKind == FileFieldValueKind.PROVIDED) {
-                    val content = Base64.getDecoder().decode(req.file.base64)
-                    file.name = req.file.fileName
-                    file.sha256 = Hashing.sha256().hashBytes(content).toString()
-                    file.sizeBytes = content.size
-                    file.content = content
+                file-{o->
+                    o.title = req.title.value
+                    o.details = req.details.value
+                    if (req.file.valueKind == FileFieldValueKind.PROVIDED) {
+                        val content = Base64.getDecoder().decode(req.file.base64)
+                        o.name = req.file.fileName
+                        o.sha256 = Hashing.sha256().hashBytes(content).toString()
+                        o.sizeBytes = content.size
+                        o.content = content
+                    }
+                    updateAdminNotes(o, req)
+                    o.touch()
                 }
-                file.touch()
 
                 return UAUpdateOrderFileResponse(file.toRTO(listOf()))
             }
