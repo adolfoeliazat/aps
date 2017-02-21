@@ -1,6 +1,7 @@
 package aps.front
 
 import aps.*
+import into.kommon.*
 
 class UAAdminOrdersPage {
     object urlQuery : URLQueryParamsMarker {
@@ -22,11 +23,12 @@ class UAAdminOrdersPage {
         return pageLoadedFineResult
     }
 
-    fun makeBoobs(): MelindaBoobs<UAOrderRTO, AdminOrderFilter, UACreateOrderRequest, UACreateOrderRequest.Response, UAUpdateOrderRequest, UAUpdateOrderRequest.Response> {
+    fun makeBoobs(): MelindaBoobs<UAOrderRTO, AdminOrderFilter, UAOrderParamsRequest, UACreateOrderResponse, UAOrderParamsRequest, UAUpdateOrderResponse> {
         return MelindaBoobs(
             hasCreateButton = false,
             createModalTitle = t("TOTE", "Новый заказ"),
-            makeCreateRequest = {UACreateOrderRequest()},
+            makeCreateRequest = {UAOrderParamsRequest(isAdmin = Globus.world.user.kind == UserKind.ADMIN,
+                                                      isUpdate = false)},
             makeURLAfterCreation = {
                 makeURL(pages.uaAdmin.order, listOf())
             },
@@ -36,16 +38,18 @@ class UAAdminOrdersPage {
             filterValues = AdminOrderFilter.values(),
             defaultFilterValue = AdminOrderFilter.ALL,
             filterSelectKey = selects.adminOrderFilter,
-            vaginalInterface = object : MelindaVaginalInterface<UAOrderRTO, AdminOrderFilter, UAUpdateOrderRequest, UAUpdateOrderRequest.Response> {
+            vaginalInterface = object : MelindaVaginalInterface<UAOrderRTO, AdminOrderFilter, UAOrderParamsRequest, UAUpdateOrderResponse> {
                 suspend override fun sendItemsRequest(req: ItemsRequest<AdminOrderFilter>) = sendUAAdminGetOrders(req)
                 override fun shouldShowFilter() = true
                 override fun getParentEntityID() = null
                 override val humanItemTypeName = t("TOTE", "заказ")
                 override fun makeDeleteItemRequest() = UADeleteOrderRequest()
-                override fun getItemFromUpdateItemResponse(res: UAUpdateOrderRequest.Response) = res.updatedOrder
+                override fun getItemFromUpdateItemResponse(res: UAUpdateOrderResponse) = wtf("Order should not be edited via vaginal interface. ba7ab79e-e99a-49b9-9dfa-2d4a452b23b0")
+                override val updateItemProcedureNameIfNotDefault get()= wtf("Order should not be edited through vaginal interface. 19ca13a9-7432-4c33-aff3-0e9e9026b09d")
 
-                override fun makeUpdateItemRequest(item: UAOrderRTO): UAUpdateOrderRequest {
-                    return UAUpdateOrderRequest() - {o ->
+                override fun makeUpdateItemRequest(item: UAOrderRTO): UAOrderParamsRequest {
+                    return UAOrderParamsRequest(isAdmin = Globus.world.user.kind == UserKind.ADMIN,
+                                                isUpdate = true)-{o->
                         // TODO:vgrechka ...
                     }
                 }
@@ -70,35 +74,36 @@ class UAAdminOrdersPage {
 
 class UACustomerOrdersPage(val world: World) {
     suspend fun load(): PageLoadingError? {
-        val m = Pizdalinda<UAOrderRTO, Nothing, CustomerOrderFilter>(
-            ui = world,
-            urlPath = "orders.html",
-            procedureName = "customerGetOrders",
-            header = {t("My Orders", "Мои заказы")},
-            filterSelectValues = CustomerOrderFilter.values(),
-            defaultFilter = CustomerOrderFilter.ALL,
-
-            renderItem = {index, order ->
-                kdiv {o ->
-                    o - "pizda"
-                }
-            }
-        )
-
-        m.specifyPlus(
-            plusFormSpec = FormSpec<UACustomerCreateOrderRequest, UACustomerCreateOrderRequest.Response>(
-                req = UACustomerCreateOrderRequest(world.xlobal),
-                ui = world,
-                primaryButtonTitle = t("Create", "Создать"),
-                cancelButtonTitle = const.text.shebang.defaultCancelButtonTitle),
-            onPlusFormSuccessa = {res->
-                world.pushNavigate(makeURL(pages.uaCustomer.order, listOf(
-                    URLParamValue(UASingleOrderPage.urlQuery.id, res.id)
-                )))
-            }
-        )
-
-        m.ignita()
+        imf("")
+//        val m = Pizdalinda<UAOrderRTO, Nothing, CustomerOrderFilter>(
+//            ui = world,
+//            urlPath = "orders.html",
+//            procedureName = "customerGetOrders",
+//            header = {t("My Orders", "Мои заказы")},
+//            filterSelectValues = CustomerOrderFilter.values(),
+//            defaultFilter = CustomerOrderFilter.ALL,
+//
+//            renderItem = {index, order ->
+//                kdiv {o ->
+//                    o - "pizda"
+//                }
+//            }
+//        )
+//
+//        m.specifyPlus(
+//            plusFormSpec = FormSpec<UAOrderParamsRequest, UAOrderParamsRequest.Response>(
+//                req = UAOrderParamsRequest(),
+//                ui = world,
+//                primaryButtonTitle = t("Create", "Создать"),
+//                cancelButtonTitle = const.text.shebang.defaultCancelButtonTitle),
+//            onPlusFormSuccessa = {res->
+//                world.pushNavigate(makeURL(pages.uaCustomer.order, listOf(
+//                    URLParamValue(UASingleOrderPage.urlQuery.id, res.orderID)
+//                )))
+//            }
+//        )
+//
+//        m.ignita()
         return null
     }
 }

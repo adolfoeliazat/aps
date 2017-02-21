@@ -7,7 +7,7 @@
 
 <div class="modal" style="display: block;">
 </div>
-<div class="modal fade in" style="display: block;">
+<div class="modal fade in" style="display: block; padding-left: 16px;">
   <div class="modal-dialog" style="width: 80rem;">
     <div class="modal-content" style="border-left: 0.5em solid rgb(144, 164, 174);">
       <div class="modal-header">
@@ -108,32 +108,65 @@
                 <div class="form-group">
                   <div class="textField-labelContainer">
                     <label>
-                      Телефон
+                      Контактное имя
                     </label>
                   </div>
                   <div style="position: relative;">
-                    <input type="text" rows="5" class="form-control" disabled="" value="" style="resize: none;">
+                    <input type="text" rows="5" class="form-control" disabled="" value="Пися" style="resize: none;">
                     </div>
                   </div>
-                </form>
-              </div>
-              <div class="modal-footer">
-                <div style="display: flex;">
-                  <div style="display: flex; flex-grow: 1; justify-content: flex-start;">
-                    <div class="progressTicker" style="width: 14px; height: 33.6px; background-color: rgb(84, 110, 122);">
+                  <div class="form-group">
+                    <div class="textField-labelContainer">
+                      <label>
+                        Фамилия
+                        <span class="formFieldLabelOptionalHint">
+                          (не обязательно)
+                        </span>
+                      </label>
+                    </div>
+                    <div style="position: relative;">
+                      <input type="text" rows="5" class="form-control" disabled="" value="Камушкин" style="resize: none;">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <div class="textField-labelContainer">
+                        <label>
+                          Почта
+                        </label>
+                      </div>
+                      <div style="position: relative;">
+                        <input type="text" rows="5" class="form-control" disabled="" value="pisia@test.shit.ua" style="resize: none;">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <div class="textField-labelContainer">
+                          <label>
+                            Телефон
+                          </label>
+                        </div>
+                        <div style="position: relative;">
+                          <input type="text" rows="5" class="form-control" disabled="" value="" style="resize: none;">
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                    <div class="modal-footer">
+                      <div style="display: flex;">
+                        <div style="display: flex; flex-grow: 1; justify-content: flex-start;">
+                          <div class="progressTicker" style="width: 14px; height: 33.6px; background-color: rgb(84, 110, 122);">
+                          </div>
+                        </div>
+                        <button class="btn btn-primary " disabled="">
+                          Сохранить
+                        </button>
+                        <button class="btn btn-default " disabled="" style="margin-left: 10px;">
+                          Не стоит
+                        </button>
+                      </div>
                     </div>
                   </div>
-                  <button class="btn btn-primary " disabled="">
-                    Сохранить
-                  </button>
-                  <button class="btn btn-default " disabled="" style="margin-left: 10px;">
-                    Не стоит
-                  </button>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
 
 -------------------- PANES --------------------
 

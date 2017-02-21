@@ -9,8 +9,8 @@ fun send(token: String?, req: SignUpRequest): Promisoid<FormResponse2<SignUpRequ
 fun sendSafe(token: String?, req: SignUpRequest): Promisoid<FormResponse2<GenericResponse>> = _sendSafe(token, req)
 fun send(token: String?, req: SignInWithPasswordRequest): Promisoid<FormResponse2<SignInResponse>> = _send(token, req)
 fun sendSafe(token: String?, req: SignInWithPasswordRequest): Promisoid<FormResponse2<SignInResponse>> = _sendSafe(token, req)
-fun send(token: String?, req: UACustomerCreateOrderRequest): Promisoid<FormResponse2<UACustomerCreateOrderRequest.Response>> = _send(token, req)
-fun send(token: String?, req: UACreateOrderFileRequest): Promisoid<FormResponse2<UACreateOrderFileRequest.Response>> = _send(token, req)
+//fun send(token: String?, req: UACustomerCreateOrderRequest): Promisoid<FormResponse2<UACustomerCreateOrderRequest.Response>> = _send(token, req)
+//fun send(token: String?, req: UACreateOrderFileRequest): Promisoid<FormResponse2<UACreateOrderFileRequest.Response>> = _send(token, req)
 fun send(req: PingRequest): Promisoid<FormResponse2<GenericResponse>> = _send(Globus.worldMaybe?.tokenMaybe, req)
 fun send(req: DeleteRequest): Promisoid<ZimbabweResponse<DeleteRequest.Response>> = callZimbabwe(req, Globus.world.token)
 fun send(req: VisualShitCapturedRequest): Promisoid<VisualShitCapturedRequest.Response> = sendDangerousJSONProcedure(req)
@@ -42,7 +42,7 @@ suspend fun send(req: TestRestoreTestPointSnapshotRequest): TestRestoreTestPoint
 suspend fun send(token: String?, req: SignInWithTokenRequest): FormResponse2<SignInResponse> = _send2(token, req)
 suspend fun send(req: TestCodeFiddleRequest): TestCodeFiddleRequest.Response = callDangerousMatumba2(req)
 suspend fun send(req: TestGetFileUploadDataRequest): TestGetFileUploadDataRequest.Response = callDangerousMatumba2(req)
-suspend fun send(req: UACreateOrderFileRequest): FormResponse2<UACreateOrderFileRequest.Response> = _send3(req)
+suspend fun sendUACreateOrderFile(req: UAOrderFileParamsRequest): FormResponse2<UACreateOrderFileResponse> = _send3(req, procName = "UACreateOrderFile")
 suspend fun send(req: UADownloadOrderFileRequest): FormResponse2<DownloadFileResponse> = _send3(req)
 suspend fun send(req: UACustomerSendOrderDraftForApprovalRequest): FormResponse2<UACustomerSendOrderDraftForApprovalRequest.Response> = _send3(req)
 suspend fun send(req: UAAdminGetStuffToDoRequest): FormResponse2<UAAdminGetStuffToDoRequest.Response> = _send3(req)
@@ -77,7 +77,8 @@ private suspend fun <Req: RequestMatumba, Meat> _send3SofteningShit(req: Req, pr
     return try {
         _send2(Globus.worldMaybe?.tokenMaybe, req, procName = procName)
     } catch (e: dynamic) {
-        console.error("_send3SofteningShit", e)
+        console.error("_send3SofteningShit (req::class = ${req::class.simpleName}; procName = $procName)", e.message)
+        console.error(e)
         FormResponse2.Shitty<Meat>(const.msg.serviceFuckedUp, fieldErrors = listOf())
     }
 }

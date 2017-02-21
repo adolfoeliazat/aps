@@ -42,7 +42,8 @@ class UAOrderRTO(
     val customerPhone: String,
     val customerFirstName: String,
     val customerLastName: String,
-    val whatShouldBeFixedByCustomer: String?
+    val whatShouldBeFixedByCustomer: String?,
+    val customerEmail: String
 ) : MelindaItemRTO
 
 data class IntRangeRTO(

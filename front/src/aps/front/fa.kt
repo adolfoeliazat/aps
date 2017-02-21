@@ -768,7 +768,7 @@ object fa {
     val userMd = IconClass("fa fa-user-md")
     val wheelchair = IconClass("fa fa-wheelchair")
     val wheelchairAlt = IconClass("fa fa-wheelchair-alt")
-    val cog = IconClass("fa fa-cog fa-spinner")
+    val cog = IconClass("fa fa-cog")
     val gear = IconClass("fa fa-gear fa-spinner")
     val refresh = IconClass("fa fa-refresh")
     val spinner = IconClass("fa fa-spinner")

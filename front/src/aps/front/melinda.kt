@@ -23,6 +23,7 @@ where
     val humanItemTypeName: String
     fun makeDeleteItemRequest(): DeleteRequest
     fun makeUpdateItemRequest(item: ItemRTO): UpdateItemRequest
+    val updateItemProcedureNameIfNotDefault: String?
     fun getItemFromUpdateItemResponse(res: UpdateItemResponse): ItemRTO
     fun makeLipsInterface(viewRootID: String, tongue: MelindaTongueInterface<ItemRTO>): MelindaLipsInterface
 }
@@ -54,6 +55,7 @@ class MelindaBoobs<
     val hasCreateButton: Boolean,
     val createModalTitle: String,
     val makeCreateRequest: () -> CreateRequest,
+    val createProcedureNameIfNotDefault: String? = null,
     val makeURLAfterCreation: () -> String,
     val makeURLForReload: (boobsParams: List<URLParamValue<*>>) -> String,
     val filterValues: Array<Filter>,
@@ -109,6 +111,7 @@ class MelindaBoobs<
                                 title = createModalTitle,
                                 formSpec = FormSpec<CreateRequest, CreateResponse>(
                                     ui = Globus.world,
+                                    procedureName = createProcedureNameIfNotDefault,
                                     req = makeCreateRequest()
                                 ),
                                 onSuccessa = {
@@ -302,6 +305,7 @@ class MelindaBoobs<
                     title = t("TOTE", "Файл") + " " + numberSign + item.id,
                     formSpec = FormSpec<UpdateItemRequest, UpdateItemResponse>(
                         ui = Globus.world,
+                        procedureName = vaginalInterface.updateItemProcedureNameIfNotDefault,
                         req = vaginalInterface.makeUpdateItemRequest(item)
                     ),
                     onSuccessa = {res->

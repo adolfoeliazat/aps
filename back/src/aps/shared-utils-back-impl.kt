@@ -112,18 +112,24 @@ fun <T> culprit(culprit: Culprit, f: () -> T): T {
     StringHiddenField(thisRef, property.name)
 }
 
-@Back fun longHiddenField() = eagerEx<RequestMatumba, LongHiddenField> {thisRef, property ->
-    LongHiddenField(thisRef, property.name)
+@Back fun longHiddenField(include: Boolean = true) = eagerEx<RequestMatumba, LongHiddenField> {thisRef, property ->
+    LongHiddenField(thisRef, property.name, include = include)
 }
 
 @Back class LongHiddenField(
     container: RequestMatumba,
-    name: String
-) : FormFieldBack(container, name) {
-    var value by notNullOnce<Long>()
+    name: String,
+    include: Boolean = true
+) : FormFieldBack(container, name, include = include) {
+    private var _value by notNullOnce<Long>()
+
+    val value: Long get() {
+        check(include){"Attempt to read back LongHiddenField $name, which is not included"}
+        return _value
+    }
 
     override fun loadOrBitch(input: Map<String, Any?>, fieldErrors: MutableList<FieldError>) {
-        value = (input[name] as String).toLong()
+        _value = (input[name] as String).toLong()
     }
 }
 
@@ -201,7 +207,8 @@ fun <T> culprit(culprit: Culprit, f: () -> T): T {
 abstract class FormFieldBack(
     container: RequestMatumba,
     val name: String,
-    val possiblyUnspecified: Boolean = false
+    val possiblyUnspecified: Boolean = false,
+    val include: Boolean = true
 ) : Culprit {
     abstract fun loadOrBitch(input: Map<String, Any?>, fieldErrors: MutableList<FieldError>)
 
@@ -210,16 +217,22 @@ abstract class FormFieldBack(
     override val constructionStack = Exception().stackTrace
 
     init {
-        container._fields.add(this)
+        if (include) {
+            @Suppress("LeakingThis")
+            container._fields.add(this)
+        }
     }
 
-    fun load(input: Map<String, Any?>, fieldErrors: MutableList<FieldError>) =
-        culprit(this, {
-            if (possiblyUnspecified) {
-                _specified = input["$name-specified"] as java.lang.Boolean
-            }
-            loadOrBitch(input, fieldErrors)
-        })
+    fun load(input: Map<String, Any?>, fieldErrors: MutableList<FieldError>) {
+        if (include) {
+            culprit(this, {
+                if (possiblyUnspecified) {
+                    _specified = input["$name-specified"] as java.lang.Boolean
+                }
+                loadOrBitch(input, fieldErrors)
+            })
+        }
+    }
 
     override fun toString(): String = bitch("Use field.value to get value of field [$name]")
 }

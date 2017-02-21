@@ -8,8 +8,10 @@ import kotlin.js.json
 
 @Front class TextField(
     container: RequestMatumba,
-    spec: TextFieldSpec)
-    : FormFieldFront(container, spec.name)
+    spec: TextFieldSpec,
+    include : Boolean = true
+)
+    : FormFieldFront(container, spec.name, include = include)
 {
     val _spec = spec
     override var error: String? = null
@@ -41,8 +43,14 @@ import kotlin.js.json
 //    }
 
     var value: String
-        get() = input.getValue()
-        set(value) { input.setValue(value) }
+        get() {
+            check(include){"Attempt to read front TextField $name, which is not included"}
+            return input.getValue()
+        }
+        set(value) {
+            check(include){"Attempt to write front TextField $name, which is not included"}
+            input.setValue(value)
+        }
 
     override var disabled: Boolean
         get() = input.isDisabled()

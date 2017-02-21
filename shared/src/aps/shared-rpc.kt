@@ -91,47 +91,22 @@ interface Xlobal {
     val user: UserRTO?
 }
 
-class UACustomerOrderRequestFields1(cont: RequestMatumba) {
-    val documentType = SelectField(cont, fields.uaDocumentType)
-    val documentTitle = TextField(cont, fields.documentTitle)
-    val numPages = IntField(cont, fields.numPages)
-    val numSources = IntField(cont, fields.numSources)
-    val documentDetails = TextField(cont, fields.orderDetails)
-}
-
-class UACustomerOrderRequestFields2(cont: RequestMatumba) {
-    val phone = TextField(cont, fields.orderCustomerPhone)
-}
-
-class UACustomerCreateOrderRequest(xlobal: Xlobal) : RequestMatumba() {
-    val fields1 = UACustomerOrderRequestFields1(this)
-
-    var firstName by notNullOnce<TextField>()
-    init { // TODO:vgrechka Simplify this shit
-        if (xlobal.user == null)
-            firstName = TextField(this, fields.orderCustomerFirstName)
-    }
-
+class UAOrderParamsRequest(isAdmin: Boolean, isUpdate: Boolean) : RequestMatumba() {
+    val orderID by longHiddenField(include = isUpdate)
+    val documentType = SelectField(this, fields.uaDocumentType)
+    val documentTitle = TextField(this, fields.documentTitle)
+    val numPages = IntField(this, fields.numPages)
+    val numSources = IntField(this, fields.numSources)
+    val documentDetails = TextField(this, fields.orderDetails)
+    val firstName = TextField(this, fields.orderCustomerFirstName)
     val lastName = TextField(this, fields.orderCustomerLastName)
-
-    val fields2 = UACustomerOrderRequestFields2(this)
-
-    var email by notNullOnce<TextField>()
-    init { // TODO:vgrechka Simplify this shit
-        if (xlobal.user == null)
-            email = TextField(this, fields.orderCustomerEmail)
-    }
-
-
-    class Response(val id: Long) : CommonResponseFieldsImpl()
+    val email = TextField(this, fields.orderCustomerEmail)
+    val phone = TextField(this, fields.orderCustomerPhone)
+    val adminNotes = TextField(this, fields.adminNotes, include = isAdmin)
 }
 
-class UACustomerUpdateOrderRequest : RequestMatumba() {
-    class Response : CommonResponseFieldsImpl()
-    val entityID by longHiddenField()
-    val fields1 = UACustomerOrderRequestFields1(this)
-    val fields2 = UACustomerOrderRequestFields2(this)
-}
+class UACreateOrderResponse(val orderID: Long) : CommonResponseFieldsImpl()
+class UAUpdateOrderResponse() : CommonResponseFieldsImpl()
 
 class TestSQLFiddleRequest : RequestMatumba() {
     class Response(val spew: String, val isError: Boolean) : CommonResponseFieldsImpl()
@@ -182,32 +157,18 @@ class TestGetFileUploadDataRequest : RequestMatumba() {
     val fileName by stringHiddenField()
 }
 
-class FileFields1(cont: RequestMatumba) {
-    val title = TextField(cont, fields.fileTitle)
-    val details = TextField(cont, fields.fileDetails)
+class UAOrderFileParamsRequest(isAdmin: Boolean, isUpdate: Boolean) : RequestMatumba() {
+    val orderID by longHiddenField(include = !isUpdate)
+    val fileID by longHiddenField(include = isUpdate)
+    val file = FileField(this, if (isUpdate) fields.fileFile_update else fields.fileFile_create)
+    val title = TextField(this, fields.fileTitle)
+    val details = TextField(this, fields.fileDetails)
+    val adminNotes = TextField(this, fields.adminNotes, include = isAdmin)
 }
 
-class UACreateOrderFileRequest : RequestMatumba() {
-    val orderID by longHiddenField()
-    val file = FileField(this, fields.fileFile_create)
-    val fields1 = FileFields1(this)
-    class Response(val id: Long) : CommonResponseFieldsImpl()
-}
+class UACreateOrderFileResponse(val fileID: Long) : CommonResponseFieldsImpl()
+class UAUpdateOrderFileResponse(val updatedFile: UAOrderFileRTO) : CommonResponseFieldsImpl()
 
-class UAUpdateOrderFileRequest : RequestMatumba() {
-    val fileID by longHiddenField()
-    val file = FileField(this, fields.fileFile_update)
-    val fields1 = FileFields1(this)
-    class Response(val updatedFile: UAOrderFileRTO) : CommonResponseFieldsImpl()
-}
-
-class UACreateOrderRequest : RequestMatumba() {
-    class Response(val id: Long) : CommonResponseFieldsImpl()
-}
-
-class UAUpdateOrderRequest : RequestMatumba() {
-    class Response(val updatedOrder: UAOrderRTO) : CommonResponseFieldsImpl()
-}
 
 class DownloadFileResponse(
     val fileName: String,

@@ -19,7 +19,7 @@ object fields                                              : Fuckers<FieldSpec>(
     val emailInSignInForm                                  by namedFucker {genericEmail.copy(name = it, minLen = 0, maxLen = Int.MAX_VALUE)}; val emailInSignInForm_testRef = TestRef(emailInSignInForm)
     val profileRejectionReason                             by namedFucker {TextFieldSpec(it, t("TOTE", "Причина отказа"), TextFieldType.TEXTAREA, 0, 5000)}; val profileRejectionReason_testRef = TestRef(profileRejectionReason)
     val banReason                                          by namedFucker {TextFieldSpec(it, t("TOTE", "Причина бана"), TextFieldType.TEXTAREA, 0, 5000)}; val banReason_testRef = TestRef(banReason)
-    val adminNotes                                         by namedFucker {TextFieldSpec(it, t("TOTE", "Заметки админа"), TextFieldType.TEXTAREA, 0, 5000)}; val adminNotes_testRef = TestRef(adminNotes)
+    val adminNotes                                         by namedFucker {TextFieldSpec(it, t("TOTE", "Админские заметки"), TextFieldType.TEXTAREA, 0, 5000)}; val adminNotes_testRef = TestRef(adminNotes)
     val aboutMe                                            by namedFucker {TextFieldSpec(it, t("TOTE", "Пара ласковых о себе"), TextFieldType.TEXTAREA, minLen = 1, maxLen = 300)}; val aboutMe_testRef = TestRef(aboutMe)
     val searchString                                       by namedFucker {TextFieldSpec(it, "", TextFieldType.STRING, 0, 50)}; val searchString_testRef = TestRef(searchString)
     val orderDetails                                       by namedFucker {TextFieldSpec(it, t("TOTE", "Детали работы (задание)"), TextFieldType.TEXTAREA, minLen = 3, maxLen = 2000)}; val orderDetails_testRef = TestRef(orderDetails)

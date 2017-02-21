@@ -39,7 +39,6 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
 
     override suspend fun run1() {
-
         forceFast()
         initialTestShit(this)
 
@@ -54,6 +53,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
                 topNavItemSequence(page = pages.uaCustomer.makeOrder_testRef,
                                    aid = "00c34b38-a47d-4ae5-a8f3-6cceadb0d481")
+                describeState("Anonymous order creation form")
                 debugMailboxClear()
                 selectSetValue(fields.uaDocumentType_testRef, UADocumentType.PRACTICE)
                 imposeNextGeneratedConfirmationSecret("top-fucking-secret")
@@ -110,9 +110,11 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                         badIntFieldValuesThenValid(fields.numPages_testRef, 23),
                         badIntFieldValuesThenValid(fields.numSources_testRef, 7),
                         badTextFieldValuesThenValid(fields.orderDetails_testRef, "Это чисто на почитать... " + testdata.trialDetails),
+                        badTextFieldValuesThenValid(fields.orderCustomerFirstName_testRef, "Пися"),
+                        badTextFieldValuesThenValid(fields.orderCustomerLastName_testRef, "Камушкин"),
+                        badTextFieldValuesThenValid(fields.orderCustomerEmail_testRef, "pisia@test.shit.ua"),
                         badTextFieldValuesThenValid(fields.orderCustomerPhone_testRef, "+38 (068) 321-45-67")
-                    ))
-                )
+                    )))
             }
 
             run { // Edit params -- save 2
@@ -214,6 +216,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
             run { // Edit file -- cancel
                 step({kicClick(kics.order.file.edit_testRef, subscript = 27L)}, TestGlobal.modalShownLock, "5793721f-48fe-4821-8b12-8c9d41aade69")
                 inputSetValue(fields.fileTitle_testRef, "Хуй")
+                describeState("Will cancel")
                 step({buttonClick(buttons.cancel_testRef)}, TestGlobal.modalHiddenLock, "74893db1-b1cb-4cae-8d17-441f715899d3")
             }
             run { // Edit file -- save, file not changed
@@ -375,13 +378,19 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 scrollBodyGradually(500.0) // Item #3
                 step({kicClick(kics.order.file.edit_testRef, subscript = 3L)}, TestGlobal.modalShownLock, "98165d17-6cbd-4034-b5f5-1c7424336bde")
                 inputPrependValue(fields.fileDetails_testRef, "Следовать тупо этой инструкции. ")
+                inputPrependValue(fields.adminNotes_testRef, "Добавил немного порожняка к деталям...")
                 submitFormSequence(testShit, aid = "5c5f9391-b835-4be2-9402-d9c140d8e781")
+                stopHereAndEverywhereLater()
                 //
                 scrollBodyToTopGradually()
                 addFile(AddFileParams(fileName = "idiot.rtf",
                                       title = "(Fucking) Idiot by (fucking idiot) Dostoevsky",
                                       details = "Why am I adding this? Cause I can! I'm the fucking admin, u-ha-ha-ha...",
                                       aid = "09d74a79-1172-46a9-9f22-0d7f125bab37"))
+
+                tabSequence(tabs.order.params_testRef, "3b9c64a7-8fc4-49eb-bd2a-0694eaac63e0", "2fff0364-e77d-4b3a-b6f0-cd9cc0077acb")
+                describeState("Admin can edit params")
+                step({buttonClick(buttons.edit_testRef)}, TestGlobal.modalShownLock, "da55889e-1ce2-4789-a957-1238bf809924")
             }
         }
     }
@@ -504,7 +513,8 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
     private suspend fun addFileBackendOnly(p: AddFileParams, orderID: Long) {
         testShit.imposeNextRequestTimestamp()
-        send(UACreateOrderFileRequest()-{o->
+        sendUACreateOrderFile(UAOrderFileParamsRequest(isAdmin = Globus.world.user.kind == UserKind.ADMIN,
+                                                       isUpdate = false)-{o->
             o.orderID.value = orderID
             o.file.content = FileField.Content.Provided(run {
                 val res = send(TestGetFileUploadDataRequest()-{o->
@@ -512,10 +522,8 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 })
                 File(base64ToUint8ArraySlices(res.base64), res.name)
             })
-            o.fields1-{o->
-                o.title.value = p.title
-                o.details.value = p.details
-            }
+            o.title.value = p.title
+            o.details.value = p.details
         })
         dlog("addFileBackendOnly: sent ${p.fileName}")
     }
@@ -526,6 +534,20 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
         inputSetValue(fields.fileTitle_testRef, p.title)
         inputSetValue(fields.fileDetails_testRef, p.details)
         submitFormSequence(testShit, aid = "${p.aid}--2")
+    }
+
+    private suspend fun stopHereAndEverywhereLater() {
+        stopEverywhere()
+        describeState("Doing stopHereAndEverywhereLater()...")
+    }
+
+    private fun stopEverywhere() {
+        TestGlobal.skipAllFreakingAssertions = false
+        TestGlobal.forcedTestOpts = testOpts().copy(
+            stopOnAssertions = true,
+            dontStopOnCorrectAssertions = false
+        )
+        TestGlobal.describeStateConfig = DescribeStateConfig(showBanners = true, autoResumeAfterMs = null)
     }
 }
 

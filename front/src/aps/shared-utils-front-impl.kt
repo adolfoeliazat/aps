@@ -118,18 +118,24 @@ fun remoteProcedureNameForRequest(req: Any): String {
     var fieldInstanceKeySuffix: String? = null
 }
 
-abstract class HiddenFormFieldFront(val container: RequestMatumba, val name: String) {
+abstract class HiddenFormFieldFront(val container: RequestMatumba, val name: String, val include: Boolean = true) {
     init {
-        container._hiddenFields.add(this)
+        if (include) {
+            @Suppress("LeakingThis")
+            container._hiddenFields.add(this)
+        }
     }
 
     abstract fun populateRemote(json: Json): Promisoid<Unit>
 }
 
 //abstract class FormFieldFront<Value>(val container: RequestMatumba, val name: String) {
-abstract class FormFieldFront(val container: RequestMatumba, val name: String) {
+abstract class FormFieldFront(val container: RequestMatumba, val name: String, val include : Boolean = true) {
     init {
-        container._fields.add(this)
+        if (include) {
+            @Suppress("LeakingThis")
+            container._fields.add(this)
+        }
     }
 
     lateinit var form: FormMatumba<*, *>
@@ -166,15 +172,31 @@ annotation class Front
     return HiddenField(container, name, possiblyUnspecified=possiblyUnspecified)
 }
 
-@Front fun longHiddenField() = eagerEx<RequestMatumba, LongHiddenField> {thisRef, property ->
-    LongHiddenField(thisRef, property.name)
+@Front fun longHiddenField(include: Boolean = true) = eagerEx<RequestMatumba, LongHiddenField> {thisRef, property ->
+    LongHiddenField(thisRef, property.name, include = include)
 }
 
-@Front class LongHiddenField(container: RequestMatumba, name: String): HiddenFormFieldFront(container, name) {
-    var value by notNull<Long>()
+@Front class LongHiddenField(container: RequestMatumba, name: String, include: Boolean = true): HiddenFormFieldFront(container, name, include = include) {
+    private var assigned = false
+    private var _value by notNull<Long>()
+
+    var value: Long
+        get() {
+            check(include){"Attempt to read front LongHiddenField $name, which is not included"}
+            check(assigned){"Attempt to read front LongHiddenField $name, which is not assigned"}
+            return _value
+        }
+        set(value) {
+            check(include){"Attempt to write front LongHiddenField $name, which is not included"}
+            _value = value
+            assigned = true
+        }
 
     override fun populateRemote(json: Json) = async {
-        json[name] = value.toString()
+        if (include) {
+            if (!assigned) bitch("Front LongHiddenField $name should be assigned")
+            json[name] = _value.toString()
+        }
     }
 }
 

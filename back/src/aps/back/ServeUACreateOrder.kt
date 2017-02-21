@@ -11,30 +11,29 @@ import into.kommon.*
 import org.springframework.data.repository.findOrDie
 import java.util.*
 
-@Servant class ServeUACustomerCreateOrder(
+@Servant class ServeUACreateOrder(
     val repo: UAOrderRepository
 ) : BitchyProcedure() {
     override fun serve() {
         fuckCustomer(FuckCustomerParams(
             bpc = bpc,
-            makeRequest = {UACustomerCreateOrderRequest(it.xlobal)},
+            makeRequest = {UAOrderParamsRequest(isAdmin = requestUserMaybe?.kind == UserKind.ADMIN,
+                                                isUpdate = false)},
             needsUser = NeedsUser.MAYBE,
-            runShit = fun (ctx, req: UACustomerCreateOrderRequest): UACustomerCreateOrderRequest.Response {
+            runShit = fun (ctx, req: UAOrderParamsRequest): UACreateOrderResponse {
                 val user = ctx.user
                 val confirmationSecret = TestServerFiddling.nextGeneratedConfirmationSecret.getAndReset()
                     ?: UUID.randomUUID().toString()
 
-                val f1 = req.fields1
-                val f2 = req.fields2
                 val order = repo.save(UAOrder(
-                    documentType = f1.documentType.value,
-                    title = f1.documentTitle.value,
-                    numPages = f1.numPages.value,
-                    numSources = f1.numSources.value,
-                    details = f1.documentDetails.value,
+                    documentType = req.documentType.value,
+                    title = req.documentTitle.value,
+                    numPages = req.numPages.value,
+                    numSources = req.numSources.value,
+                    details = req.documentDetails.value,
                     state = UAOrderState.WAITING_EMAIL_CONFIRMATION,
                     confirmationSecret = confirmationSecret,
-                    customerPhone = f2.phone.value,
+                    customerPhone = req.phone.value,
                     customer = user,
                     customerFirstName = req.firstName.value,
                     customerLastName = req.lastName.value,
@@ -84,34 +83,33 @@ import java.util.*
                             """
                     ))
                 ))
-                return UACustomerCreateOrderRequest.Response(order.id!!)
+                return UACreateOrderResponse(order.id!!)
             }
         ))
     }
 }
 
 
-@Servant class ServeUACustomerUpdateOrder(
+@Servant class ServeUAUpdateOrder(
     val repo: UAOrderRepository
 ) : BitchyProcedure() {
     override fun serve() {
         fuckCustomer(FuckCustomerParams(
             bpc = bpc,
-            makeRequest = {UACustomerUpdateOrderRequest()},
+            makeRequest = {UAOrderParamsRequest(isAdmin = requestUser.kind == UserKind.ADMIN,
+                                                isUpdate = true)},
             needsUser = NeedsUser.YES,
-            runShit = fun(ctx, req: UACustomerUpdateOrderRequest): UACustomerUpdateOrderRequest.Response {
-                val order = repo.findOrDie(req.entityID.value)-{o->
-                    val f1 = req.fields1
-                    val f2 = req.fields2
-                    o.documentType = f1.documentType.value
-                    o.title = f1.documentTitle.value
-                    o.numPages = f1.numPages.value
-                    o.numSources = f1.numSources.value
-                    o.details = f1.documentDetails.value
-                    o.customerPhone = f2.phone.value
+            runShit = fun(ctx, req: UAOrderParamsRequest): UAUpdateOrderResponse {
+                val order = repo.findOrDie(req.orderID.value)-{o->
+                    o.documentType = req.documentType.value
+                    o.title = req.documentTitle.value
+                    o.numPages = req.numPages.value
+                    o.numSources = req.numSources.value
+                    o.details = req.documentDetails.value
+                    o.customerPhone = req.phone.value
                 }
                 repo.save(order)
-                return UACustomerUpdateOrderRequest.Response()
+                return UAUpdateOrderResponse()
             }
         ))
     }

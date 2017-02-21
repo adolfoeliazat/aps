@@ -15,8 +15,9 @@ import java.util.*
 @Servant class ServeUACreateOrderFile : BitchyProcedure() {
     override fun serve() {
         fuckAnyUser(FuckAnyUserParams(
-            bpc = bpc, makeRequest = {UACreateOrderFileRequest()},
-            runShit = fun(ctx, req): aps.UACreateOrderFileRequest.Response {
+            bpc = bpc, makeRequest = {UAOrderFileParamsRequest(isAdmin = requestUser.kind == UserKind.ADMIN,
+                                                               isUpdate = false)},
+            runShit = fun(ctx, req): UACreateOrderFileResponse {
                 val order = uaOrderRepo.findOrDie(req.orderID.value)
                 // TODO:vgrechka Security
 
@@ -24,9 +25,9 @@ import java.util.*
                 val file = uaOrderFileRepo.save(UAOrderFile(
                     order = order,
                     name = req.file.fileName,
-                    title = req.fields1.title.value,
+                    title = req.title.value,
                     mime = "application/octet-stream",
-                    details = req.fields1.details.value,
+                    details = req.details.value,
                     adminNotes = "",
                     sha256 = Hashing.sha256().hashBytes(content).toString(),
                     sizeBytes = content.size,
@@ -36,7 +37,7 @@ import java.util.*
                     forWriterSeenAsFrom = requestUser.kind // TODO:vgrechka ...
                 ))
 
-                return UACreateOrderFileRequest.Response(file.id!!)
+                return UACreateOrderFileResponse(file.id!!)
             }
         ))
     }
@@ -45,13 +46,14 @@ import java.util.*
 @Servant class ServeUAUpdateOrderFile : BitchyProcedure() {
     override fun serve() {
         fuckAnyUser(FuckAnyUserParams(
-            bpc = bpc, makeRequest = {UAUpdateOrderFileRequest()},
-            runShit = fun(ctx, req): UAUpdateOrderFileRequest.Response {
+            bpc = bpc, makeRequest = {UAOrderFileParamsRequest(isAdmin = requestUser.kind == UserKind.ADMIN,
+                                                               isUpdate = true)},
+            runShit = fun(ctx, req): UAUpdateOrderFileResponse {
                 val file = uaOrderFileRepo.findOrDie(req.fileID.value)
                 // TODO:vgrechka Permissions
 
-                file.title = req.fields1.title.value
-                file.details = req.fields1.details.value
+                file.title = req.title.value
+                file.details = req.details.value
                 if (req.file.valueKind == FileFieldValueKind.PROVIDED) {
                     val content = Base64.getDecoder().decode(req.file.base64)
                     file.name = req.file.fileName
@@ -61,7 +63,7 @@ import java.util.*
                 }
                 file.touch()
 
-                return UAUpdateOrderFileRequest.Response(file.toRTO(listOf()))
+                return UAUpdateOrderFileResponse(file.toRTO(listOf()))
             }
         ))
     }

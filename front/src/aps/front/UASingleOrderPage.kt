@@ -220,39 +220,38 @@ private class OrderParamsTab(val world: World, val order: UAOrderRTO) : Customer
         title = t("TOTE", "Параметры"),
         content = place,
         stripContent = kdiv{o->
-            when (world.user.kind) {
-                UserKind.CUSTOMER -> {
-                    if (order.state == UAOrderState.CUSTOMER_DRAFT) {
-                        o- Button(icon = fa.pencil, level = Button.Level.DEFAULT, key = buttons.edit) {
-                            openEditModal(
-                                title = t("TOTE", "Параметры заказа"),
-                                formSpec = FormSpec<UACustomerUpdateOrderRequest, UACustomerUpdateOrderRequest.Response>(
-                                    ui = world,
-                                    req = UACustomerUpdateOrderRequest()-{o->
-                                        o.entityID.value = order.id
-                                        o.fields1-{o->
-                                            o.documentType.value = order.documentType
-                                            o.documentTitle.value = order.title
-                                            o.numPages.setValue(order.numPages)
-                                            o.numSources.setValue(order.numSources)
-                                            o.documentDetails.value = order.details
-                                        }
-                                        o.fields2-{o->
-                                            o.phone.value = order.customerPhone
-                                        }
-                                    }
-                                ),
-                                onSuccessa = {
-                                    world.replaceNavigate(makeURL(pages.uaCustomer.order, listOf(
-                                        URLParamValue(UASingleOrderPage.urlQuery.id, order.id)
-                                    )))
-                                }
-                            )
+            val hasEditButton = when (Globus.world.user.kind) {
+                UserKind.CUSTOMER -> order.state == UAOrderState.CUSTOMER_DRAFT
+                UserKind.ADMIN -> true
+                UserKind.WRITER -> imf("7ab0701a-df7a-457f-9bca-a2bedc0e5225")
+            }
+            if (hasEditButton) {
+                o- Button(icon = fa.pencil, level = Button.Level.DEFAULT, key = buttons.edit) {
+                    openEditModal(
+                        title = t("TOTE", "Параметры заказа"),
+                        formSpec = FormSpec<UAOrderParamsRequest, GenericResponse>(
+                            procedureName = "UAUpdateOrder",
+                            req = UAOrderParamsRequest(isAdmin = Globus.world.user.kind == UserKind.ADMIN,
+                                                       isUpdate = true)-{o->
+                                o.orderID.value = order.id
+                                o.documentType.value = order.documentType
+                                o.documentTitle.value = order.title
+                                o.numPages.setValue(order.numPages)
+                                o.numSources.setValue(order.numSources)
+                                o.documentDetails.value = order.details
+                                o.firstName.value = order.customerFirstName
+                                o.lastName.value = order.customerLastName
+                                o.email.value = order.customerEmail
+                                o.phone.value = order.customerPhone
+                            }
+                        ),
+                        onSuccessa = {
+                            world.replaceNavigate(makeURL(pages.uaCustomer.order, listOf(
+                                URLParamValue(UASingleOrderPage.urlQuery.id, order.id)
+                            )))
                         }
-                    }
+                    )
                 }
-                UserKind.WRITER -> {}
-                UserKind.ADMIN -> {}
             }
         }
     )

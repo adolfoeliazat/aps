@@ -23,8 +23,8 @@ class UACustomerSingleOrderPageFilesTab(val page: UASingleOrderPage, val world: 
     override suspend fun load(): FormResponse2.Shitty<*>? {
         val boobs = MelindaBoobs<
             UAOrderFileRTO, CustomerFileFilter,
-            UACreateOrderFileRequest, UACreateOrderFileRequest.Response,
-            UAUpdateOrderFileRequest, UAUpdateOrderFileRequest.Response
+            UAOrderFileParamsRequest, UACreateOrderFileResponse,
+            UAOrderFileParamsRequest, UAUpdateOrderFileResponse
         >(
             hasCreateButton = when (Globus.world.user.kind) {
                 UserKind.CUSTOMER -> order.state in setOf(UAOrderState.CUSTOMER_DRAFT, UAOrderState.RETURNED_TO_CUSTOMER_FOR_FIXING)
@@ -32,9 +32,11 @@ class UACustomerSingleOrderPageFilesTab(val page: UASingleOrderPage, val world: 
                 UserKind.WRITER -> imf("3fec622f-bd27-4704-b114-da676a25f00c")
             },
             createModalTitle = t("TOTE", "Новый файл"),
-            makeCreateRequest = {UACreateOrderFileRequest()-{o->
+            makeCreateRequest = {UAOrderFileParamsRequest(isAdmin = Globus.world.user.kind == UserKind.ADMIN,
+                                                          isUpdate = false)-{o->
                 o.orderID.value = order.id
             }},
+            createProcedureNameIfNotDefault = "UACreateOrderFile",
             makeURLAfterCreation = {
                 makeURL(pages.uaCustomer.order, myURLParamValues())
             },
@@ -61,8 +63,10 @@ class UACustomerSingleOrderPageFilesTab(val page: UASingleOrderPage, val world: 
         return paramValues
     }
 
-    val vaginalInterface = object:MelindaVaginalInterface<UAOrderFileRTO, CustomerFileFilter, UAUpdateOrderFileRequest, UAUpdateOrderFileRequest.Response> {
+    val vaginalInterface = object:MelindaVaginalInterface<UAOrderFileRTO, CustomerFileFilter, UAOrderFileParamsRequest, UAUpdateOrderFileResponse> {
         private inner class FileLipsState(val downloadActive: Boolean)
+
+        override val updateItemProcedureNameIfNotDefault = "UAUpdateOrderFile"
 
         override fun makeLipsInterface(viewRootID: String, tongue: MelindaTongueInterface<UAOrderFileRTO>): MelindaLipsInterface {
             // if (world.user.kind != UserKind.CUSTOMER) imf("order vaginalInterface for ${world.user.kind}")
@@ -145,16 +149,15 @@ class UACustomerSingleOrderPageFilesTab(val page: UASingleOrderPage, val world: 
 
         override val humanItemTypeName = t("TOTE", "файл")
 
-        override fun getItemFromUpdateItemResponse(res: UAUpdateOrderFileRequest.Response) = res.updatedFile
+        override fun getItemFromUpdateItemResponse(res: UAUpdateOrderFileResponse) = res.updatedFile
 
-        override fun makeUpdateItemRequest(item: UAOrderFileRTO): UAUpdateOrderFileRequest {
-            return UAUpdateOrderFileRequest()-{o->
+        override fun makeUpdateItemRequest(item: UAOrderFileRTO): UAOrderFileParamsRequest {
+            return UAOrderFileParamsRequest(isAdmin = Globus.world.user.kind == UserKind.ADMIN,
+                                            isUpdate = true)-{o->
                 o.fileID.value = item.id
                 o.file.content = FileField.Content.Unchanged(item.name, item.sizeBytes)
-                o.fields1-{o->
-                    o.title.value = item.title
-                    o.details.value = item.details
-                }
+                o.title.value = item.title
+                o.details.value = item.details
             }
         }
 

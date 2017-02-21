@@ -5,14 +5,23 @@ import into.kommon.*
 import org.apache.commons.validator.routines.EmailValidator
 import kotlin.properties.Delegates.notNull
 
-@Back class TextField(container: RequestMatumba, val spec: TextFieldSpec)
-    : FormFieldBack(container, spec.name)
+@Back class TextField(
+    container: RequestMatumba,
+    val spec: TextFieldSpec,
+    include : Boolean = true
+)
+    : FormFieldBack(container, spec.name, include = include)
 {
-    var value by notNull<String>()
+    private var _value by notNull<String>()
+
+    val value: String get() {
+        check(include){"Attempt to read back TextField $name, which is not included"}
+        return _value
+    }
 
     override fun loadOrBitch(input: Map<String, Any?>, fieldErrors: MutableList<FieldError>) {
-        value = (input[name] ?: bitch("Gimme $name, motherfucker")) as String
-        value = value.trim()
+        _value = (input[name] ?: bitch("Gimme $name, motherfucker")) as String
+        _value = _value.trim()
 
         error()?.let {
             fieldErrors.add(FieldError(name, it))
@@ -20,17 +29,17 @@ import kotlin.properties.Delegates.notNull
     }
 
     private fun error(): String? {
-        if (value.length < spec.minLen) return when {
-            value.isEmpty() -> t("TOTE", "Поле обязательно")
+        if (_value.length < spec.minLen) return when {
+            _value.isEmpty() -> t("TOTE", "Поле обязательно")
             else -> t("TOTE", "Не менее ${spec.minLen} символов")
         }
 
-        if (value.length > spec.maxLen) return t("TOTE", "Не более ${spec.maxLen} символов")
+        if (_value.length > spec.maxLen) return t("TOTE", "Не более ${spec.maxLen} символов")
 
         when (spec.type) {
             PHONE -> {
                 var digitCount = 0
-                for (c in value.toCharArray()) {
+                for (c in _value.toCharArray()) {
                     if (!Regex("(\\d| |-|\\+|\\(|\\))+").matches("$c")) return shittyMessageFor(PHONE)
                     if (Regex("\\d").matches("$c")) ++digitCount
                 }
@@ -38,7 +47,7 @@ import kotlin.properties.Delegates.notNull
                 if (digitCount < spec.minDigits) return t("TOTE", "Не менее ${spec.minDigits} цифр")
             }
             EMAIL -> {
-                if (!EmailValidator.getInstance().isValid(value)) return shittyMessageFor(EMAIL)
+                if (!EmailValidator.getInstance().isValid(_value)) return shittyMessageFor(EMAIL)
             }
             else -> {}
         }
@@ -60,36 +69,3 @@ import kotlin.properties.Delegates.notNull
 
 
 
-
-
-
-//private fun error(): String? {
-//    if (value.length < spec.minLen) return when {
-//        value.isEmpty() -> t("TOTE", "Поле обязательно")
-//        isFreeForm() -> t("TOTE", "Не менее ${spec.minLen} символов")
-//        else -> shittyMessageFor(spec.type)
-//    }
-//
-//    if (value.length > spec.maxLen) return when {
-//        isFreeForm() -> t("TOTE", "Не более ${spec.maxLen} символов")
-//        else -> shittyMessageFor(spec.type)
-//    }
-//
-//    when (spec.type) {
-//        PHONE -> {
-//            var digitCount = 0
-//            for (c in value.toCharArray()) {
-//                if (!Regex("(\\d| |-|\\+|\\(|\\))+").matches("$c")) return shittyMessageFor(PHONE)
-//                if (Regex("\\d").matches("$c")) ++digitCount
-//            }
-//
-//            if (digitCount < spec.minDigits) return t("TOTE", "Не менее ${spec.minDigits} цифр")
-//        }
-//        EMAIL -> {
-//            if (!EmailValidator.getInstance().isValid(value)) return shittyMessageFor(EMAIL)
-//        }
-//        else -> {}
-//    }
-//
-//    return null
-//}

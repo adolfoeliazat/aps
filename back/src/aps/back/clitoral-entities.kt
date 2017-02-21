@@ -89,6 +89,7 @@ class UAOrder(
     @Column(length = MAX_STRING) var customerPhone: String,
     @Column(length = MAX_STRING) var customerEmail: String,
     @Column(length = MAX_STRING) var whatShouldBeFixedByCustomer : String? = null,
+    @Column(length = MAX_STRING) var adminNotes : String = "",
 
     @ManyToOne(fetch = FetchType.EAGER) @JoinColumn(name = "customerID", nullable = true)
     var customer: User? // TODO:vgrechka Think about nullability of this shit. Order can be draft, before customer even confirmed herself
@@ -119,6 +120,7 @@ class UAOrder(
             customerPhone = customerPhone,
             customerFirstName = customerFirstName,
             customerLastName = customerLastName,
+            customerEmail = customerEmail,
             whatShouldBeFixedByCustomer = whatShouldBeFixedByCustomer
         )
     }

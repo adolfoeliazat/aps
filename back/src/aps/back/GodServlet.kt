@@ -34,7 +34,8 @@ val RequestGlobus
 fun isRequestThread() =
     requestGlobusThreadLocal.get() != null
 
-val requestUser get()= RequestGlobus.procedureCtx.user!!
+val requestUserMaybe get() = RequestGlobus.procedureCtx.user
+val requestUser get()= requestUserMaybe!!
 
 class RequestGlobusType {
     val stamp by lazy {

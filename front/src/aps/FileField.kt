@@ -91,15 +91,15 @@ import kotlin.js.json
         }
     }
 
-    fun testUploadFileFast(fileName: String) {
-        async {
-            val res = send(TestGetFileUploadDataRequest()-{o->
-                o.fileName.value = fileName
-            })
-            val file = File(base64ToUint8ArraySlices(res.base64), res.name)
-            onGotFile(file)
-        }
-    }
+//    fun testUploadFileFast(fileName: String) {
+//        async {
+//            val res = send(TestGetFileUploadDataRequest()-{o->
+//                o.fileName.value = fileName
+//            })
+//            val file = File(base64ToUint8ArraySlices(res.base64), res.name)
+//            onGotFile(file)
+//        }
+//    }
 
 
     private suspend fun onGotFile(file: File) {

@@ -16,8 +16,9 @@ import kotlin.js.json
 
 data class FormSpec<Req: RequestMatumba, Res>(
     val req: Req,
+    val procedureName: String? = null,
     val populateFields: (Json) -> Unit = {},
-    val ui: World,
+    val ui: World = Globus.world,
 //    val className: String = "",
     val containerClassName: String = "",
     val containerStyle: Style = Style(),
@@ -44,7 +45,7 @@ data class FormSpec<Req: RequestMatumba, Res>(
     }
 }
 
-class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>, val procedureName: String? = null) : ToReactElementable {
+class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>) : ToReactElementable {
     init {
         req._fields.forEach {it.form = this}
     }
@@ -155,7 +156,7 @@ class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>, val pr
 
         TestGlobal.formTickingLock.resumeTestAndPauseSutFromSut()
 
-        val theProcedureName = procedureName ?: remoteProcedureNameForRequest(req)
+        val theProcedureName = spec.procedureName ?: remoteProcedureNameForRequest(req)
         val res: FormResponse = await(callMatumba(theProcedureName, spec.req, spec.ui.tokenMaybe, populateFields = spec.populateFields))
 
         when (res) {
