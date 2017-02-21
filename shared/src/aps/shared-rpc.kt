@@ -221,6 +221,7 @@ class ReginaRequest : RequestMatumba() {
 // XXX `hack` param is necessary to actually generate no-arg constructor here
 @Ser sealed class ReginaParams(hack: Unit = Unit)
 @Ser class ReginaCustomerSendOrderForApprovalAfterFixing(val orderID: Long) : ReginaParams()
+@Ser class ReginaAdminSendOrderToStore(val orderID: Long) : ReginaParams()
 
 
 

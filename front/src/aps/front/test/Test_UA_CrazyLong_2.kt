@@ -369,7 +369,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 describeState("Admin sees the order in the list of shit to be approved again")
             }
 
-            run { // Admin makes some minor changes by herself
+            run { // Admin makes minor changes to files
                 twoStepSequence({linkClick(links.lips_testRef, subscript = 1L)}, "394199d1-73da-4a7d-b462-13d5e8e0a789")
                 tabSequence(tabs.order.files_testRef, "d3461e3e-4a41-42f5-8cec-451b70e4bfbb", "63b49f23-604a-4184-8ac8-28c73027473b")
 
@@ -391,6 +391,9 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                                       details = "Why am I adding this? Cause I can! I'm the fucking admin, u-ha-ha-ha...",
                                       aid = "09d74a79-1172-46a9-9f22-0d7f125bab37"))
 
+            }
+
+            run { // Admin makes minor changes to params
                 tabSequence(tabs.order.params_testRef, "3b9c64a7-8fc4-49eb-bd2a-0694eaac63e0", "2fff0364-e77d-4b3a-b6f0-cd9cc0077acb")
                 describeState("Admin can edit params")
                 step({buttonClick(buttons.edit_testRef)}, TestGlobal.modalShownLock, "da55889e-1ce2-4789-a957-1238bf809924")
@@ -401,8 +404,8 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
             }
 
             run { // Admin moves order to store
-                ___stopHereAndEverywhereLater()
-
+                // ___stopHereAndEverywhereLater()
+                twoStepSequence({buttonClick(buttons.moveToStore_testRef)}, "3196309c-b789-436c-89a4-27128aa59a46")
             }
         }
     }

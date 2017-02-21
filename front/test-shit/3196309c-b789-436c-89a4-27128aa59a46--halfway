@@ -1,0 +1,200 @@
+-------------------- URL --------------------
+
+[uaw]/order.html?id=1
+
+-------------------- NAVBAR --------------------
+
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">
+        Админ
+      </a>
+    </div>
+    <div style="text-align: left;">
+      <ul id="leftNavbar" class="nav navbar-nav" style="float: none; display: inline-block; vertical-align: top;">
+        <li class="">
+          <a href="orders.html">
+            Заказы
+          </a>
+        </li>
+      </ul>
+      <ul id="rightNavbar" class="nav navbar-nav navbar-right">
+        <li class="">
+          <a href="dashboard.html">
+            Дася
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+-------------------- ROOT --------------------
+
+<div>
+  <div class="container" style="position: relative;">
+    <div>
+      <div class="page-header " style="margin-top: 0px; margin-bottom: 15px;">
+        <h3 style="margin-bottom: 0px;">
+          <div>
+            Заказ №1
+          </div>
+        </h3>
+      </div>
+    </div>
+    <div>
+      <div class="dolly-normal-containerBusy">
+        <div class="dolly-normal-message">
+          <div class="progressTicker" style="width: 14px; height: 33.6px; background-color: rgb(84, 110, 122);">
+          </div>
+        </div>
+        <div style="display: flex;">
+          <div style="margin-left: 0px;">
+            <button class="btn btn-danger dolly-normal-button" disabled="">
+              Завернуть
+            </button>
+          </div>
+          <div style="margin-left: 8px;">
+            <button class="btn btn-primary dolly-normal-button" disabled="">
+              В стор
+            </button>
+          </div>
+        </div>
+      </div>
+      <h4 style="margin-bottom: 0.7em;">
+        Как я пинал большие хуи на практике
+      </h4>
+      <div>
+        <div style="position: relative;">
+          <ul class="nav nav-tabs">
+            <li id="tabs.order.params" class="active">
+              <a href="#">
+                Параметры
+              </a>
+            </li>
+            <li id="tabs.order.files" class="">
+              <a href="#">
+                Файлы
+              </a>
+            </li>
+          </ul>
+          <div style="top: 0px; right: 0px; position: absolute;">
+            <div>
+              <button class="btn btn-default ">
+                <i class="fa fa-pencil">
+                </i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top: 5px;">
+          <div>
+            <div class="row" style="margin-bottom: 0.5em;">
+              <div class="col-md-3">
+                <label style="margin-bottom: 0px;">
+                  Создан
+                </label>
+                <div>
+                  18.12.2015 03:18:05 (Киев)
+                </div>
+              </div>
+              <div class="col-md-3">
+                <label style="margin-bottom: 0px;">
+                  Статус
+                </label>
+                <div class="order-stateLabel_WAITING_ADMIN_APPROVAL">
+                  Ждем одобрения админом
+                </div>
+              </div>
+            </div>
+            <div class="row" style="margin-bottom: 0.5em;">
+              <div class="col-md-3">
+                <label style="margin-bottom: 0px;">
+                  Контактное имя
+                </label>
+                <div>
+                  Пися
+                </div>
+              </div>
+              <div class="col-md-3">
+                <label style="margin-bottom: 0px;">
+                  Фамилия
+                </label>
+                <div>
+                  Камушкин
+                </div>
+              </div>
+              <div class="col-md-3">
+                <label style="margin-bottom: 0px;">
+                  Телефон
+                </label>
+                <div>
+                  +38 (068) 321-45-67
+                </div>
+              </div>
+            </div>
+            <div class="row" style="margin-bottom: 0.5em;">
+              <div class="col-md-3">
+                <label style="margin-bottom: 0px;">
+                  Тип документа
+                </label>
+                <div>
+                  Отчет по практике
+                </div>
+              </div>
+              <div class="col-md-3">
+                <label style="margin-bottom: 0px;">
+                  Количество страниц
+                </label>
+                <div>
+                  25
+                </div>
+              </div>
+              <div class="col-md-3">
+                <label style="margin-bottom: 0px;">
+                  Количество источников
+                </label>
+                <div>
+                  7
+                </div>
+              </div>
+            </div>
+            <div class="row" style="margin-bottom: 0.5em;">
+              <div class="col-md-12">
+                <label style="margin-bottom: 0px;">
+                  Детали работы (задание)
+                </label>
+                <div style="white-space: pre-wrap;">
+                  <p style="margin-bottom: 0px;">
+                    Кто-то, по-видимому, оклеветал Йозефа К., потому  что,  не сделав   ничего  дурного,  он  попал  под  арест.
+                    Кухарка  его квартирной хозяйки,  фрау  Грубах,  ежедневно  приносившая  ему завтрак около восьми, на этот раз не явилась. Такого случая еще не  бывало. К. немного подождал, поглядел с кровати на старуху, живущую напротив, - она смотрела из окна с  каким-то  необычным для  нее  любопытством - и потом, чувствуя и голод, и некоторое недоумение, позвонил. Тотчас же  раздался  стук,  и  в  комнату вошел  какой-то  человек. К. никогда раньше в этой квартире его не видел.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="row" style="margin-bottom: 0.5em;">
+              <div class="col-md-12">
+                <label style="margin-bottom: 0px;">
+                  Админские заметки
+                </label>
+                <div style="white-space: pre-wrap;">
+                  <p style="margin-bottom: 0px;">
+                    Заказчик -- мудила. Надо его наебать на бабки.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+-------------------- PANES --------------------
+
+<div id="pane-whocares">
+  <div>
+  </div>
+</div>

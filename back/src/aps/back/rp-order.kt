@@ -246,6 +246,16 @@ fun serveReginaCustomerSendOrderForApprovalAfterFixing(p: ReginaCustomerSendOrde
     return ReginaRequest.Response()
 }
 
+fun serveReginaAdminSendOrderToStore(p: ReginaAdminSendOrderToStore): ReginaRequest.Response {
+    check(requestUser.kind == UserKind.ADMIN){"0af9f1b0-b5fb-4fb2-b3a9-198a0185ee15"}
+    // TODO:vgrechka Security
+    val order = uaOrderRepo.findOrDie(p.orderID)
+    check(order.state in setOf(UAOrderState.WAITING_ADMIN_APPROVAL)){"7af262c7-2a28-43f8-910a-ccf3569142e9"}
+    order.whatShouldBeFixedByCustomer = null
+    order.state = UAOrderState.IN_STORE
+    return ReginaRequest.Response()
+}
+
 
 
 

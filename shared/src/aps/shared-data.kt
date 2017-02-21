@@ -105,7 +105,8 @@ enum class UAOrderState(override val title: String) : Titled {
     WRITER_ASSIGNED(t("TOTE", "Писатель назначен")),
     WAITING_EMAIL_CONFIRMATION(t("TOTE", "Ждем подтверждения имейла")),
     WAITING_ADMIN_APPROVAL(t("TOTE", "Ждем одобрения админом")),
-    RETURNED_TO_CUSTOMER_FOR_FIXING(t("TOTE", "Заказчик фиксит заявку"))
+    RETURNED_TO_CUSTOMER_FOR_FIXING(t("TOTE", "Заказчик фиксит заявку")),
+    IN_STORE(t("TOTE", "В сторе"))
 }
 
 

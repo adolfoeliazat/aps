@@ -169,6 +169,7 @@ object css {
             UAOrderState.WAITING_EMAIL_CONFIRMATION -> Style("background-color: green;")
             UAOrderState.WAITING_ADMIN_APPROVAL -> Style("background-color: $AMBER_100;")
             UAOrderState.RETURNED_TO_CUSTOMER_FOR_FIXING -> Style("background-color: $RED_50;")
+            UAOrderState.IN_STORE -> Style("background-color: $BLUE_100;")
         }})
 
         object forCustomer : Group(this) {

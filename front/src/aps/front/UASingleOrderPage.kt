@@ -89,10 +89,9 @@ class UASingleOrderPage(val world: World) {
                             title = t("TOTE", "В стор"), level = Button.Level.PRIMARY, key = buttons.moveToStore,
                             onClick = sendingDollyButtonHandler(
                                 sendRequest = {
-                                    imf("9861881b-cab7-4a91-bcd9-6fce68699fe0")
+                                    askRegina(ReginaAdminSendOrderToStore(orderID = order.id))
                                 },
                                 onSuccess = {
-                                    imf("05a2be59-739d-4ca7-9ab0-7d19879d770d")
                                     reloadOrderPage()
                                 })))))
                 UserKind.WRITER -> wtf("a1f98aad-8f31-40da-8d93-0f48208bcb5c")

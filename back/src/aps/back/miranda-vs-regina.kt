@@ -27,6 +27,7 @@ import org.springframework.data.repository.findOrDie
                 val params = req.params.value
                 return when (params) {
                     is ReginaCustomerSendOrderForApprovalAfterFixing -> serveReginaCustomerSendOrderForApprovalAfterFixing(params)
+                    is ReginaAdminSendOrderToStore -> serveReginaAdminSendOrderToStore(params)
                 }
             }
         ))
