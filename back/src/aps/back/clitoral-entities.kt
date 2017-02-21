@@ -10,7 +10,8 @@ import javax.persistence.*
 private const val MAX_STRING = 10000
 private const val MAX_BLOB = 10 * 1024 * 1024
 
-val uaOrderRepository get() = springctx.getBean(UAOrderRepository::class.java)!!
+val uaOrderRepo get() = springctx.getBean(UAOrderRepository::class.java)!!
+val uaOrderFileRepo get() = springctx.getBean(UAOrderFileRepository::class.java)!!
 
 @MappedSuperclass
 abstract class ClitoralEntity {
@@ -156,7 +157,11 @@ class UAOrderFile(
     @Column(length = MAX_STRING) var sha256: String,
     var sizeBytes: Int,
     @Column(length = MAX_BLOB) var content: ByteArray,
-    // @Column(columnDefinition = "tsvector not null") var tsv: Any,
+    @Enumerated(EnumType.STRING) var forCustomerSeenAsFrom: UserKind,
+    @Enumerated(EnumType.STRING) var forWriterSeenAsFrom: UserKind,
+
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "creatorID", nullable = false)
+    var creator: User,
 
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "orderID", nullable = false)
     var order: UAOrder
@@ -184,7 +189,7 @@ class UAOrderFile(
                 else -> luceneHighlightRanges(details, searchWords, analyzer)
             },
             editable = run {
-                val user = RequestGlobus.procedureCtx.user!!
+                val user = requestUser
                 when (user.kind) {
                     UserKind.ADMIN -> true
                     UserKind.CUSTOMER -> order.state in setOf(UAOrderState.CUSTOMER_DRAFT, UAOrderState.RETURNED_TO_CUSTOMER_FOR_FIXING)
@@ -195,7 +200,11 @@ class UAOrderFile(
                 searchWords.isEmpty() -> listOf()
                 else -> luceneHighlightRanges(name.chopOffFileExtension(), searchWords, analyzer)
             },
-            seenAsFrom = UserKind.CUSTOMER,
+            seenAsFrom = when (requestUser.kind) {
+                UserKind.CUSTOMER -> forCustomerSeenAsFrom
+                UserKind.WRITER -> forWriterSeenAsFrom
+                UserKind.ADMIN -> creator.kind
+            },
             titleHighlightRanges = when {
                 searchWords.isEmpty() -> listOf()
                 else -> luceneHighlightRanges(title, searchWords, analyzer)

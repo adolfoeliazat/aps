@@ -369,6 +369,19 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
             run { // Admin makes some minor changes by herself and moves order to store
                 twoStepSequence({linkClick(links.lips_testRef, subscript = 1L)}, "394199d1-73da-4a7d-b462-13d5e8e0a789")
                 tabSequence(tabs.order.files_testRef, "d3461e3e-4a41-42f5-8cec-451b70e4bfbb", "63b49f23-604a-4184-8ac8-28c73027473b")
+
+                describeState("Admin can edit files")
+                //
+                scrollBodyGradually(500.0) // Item #3
+                step({kicClick(kics.order.file.edit_testRef, subscript = 3L)}, TestGlobal.modalShownLock, "98165d17-6cbd-4034-b5f5-1c7424336bde")
+                inputPrependValue(fields.fileDetails_testRef, "Следовать тупо этой инструкции. ")
+                submitFormSequence(testShit, aid = "5c5f9391-b835-4be2-9402-d9c140d8e781")
+                //
+                scrollBodyToTopGradually()
+                addFile(AddFileParams(fileName = "idiot.rtf",
+                                      title = "(Fucking) Idiot by (fucking idiot) Dostoevsky",
+                                      details = "Why am I adding this? Cause I can! I'm the fucking admin, u-ha-ha-ha...",
+                                      aid = "09d74a79-1172-46a9-9f22-0d7f125bab37"))
             }
         }
     }

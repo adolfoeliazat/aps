@@ -26,7 +26,11 @@ class UACustomerSingleOrderPageFilesTab(val page: UASingleOrderPage, val world: 
             UACreateOrderFileRequest, UACreateOrderFileRequest.Response,
             UAUpdateOrderFileRequest, UAUpdateOrderFileRequest.Response
         >(
-            hasCreateButton = order.state in setOf(UAOrderState.CUSTOMER_DRAFT, UAOrderState.RETURNED_TO_CUSTOMER_FOR_FIXING),
+            hasCreateButton = when (Globus.world.user.kind) {
+                UserKind.CUSTOMER -> order.state in setOf(UAOrderState.CUSTOMER_DRAFT, UAOrderState.RETURNED_TO_CUSTOMER_FOR_FIXING)
+                UserKind.ADMIN -> true
+                UserKind.WRITER -> imf("3fec622f-bd27-4704-b114-da676a25f00c")
+            },
             createModalTitle = t("TOTE", "Новый файл"),
             makeCreateRequest = {UACreateOrderFileRequest()-{o->
                 o.orderID.value = order.id

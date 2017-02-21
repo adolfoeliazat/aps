@@ -12,16 +12,16 @@ import into.kommon.*
 import org.springframework.data.repository.findOrDie
 import java.util.*
 
-@Servant class ServeUACreateOrderFile(val orderRepo: UAOrderRepository, val fileRepo: UAOrderFileRepository) : BitchyProcedure() {
+@Servant class ServeUACreateOrderFile : BitchyProcedure() {
     override fun serve() {
-        fuckCustomer(FuckCustomerParams(
+        fuckAnyUser(FuckAnyUserParams(
             bpc = bpc, makeRequest = {UACreateOrderFileRequest()},
             runShit = fun(ctx, req): aps.UACreateOrderFileRequest.Response {
-                val order = orderRepo.findOrDie(req.orderID.value)
-                // TODO:vgrechka @security Check permissions
+                val order = uaOrderRepo.findOrDie(req.orderID.value)
+                // TODO:vgrechka Security
 
                 val content = Base64.getDecoder().decode(req.file.base64)
-                val file = fileRepo.save(UAOrderFile(
+                val file = uaOrderFileRepo.save(UAOrderFile(
                     order = order,
                     name = req.file.fileName,
                     title = req.fields1.title.value,
@@ -30,7 +30,10 @@ import java.util.*
                     adminNotes = "",
                     sha256 = Hashing.sha256().hashBytes(content).toString(),
                     sizeBytes = content.size,
-                    content = content
+                    content = content,
+                    creator = requestUser,
+                    forCustomerSeenAsFrom = requestUser.kind, // TODO:vgrechka ...
+                    forWriterSeenAsFrom = requestUser.kind // TODO:vgrechka ...
                 ))
 
                 return UACreateOrderFileRequest.Response(file.id!!)
@@ -39,13 +42,13 @@ import java.util.*
     }
 }
 
-@Servant class ServeUAUpdateOrderFile(val fileRepo: UAOrderFileRepository) : BitchyProcedure() {
+@Servant class ServeUAUpdateOrderFile : BitchyProcedure() {
     override fun serve() {
-        fuckCustomer(FuckCustomerParams(
+        fuckAnyUser(FuckAnyUserParams(
             bpc = bpc, makeRequest = {UAUpdateOrderFileRequest()},
             runShit = fun(ctx, req): UAUpdateOrderFileRequest.Response {
-                val file = fileRepo.findOrDie(req.fileID.value)
-                // TODO:vgrechka @security Check permissions
+                val file = uaOrderFileRepo.findOrDie(req.fileID.value)
+                // TODO:vgrechka Permissions
 
                 file.title = req.fields1.title.value
                 file.details = req.fields1.details.value
@@ -125,9 +128,8 @@ import java.util.*
 
 fun serveReginaCustomerSendOrderForApprovalAfterFixing(p: ReginaCustomerSendOrderForApprovalAfterFixing): ReginaRequest.Response {
     check(requestUser.kind == UserKind.CUSTOMER){"70630d2d-6796-4af8-8ac6-16e09a8b37e1"}
-    // TODO:vgrechka Security checks
-    dwarnStriking("aaaaaaaaaaaaaaaaaaaaa", p.orderID)
-    val order = uaOrderRepository.findOrDie(p.orderID)
+    // TODO:vgrechka Security
+    val order = uaOrderRepo.findOrDie(p.orderID)
     check(order.state == UAOrderState.RETURNED_TO_CUSTOMER_FOR_FIXING){"698dd409-f382-45df-9e65-fff590302dd0"}
     order.state = UAOrderState.WAITING_ADMIN_APPROVAL
     return ReginaRequest.Response()

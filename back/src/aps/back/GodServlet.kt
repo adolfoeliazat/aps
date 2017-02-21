@@ -81,10 +81,10 @@ class GodServlet : HttpServlet() {
                     val procedureName = req.pathInfo.substring("/rpc/".length)
                     try {
                         val pnc = procedureName.capitalize()
-                        run {
-                            val server = springctx.getBean("serve" + pnc, BitchyProcedure::class.java)
-                            server.bpc = BitchyProcedureContext(req, res)
-                        }
+//                        run {
+//                            val server = springctx.getBean("serve" + pnc, BitchyProcedure::class.java)
+//                            server.bpc = BitchyProcedureContext(req, res)
+//                        }
                         val server = springctx.getBean("serve" + pnc, BitchyProcedure::class.java)
                         server.bpc = BitchyProcedureContext(req, res)
 
