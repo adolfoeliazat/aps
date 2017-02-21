@@ -32,8 +32,7 @@ class UACustomerSingleOrderPageFilesTab(val page: UASingleOrderPage, val world: 
                 UserKind.WRITER -> imf("3fec622f-bd27-4704-b114-da676a25f00c")
             },
             createModalTitle = t("TOTE", "Новый файл"),
-            makeCreateRequest = {UAOrderFileParamsRequest(isAdmin = Globus.world.user.kind == UserKind.ADMIN,
-                                                          isUpdate = false)-{o->
+            makeCreateRequest = {UAOrderFileParamsRequest(isAdmin = isAdmin(), isUpdate = false)-{o->
                 o.orderID.value = order.id
             }},
             createProcedureNameIfNotDefault = "UACreateOrderFile",
@@ -141,8 +140,7 @@ class UACustomerSingleOrderPageFilesTab(val page: UASingleOrderPage, val world: 
         override fun getItemFromUpdateItemResponse(res: UAUpdateOrderFileResponse) = res.updatedFile
 
         override fun makeUpdateItemRequest(item: UAOrderFileRTO): UAOrderFileParamsRequest {
-            return UAOrderFileParamsRequest(isAdmin = Globus.world.user.kind == UserKind.ADMIN,
-                                            isUpdate = true)-{o->
+            return UAOrderFileParamsRequest(isAdmin = isAdmin(), isUpdate = true).populateCheckingCompleteness{o->
                 o.fileID.value = item.id
                 o.file.content = FileField.Content.Unchanged(item.name, item.sizeBytes)
                 o.title.value = item.title

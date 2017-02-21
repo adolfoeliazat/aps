@@ -27,8 +27,7 @@ class UAAdminOrdersPage {
         return MelindaBoobs(
             hasCreateButton = false,
             createModalTitle = t("TOTE", "Новый заказ"),
-            makeCreateRequest = {UAOrderParamsRequest(isAdmin = Globus.world.user.kind == UserKind.ADMIN,
-                                                      isUpdate = false)},
+            makeCreateRequest = {UAOrderParamsRequest(isAdmin = isAdmin(), isUpdate = false)},
             makeURLAfterCreation = {
                 makeURL(pages.uaAdmin.order, listOf())
             },
@@ -48,8 +47,7 @@ class UAAdminOrdersPage {
                 override val updateItemProcedureNameIfNotDefault get()= wtf("Order should not be edited through vaginal interface. 19ca13a9-7432-4c33-aff3-0e9e9026b09d")
 
                 override fun makeUpdateItemRequest(item: UAOrderRTO): UAOrderParamsRequest {
-                    return UAOrderParamsRequest(isAdmin = Globus.world.user.kind == UserKind.ADMIN,
-                                                isUpdate = true)-{o->
+                    return UAOrderParamsRequest(isAdmin = isAdmin(), isUpdate = true).populateCheckingCompleteness{o->
                         // TODO:vgrechka ...
                         populateWithAdminNotes(o, item)
                     }

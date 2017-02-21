@@ -30,7 +30,18 @@ import kotlin.js.json
     }
 
     val noise = DebugNoise("FileField", mute = false)
+
     var content: Content = Content.None()
+        get() {
+            check(include){"Attempt to read front FileField $name, which is not included    01652961-7610-4271-ad19-b6df23519073"}
+            return field
+        }
+        set(value) {
+            check(include){"Attempt to write front FileField $name, which is not included    ef302556-cd8f-45fb-b510-9d643d8448d7"}
+            field = value
+            Globus.populatedFields += this
+        }
+
 //    var fileChanged = ResolvableShit<Unit>()
 
     val control = object:Control2(Attrs()) {

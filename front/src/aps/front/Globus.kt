@@ -73,6 +73,7 @@ object Globus {
     val topNavbarContainer get() = byid0("topNavbarContainer")
     var currentBrowseroidMaybe: Browseroid? = realBrowseroid
     val currentBrowseroid get() = bang(currentBrowseroidMaybe)
+    val populatedFields = mutableSetOf<FieldFront>()
 }
 
 class Browser(val typedStorageLocal: TypedStorageLocal)

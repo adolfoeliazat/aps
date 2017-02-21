@@ -26,7 +26,11 @@ import kotlin.js.json
         key = FieldSpecToCtrlKey[spec]
     )
 
-    fun setValue(value: Int) { input.setValue(value.toString()) }
+    fun setValue(value: Int) {
+        check(include){"Attempt to write front IntField $name, which is not included    cbd9518d-041b-42d5-8475-3cfe879be75c"}
+        input.setValue(value.toString())
+        Globus.populatedFields += this
+    }
 
     override var disabled: Boolean
         get() = input.isDisabled()

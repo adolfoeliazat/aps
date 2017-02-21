@@ -43,8 +43,15 @@ where T : Enum<T>, T : Titled
     }
 
     var value: T
-        get() = select.value
-        set(value) {asu{ select.setValue(value) }}
+        get() {
+            check(include){"Attempt to read front SelectField $name, which is not included    46d6d510-31d0-4702-8f54-52adc6fd5ed9"}
+            return select.value
+        }
+        set(value) {
+            check(include){"Attempt to write front SelectField $name, which is not included    77cc68de-a835-45e8-a5e6-651dcf81e896"}
+            asu {select.setValue(value)}
+            Globus.populatedFields += this
+        }
 
     override var disabled: Boolean
         get() = select.isDisabled()

@@ -230,8 +230,7 @@ private class OrderParamsTab(val world: World, val order: UAOrderRTO) : Customer
                         title = t("TOTE", "Параметры заказа"),
                         formSpec = FormSpec<UAOrderParamsRequest, GenericResponse>(
                             procedureName = "UAUpdateOrder",
-                            req = UAOrderParamsRequest(isAdmin = Globus.world.user.kind == UserKind.ADMIN,
-                                                       isUpdate = true)-{o->
+                            req = UAOrderParamsRequest(isAdmin = isAdmin(), isUpdate = true).populateCheckingCompleteness{o->
                                 o.orderID.value = order.id
                                 o.documentType.value = order.documentType
                                 o.documentTitle.value = order.title
@@ -242,6 +241,7 @@ private class OrderParamsTab(val world: World, val order: UAOrderRTO) : Customer
                                 o.lastName.value = order.customerLastName
                                 o.email.value = order.customerEmail
                                 o.phone.value = order.customerPhone
+                                populateWithAdminNotes(o, order)
                             }
                         ),
                         onSuccessa = {
@@ -294,6 +294,12 @@ fun renderOrderParams(o: ElementBuilder, order: UAOrderRTO) {
     o- m.detailsRow(order.details, order.detailsHighlightRanges, title = fields.orderDetails.title)
     renderAdminNotesIfNeeded(o, order)
 }
+
+
+
+
+
+
 
 
 

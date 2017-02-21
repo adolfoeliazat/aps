@@ -44,12 +44,13 @@ import kotlin.js.json
 
     var value: String
         get() {
-            check(include){"Attempt to read front TextField $name, which is not included"}
+            check(include){"Attempt to read front TextField $name, which is not included    d3a0deca-3b86-4334-b261-5119b490d1ef"}
             return input.getValue()
         }
         set(value) {
-            check(include){"Attempt to write front TextField $name, which is not included"}
+            check(include){"Attempt to write front TextField $name, which is not included    df23e773-247a-4cea-bc79-2e3bda52eded"}
             input.setValue(value)
+            Globus.populatedFields += this
         }
 
     override var disabled: Boolean

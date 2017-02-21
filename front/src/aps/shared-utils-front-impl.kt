@@ -111,6 +111,11 @@ fun remoteProcedureNameForRequest(req: Any): String {
 //    return requestClassName.substring(0, requestClassName.length - "Request".length).decapitalize()
 }
 
+interface FieldFront {
+    val name: String
+    val include: Boolean
+}
+
 @Front open class RequestMatumba {
     // TODO:vgrechka Why the fuck do I need `fields` and `hiddenFields` to be separate?
     val _fields = mutableListOf<FormFieldFront>()
@@ -118,7 +123,7 @@ fun remoteProcedureNameForRequest(req: Any): String {
     var fieldInstanceKeySuffix: String? = null
 }
 
-abstract class HiddenFormFieldFront(val container: RequestMatumba, val name: String, val include: Boolean = true) {
+abstract class HiddenFormFieldFront(val container: RequestMatumba, override val name: String, override val include: Boolean = true) : FieldFront {
     init {
         if (include) {
             @Suppress("LeakingThis")
@@ -130,7 +135,7 @@ abstract class HiddenFormFieldFront(val container: RequestMatumba, val name: Str
 }
 
 //abstract class FormFieldFront<Value>(val container: RequestMatumba, val name: String) {
-abstract class FormFieldFront(val container: RequestMatumba, val name: String, val include : Boolean = true) {
+abstract class FormFieldFront(val container: RequestMatumba, override val name: String, override val include : Boolean = true) : FieldFront {
     init {
         if (include) {
             @Suppress("LeakingThis")
@@ -190,6 +195,7 @@ annotation class Front
             check(include){"Attempt to write front LongHiddenField $name, which is not included"}
             _value = value
             assigned = true
+            Globus.populatedFields += this
         }
 
     override fun populateRemote(json: Json) = async {

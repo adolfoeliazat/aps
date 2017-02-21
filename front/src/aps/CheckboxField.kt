@@ -31,8 +31,15 @@ import kotlin.js.json
     }
 
     var value: Boolean
-        get() = checkbox.getValue()
-        set(value) { checkbox.setValue(value) }
+        get() {
+            check(include){"Attempt to read front CheckboxField $name, which is not included    b9dbbbad-e7b9-4ede-99ee-55c8cf0ff792"}
+            return checkbox.getValue()
+        }
+        set(value) {
+            check(include){"Attempt to write front CheckboxField $name, which is not included    9de83885-b46a-40bf-88e8-423fd6c3e723"}
+            checkbox.setValue(value)
+            Globus.populatedFields += this
+        }
 
     override var disabled: Boolean
         get() = checkbox.isDisabled()

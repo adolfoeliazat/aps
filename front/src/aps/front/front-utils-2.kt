@@ -1,6 +1,7 @@
 package aps.front
 
 import aps.*
+import into.kommon.*
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
@@ -54,6 +55,17 @@ fun renderAdminNotesIfNeeded(o: ElementBuilder, rto: RTOWithAdminNotes) {
     if (isAdmin() && rto.adminNotes.isNotBlank()) {
         o - MelindaTools.detailsRow(rto.adminNotes, rto.adminNotesHighlightRanges, title = fields.adminNotes.title)
     }
+}
+
+fun <T : RequestMatumba> T.populateCheckingCompleteness(block: (T) -> Unit): T {
+    // TODO:vgrechka Also check for excessiveness?
+    Globus.populatedFields.clear()
+    block(this)
+    for (field in this._fields + this._hiddenFields) {
+        if (field.include && field !in Globus.populatedFields)
+            bitch("Field ${field.name} of ${this::class.simpleName} should be populated")
+    }
+    return this
 }
 
 

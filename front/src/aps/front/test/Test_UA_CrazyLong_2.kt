@@ -401,10 +401,13 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 inputSetValue(fields.numPages_testRef, "25")
                 inputSetValue(fields.adminNotes_testRef, "Заказчик -- мудила. Надо его наебать на бабки.")
                 submitFormSequence(testShit, aid = "f04afc41-cc1c-476c-9dfe-0a68f83776da")
+
+                step({buttonClick(buttons.edit_testRef)}, TestGlobal.modalShownLock, "7acb877e-1702-4376-b534-daa875fb9844")
+                inputAppendValue(fields.adminNotes_testRef, " Жестко.")
+                submitFormSequence(testShit, aid = "bd4cc26f-e6d2-4036-9617-9518acaf454a")
             }
 
             run { // Admin moves order to store
-                // ___stopHereAndEverywhereLater()
                 twoStepSequence({buttonClick(buttons.moveToStore_testRef)}, "3196309c-b789-436c-89a4-27128aa59a46")
             }
         }
@@ -528,8 +531,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
     private suspend fun addFileBackendOnly(p: AddFileParams, orderID: Long) {
         testShit.imposeNextRequestTimestamp()
-        sendUACreateOrderFile(UAOrderFileParamsRequest(isAdmin = Globus.world.user.kind == UserKind.ADMIN,
-                                                       isUpdate = false)-{o->
+        sendUACreateOrderFile(UAOrderFileParamsRequest(isAdmin = isAdmin(), isUpdate = false)-{o->
             o.orderID.value = orderID
             o.file.content = FileField.Content.Provided(run {
                 val res = send(TestGetFileUploadDataRequest()-{o->
