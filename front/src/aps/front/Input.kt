@@ -327,6 +327,15 @@ class Input(
             handOpts = handOpts)
     }
 
+    suspend fun testDeleteFromBeginning(prefixToDelete: String, handOpts: HandOpts = HandOpts()) {
+        check(value.startsWith(prefixToDelete)){"Value in Input should start with [$prefixToDelete]    1199bd1a-69aa-463c-a0a7-511c803013e3"}
+        testSetValueAlgo(
+            initialValue = value,
+            subsequentValues = (1..prefixToDelete.length).map {value.substring(it)},
+            finalValue = value.substring(prefixToDelete.length),
+            handOpts = handOpts)
+    }
+
     private suspend fun testSetValueAlgo(
         initialValue: String,
         subsequentValues: List<String>,
@@ -399,6 +408,12 @@ suspend fun inputPrependValue(field: TestRef<TextFieldSpec>, value: String) {
 suspend fun inputAppendValue(field: TestRef<TextFieldSpec>, value: String) {
     Input.instance(FieldSpecToCtrlKey[field.it]).testAppendValue(value)
 }
+
+suspend fun inputDeleteFromBeginning(field: TestRef<TextFieldSpec>, value: String) {
+    Input.instance(FieldSpecToCtrlKey[field.it]).testDeleteFromBeginning(value)
+}
+
+
 
 //fun TestScenarioBuilder.inputAppendShitToExceedLength(key: String, maxLen: Int) {
 //    act("Appending long shit to `$key`") {

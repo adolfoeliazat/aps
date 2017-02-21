@@ -1,0 +1,187 @@
+-------------------- URL --------------------
+
+[uaw]/order.html?id=1&tab=params
+
+
+-------------------- MODAL --------------------
+
+<div class="modal" style="display: block;">
+</div>
+<div class="modal fade in" style="display: block; padding-left: 16px;">
+  <div class="modal-dialog" style="width: 80rem;">
+    <div class="modal-content" style="border-left: 0.5em solid rgb(144, 164, 174);">
+      <div class="modal-header">
+        <button class="btn btn-default close" data-dismiss="modal">
+          ×
+        </button>
+        <h4 class="modal-title">
+          Параметры заказа
+        </h4>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label>
+              <span class="">
+                Тип документа
+              </span>
+            </label>
+            <div style="position: relative;">
+              <select class="form-control" data-value="PRACTICE">
+                <option value="ABSTRACT">
+                  Реферат
+                </option>
+                <option value="COURSE">
+                  Курсовая работа
+                </option>
+                <option value="GRADUATION">
+                  Дипломная работа
+                </option>
+                <option value="LAB">
+                  Лабораторная работа
+                </option>
+                <option value="TEST">
+                  Контрольная работа
+                </option>
+                <option value="RGR">
+                  РГР
+                </option>
+                <option value="DRAWING">
+                  Чертеж
+                </option>
+                <option value="DISSERTATION">
+                  Диссертация
+                </option>
+                <option value="ESSAY">
+                  Эссе (сочинение)
+                </option>
+                <option value="PRACTICE">
+                  Отчет по практике
+                </option>
+                <option value="OTHER">
+                  Другое
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="textField-labelContainer">
+              <label>
+                Тема работы
+              </label>
+            </div>
+            <div style="position: relative;">
+              <input type="text" rows="5" class="form-control" value="Как я пинал большие хуи на практике" style="resize: none;">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>
+                <span class="">
+                  Количество страниц
+                </span>
+              </label>
+              <div style="position: relative;">
+                <input type="text" rows="5" class="form-control" value="23" style="resize: none;">
+                </div>
+              </div>
+              <div class="form-group">
+                <label>
+                  <span class="">
+                    Количество источников
+                  </span>
+                </label>
+                <div style="position: relative;">
+                  <input type="text" rows="5" class="form-control" value="7" style="resize: none;">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="textField-labelContainer">
+                    <label>
+                      Детали работы (задание)
+                    </label>
+                  </div>
+                  <div style="position: relative;">
+                    <textarea rows="5" type="text" class="form-control" style="resize: none;">
+                      Это чисто на почитать... Кто-то, по-видимому, оклеветал Йозефа К., потому  что,  не сделав   ничего  дурного,  он  попал  под  арест.
+                      Кухарка  его квартирной хозяйки,  фрау  Грубах,  ежедневно  приносившая  ему завтрак около восьми, на этот раз не явилась. Такого случая еще не  бывало. К. немного подождал, поглядел с кровати на старуху, живущую напротив, - она смотрела из окна с  каким-то  необычным для  нее  любопытством - и потом, чувствуя и голод, и некоторое недоумение, позвонил. Тотчас же  раздался  стук,  и  в  комнату вошел  какой-то  человек. К. никогда раньше в этой квартире его не видел.
+                    </textarea>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="textField-labelContainer">
+                    <label>
+                      Контактное имя
+                    </label>
+                  </div>
+                  <div style="position: relative;">
+                    <input type="text" rows="5" class="form-control" value="Пися" style="resize: none;">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="textField-labelContainer">
+                      <label>
+                        Фамилия
+                        <span class="formFieldLabelOptionalHint">
+                          (не обязательно)
+                        </span>
+                      </label>
+                    </div>
+                    <div style="position: relative;">
+                      <input type="text" rows="5" class="form-control" value="Камушкин" style="resize: none;">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <div class="textField-labelContainer">
+                        <label>
+                          Почта
+                        </label>
+                      </div>
+                      <div style="position: relative;">
+                        <input type="text" rows="5" class="form-control" value="pisia@test.shit.ua" style="resize: none;">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <div class="textField-labelContainer">
+                          <label>
+                            Телефон
+                          </label>
+                        </div>
+                        <div style="position: relative;">
+                          <input type="text" rows="5" class="form-control" value="+38 (068) 321-45-67" style="resize: none;">
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <div class="textField-labelContainer">
+                            <label>
+                              Админские заметки
+                            </label>
+                          </div>
+                          <div style="position: relative;">
+                            <textarea rows="5" type="text" class="form-control" style="resize: none;">
+                            </textarea>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                    <div class="modal-footer">
+                      <div style="display: flex;">
+                        <div style="display: flex; flex-grow: 1; justify-content: flex-start;">
+                        </div>
+                        <button class="btn btn-primary ">
+                          Сохранить
+                        </button>
+                        <button class="btn btn-default " style="margin-left: 10px;">
+                          Не стоит
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+-------------------- PANES --------------------
+
+<div id="pane-whocares">
+  <div>
+  </div>
+</div>

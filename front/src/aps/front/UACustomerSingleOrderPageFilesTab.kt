@@ -100,22 +100,8 @@ class UACustomerSingleOrderPageFilesTab(val page: UASingleOrderPage, val world: 
                             onClicka = disableableHandler(state.downloadActive) {onDownload(cloudIconID, tongue.getItem(), updateTitleControls)})
                 },
                 renderContent = {o->
-                    val m = MelindaTools
-                    val item = tongue.getItem()
-                    o- m.row{o->
-                        o- m.createdAtCol(3, item.createdAt)
-                        o- m.updatedAtCol(3, item.updatedAt)
-                        o- m.col(3, t("File name", "Имя файла")){o->
-                            o- highlightedShit(item.name, item.nameHighlightRanges, tag = "span")
-                        }
-                        o- m.col(3, t("Size", "Размер")){o->
-                            o- formatFileSizeApprox(Globus.lang, item.sizeBytes)
-                        }
-                    }
-                    o- m.detailsRow(item.details, item.detailsHighlightRanges)
-                    if (Globus.world.user.kind == UserKind.ADMIN && item.adminNotes.isNotBlank()) {
-                        o- m.detailsRow(item.adminNotes, item.adminNotesHighlightRanges, title = fields.adminNotes.title)
-                    }
+                    val orderFile = tongue.getItem()
+                    renderOrderFileParams(o, orderFile)
                 },
                 titleLinkURL = null,
                 hasEditControl = {true},
@@ -187,8 +173,24 @@ class UACustomerSingleOrderPageFilesTab(val page: UASingleOrderPage, val world: 
             return sendUACustomerGetOrderFiles(req)
         }
     }
+
 }
 
+private fun renderOrderFileParams(o: ElementBuilder, orderFile: UAOrderFileRTO) {
+    val m = MelindaTools
+    o- m.row{o->
+        o- m.createdAtCol(3, orderFile.createdAt)
+        o- m.updatedAtCol(3, orderFile.updatedAt)
+        o- m.col(3, t("File name", "Имя файла")){o->
+            o- highlightedShit(orderFile.name, orderFile.nameHighlightRanges, tag = "span")
+        }
+        o- m.col(3, t("Size", "Размер")){o->
+            o- formatFileSizeApprox(Globus.lang, orderFile.sizeBytes)
+        }
+    }
+    o- m.detailsRow(orderFile.details, orderFile.detailsHighlightRanges)
+    renderAdminNotesIfNeeded(o, orderFile)
+}
 
 
 

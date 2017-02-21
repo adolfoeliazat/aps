@@ -38,6 +38,7 @@ class UAOrderRTO(
     val details: String,
     val detailsHighlightRanges: List<IntRangeRTO>,
     override var adminNotes: String,
+    override var adminNotesHighlightRanges: List<IntRangeRTO>,
     val state: UAOrderState,
     val customerPhone: String,
     val customerFirstName: String,
@@ -62,6 +63,7 @@ interface MelindaItemRTO {
 interface RTOWithAdminNotes {
     // XXX `var`s are needed by 5d324703-9255-4a67-ba25-ecc865194418
     var adminNotes: String
+    var adminNotesHighlightRanges: List<IntRangeRTO>
 }
 
 class UAOrderFileRTO(
@@ -77,7 +79,7 @@ class UAOrderFileRTO(
     val details: String,
     val detailsHighlightRanges: List<IntRangeRTO>,
     override var adminNotes: String,
-    val adminNotesHighlightRanges: List<IntRangeRTO>,
+    override var adminNotesHighlightRanges: List<IntRangeRTO>,
     val sizeBytes: Int
 ) : MelindaItemRTO, RTOWithAdminNotes
 

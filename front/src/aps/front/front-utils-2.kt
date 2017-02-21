@@ -50,6 +50,12 @@ fun populateWithAdminNotes(o: RequestWithAdminNotes, rto: RTOWithAdminNotes) {
     }
 }
 
+fun renderAdminNotesIfNeeded(o: ElementBuilder, rto: RTOWithAdminNotes) {
+    if (isAdmin() && rto.adminNotes.isNotBlank()) {
+        o - MelindaTools.detailsRow(rto.adminNotes, rto.adminNotesHighlightRanges, title = fields.adminNotes.title)
+    }
+}
+
 
 
 

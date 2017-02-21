@@ -292,7 +292,8 @@ fun renderOrderParams(o: ElementBuilder, order: UAOrderRTO) {
         o- m.col(3, fields.numSources.title, order.numSources.toString())
     }
 
-    o- m.detailsRow(order.details, highlightRanges = listOf(), title = fields.orderDetails.title)
+    o- m.detailsRow(order.details, order.detailsHighlightRanges, title = fields.orderDetails.title)
+    renderAdminNotesIfNeeded(o, order)
 }
 
 

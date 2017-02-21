@@ -3,4 +3,7 @@
       2) Go to new page and show error banner there
   Should support both (currently only (1) is implemented).
 
+- Full-text search for non-admin users should not look into `adminNotes` field.
+  Maintain separate `tsv` and `adminTsv`.
+
 

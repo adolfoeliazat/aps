@@ -108,8 +108,8 @@ class UAOrder(
         return UAOrderRTO(
             id = id!!,
             title = title,
-            titleHighlightRanges = listOf(), // TODO:vgrechka ...
-            detailsHighlightRanges = listOf(), // TODO:vgrechka ...
+            titleHighlightRanges = highlightRanges(title, searchWords),
+            detailsHighlightRanges = highlightRanges(details, searchWords),
             editable = true, // TODO:vgrechka ...
             createdAt = createdAt.time,
             updatedAt = updatedAt.time,
@@ -119,7 +119,8 @@ class UAOrder(
             numPages = numPages,
             numSources = numSources,
             details = details,
-            adminNotes = "boobs",
+            adminNotes = adminNotes,
+            adminNotesHighlightRanges = highlightRanges(adminNotes, searchWords),
             state = state,
             customerPhone = customerPhone,
             customerFirstName = customerFirstName,
@@ -177,11 +178,6 @@ class UAOrderFile(
     override val idBang get()= id!!
 
     override fun toRTO(searchWords: List<String>): UAOrderFileRTO {
-        val lang = Language.UA
-        val analyzer = when (lang) {
-            Language.UA -> russianAnalyzer
-            else -> imf("Support analyzing for $lang")
-        }
         return UAOrderFileRTO(
             id = id!!,
             createdAt = createdAt.time,
@@ -190,10 +186,7 @@ class UAOrderFile(
             title = title,
             details = details,
             sizeBytes = sizeBytes,
-            detailsHighlightRanges = when {
-                searchWords.isEmpty() -> listOf()
-                else -> luceneHighlightRanges(details, searchWords, analyzer)
-            },
+            detailsHighlightRanges = highlightRanges(details, searchWords),
             editable = run {
                 val user = requestUser
                 when (user.kind) {
@@ -204,7 +197,7 @@ class UAOrderFile(
             },
             nameHighlightRanges = when {
                 searchWords.isEmpty() -> listOf()
-                else -> luceneHighlightRanges(name.chopOffFileExtension(), searchWords, analyzer)
+                else -> highlightRanges(name.chopOffFileExtension(), searchWords)
             },
             seenAsFrom = when (requestUser.kind) {
                 UserKind.CUSTOMER -> forCustomerSeenAsFrom
@@ -213,21 +206,33 @@ class UAOrderFile(
             },
             titleHighlightRanges = when {
                 searchWords.isEmpty() -> listOf()
-                else -> luceneHighlightRanges(title, searchWords, analyzer)
+                else -> highlightRanges(title, searchWords)
             },
             adminNotes = adminNotes,
             adminNotesHighlightRanges = when {
                 searchWords.isEmpty() -> listOf()
-                else -> luceneHighlightRanges(adminNotes, searchWords, analyzer)
+                else -> highlightRanges(adminNotes, searchWords)
             }
         )
     }
+
 }
 
 interface UAOrderFileRepository : CrudRepository<UAOrderFile, Long> {
 }
 
 
+private fun highlightRanges(text: String, searchWords: List<String>): List<IntRangeRTO> {
+    val lang = Language.UA
+    val analyzer = when (lang) {
+        Language.UA -> russianAnalyzer
+        else -> imf("Support analyzing for $lang")
+    }
+    return when {
+        searchWords.isEmpty() -> listOf()
+        else -> luceneHighlightRanges(text, searchWords, analyzer)
+    }
+}
 
 
 

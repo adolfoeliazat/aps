@@ -183,7 +183,7 @@ class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>) : ToRe
         working = false
         updateAll()
 
-        TestGlobal.formDoneLock.resumeTestAndPauseSutFromSut()
+        TestGlobal.formDoneLock.resumeTestFromSut()
         return res
     }
 
