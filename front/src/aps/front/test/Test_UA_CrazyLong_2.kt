@@ -414,12 +414,27 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
         }
 
         definePoint(9) {
-            bootCustomerToOrderPage(sessionNumber = 5, orderID = 1L, aid = "cddb0684-949d-4e09-a77c-18edb59aef81")
+            bootSignedInCustomerToOrderPage(sessionNumber = 5, orderID = 1L, aid = "cddb0684-949d-4e09-a77c-18edb59aef81")
             describeState("Customer sees that order was accepted")
+
+            run { // Writer kafka signs up
+                bootFreshWriterToIndexPage(nick = "kafka", sessionNumber = 1, aid = "0c1de407-a3f8-406c-8527-37103d452016")
+                topNavItemSequence(pages.uaWriter.signIn_testRef, "be84642f-617e-4761-b254-b802363fbc25")
+                twoStepSequence({linkClick(links.createAccount_testRef)}, "630255f9-1e42-4844-babf-a49fe8711489")
+            }
         }
     }
 
-    private suspend fun bootCustomerToOrderPage(sessionNumber: Int, orderID: Long, aid: String): Morda {
+    private suspend fun bootFreshWriterToIndexPage(nick: String, sessionNumber: Int, aid: String) {
+        val morda = Morda("$nick$sessionNumber",
+                          url = fconst.test.url.writer + "/" + makeURL(pages.uaWriter.index_testRef, listOf()),
+                          fillTypedStorageLocal = {},
+                          fillRawStorageLocal = {})
+        morda.coitizeAndBootAsserting(assertStatic = {assertScreenHTML(aid = "$aid--1")},
+                                      assertDynamic = {assertScreenHTML(aid = "$aid--2")})
+    }
+
+    private suspend fun bootSignedInCustomerToOrderPage(sessionNumber: Int, orderID: Long, aid: String) {
         val morda = Morda("ivo$sessionNumber",
                           url = fconst.test.url.customer + "/" + makeURL(pages.uaCustomer.order_testRef, listOf(
                               URLParamValue(UASingleOrderPage.urlQuery.id, orderID)
@@ -428,8 +443,8 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                           fillRawStorageLocal = {})
         morda.coitizeAndBootAsserting(assertStatic = {assertScreenHTML(aid = "$aid--1")},
                                       assertDynamic = {assertScreenHTML(aid = "$aid--2")})
-        return morda
     }
+
 
     private fun enableStatePauses() {
         TestGlobal.describeStateConfig = DescribeStateConfig(showBanners = true, autoResumeAfterMs = null)

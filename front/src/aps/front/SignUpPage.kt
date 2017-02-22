@@ -12,8 +12,10 @@ import aps.*
 import kotlin.browser.window
 import kotlin.js.json
 
-class SignUpPage(val world: World) {
-    fun load(): Promisoid<Unit> = async {
+class SignUpPage() {
+    private val world = Globus.world
+
+    suspend fun load(): PageLoadingError? {
         world.setPage(Page(
             header = oldShitAsToReactElementable(Shitus.pageHeader(json("title" to t("Sign Up", "Регистрация")))),
             body = oldShitAsToReactElementable(Shitus.diva(json(),
@@ -46,6 +48,8 @@ class SignUpPage(val world: World) {
 //                await(Button.instance("primary").click())
 //            }}
 //        )))
+
+        return null
     }
 }
 

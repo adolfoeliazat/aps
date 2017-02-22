@@ -19,11 +19,13 @@ object pages {
         val support by namedFucker {privatePage(it, t("Support", "Поддержка")) {imf()}}
         val dashboard by namedFucker {privatePage(it) {DashboardPage(it).load()}}
         val profile by namedFucker {PageSpec(it, navTitle = null, skipFirstTimeRendering = false, requiresSignIn = true) {imf()}}
+
+        // TODO:vgrechka Synchronize with writer/admin
         val signIn by namedFucker {privatePage(it, t("Sign In", "Вход")) {SignInPage(it).load()}}; val signIn_testRef = TestRef(signIn)
     }
 
     object uaWriter : Fuckers<PageSpec>(null) {
-        val index by namedFucker {staticPage(it, "boobs")}
+        val index by namedFucker {staticPage(it, "boobs")}; val index_testRef = TestRef(index)
         val why by namedFucker {staticPage(it, t("Why Us?", "Почему мы?"))}
         val prices by namedFucker {staticPage(it, t("Prices", "Цены"))}
         val samples by namedFucker {staticPage(it, t("Samples", "Примеры"))}
@@ -32,7 +34,8 @@ object pages {
         val store by namedFucker {privatePage(it, t("Store", "Стор")) {imf()}}
         val profile by namedFucker {PageSpec(it, navTitle = null, skipFirstTimeRendering = false, requiresSignIn = true) {UAWriterProfilePage(it).load()}}
         val dashboard by namedFucker {privatePage(it) {DashboardPage(it).load()}}
-        val signIn by namedFucker {privatePage(it, t("Sign In", "Вход")) {SignInPage(it).load()}}; val signIn_testRef = TestRef(signIn)
+        val signIn by namedFucker {publicPage(it, t("Sign In", "Вход")) {SignInPage(it).load()}}; val signIn_testRef = TestRef(signIn)
+        val signUp by namedFucker {publicPage(it, t("Sign Up", "Регистрация")) {SignUpPage().load()}}; val signUp_testRef = TestRef(signUp)
         val debug by namedFucker {PageSpec(it, navTitle = null, skipFirstTimeRendering = false, requiresSignIn = false) {DebugPage(it).load()}} // TODO:vgrechka Remove debug pages from production builds
         val support by namedFucker {privatePage(it, t("Support", "Поддержка")) {imf()}}
     }
@@ -81,6 +84,14 @@ private fun privatePage(fqn: String, navTitle: String? = null, load: PageLoader)
     load = load,
     skipFirstTimeRendering = false,
     requiresSignIn = true
+)
+
+private fun publicPage(fqn: String, navTitle: String? = null, load: PageLoader) = PageSpec(
+    fqn = fqn,
+    navTitle = navTitle,
+    load = load,
+    skipFirstTimeRendering = false,
+    requiresSignIn = false
 )
 
 

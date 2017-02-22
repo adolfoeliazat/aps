@@ -52,7 +52,7 @@ class SignInPage(val ui: World) {
                         o-t("TOTE", "Как? Еще нет аккаунта? ")
                         o-urlLink(
                             linkParams = LinkParams(title=t("TOTE", "Срочно создать!")),
-                            url = "/sign-up.html",
+                            url = makeURL(pages.uaWriter.signUp, listOf()),
                             delayActionForFanciness = true,
                             key = links.createAccount
                         )
