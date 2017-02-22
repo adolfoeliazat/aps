@@ -421,8 +421,18 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 bootFreshWriterToIndexPage(nick = "kafka", sessionNumber = 1, aid = "0c1de407-a3f8-406c-8527-37103d452016")
                 topNavItemSequence(pages.uaWriter.signIn_testRef, "be84642f-617e-4761-b254-b802363fbc25")
                 twoStepSequence({linkClick(links.createAccount_testRef)}, "630255f9-1e42-4844-babf-a49fe8711489")
+
+                inputSetValue(fields.signUpFirstName_testRef, "Франц")
+                inputSetValue(fields.signUpLastName_testRef, "Кафка")
+                inputSetValue(fields.signUpEmail_testRef, "kafka@test.shit.ua")
+                checkboxSetValue(fields.agreeTerms_testRef, true)
+                submitFormSequence("bf290946-c51f-419c-b800-ca261db3dac4")
             }
         }
+    }
+
+    private suspend fun submitFormSequence(aid: String) {
+        submitFormSequence(testShit, aid = aid)
     }
 
     private suspend fun bootFreshWriterToIndexPage(nick: String, sessionNumber: Int, aid: String) {

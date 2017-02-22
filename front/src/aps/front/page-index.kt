@@ -12,6 +12,8 @@ object pages {
         val faq by namedFucker {staticPage(it, t("FAQ", "ЧаВо"))}
         val contact by namedFucker {staticPage(it, t("Contact Us", "Связь"))}
         val blog by namedFucker {staticPage(it, t("Blog", "Блог"))}
+        val signIn by namedFucker(::signInPage); val signIn_testRef = TestRef(signIn)
+        val signUp by namedFucker(::signUpPage); val signUp_testRef = TestRef(signUp)
         val makeOrder by namedFucker {PageSpec(it, t("Make Order", "Заказать"), skipFirstTimeRendering = false, requiresSignIn = false) {MakeOrderPage(it).load()}}; val makeOrder_testRef = TestRef(makeOrder)
         val confirmOrder by namedFucker {PageSpec(it, navTitle = null, skipFirstTimeRendering = false, requiresSignIn = false) {ConfirmOrderPage(it).load()}}; val confirmOrder_testRef = TestRef(confirmOrder)
         val orders by namedFucker {privatePage(it, t("My Orders", "Мои заказы")) {UACustomerOrdersPage(it).load()}}; val orders_testRef = TestRef(orders)
@@ -19,9 +21,6 @@ object pages {
         val support by namedFucker {privatePage(it, t("Support", "Поддержка")) {imf()}}
         val dashboard by namedFucker {privatePage(it) {DashboardPage(it).load()}}
         val profile by namedFucker {PageSpec(it, navTitle = null, skipFirstTimeRendering = false, requiresSignIn = true) {imf()}}
-
-        // TODO:vgrechka Synchronize with writer/admin
-        val signIn by namedFucker {privatePage(it, t("Sign In", "Вход")) {SignInPage(it).load()}}; val signIn_testRef = TestRef(signIn)
     }
 
     object uaWriter : Fuckers<PageSpec>(null) {
@@ -34,8 +33,8 @@ object pages {
         val store by namedFucker {privatePage(it, t("Store", "Стор")) {imf()}}
         val profile by namedFucker {PageSpec(it, navTitle = null, skipFirstTimeRendering = false, requiresSignIn = true) {UAWriterProfilePage(it).load()}}
         val dashboard by namedFucker {privatePage(it) {DashboardPage(it).load()}}
-        val signIn by namedFucker {publicPage(it, t("Sign In", "Вход")) {SignInPage(it).load()}}; val signIn_testRef = TestRef(signIn)
-        val signUp by namedFucker {publicPage(it, t("Sign Up", "Регистрация")) {SignUpPage().load()}}; val signUp_testRef = TestRef(signUp)
+        val signIn by namedFucker(::signInPage); val signIn_testRef = TestRef(signIn)
+        val signUp by namedFucker(::signUpPage); val signUp_testRef = TestRef(signUp)
         val debug by namedFucker {PageSpec(it, navTitle = null, skipFirstTimeRendering = false, requiresSignIn = false) {DebugPage(it).load()}} // TODO:vgrechka Remove debug pages from production builds
         val support by namedFucker {privatePage(it, t("Support", "Поддержка")) {imf()}}
     }
@@ -46,6 +45,9 @@ object pages {
         val dashboard by namedFucker {privatePage(it) {DashboardPage(it).load()}}; val dashboard_testRef = TestRef(dashboard)
     }
 }
+
+private fun signInPage(fqn: String) = publicPage(fqn, t("Sign In", "Вход")) {SignInPage(it).load()}
+private fun signUpPage(fqn: String) = publicPage(fqn, t("Sign Up", "Регистрация")) {SignUpPage().load()}
 
 class PageLoadingError(val msg: String)
 

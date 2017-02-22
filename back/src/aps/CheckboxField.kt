@@ -1,16 +1,27 @@
 package aps
 
+import kotlin.properties.Delegates.notNull
+
 @Back class CheckboxField(
     container: RequestMatumba,
-    spec: CheckboxFieldSpec
+    val spec: CheckboxFieldSpec
 ) : FormFieldBack(container, spec.name) {
-    lateinit var _yes: java.lang.Boolean
+    private var _value by notNull<Boolean>()
 
-    val yes: Boolean get() = _yes.booleanValue()
-    val no: Boolean get() = !yes
+    val value: Boolean get() {
+        check(include){"Attempt to read back CheckboxField $name, which is not included"}
+        return _value
+    }
+
+    val yes get()= value
+    val no get()= !value
 
     override fun loadOrBitch(input: Map<String, Any?>, fieldErrors: MutableList<FieldError>) {
-        _yes = input[name] as java.lang.Boolean
+        _value = input[name] as Boolean
+        spec.mandatoryYesError?.let {
+            if (no)
+                fieldErrors += FieldError(name, it)
+        }
     }
 }
 

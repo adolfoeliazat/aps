@@ -14,19 +14,21 @@ import kotlin.js.json
 
 class Checkbox(val valueSetter: (Boolean) -> Unit, val elementID: String) {
     companion object {
-        val instances = mutableMapOf<String, Checkbox>()
+        val instances = mutableMapOf<CheckboxKey, Checkbox>()
 
-        fun instance(key: String): Checkbox {
-            return instances[key] ?: bitch("No Checkbox keyed `$key`")
+        fun instance(key: CheckboxKey): Checkbox {
+            return instances[key] ?: bitch("No Checkbox keyed `${key.fqn}`")
         }
     }
 
-    fun setValue(b: Boolean) {
+    fun testSetValue(b: Boolean) {
         valueSetter(b)
     }
 }
 
-fun jsFacing_Checkbox(def: dynamic, key: String? = null): dynamic {
+class CheckboxKey(override val fqn: String) : Fucker(), FQNed
+
+fun jsFacing_Checkbox(def: dynamic, key: CheckboxKey? = null): dynamic {
     val onChange: (() -> Promisoid<Unit>)? = def.onChange
     val initialValue: dynamic = if (def.initialValue != null) def.initialValue else false
 
@@ -99,18 +101,13 @@ fun jsFacing_Checkbox(def: dynamic, key: String? = null): dynamic {
 }
 
 
-fun TestScenarioBuilder.checkboxSet(key: String, value: Boolean, handOpts: HandOpts = HandOpts()) {
-    acta("Setting checkbox `$key` to `$value`") {checkboxSet2(key, value, handOpts)}
+suspend fun checkboxSetValue(field: TestRef<CheckboxFieldSpec>, value: Boolean) {
+    checkboxSetValue(FieldSpecToCtrlKey[field.it], value)
 }
 
-fun checkboxSet2(key: String, value: Boolean, handOpts: HandOpts = HandOpts()): Promisoid<Unit> {
-    return async<Unit> {
-        val target = Checkbox.instance(key)
-        await(TestUserActionAnimation.hand(target.elementID, handOpts))
-        target.setValue(value) // Not await
-    }
+suspend fun checkboxSetValue(key: CheckboxKey, value: Boolean) {
+    Checkbox.instance(key).testSetValue(value)
 }
-
 
 
 

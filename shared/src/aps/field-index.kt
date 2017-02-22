@@ -7,8 +7,10 @@ object fields                                              : Fuckers<FieldSpec>(
     val genericPhone                                       by namedFucker {TextFieldSpec(it, t("TOTE", "Телефон"), TextFieldType.PHONE, minLen = 6, maxLen = 50, minDigits = 6)}
     val genericRejectionReason                             by namedFucker {TextFieldSpec(it, t("TOTE", "Причина отказа"), TextFieldType.TEXTAREA, 10, 5000)}
 
-    val firstName                                          by namedFucker {genericFirstName.copy(name = it)}; val firstName_testRef = TestRef(firstName)
-    val lastName                                           by namedFucker {genericLastName.copy(name = it)}; val lastName_testRef = TestRef(lastName)
+    val signUpFirstName                                    by namedFucker {genericFirstName.copy(name = it)}; val signUpFirstName_testRef = TestRef(signUpFirstName)
+    val signUpLastName                                     by namedFucker {genericLastName.copy(name = it)}; val signUpLastName_testRef = TestRef(signUpLastName)
+    val signUpEmail                                        by namedFucker {genericEmail.copy(name = it)}; val signUpEmail_testRef = TestRef(signUpEmail)
+
     val documentTitle                                      by namedFucker {TextFieldSpec(it, t("TOTE", "Тема работы"), TextFieldType.STRING, minLen = 3, maxLen = 100)}; val documentTitle_testRef = TestRef(documentTitle)
     val orderCustomerFirstName                             by namedFucker {genericFirstName.copy(name = it, title = t("TOTE", "Контактное имя"))}; val orderCustomerFirstName_testRef = TestRef(orderCustomerFirstName)
     val orderCustomerLastName                              by namedFucker {genericLastName.copy(name = it, title = t("TOTE", "Фамилия"), minLen = 0, optionalHint = true)}; val orderCustomerLastName_testRef = TestRef(orderCustomerLastName)
@@ -23,7 +25,7 @@ object fields                                              : Fuckers<FieldSpec>(
     val aboutMe                                            by namedFucker {TextFieldSpec(it, t("TOTE", "Пара ласковых о себе"), TextFieldType.TEXTAREA, minLen = 1, maxLen = 300)}; val aboutMe_testRef = TestRef(aboutMe)
     val searchString                                       by namedFucker {TextFieldSpec(it, "", TextFieldType.STRING, 0, 50)}; val searchString_testRef = TestRef(searchString)
     val orderDetails                                       by namedFucker {TextFieldSpec(it, t("TOTE", "Детали работы (задание)"), TextFieldType.TEXTAREA, minLen = 3, maxLen = 2000)}; val orderDetails_testRef = TestRef(orderDetails)
-    val agreeTerms                                         by namedFucker {CheckboxFieldSpec(it, t("TOTE", "Title is not used here, but should"))}; val agreeTerms_testRef = TestRef(agreeTerms)
+    val agreeTerms                                         by namedFucker {CheckboxFieldSpec(it, t("TOTE", "boobs"), mandatoryYesError = t("TOTE", "Необходимо принять соглашение"))}; val agreeTerms_testRef = TestRef(agreeTerms)
     val userState                                          by namedFucker {SelectFieldSpec(it, t("TOTE", "Статус"), UserState.values())}; val userState_testRef = TestRef(userState)
     val numPages                                           by namedFucker {IntFieldSpec(it, t("TOTE", "Количество страниц"), min = 1, max = 500)}; val numPages_testRef = TestRef(numPages)
     val numSources                                         by namedFucker {IntFieldSpec(it, t("TOTE", "Количество источников"), min = 0, max = 50)}; val numSources_testRef = TestRef(numSources)
@@ -55,7 +57,8 @@ enum class TextFieldType {
 
 class CheckboxFieldSpec(
     override val name: String,
-    val title: String
+    val title: String,
+    val mandatoryYesError: String? = null
 ) : FieldSpec()
 
 class SelectFieldSpec<T>(

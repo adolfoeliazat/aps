@@ -129,25 +129,28 @@ class SignInWithTokenRequest : RequestMatumba() {
 }
 
 class SignUpRequest : RequestMatumba() {
-    class Response(val userID: String) : CommonResponseFieldsImpl()
-    val immutableSignUpFields = ImmutableSignUpFields(this)
-    val mutableSignUpFields = MutableSignUpFields(this)
+    val firstName = TextField(this, fields.signUpFirstName)
+    val lastName = TextField(this, fields.signUpLastName)
+    val email = TextField(this, fields.signUpEmail)
     val agreeTerms = CheckboxField(this, fields.agreeTerms)
+    class Response(val userID: Long) : CommonResponseFieldsImpl()
 }
 
 class UpdateProfileRequest() : RequestMatumba() {
-    class Response(val newUser: UserRTO) : CommonResponseFieldsImpl()
-
-    val mutableSignUpFields = MutableSignUpFields(this)
-    val profileFields = ProfileFields(this)
+    init {imf("098d6c0c-2e9e-41d8-a294-1faed488d511")}
+//    class Response(val newUser: UserRTO) : CommonResponseFieldsImpl()
+//
+//    val mutableSignUpFields = MutableSignUpFields(this)
+//    val profileFields = ProfileFields(this)
 }
 
 open class UpdateUserRequest() : RequestMatumba() {
+    init {imf("2eefb6a2-3cd3-4d13-a497-0da5c94f5141")}
     class Response(val newUser: UserRTO) : CommonResponseFieldsImpl()
 
     val id = StringHiddenField(this, "id")
-    val immutableSignUpFields = ImmutableSignUpFields(this)
-    val mutableSignUpFields = MutableSignUpFields(this)
+//    val immutableSignUpFields = ImmutableSignUpFields(this)
+//    val mutableSignUpFields = MutableSignUpFields(this)
     val profileFields = ProfileFields(this)
     val state = SelectField(this, fields.userState)
     val profileRejectionReason = TextField(this, fields.profileRejectionReason)
@@ -157,14 +160,7 @@ open class UpdateUserRequest() : RequestMatumba() {
 
 class AdminCreateUserRequest: UpdateUserRequest()
 
-class ImmutableSignUpFields(container: RequestMatumba) {
-    val email = TextField(container, fields.orderCustomerEmail)
-}
 
-class MutableSignUpFields(container: RequestMatumba) {
-    val firstName = TextField(container, fields.firstName)
-    val lastName = TextField(container, fields.lastName)
-}
 
 class ProfileFields(container: RequestMatumba) {
     val phone = TextField(container, fields.orderCustomerPhone)

@@ -10,7 +10,7 @@ import kotlin.js.json
 @Front class CheckboxField(container: RequestMatumba, spec: CheckboxFieldSpec) : FormFieldFront(container, spec.name) {
     override var error: String? = null
 
-    val checkbox = jsFacing_Checkbox(json("tamy" to true), name)
+    val checkbox = jsFacing_Checkbox(json("tamy" to true), key = FieldSpecToCtrlKey[spec])
 
     override fun render(): ReactElement {
         return Shitus.diva(json("controlTypeName" to "AgreeTermsField", "tame" to "AgreeTermsField", "className" to "form-group",
@@ -55,5 +55,9 @@ import kotlin.js.json
         json[name] = value
     }
 }
+
+
+
+
 
 
