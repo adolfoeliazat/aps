@@ -359,15 +359,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
         definePoint(8) {
             run { // Admin refreshes orders page
-                val dasja2 = Morda(
-                    "dasja2",
-                    url = fconst.test.url.writer + "/" + makeURL(pages.uaAdmin.orders_testRef, listOf(
-                        URLParamValue(UAAdminOrdersPage().makeBoobs().urlQuery.filter, AdminOrderFilter.TO_APPROVE)
-                    )),
-                    fillTypedStorageLocal = {it.token = "dasja-fucking-token"},
-                    fillRawStorageLocal = {})
-                dasja2.coitizeAndBootAsserting(assertStatic = {assertScreenHTML(aid = "acdb0c44-d1a9-4289-8f96-29eecbc8ebad")},
-                                               assertDynamic = {assertScreenHTML(aid = "abde2753-78f0-4354-b9fb-9b63991ff374")})
+                bootDasjaWithTokenToOrdersToApproveList(sessionNumber = 2, aid = "8265b753-393d-4ec5-9ff4-9107b0643aec")
                 describeState("Admin sees the order in the list of shit to be approved again")
             }
 
@@ -416,7 +408,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
         }
 
         definePoint(9) {
-            bootSignedInCustomerToOrderPage(sessionNumber = 5, orderID = 1L, aid = "cddb0684-949d-4e09-a77c-18edb59aef81")
+            bootIvoWithTokenToOrderPage(sessionNumber = 5, orderID = 1L, aid = "cddb0684-949d-4e09-a77c-18edb59aef81")
             describeState("Customer sees that order was accepted")
 
             run { // Writer kafka signs up
@@ -444,6 +436,31 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 submitFormSequence("0747ffeb-2906-4a94-8e45-8d24d92b9abf")
             }
         }
+
+        definePoint(10) {
+            bootDasjaWithTokenToDashboard(sessionNumber = 3, aid = "9e3a8178-3f0d-4f5b-98a3-1bb306b4c8ca")
+        }
+    }
+
+    private suspend fun bootDasjaWithTokenToDashboard(sessionNumber: Int, aid: String) {
+        bootDasjaWithToken(sessionNumber, makeURL(pages.uaAdmin.dashboard_testRef, listOf()), aid)
+    }
+
+
+    private suspend fun bootDasjaWithTokenToOrdersToApproveList(sessionNumber: Int, aid: String) {
+        bootDasjaWithToken(sessionNumber, makeURL(pages.uaAdmin.orders_testRef, listOf(
+            URLParamValue(UAAdminOrdersPage().makeBoobs().urlQuery.filter, AdminOrderFilter.TO_APPROVE)
+        )), aid)
+    }
+
+    private suspend fun bootDasjaWithToken(sessionNumber: Int, url: String, aid: String) {
+        val morda = Morda(
+            "dasja$sessionNumber",
+            url = fconst.test.url.writer + "/" + url,
+            fillTypedStorageLocal = {it.token = "dasja-fucking-token"},
+            fillRawStorageLocal = {})
+        morda.coitizeAndBootAsserting(assertStatic = {assertScreenHTML(aid = "$aid--1")},
+                                      assertDynamic = {assertScreenHTML(aid = "$aid--2")})
     }
 
     private suspend fun submitFormSequence(aid: String) {
@@ -459,7 +476,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                                       assertDynamic = {assertScreenHTML(aid = "$aid--2")})
     }
 
-    private suspend fun bootSignedInCustomerToOrderPage(sessionNumber: Int, orderID: Long, aid: String) {
+    private suspend fun bootIvoWithTokenToOrderPage(sessionNumber: Int, orderID: Long, aid: String) {
         val morda = Morda("ivo$sessionNumber",
                           url = fconst.test.url.customer + "/" + makeURL(pages.uaCustomer.order_testRef, listOf(
                               URLParamValue(UASingleOrderPage.urlQuery.id, orderID)

@@ -12,155 +12,64 @@ import aps.*
 import into.kommon.*
 import kotlin.js.json
 
-class AdminUsersPage(val ui: World) {
-    suspend fun load() {
-        imf("fb75c9f9-ddd6-45ad-9144-c09dc5a854ad")
-//        val m = Pizdalinda<UserRTO, Nothing, UserFilter>(
-//            ui,
-//            urlPath = "admin-users.html",
-//            procedureName = "getUsers",
-//            header = {t("TOTE", "Пользователи")},
-//            filterSelectValues = UserFilter.values(),
-//            defaultFilter = UserFilter.ALL,
-//
-//            renderItem = {index, _user -> object:Placeholder() {
-//                var user = _user
-//                val headingID = "hehe-" + puid()
-//
-//                init {
-//                    enterDisplayMode()
-//                }
-//
-//                fun enterDisplayMode() {
-//                    setShit(
-//                        headingActionItems = listOf(
-//                            faIcon(icon="pencil", tamy="edit", className="hover-color-BLUE_GRAY_800", fontSize="135%", cursor="pointer",
-//                                    onClick={enterEditMode()})),
-//                        body = renderProfile(ui, user).toToReactElementable())
-//                }
-//
-//
-//                fun enterEditMode() {
-//                    setShit(
-//                        headingActionItems = listOf(),
-//                        body = kdiv(marginBottom=15){o->
-//                            o- FormMatumba<UpdateUserRequest, GenericResponse>(FormSpec(
-//                                req = UpdateUserRequest()-{o->
-//                                    o.id.value = user.id
-//                                    o.state.value = user.state
-//                                    o.profileRejectionReason.value = user.profileRejectionReason.orEmpty()
-//                                    o.adminNotes.value = user.adminNotes.orEmpty()
-//
-//                                    o.immutableSignUpFields-{o->
-//                                        o.email.value = user.email
-//                                    }
-//
-//                                    o.mutableSignUpFields-{o->
-//                                        o.firstName.value = user.firstName
-//                                        o.lastName.value = user.lastName
-//                                    }
-//
-//                                    o.profileFields-{o->
-//                                        o.phone.value = user.phone.orEmpty()
-//                                        o.aboutMe.value = user.aboutMe.orEmpty()
-//                                    }
-//                                },
-//                                ui = ui,
-//                                dontShameButtons = true,
-//                                errorBannerStyle = json("marginTop" to 15),
-//                                primaryButtonTitle = t("TOTE", "Сохранить"),
-//                                cancelButtonTitle = t("TOTE", "Передумал"),
-//
-//                                getInvisibleFieldNames = {
-//                                    mutableListOf("profileRejectionReason", "banReason").apply {
-//                                        when (req.state.value) {
-//                                            UserState.PROFILE_REJECTED -> remove("profileRejectionReason")
-//                                            UserState.BANNED -> remove("banReason")
-//                                        }
-//                                    }
-//                                },
-//
-//                                onSuccessa = {res -> async{
-//                                    await<dynamic>(refreshRecord())
-//                                    scrollToHeading()
-//                                }},
-//
-//                                onCancel = {
-//                                    setPrevContent()
-//                                    scrollToHeading()
-//                                },
-//
-//                                onError = {
-//                                    scrollToHeading()
-//                                }
-//                            ))
-//                        }
-//                    )
-//
-//                    scrollToHeading()
-//                }
-//
-//                fun setShit(headingActionItems: List<ToReactElementable>, body: ToReactElementable) {
-//                    setContent(kdiv(tame=sufindex("item", index)){o->
-//                        o- kdiv(tame="heading", id=headingID, marginBottom=10, backgroundColor=BLUE_GRAY_50, borderBottom="1px solid ${BLUE_GRAY_100})"){o->
-//                            o- kspan(fontWeight="normal"){o->
-//                                o- spanc("title", user.firstName + " " + user.lastName) {style {fontSize = "135%"}}
-//                                o- spanc("no", "" + Shitus.nostring(json("no" to user.id))) {style {color = GRAY_500; marginLeft(12)}}}
-//
-//                            o- hor2(float="right", marginTop=4, marginRight=4, color=Color.BLUE_GRAY_600){o->
-//                                o+ headingActionItems
-//                            }
-//                        }
-//
-//                        o- body
-//                    })
-//
-////                    renderedThing.setContent(diva {tame = sufindex("item", index)
-////                        - diva {tame = "heading"; elementID = headingID; style {marginBottom(10); backgroundColor = BLUE_GRAY_50; borderBottom = "1px solid ${BLUE_GRAY_100}"}
-////                            - spana {style {fontWeight = "normal"}
-////                                - spanc("title", user.firstName + " " + user.lastName) {style {fontSize = "135%"}}
-////                                - spanc("no", "" + Shitus.nostring(json("no" to user.id))) {style {color = GRAY_500; marginLeft(12)}}}
-////
-////                            - asReactElement(Shitus.hor2(json("style" to json("float" to "right", "marginTop" to 4, "marginRight" to 4, "color" to Color.BLUE_GRAY_600),
-////                                "items" to headingActionItems)))
-////                        }
-////
-////                        - asReactElement(body)
-////                    }.toReactElement())
-//                }
-//
-//                fun scrollToHeading() {
-//                    val top = Shitus.byid(headingID).offset().top - 50 - 15
-//                    aps.global.requestAnimationFrame { js("$")(document).scrollTop(top) }
-//                }
-//
-//
-//                fun refreshRecord(): Promisoid<Unit> = async {
-//                    val res = await(GetUserRequest.send(ui.tokenMaybe!!, user.id))
-//                    return@async when (res) {
-//                        is ZimbabweResponse.Shitty -> setShit(
-//                            headingActionItems = listOf(),
-//                            body = Shitus.errorBanner(json("content" to res.error)).toToReactElementable())
-//
-//                        is ZimbabweResponse.Hunky -> {
-//                            user = res.meat.user
-//                            enterDisplayMode()
-//                        }
-//                    }
-//                }
-//            }
-//            }
-//        )
-//
-//        m.specifyPlus(
-//            plusFormSpec = FormSpec<AdminCreateUserRequest, GenericResponse>(
-//                req = AdminCreateUserRequest(), ui = ui,
-//                primaryButtonTitle = t("TOTE", "Создать засранца"),
-//                cancelButtonTitle = const.text.shebang.defaultCancelButtonTitle
-//            )
-//        )
-//
-//        return m.ignita()
+class AdminUsersPage {
+    private var bint by notNullOnce<MelindaBoobsInterface>()
+
+    // TODO:vgrechka Deduplicate    f5af6cdf-3fa1-4b09-985e-f949e187fa60
+    suspend fun load(): PageLoadingError? {
+        val boobs = makeBoobs()
+
+        bint = boobs.boobsInterface
+        boobs.load()?.let {return PageLoadingError(it.error)}
+        Globus.world.setPage(Page(header = usualHeader(t("TOTE", "Засранцы")),
+                                  headerControls = kdiv{o->
+                                      o- bint.controlsContent
+                                  },
+                                  body = bint.mainContent))
+        return pageLoadedFineResult
+    }
+
+    fun makeBoobs(): MelindaBoobs<UserRTO, AdminUserFilter, UserParamsRequest, CreateUserResponse, UserParamsRequest, UpdateUserResponse> {
+        return MelindaBoobs(
+            hasCreateButton = false,
+            createModalTitle = t("TOTE", "Новый засранец"),
+            makeCreateRequest = {UserParamsRequest(isUpdate = false)},
+            makeURLAfterCreation = {res->
+                makeURL(pages.uaAdmin.user, listOf(URLParamValue(SingleUserPage.urlQuery.id, res.userID)))
+            },
+            makeURLForReload = {boobsParams ->
+                makeURL(pages.uaAdmin.users, boobsParams)
+            },
+            filterValues = AdminUserFilter.values(),
+            defaultFilterValue = AdminUserFilter.ALL,
+            filterSelectKey = selects.adminUserFilter,
+            vaginalInterface = object:MelindaVaginalInterface<UserRTO, AdminUserFilter, UserParamsRequest, UpdateUserResponse> {
+                suspend override fun sendItemsRequest(req: ItemsRequest<AdminUserFilter>) = sendGetUsers(req)
+                override fun shouldShowFilter() = true
+                override fun getParentEntityID() = null
+                override val humanItemTypeName = t("TOTE", "засранец")
+                override fun makeDeleteItemRequest() = DeleteUserRequest()
+                override fun getItemFromUpdateItemResponse(res: UpdateUserResponse) = wtf("User should not be edited via vaginal interface    9820b940-e2c6-4b7a-995a-059b6ea9f175")
+                override val updateItemProcedureNameIfNotDefault get()= wtf("User should not be edited through vaginal interface    8ae8ddd0-fa99-4f6f-8a85-86323eea34ad")
+                override fun makeUpdateItemRequest(item: UserRTO): UserParamsRequest = wtf("User should not be edited through vaginal interface    95e613bf-844a-4db3-aeb9-65a00169d16a")
+
+                override fun makeLipsInterface(viewRootID: String, tongue: MelindaTongueInterface<UserRTO>): MelindaLipsInterface {
+                    return makeUsualMelindaLips(
+                        tongue, viewRootID, bint,
+                        icon = fa.user, // TODO:vgrechka Different icons for user kinds
+                        initialState = Unit,
+                        renderContent = {o->
+                            renderProfile(o, tongue.getItem())
+                        },
+                        titleLinkURL = makeURL(pages.uaAdmin.user, listOf(
+                            URLParamValue(SingleUserPage.urlQuery.id, tongue.getItem().id)
+                        )),
+                        hasEditControl = {false},
+                        hasDeleteControl = {false}
+                    )
+                }
+            }
+        )
     }
 }
 

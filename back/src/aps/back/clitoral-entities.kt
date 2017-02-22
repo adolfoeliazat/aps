@@ -51,6 +51,7 @@ class User(
     @Column(length = MAX_STRING) var banReason: String? = null
 ) : ClitoralEntity() {
     fun toRTO(searchWords: List<String> = listOf()): UserRTO {
+        val title = "$firstName $lastName"
         return UserRTO(
             id = id!!,
             createdAt = createdAt.time,
@@ -69,13 +70,17 @@ class User(
             aboutMe = aboutMe,
             aboutMeHighlightRanges = highlightRanges(aboutMe, searchWords),
             roles = setOf(),
-            profilePhone = profilePhone
+            profilePhone = profilePhone,
+            editable = false,
+            title = title,
+            titleHighlightRanges = highlightRanges(title, searchWords)
         )
     }
 }
 
 interface UserRepository : CrudRepository<User, Long> {
     fun findByEmail(x: String): User?
+    fun countByKindAndState(kind: UserKind, state: UserState): Long
 }
 
 interface EntityWithAdminNotes {

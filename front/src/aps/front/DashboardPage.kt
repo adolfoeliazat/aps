@@ -30,27 +30,35 @@ class DashboardPage(val world: World) {
                 setPage(kdiv(className = "row"){o->
                     o- section(t("Stuff to do", "Работенка"), kdiv{o->
                         val r = res.meat
-                        val total = r.ordersToApprove
+
+                        class Metric(val value: Long, val render: () -> ToReactElementable)
+                        val metrics = listOf(
+                            Metric(
+                                value = r.ordersToApprove,
+                                render = {renderWorkItem(
+                                    title = t("TOTE", "Новых заказов рассмотреть"),
+                                    amount = r.ordersToApprove,
+                                    url = makeURL(pages.uaAdmin.orders, listOf(
+                                        URLParamValue(UAAdminOrdersPage().makeBoobs().urlQuery.filter, AdminOrderFilter.TO_APPROVE)
+                                    )),
+                                    linkKey = links.adminDashboard.ordersToApprove)}),
+
+                            Metric(
+                                value = r.writerProfilesToApprove,
+                                render = {renderWorkItem(
+                                    title = t("TOTE", "Заапрувить профилей писателей"), amount = r.writerProfilesToApprove,
+                                    url = makeURL(pages.uaAdmin.users, listOf(
+                                        URLParamValue(AdminUsersPage().makeBoobs().urlQuery.filter, AdminUserFilter.PROFILE_APPROVAL_PENDING)
+                                    )),
+                                    linkKey = links.adminDashboard.writerProfilesToApprove)}))
+
+                        val total = metrics.sumByLong {it.value}
                         when (total) {
                             0L -> o- div(t("TOTE", "Сюшай, савсэм нэт работы..."))
                             else -> {
-                                if (r.ordersToApprove > 0) {
-                                    o- kdiv(className = c.workItem){o->
-                                        o- kdiv(className = c.workItemDots){o->
-                                            o- ".".repeat(200)}
-                                        o- kdiv(className = c.workItemLinkWideContainer){o->
-                                            o- kspan(className = c.workItemLinkNarrowContainer){o->
-                                                o- urlLink(key = links.adminDashboard.ordersToApprove,
-                                                           url = makeURL(pages.uaAdmin.orders, listOf(
-                                                               URLParamValue(UAAdminOrdersPage.urlQuery.filter, AdminOrderFilter.TO_APPROVE)
-                                                           )),
-                                                           attrs = Attrs(className = c.workItemLink),
-                                                           linkParams = LinkParams(
-                                                               title = t("TOTE", "Новых заказов рассмотреть")
-                                                           ))}}
-                                        o- kdiv(className = c.workItemBadgeContainer){o->
-                                            o- kspan(className = "badge ${c.workItemBadge}"){o->
-                                                o- r.ordersToApprove.toString()}}
+                                for (metric in metrics) {
+                                    if (metric.value > 0) {
+                                        o- metric.render()
                                     }
                                 }
                             }
@@ -61,6 +69,29 @@ class DashboardPage(val world: World) {
                         o- chevronLink(t("Sign out", "Выйти прочь")) {}
                     })
                 })
+            }
+        }
+    }
+
+    private fun renderWorkItem(title: String, amount: Long, url: String, linkKey: LinkKey): ElementBuilder {
+        return kdiv(className = c.workItem){o->
+            o- kdiv(className = c.workItemDots){o->
+                o- ".".repeat(200)
+            }
+            o- kdiv(className = c.workItemLinkWideContainer){o->
+                o- kspan(className = c.workItemLinkNarrowContainer){o->
+                    o- urlLink(key = linkKey,
+                               url = url,
+                               attrs = Attrs(className = c.workItemLink),
+                               linkParams = LinkParams(
+                                    title = title
+                                ))
+                }
+            }
+            o- kdiv(className = c.workItemBadgeContainer){o->
+                o- kspan(className = "badge ${c.workItemBadge}"){o->
+                    o- amount.toString()
+                }
             }
         }
     }

@@ -262,7 +262,7 @@ class GetUserRequest() : RequestMatumba() {
     }
 }
 
-enum class UserFilter(override val title: String): Titled {
+enum class AdminUserFilter(override val title: String): Titled {
     ALL(t("TOTE", "Все")),
     COOL(t("TOTE", "Прохладные")),
     PROFILE_APPROVAL_PENDING(t("TOTE", "Ждут аппрува")),
@@ -414,6 +414,7 @@ abstract class DeleteRequest : RequestMatumba() {
 
 class UADeleteOrderFileRequest : DeleteRequest()
 class UADeleteOrderRequest : DeleteRequest()
+class DeleteUserRequest : DeleteRequest()
 
 enum class DocumentUrgency(override val title: String) : Titled {
     H12(t("TOTE", "12 часов")),

@@ -43,6 +43,8 @@ object pages {
         val orders by namedFucker {privatePage(it, t("Orders", "Заказы")) {UAAdminOrdersPage().load()}}; val orders_testRef = TestRef(orders)
         val order by namedFucker {privatePage(it) {UASingleOrderPage(it).load()}}; val order_testRef = TestRef(orders)
         val dashboard by namedFucker {privatePage(it) {DashboardPage(it).load()}}; val dashboard_testRef = TestRef(dashboard)
+        val users by namedFucker {privatePage(it, t("Users", "Засранцы")) {AdminUsersPage().load()}}; val users_testRef = TestRef(users)
+        val user by namedFucker {privatePage(it) {SingleUserPage().load()}}; val user_testRef = TestRef(user)
     }
 }
 

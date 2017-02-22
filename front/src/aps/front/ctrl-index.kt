@@ -58,6 +58,7 @@ object selects                           : Fuckers<SelectKey<*>>(null) {
     val ordering                         by namedFucker({SelectKey<Ordering>(it)}); val ordering_testRef = TestRef(ordering)
     val customerFileFilter               by namedFucker({SelectKey<CustomerFileFilter>(it)}); val customerFileFilter_testRef = TestRef(customerFileFilter)
     val adminOrderFilter                 by namedFucker({SelectKey<AdminOrderFilter>(it)}); val adminOrderFilter_testRef = TestRef(adminOrderFilter)
+    val adminUserFilter                  by namedFucker({SelectKey<AdminUserFilter>(it)}); val adminUserFilter_testRef = TestRef(adminUserFilter)
 }
 
 object links                             : Fuckers<LinkKey>(null) {
@@ -67,6 +68,7 @@ object links                             : Fuckers<LinkKey>(null) {
 
     object adminDashboard                : Fuckers<LinkKey>(null) {
         val ordersToApprove              by namedFucker(::LinkKey); val ordersToApprove_testRef = TestRef(ordersToApprove)
+        val writerProfilesToApprove      by namedFucker(::LinkKey); val writerProfilesToApprove_testRef = TestRef(writerProfilesToApprove)
     }
 }
 

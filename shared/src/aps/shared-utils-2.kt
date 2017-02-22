@@ -83,7 +83,13 @@ fun threeTimes(block: () -> Unit) {
     for (i in 1..3) block()
 }
 
-
+inline fun <T> Iterable<T>.sumByLong(selector: (T) -> Long): Long {
+    var sum: Long = 0
+    for (element in this) {
+        sum += selector(element)
+    }
+    return sum
+}
 
 
 

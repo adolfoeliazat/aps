@@ -91,6 +91,20 @@ interface Xlobal {
     val user: UserRTO?
 }
 
+
+class UserParamsRequest(isUpdate: Boolean) : RequestMatumba(), RequestWithAdminNotes {
+    val userID by longHiddenField(include = isUpdate)
+    val firstName = TextField(this, fields.signUpFirstName)
+    val lastName = TextField(this, fields.signUpLastName)
+    val email = TextField(this, fields.signUpEmail)
+    val phone = TextField(this, fields.profilePhone)
+    override val adminNotes = TextField(this, fields.adminNotes)
+}
+
+class CreateUserResponse(val userID: Long) : CommonResponseFieldsImpl()
+class UpdateUserResponse : CommonResponseFieldsImpl()
+
+
 class UAOrderParamsRequest(isAdmin: Boolean, isUpdate: Boolean) : RequestMatumba(), RequestWithAdminNotes {
     val orderID by longHiddenField(include = isUpdate)
     val documentType = SelectField(this, fields.uaDocumentType)
@@ -106,7 +120,7 @@ class UAOrderParamsRequest(isAdmin: Boolean, isUpdate: Boolean) : RequestMatumba
 }
 
 class UACreateOrderResponse(val orderID: Long) : CommonResponseFieldsImpl()
-class UAUpdateOrderResponse() : CommonResponseFieldsImpl()
+class UAUpdateOrderResponse : CommonResponseFieldsImpl()
 
 class TestSQLFiddleRequest : RequestMatumba() {
     class Response(val spew: String, val isError: Boolean) : CommonResponseFieldsImpl()
@@ -189,7 +203,8 @@ class UACustomerSendOrderDraftForApprovalRequest : RequestMatumba() {
 }
 
 class UAAdminGetStuffToDoRequest : RequestMatumba() {
-    class Response(val ordersToApprove: Long) : CommonResponseFieldsImpl()
+    class Response(val ordersToApprove: Long,
+                   val writerProfilesToApprove: Long) : CommonResponseFieldsImpl()
 }
 
 class ReturnOrderToCustomerForFixingRequest : RequestMatumba() {

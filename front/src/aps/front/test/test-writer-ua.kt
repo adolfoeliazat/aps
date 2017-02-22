@@ -662,10 +662,10 @@ fun expectItemEditorFormControls(state: String, chunkIndex: String = "000", item
             "chunk-i${chunkIndex}.item-i${itemIndex}.SelectField-state.label" to "Статус"
         ))
 
-        if (state === UserFilter.COOL.name) {
+        if (state === AdminUserFilter.COOL.name) {
             global.Object.assign(expected, json(
                 "chunk-i${chunkIndex}.item-i${itemIndex}.SelectField-state.Select.selected.title" to "Прохладный",
-                "chunk-i${chunkIndex}.item-i${itemIndex}.SelectField-state.Select.selected.value" to UserFilter.COOL.name
+                "chunk-i${chunkIndex}.item-i${itemIndex}.SelectField-state.Select.selected.value" to AdminUserFilter.COOL.name
             ))
         }
         else if (state === "PROFILE_APPROVAL_PENDING") {
@@ -680,10 +680,10 @@ fun expectItemEditorFormControls(state: String, chunkIndex: String = "000", item
                 "chunk-i${chunkIndex}.item-i${itemIndex}.SelectField-state.Select.selected.value" to "PROFILE_REJECTED"
             ))
         }
-        else if (state === UserFilter.BANNED.name) {
+        else if (state === AdminUserFilter.BANNED.name) {
             global.Object.assign(expected, json(
                 "chunk-i${chunkIndex}.item-i${itemIndex}.SelectField-state.Select.selected.title" to "Забанен",
-                "chunk-i${chunkIndex}.item-i${itemIndex}.SelectField-state.Select.selected.value" to UserFilter.BANNED.name
+                "chunk-i${chunkIndex}.item-i${itemIndex}.SelectField-state.Select.selected.value" to AdminUserFilter.BANNED.name
             ))
         }
         else {
@@ -710,15 +710,15 @@ fun expectHeaderControls(search: String, filter: String, ordering: String): (dyn
             "Input-search" to search,
 
             "Select-filter.item-i000.title" to "Все",
-            "Select-filter.item-i000.value" to UserFilter.ALL.name,
+            "Select-filter.item-i000.value" to AdminUserFilter.ALL.name,
             "Select-filter.item-i001.title" to "Прохладные",
-            "Select-filter.item-i001.value" to UserFilter.COOL.name,
+            "Select-filter.item-i001.value" to AdminUserFilter.COOL.name,
             "Select-filter.item-i002.title" to "Ждут аппрува",
-            "Select-filter.item-i002.value" to UserFilter.PROFILE_APPROVAL_PENDING.name,
+            "Select-filter.item-i002.value" to AdminUserFilter.PROFILE_APPROVAL_PENDING.name,
             "Select-filter.item-i003.title" to "Завернутые",
-            "Select-filter.item-i003.value" to UserFilter.PROFILE_REJECTED.name,
+            "Select-filter.item-i003.value" to AdminUserFilter.PROFILE_REJECTED.name,
             "Select-filter.item-i004.title" to "Забаненые",
-            "Select-filter.item-i004.value" to UserFilter.BANNED.name,
+            "Select-filter.item-i004.value" to AdminUserFilter.BANNED.name,
 
             "Select-ordering.item-i000.title" to "Сначала старые",
             "Select-ordering.item-i000.value" to Ordering.ASC.name,
@@ -728,34 +728,34 @@ fun expectHeaderControls(search: String, filter: String, ordering: String): (dyn
             "Select-ordering.selected.value" to Ordering.DESC.name
         ))
 
-        if (filter == UserFilter.ALL.name) {
+        if (filter == AdminUserFilter.ALL.name) {
             global.Object.assign(expected, json(
                 "Select-filter.selected.title" to "Все",
-                "Select-filter.selected.value" to UserFilter.ALL.name
+                "Select-filter.selected.value" to AdminUserFilter.ALL.name
             ))
         }
-        else if (filter == UserFilter.COOL.name) {
+        else if (filter == AdminUserFilter.COOL.name) {
             global.Object.assign(expected, json(
                 "Select-filter.selected.title" to "Прохладные",
-                "Select-filter.selected.value" to UserFilter.COOL.name
+                "Select-filter.selected.value" to AdminUserFilter.COOL.name
             ))
         }
-        else if (filter == UserFilter.PROFILE_APPROVAL_PENDING.name) {
+        else if (filter == AdminUserFilter.PROFILE_APPROVAL_PENDING.name) {
             global.Object.assign(expected, json(
                 "Select-filter.selected.title" to "Ждут аппрува",
-                "Select-filter.selected.value" to UserFilter.PROFILE_APPROVAL_PENDING.name
+                "Select-filter.selected.value" to AdminUserFilter.PROFILE_APPROVAL_PENDING.name
             ))
         }
-        else if (filter == UserFilter.PROFILE_REJECTED.name) {
+        else if (filter == AdminUserFilter.PROFILE_REJECTED.name) {
             global.Object.assign(expected, json(
                 "Select-filter.selected.title" to "Завернутые",
-                "Select-filter.selected.value" to UserFilter.PROFILE_REJECTED.name
+                "Select-filter.selected.value" to AdminUserFilter.PROFILE_REJECTED.name
             ))
         }
-        else if (filter == UserFilter.BANNED.name) {
+        else if (filter == AdminUserFilter.BANNED.name) {
             global.Object.assign(expected, json(
                 "Select-filter.selected.title" to "Забаненые",
-                "Select-filter.selected.value" to UserFilter.BANNED.name
+                "Select-filter.selected.value" to AdminUserFilter.BANNED.name
             ))
         }
         else {

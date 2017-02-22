@@ -56,7 +56,7 @@ class MelindaBoobs<
     val createModalTitle: String,
     val makeCreateRequest: () -> CreateRequest,
     val createProcedureNameIfNotDefault: String? = null,
-    val makeURLAfterCreation: () -> String,
+    val makeURLAfterCreation: (CreateResponse) -> String,
     val makeURLForReload: (boobsParams: List<URLParamValue<*>>) -> String,
     val filterValues: Array<Filter>,
     val defaultFilterValue: Filter,
@@ -114,8 +114,8 @@ class MelindaBoobs<
                                     procedureName = createProcedureNameIfNotDefault,
                                     req = makeCreateRequest()
                                 ),
-                                onSuccessa = {
-                                    Globus.world.replaceNavigate(makeURLAfterCreation())
+                                onSuccessa = {res->
+                                    Globus.world.replaceNavigate(makeURLAfterCreation(res))
                                 }
                             )
                         }

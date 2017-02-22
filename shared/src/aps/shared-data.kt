@@ -3,7 +3,9 @@ package aps
 import aps.Color.*
 
 class UserRTO(
-    val id: Long,
+    override var id: Long,
+    override var title: String,
+    override var titleHighlightRanges: List<IntRangeRTO>,
     val createdAt: Long,
     val updatedAt: Long,
     val profileUpdatedAt: Long?,
@@ -20,8 +22,9 @@ class UserRTO(
     val profilePhone: String,
     val aboutMe: String,
     val aboutMeHighlightRanges: List<IntRangeRTO>,
-    val roles: Set<UserRole>
-) : RTOWithAdminNotes
+    val roles: Set<UserRole>,
+    override var editable: Boolean
+) : RTOWithAdminNotes, MelindaItemRTO
 
 class UAOrderRTO(
     override var id: Long,

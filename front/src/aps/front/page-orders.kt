@@ -4,12 +4,9 @@ import aps.*
 import into.kommon.*
 
 class UAAdminOrdersPage {
-    object urlQuery : URLQueryParamsMarker {
-        val filter by EnumURLParam(AdminOrderFilter.values(), default = AdminOrderFilter.ALL)
-    }
-
     private var bint by notNullOnce<MelindaBoobsInterface>()
 
+    // TODO:vgrechka Deduplicate    f5af6cdf-3fa1-4b09-985e-f949e187fa60
     suspend fun load(): PageLoadingError? {
         val boobs = makeBoobs()
 
@@ -32,19 +29,19 @@ class UAAdminOrdersPage {
                 makeURL(pages.uaAdmin.order, listOf())
             },
             makeURLForReload = {boobsParams ->
-                makeURL(pages.uaAdmin.order, boobsParams)
+                makeURL(pages.uaAdmin.orders, boobsParams)
             },
             filterValues = AdminOrderFilter.values(),
             defaultFilterValue = AdminOrderFilter.ALL,
             filterSelectKey = selects.adminOrderFilter,
-            vaginalInterface = object : MelindaVaginalInterface<UAOrderRTO, AdminOrderFilter, UAOrderParamsRequest, UAUpdateOrderResponse> {
+            vaginalInterface = object:MelindaVaginalInterface<UAOrderRTO, AdminOrderFilter, UAOrderParamsRequest, UAUpdateOrderResponse> {
                 suspend override fun sendItemsRequest(req: ItemsRequest<AdminOrderFilter>) = sendUAAdminGetOrders(req)
                 override fun shouldShowFilter() = true
                 override fun getParentEntityID() = null
                 override val humanItemTypeName = t("TOTE", "заказ")
                 override fun makeDeleteItemRequest() = UADeleteOrderRequest()
-                override fun getItemFromUpdateItemResponse(res: UAUpdateOrderResponse) = wtf("Order should not be edited via vaginal interface. ba7ab79e-e99a-49b9-9dfa-2d4a452b23b0")
-                override val updateItemProcedureNameIfNotDefault get()= wtf("Order should not be edited through vaginal interface. 19ca13a9-7432-4c33-aff3-0e9e9026b09d")
+                override fun getItemFromUpdateItemResponse(res: UAUpdateOrderResponse) = wtf("Order should not be edited through vaginal interface    ba7ab79e-e99a-49b9-9dfa-2d4a452b23b0")
+                override val updateItemProcedureNameIfNotDefault get()= wtf("Order should not be edited through vaginal interface    19ca13a9-7432-4c33-aff3-0e9e9026b09d")
 
                 override fun makeUpdateItemRequest(item: UAOrderRTO): UAOrderParamsRequest {
                     return UAOrderParamsRequest(isAdmin = isAdmin(), isUpdate = true).populateCheckingCompleteness{o->

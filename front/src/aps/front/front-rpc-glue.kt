@@ -37,6 +37,7 @@ suspend fun send(req: ConfirmOrderRequest): FormResponse2<ConfirmOrderRequest.Re
 suspend fun send(req: SaveCapturedVisualShitRequest): SaveCapturedVisualShitRequest.Response = await(sendDangerousJSONProcedure(req))
 suspend fun sendUACustomerGetOrderFiles(req: ItemsRequest<CustomerFileFilter>): FormResponse2<ItemsResponse<UAOrderFileRTO>> = _send3SofteningShit(req, "UACustomerGetOrderFiles")
 suspend fun sendUAAdminGetOrders(req: ItemsRequest<AdminOrderFilter>): FormResponse2<ItemsResponse<UAOrderRTO>> = _send3SofteningShit(req, "UAAdminGetOrders")
+suspend fun sendGetUsers(req: ItemsRequest<AdminUserFilter>): FormResponse2<ItemsResponse<UserRTO>> = _send3SofteningShit(req, "GetUsers")
 suspend fun send(req: TestTakeTestPointSnapshotRequest): TestTakeTestPointSnapshotRequest.Response = await(callDangerousMatumba(req))
 suspend fun send(req: TestRestoreTestPointSnapshotRequest): TestRestoreTestPointSnapshotRequest.Response = await(callDangerousMatumba(req))
 suspend fun send(token: String?, req: SignInWithTokenRequest): FormResponse2<SignInResponse> = _send2(token, req)
