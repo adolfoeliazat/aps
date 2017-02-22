@@ -9,12 +9,34 @@
 package aps.front
 
 import aps.*
-import into.kommon.*
-import kotlin.js.json
 
-class UAWriterProfilePage(val ui: World) {
+class UAWriterProfilePage {
     suspend fun load(): PageLoadingError? {
-        imf("acd66158-9717-4d4b-8eb2-01a0af66a5d4")
+        check(user().kind == UserKind.WRITER){"a6870d20-8094-4942-9dc5-dc548189ba71"}
+        Globus.world.setPage(Page(
+            header = usualHeader(t("TOTE", "Профиль")),
+            body = kdiv{o->
+                o- FormMatumba<UpdateProfileRequest, UpdateProfileRequest.Response>(FormSpec(
+                    req = UpdateProfileRequest().populateCheckingCompleteness{o->
+                        o.firstName.value = user().firstName
+                        o.lastName.value = user().lastName
+                        o.profilePhone.value = user().profilePhone
+                        o.aboutMe.value = user().aboutMe
+                    }
+                ))
+            }
+        ))
+        return pageLoadedFineResult
+    }
+}
+
+
+
+
+
+
+
+
 //        val primaryButtonTitle = t("TOTE", "Отправить на проверку")
 //
 //        var pageBody: ReactElement
@@ -83,8 +105,3 @@ class UAWriterProfilePage(val ui: World) {
 //            headerControls = headerControls
 //        ))
 //        return null
-    }
-}
-
-
-

@@ -287,8 +287,8 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 val dasja1 = Morda("dasja1", url = fconst.test.url.writer, fillTypedStorageLocal = {}, fillRawStorageLocal = {})
                 dasja1.coitizeAndBootAsserting(assertStatic = {assertAnonymousWriterStaticIndexScreen()}, assertDynamic = {assertAnonymousWriterDynamicIndexScreen()})
                 topNavItemSequence(page = pages.uaWriter.signIn_testRef, aid = "aea03aff-9c1a-4aaa-9786-ce4be57018fd")
-                inputSetValue(fields.emailInSignInForm_testRef, "dasja@test.shit.ua")
-                inputSetValue(fields.passwordInSignInForm_testRef, "dasja-secret")
+                inputSetValue(fields.signInEmail_testRef, "dasja@test.shit.ua")
+                inputSetValue(fields.signInPassword_testRef, "dasja-secret")
                 askMiranda(MirandaTestImposeNextGeneratedUserToken("dasja-fucking-token"))
                 submitFormSequence(testShit, aid = "0132de44-85ca-41a5-b926-859e2bd07461")
             }
@@ -433,6 +433,9 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 submitFormSequence("bf290946-c51f-419c-b800-ca261db3dac4")
                 // ___stopHereAndEverywhereLater()
                 debugMailboxCheck("3b410e10-6191-4ddb-8e46-49fe1da5ce75")
+
+                inputSetValue(fields.signInPassword_testRef, "kafka-secret")
+                submitFormSequence("3589a205-9de3-4ea2-9352-04efccaf92bb")
             }
         }
     }

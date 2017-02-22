@@ -31,7 +31,7 @@ object pages {
         val faq by namedFucker {staticPage(it, t("FAQ", "ЧаВо"))}
         val orders by namedFucker {privatePage(it, t("My Orders", "Мои заказы")) {imf()}}
         val store by namedFucker {privatePage(it, t("Store", "Стор")) {imf()}}
-        val profile by namedFucker {PageSpec(it, navTitle = null, skipFirstTimeRendering = false, requiresSignIn = true) {UAWriterProfilePage(it).load()}}
+        val profile by namedFucker {PageSpec(it, navTitle = null, skipFirstTimeRendering = false, requiresSignIn = true) {UAWriterProfilePage().load()}}
         val dashboard by namedFucker {privatePage(it) {DashboardPage(it).load()}}
         val signIn by namedFucker(::signInPage); val signIn_testRef = TestRef(signIn)
         val signUp by namedFucker(::signUpPage); val signUp_testRef = TestRef(signUp)

@@ -128,13 +128,13 @@ fun UAOrderState.toJOOQ(): JQUaOrderState = when (this) {
     else -> die("Fuck UAOrderState.toJOOQ")
 }
 
-fun ProcedureContext.loadUser(id: Long): UserRTO {
-    return tracingSQL("Select user") {q
-        .select().from(USERS)
-        .where(USERS.ID.eq(id))
-        .fetchOne().into(JQUsers::class.java).toRTO(q)
-    }
-}
+//fun ProcedureContext.loadUser(id: Long): UserRTO {
+//    return tracingSQL("Select user") {q
+//        .select().from(USERS)
+//        .where(USERS.ID.eq(id))
+//        .fetchOne().into(JQUsers::class.java).toRTO(q)
+//    }
+//}
 
 //fun loadFile(q: DSLContext, id: Long, searchWords: List<String>, lang: Language): FileRTO {
 //    val x = tracingSQL("Select file") {q
@@ -168,35 +168,35 @@ fun ProcedureContext.loadUser(id: Long): UserRTO {
 //    )
 //}
 
-fun JQUsers.toRTO(q: DSLContext): UserRTO {
-    val roles = tracingSQL("Select roles") {q
-        .select().from(USER_ROLES)
-        .where(USER_ROLES.USER_ID.eq(id))
-        .fetchInto(JQUserRoles::class.java)
-    }
-
-    // TODO:vgrechka Double-check all secrets are excluded from UserRTO    7c2d1191-d43b-485c-af67-b95b46bbf62b
-    return UserRTO(
-        id = "" + id,
-        deleted = deleted,
-        insertedAt = insertedAt.toPortable(),
-        updatedAt = updatedAt.toPortable(),
-        profileUpdatedAt = profileUpdatedAt.toMaybePortable(),
-        kind = kind.toApp(),
-        lang = lang.toLanguage(),
-        email = email,
-        state = state.toUserState(),
-        profileRejectionReason = profileRejectionReason,
-        banReason = banReason,
-        adminNotes = adminNotes,
-        firstName = firstName,
-        lastName = lastName,
-        phone = phone,
-        compactPhone = compactPhone,
-        aboutMe = aboutMe,
-        roles = roles.map{UserRole.valueOf(it.role)}.toSet()
-    )
-}
+//fun JQUsers.toRTO(q: DSLContext): UserRTO {
+//    val roles = tracingSQL("Select roles") {q
+//        .select().from(USER_ROLES)
+//        .where(USER_ROLES.USER_ID.eq(id))
+//        .fetchInto(JQUserRoles::class.java)
+//    }
+//
+//    // TODO:vgrechka Double-check all secrets are excluded from UserRTO    7c2d1191-d43b-485c-af67-b95b46bbf62b
+//    return UserRTO(
+//        id = "" + id,
+//        deleted = deleted,
+//        insertedAt = insertedAt.toPortable(),
+//        updatedAt = updatedAt.toPortable(),
+//        profileUpdatedAt = profileUpdatedAt.toMaybePortable(),
+//        kind = kind.toApp(),
+//        lang = lang.toLanguage(),
+//        email = email,
+//        state = state.toUserState(),
+//        profileRejectionReason = profileRejectionReason,
+//        banReason = banReason,
+//        adminNotes = adminNotes,
+//        firstName = firstName,
+//        lastName = lastName,
+//        phone = phone,
+//        compactPhone = compactPhone,
+//        aboutMe = aboutMe,
+//        roles = roles.map{UserRole.valueOf(it.role)}.toSet()
+//    )
+//}
 
 fun JQUaOrderFilesRecord.toRTO(ctx: ProcedureContext, searchWords: List<String> = listOf()): UAOrderFileRTO {
     die("Kill JQUaOrderFilesRecord.toRTO")

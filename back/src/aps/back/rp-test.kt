@@ -132,7 +132,7 @@ testProcedure(
     }
 
     fun seedUsers() {
-        userRepo.save(User(email = "dasja@test.shit.ua", firstName = "Дася", lastName = "Админовна", phone = "911", kind = UserKind.ADMIN, state = UserState.COOL, passwordHash = BCrypt.hashpw("dasja-secret", BCrypt.gensalt())))
+        userRepo.save(User(email = "dasja@test.shit.ua", firstName = "Дася", lastName = "Админовна", profilePhone = "911", kind = UserKind.ADMIN, state = UserState.COOL, passwordHash = BCrypt.hashpw("dasja-secret", BCrypt.gensalt())))
     }
 }
 

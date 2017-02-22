@@ -121,8 +121,8 @@ sealed class FormResponse2<Meat> {
 class SignInResponse(val token: String, val user: UserRTO) : CommonResponseFieldsImpl()
 
 class SignInWithPasswordRequest : RequestMatumba() {
-    val email = TextField(this, fields.emailInSignInForm)
-    val password = TextField(this, fields.passwordInSignInForm)
+    val email = TextField(this, fields.signInEmail)
+    val password = TextField(this, fields.signInPassword)
 }
 
 class SignInWithTokenRequest : RequestMatumba() {
@@ -136,12 +136,13 @@ class SignUpRequest : RequestMatumba() {
     class Response : CommonResponseFieldsImpl()
 }
 
-class UpdateProfileRequest() : RequestMatumba() {
-    init {imf("098d6c0c-2e9e-41d8-a294-1faed488d511")}
-//    class Response(val newUser: UserRTO) : CommonResponseFieldsImpl()
-//
-//    val mutableSignUpFields = MutableSignUpFields(this)
-//    val profileFields = ProfileFields(this)
+class UpdateProfileRequest : RequestMatumba() {
+    val firstName = TextField(this, fields.signUpFirstName)
+    val lastName = TextField(this, fields.signUpLastName)
+    val profilePhone = TextField(this, fields.profilePhone)
+    val aboutMe = TextField(this, fields.aboutMe)
+
+    class Response(val newUser: UserRTO) : CommonResponseFieldsImpl()
 }
 
 open class UpdateUserRequest() : RequestMatumba() {

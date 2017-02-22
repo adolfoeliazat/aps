@@ -41,17 +41,21 @@ class User(
     @Column(length = MAX_STRING) var firstName: String,
     @Column(length = MAX_STRING) var lastName: String,
     @Column(length = MAX_STRING) var passwordHash: String,
-    @Column(length = MAX_STRING) var phone: String,
+    @Column(length = MAX_STRING) var profilePhone: String,
     @Enumerated(EnumType.STRING) var kind: UserKind,
-    @Enumerated(EnumType.STRING) var state: UserState
+    @Enumerated(EnumType.STRING) var state: UserState,
+    @Column(length = MAX_STRING) var adminNotes: String = "",
+    var profileUpdatedAt: Timestamp? = null,
+    @Column(length = MAX_STRING) var aboutMe: String = "",
+    @Column(length = MAX_STRING) var profileRejectionReason: String? = null,
+    @Column(length = MAX_STRING) var banReason: String? = null
 ) : ClitoralEntity() {
     fun toRTO(): UserRTO {
         return UserRTO(
-            id = id.toString(),
-            deleted = deleted,
-            insertedAt = createdAt.toPortable(),
-            updatedAt = updatedAt.toPortable(),
-            profileUpdatedAt = null,
+            id = id!!,
+            createdAt = createdAt.time,
+            updatedAt = updatedAt.time,
+            profileUpdatedAt = profileUpdatedAt?.time,
             kind = kind,
             lang = Language.UA,
             email = email,
@@ -59,12 +63,11 @@ class User(
             profileRejectionReason = null,
             banReason = null,
             adminNotes = "",
-            firstName = firstName ?: "fuck",
-            lastName = lastName ?: "shit",
-            phone = phone,
-            compactPhone = phone,
-            aboutMe = "",
-            roles = setOf()
+            firstName = firstName,
+            lastName = lastName,
+            aboutMe = aboutMe,
+            roles = setOf(),
+            profilePhone = profilePhone
         )
     }
 }

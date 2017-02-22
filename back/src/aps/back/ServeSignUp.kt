@@ -30,7 +30,7 @@ import java.util.*
                     firstName = req.firstName.value,
                     lastName = req.lastName.value,
                     passwordHash = hashPassword(password),
-                    phone = "N/A",
+                    profilePhone = "",
                     kind = when (ctx.clientKind) {
                         ClientKind.UA_CUSTOMER -> UserKind.CUSTOMER
                         ClientKind.UA_WRITER -> UserKind.WRITER

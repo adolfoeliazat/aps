@@ -82,15 +82,15 @@ class Chunk<T>(val items: List<T>, val moreFromId: Long?)
 //    return Chunk(items, moreFromId)
 //}
 
-fun loadUser(ctx: ProcedureContext): UserRTO {
-    val users = tracingSQL("Select user") {ctx.q
-        .select().from(USERS)
-        .where(USERS.ID.eq(ctx.user_killme.id.toLong()))
-        .fetch().into(JQUsers::class.java)
-    }
-
-    return users.first().toRTO(ctx.q)
-}
+//fun loadUser(ctx: ProcedureContext): UserRTO {
+//    val users = tracingSQL("Select user") {ctx.q
+//        .select().from(USERS)
+//        .where(USERS.ID.eq(ctx.user_killme.id.toLong()))
+//        .fetch().into(JQUsers::class.java)
+//    }
+//
+//    return users.first().toRTO(ctx.q)
+//}
 
 object BackGlobus {
     var tracingEnabled = true

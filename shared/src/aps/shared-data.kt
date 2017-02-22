@@ -3,11 +3,10 @@ package aps
 import aps.Color.*
 
 class UserRTO(
-    val id: String,
-    val deleted: Boolean,
-    val insertedAt: TimestampRTO,
-    val updatedAt: TimestampRTO,
-    val profileUpdatedAt: TimestampRTO?,
+    val id: Long,
+    val createdAt: Long,
+    val updatedAt: Long,
+    val profileUpdatedAt: Long?,
     val kind: UserKind,
     val lang: Language,
     val email: String,
@@ -17,9 +16,8 @@ class UserRTO(
     val adminNotes: String,
     val firstName: String,
     val lastName: String,
-    val phone: String?,
-    val compactPhone: String?,
-    val aboutMe: String?,
+    val profilePhone: String,
+    val aboutMe: String,
     val roles: Set<UserRole>
 )
 

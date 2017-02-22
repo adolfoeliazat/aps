@@ -277,19 +277,19 @@ adminProcedure(
         considerNextRequestTimestampFiddling = true,
         logRequestJSON = true))
 
-fun userByToken(q: DSLContext, token: String): UserRTO {
-    val rows = tracingSQL("Select token") {q
-        .select().from(USER_TOKENS, USERS)
-        .where(USER_TOKENS.TOKEN.eq(token))
-        .and(USERS.ID.eq(USER_TOKENS.USER_ID))
-        .fetch().into(JQUsers::class.java)
-    }
-    if (rows.isEmpty()) bitch("Invalid token") // TODO:vgrechka Redirect user to sign-in page    301a55be-8bb4-4c60-ae7b-a6201f17d8e2
-
-    // TODO:vgrechka Check that user kind matches requesting client kind    fc937ee4-010c-4f5e-bece-5d7db51bf8c1
-
-    return rows[0].toRTO(q)
-}
+//fun userByToken(q: DSLContext, token: String): UserRTO {
+//    val rows = tracingSQL("Select token") {q
+//        .select().from(USER_TOKENS, USERS)
+//        .where(USER_TOKENS.TOKEN.eq(token))
+//        .and(USERS.ID.eq(USER_TOKENS.USER_ID))
+//        .fetch().into(JQUsers::class.java)
+//    }
+//    if (rows.isEmpty()) bitch("Invalid token") // TODO:vgrechka Redirect user to sign-in page    301a55be-8bb4-4c60-ae7b-a6201f17d8e2
+//
+//    // TODO:vgrechka Check that user kind matches requesting client kind    fc937ee4-010c-4f5e-bece-5d7db51bf8c1
+//
+//    return rows[0].toRTO(q)
+//}
 
 fun userByToken2(token: String): User {
     val repo = springctx.getBean(UserTokenRepository::class.java)

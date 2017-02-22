@@ -34,7 +34,7 @@ import java.util.*
                             firstName = order.customerFirstName,
                             lastName = order.customerLastName,
                             passwordHash = hashPassword(generatePassword()),
-                            phone = order.customerPhone,
+                            profilePhone = order.customerPhone,
                             kind = UserKind.CUSTOMER,
                             state = UserState.COOL
                         ))
