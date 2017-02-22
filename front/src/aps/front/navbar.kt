@@ -101,7 +101,10 @@ fun renderTopNavbar(clientKind: ClientKind,
                     when (user.kind) {
                         UserKind.WRITER -> {
                             val q = pages.uaWriter
-                            listOf(q.orders, q.store)
+                            when (user.state) {
+                                UserState.COOL -> listOf(q.orders, q.store)
+                                else -> listOf()
+                            }
                         }
                         UserKind.ADMIN -> {
                             val q = pages.uaAdmin

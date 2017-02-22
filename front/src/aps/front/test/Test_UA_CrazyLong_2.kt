@@ -437,6 +437,12 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 inputSetValue(fields.signInPassword_testRef, "kafka-secret")
                 submitFormSequence("3589a205-9de3-4ea2-9352-04efccaf92bb")
             }
+
+            run { // Kafka fills profile
+                inputSetValue(fields.profilePhone_testRef, "+38 (099) 432-54-55")
+                inputSetValue(fields.aboutMe_testRef, "О себе? Вы че, охренели там? Я Кафка. Кафка я, ебаный Франс, бля! Уроды...")
+                submitFormSequence("0747ffeb-2906-4a94-8e45-8d24d92b9abf")
+            }
         }
     }
 

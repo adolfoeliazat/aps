@@ -50,7 +50,7 @@ class User(
     @Column(length = MAX_STRING) var profileRejectionReason: String? = null,
     @Column(length = MAX_STRING) var banReason: String? = null
 ) : ClitoralEntity() {
-    fun toRTO(): UserRTO {
+    fun toRTO(searchWords: List<String> = listOf()): UserRTO {
         return UserRTO(
             id = id!!,
             createdAt = createdAt.time,
@@ -62,10 +62,12 @@ class User(
             state = state,
             profileRejectionReason = null,
             banReason = null,
-            adminNotes = "",
+            adminNotes = adminNotes,
+            adminNotesHighlightRanges = highlightRanges(adminNotes, searchWords),
             firstName = firstName,
             lastName = lastName,
             aboutMe = aboutMe,
+            aboutMeHighlightRanges = highlightRanges(aboutMe, searchWords),
             roles = setOf(),
             profilePhone = profilePhone
         )

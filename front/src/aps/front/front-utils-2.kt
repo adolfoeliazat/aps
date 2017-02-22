@@ -44,6 +44,8 @@ fun disableableHandler(disabled: Boolean, f: suspend () -> Unit) = when {
 }
 
 fun isAdmin() = Globus.world.userMaybe?.kind == UserKind.ADMIN
+fun isWriter() = Globus.world.userMaybe?.kind == UserKind.WRITER
+fun isCustomer() = Globus.world.userMaybe?.kind == UserKind.CUSTOMER
 fun user() = Globus.world.user
 
 fun populateWithAdminNotes(o: RequestWithAdminNotes, rto: RTOWithAdminNotes) {

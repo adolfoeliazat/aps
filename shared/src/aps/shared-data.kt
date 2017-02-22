@@ -13,13 +13,15 @@ class UserRTO(
     val state: UserState,
     val profileRejectionReason: String?,
     val banReason: String?,
-    val adminNotes: String,
+    override var adminNotes: String,
+    override var adminNotesHighlightRanges: List<IntRangeRTO>,
     val firstName: String,
     val lastName: String,
     val profilePhone: String,
     val aboutMe: String,
+    val aboutMeHighlightRanges: List<IntRangeRTO>,
     val roles: Set<UserRole>
-)
+) : RTOWithAdminNotes
 
 class UAOrderRTO(
     override var id: Long,

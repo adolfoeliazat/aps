@@ -119,6 +119,19 @@ object css {
         val modalPane by Style("")
     }
 
+    object profile : Group(null) {
+        object writerProfilePendingBanner : Group(this) {
+            val container by Style("$dollyLikeContainerBase; background-color: $BLUE_GRAY_50; margin-bottom: 1rem;")
+            val message by Style("flex-grow: 1;")
+            val icon by Style("margin-right: 0.5em;")
+        }
+        object writerProfileApprovalPendingBanner : Group(this) {
+            val container by Style("$dollyLikeContainerBase; background-color: $LIGHT_GREEN_100; margin-bottom: 1rem;")
+            val message by Style("flex-grow: 1;")
+            val icon by Style("margin-right: 0.5em;")
+        }
+    }
+
     object dashboard : Group(null) {
         val sectionTitle by Style("background: ${Color.BLUE_GRAY_50}; padding: 0.15rem 0.5rem; margin-bottom: 0.5rem; font-weight: bold;")
         val sectionItem by Style(style = "margin-top: 0.25rem;",
@@ -158,6 +171,15 @@ object css {
         val danger by named {UsualDollyStyles(it, backgroundColor = RED_50)}
     }
 
+    object user : Group(null) {
+        val stateLabel by EnumStyle(UserState.values(), {when (it) {
+            UserState.COOL -> Style("background-color: $WHITE;")
+            UserState.PROFILE_PENDING -> Style("background-color: $AMBER_100;")
+            UserState.PROFILE_APPROVAL_PENDING -> Style("background-color: $ORANGE_100;")
+            UserState.PROFILE_REJECTED -> Style("background-color: $RED_100;")
+            UserState.BANNED -> Style("background-color: $RED_300;")
+        }})
+    }
 
     object order : Group(null) {
         val stateLabel by EnumStyle(UAOrderState.values(), {when (it) {
