@@ -11,6 +11,7 @@ import aps.back.generated.jooq.Tables.*
 import aps.back.generated.jooq.enums.*
 import into.kommon.*
 import org.jooq.exception.DataAccessException
+import org.jooq.impl.DSL.row
 import org.mindrot.jbcrypt.BCrypt
 import java.util.*
 
@@ -23,7 +24,43 @@ import java.util.*
         fuckAnonymous(FuckAnonymousParams(
             bpc = bpc, makeRequest = {SignUpRequest()},
             runShit = fun(ctx, req: SignUpRequest): SignUpRequest.Response {
-                imf("244dc0b0-f192-4367-8602-becc5420cc9b")
+                val password = generatePassword()
+                val user = userRepo.save(User(
+                    email = req.email.value,
+                    firstName = req.firstName.value,
+                    lastName = req.lastName.value,
+                    passwordHash = hashPassword(password),
+                    phone = "N/A",
+                    kind = when (ctx.clientKind) {
+                        ClientKind.UA_CUSTOMER -> UserKind.CUSTOMER
+                        ClientKind.UA_WRITER -> UserKind.WRITER
+                    },
+                    state = when (ctx.clientKind) {
+                        ClientKind.UA_CUSTOMER -> imf("477250b3-8fde-4881-8794-888d76674fef")
+                        ClientKind.UA_WRITER -> UserState.PROFILE_PENDING
+                    }
+                ))
+
+                val signInURL = ctx.clientRoot + "/signIn.html"
+                val productName = when (ctx.clientKind) {
+                    ClientKind.UA_CUSTOMER -> const.productName.uaCustomer
+                    ClientKind.UA_WRITER -> const.productName.uaWriter
+                }
+                EmailMatumba.send(Email(
+                    to = "${user.firstName} ${user.lastName} <${user.email}>",
+                    subject = "[$productName] Пароль",
+                    html = dedent(t(
+                        en = """TOTE""",
+                        ua = """
+                            <div style='font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;'>
+                                <div style='padding-bottom: 1em;'>Привет, ${escapeHTML(user.firstName)}!</div>
+                                <div>Вот твой пароль для <a href="$signInURL">входа</a> в $productName: $password</div>
+                                <div style='padding-top: 2em; font-style: italic;'>$productName</div>
+                            </div>
+                        """
+                    ))
+                ))
+                return SignUpRequest.Response()
             }
         ))
     }

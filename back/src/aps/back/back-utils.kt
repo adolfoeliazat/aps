@@ -7,6 +7,7 @@
 package aps.back
 
 import aps.*
+import org.mindrot.jbcrypt.BCrypt
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.io.PrintWriter
@@ -71,6 +72,12 @@ private class VolatileNotNullVar<T: Any>() : ReadWriteProperty<Any?, T> {
 fun generateUserToken() =
     TestServerFiddling.nextGeneratedUserToken.getAndReset()
     ?: UUID.randomUUID().toString()
+
+fun generatePassword() =
+    TestServerFiddling.nextGeneratedPassword.getAndReset()
+    ?: UUID.randomUUID().toString()
+
+fun hashPassword(clearText: String): String = BCrypt.hashpw(clearText, BCrypt.gensalt())
 
 
 val requestUserMaybe get() = RequestGlobus.procedureCtx.user

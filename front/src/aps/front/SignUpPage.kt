@@ -26,7 +26,10 @@ class SignUpPage {
                     onSuccessa = {
                         world.signedUpOK = true
                         world.initialEmailFieldValueAfterSignUp = req.email.value
-                        world.pushNavigate("/sign-in.html")
+                        world.pushNavigate(makeURL(when (Globus.clientKind) {
+                                                       ClientKind.UA_CUSTOMER -> pages.uaCustomer.signIn
+                                                       ClientKind.UA_WRITER -> pages.uaWriter.signIn
+                                                   }, listOf()))
 }
                 )).toReactElement(),
 

@@ -9,9 +9,10 @@ import org.springframework.data.repository.findOrDie
             bpc = bpc,
             makeRequest = {MirandaRequest()},
             runShit = fun(ctx, req: MirandaRequest): MirandaRequest.Response {
-                val params = req.params.value
-                return when (params) {
-                    is MirandaTestImposeNextGeneratedUserToken -> serveMirandaTestImposeNextGeneratedUserToken(params)
+                val p = req.params.value
+                return when (p) {
+                    is MirandaTestImposeNextGeneratedUserToken -> serveMirandaTestImposeNextGeneratedUserToken(p)
+                    is MirandaTestImposeNextGeneratedPassword -> serveMirandaTestImposeNextGeneratedPassword(p)
                 }
             }
         ))
@@ -24,10 +25,10 @@ import org.springframework.data.repository.findOrDie
             bpc = bpc,
             makeRequest = {ReginaRequest()},
             runShit = fun(ctx, req: ReginaRequest): ReginaRequest.Response {
-                val params = req.params.value
-                return when (params) {
-                    is ReginaCustomerSendOrderForApprovalAfterFixing -> serveReginaCustomerSendOrderForApprovalAfterFixing(params)
-                    is ReginaAdminSendOrderToStore -> serveReginaAdminSendOrderToStore(params)
+                val p = req.params.value
+                return when (p) {
+                    is ReginaCustomerSendOrderForApprovalAfterFixing -> serveReginaCustomerSendOrderForApprovalAfterFixing(p)
+                    is ReginaAdminSendOrderToStore -> serveReginaAdminSendOrderToStore(p)
                 }
             }
         ))

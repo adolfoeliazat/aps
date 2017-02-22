@@ -133,7 +133,7 @@ class SignUpRequest : RequestMatumba() {
     val lastName = TextField(this, fields.signUpLastName)
     val email = TextField(this, fields.signUpEmail)
     val agreeTerms = CheckboxField(this, fields.agreeTerms)
-    class Response(val userID: Long) : CommonResponseFieldsImpl()
+    class Response : CommonResponseFieldsImpl()
 }
 
 class UpdateProfileRequest() : RequestMatumba() {

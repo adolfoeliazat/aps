@@ -288,10 +288,10 @@ fun TestScenarioBuilder.setUpDasja(testShit: TestShit) {
 //    }}
 }
 
-suspend fun imposeNextGeneratedPassword2(password: String) =
-    send(ImposeNextGeneratedPasswordRequest()-{o->
-        o.password.value = password
-    })
+//suspend fun imposeNextGeneratedPassword2(password: String) =
+//    send(ImposeNextGeneratedPasswordRequest()-{o->
+//        o.password.value = password
+//    })
 
 suspend fun imposeNextGeneratedConfirmationSecret(secret: String) =
     send(ImposeNextGeneratedConfirmationSecretRequest()-{o->

@@ -186,6 +186,10 @@ fun serveMirandaTestImposeNextGeneratedUserToken(p: MirandaTestImposeNextGenerat
     return MirandaRequest.Response()
 }
 
+fun  serveMirandaTestImposeNextGeneratedPassword(p: MirandaTestImposeNextGeneratedPassword): MirandaRequest.Response {
+    TestServerFiddling.nextGeneratedPassword.set(p.password)
+    return MirandaRequest.Response()
+}
 
 
 

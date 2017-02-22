@@ -10,6 +10,7 @@ import javax.persistence.*
 private const val MAX_STRING = 10000
 private const val MAX_BLOB = 10 * 1024 * 1024
 
+val userRepo get() = springctx.getBean(UserRepository::class.java)!!
 val uaOrderRepo get() = springctx.getBean(UAOrderRepository::class.java)!!
 val uaOrderFileRepo get() = springctx.getBean(UAOrderFileRepository::class.java)!!
 
@@ -37,8 +38,8 @@ abstract class ClitoralEntity {
                ))
 class User(
     @Column(length = MAX_STRING) var email: String,
-    @Column(length = MAX_STRING) var firstName: String?,
-    @Column(length = MAX_STRING) var lastName: String?,
+    @Column(length = MAX_STRING) var firstName: String,
+    @Column(length = MAX_STRING) var lastName: String,
     @Column(length = MAX_STRING) var passwordHash: String,
     @Column(length = MAX_STRING) var phone: String,
     @Enumerated(EnumType.STRING) var kind: UserKind,

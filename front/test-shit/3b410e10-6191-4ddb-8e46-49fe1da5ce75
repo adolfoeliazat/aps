@@ -1,0 +1,110 @@
+-------------------- URL --------------------
+
+[uaw]/debug.html?page=mailbox
+
+-------------------- NAVBAR --------------------
+
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">
+        Писец
+      </a>
+    </div>
+    <div style="text-align: left;">
+      <ul id="leftNavbar" class="nav navbar-nav" style="float: none; display: inline-block; vertical-align: top;">
+        <li class="">
+          <a href="why.html">
+            Почему мы?
+          </a>
+        </li>
+        <li class="">
+          <a href="prices.html">
+            Цены
+          </a>
+        </li>
+        <li class="">
+          <a href="samples.html">
+            Примеры
+          </a>
+        </li>
+        <li class="">
+          <a href="faq.html">
+            ЧаВо
+          </a>
+        </li>
+      </ul>
+      <ul id="rightNavbar" class="nav navbar-nav navbar-right">
+        <li class="">
+          <a href="signIn.html">
+            Вход
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+-------------------- ROOT --------------------
+
+<div>
+  <div class="container" style="position: relative;">
+    <div>
+      <div class="page-header " style="margin-top: 0px; margin-bottom: 15px;">
+        <h3 style="margin-bottom: 0px;">
+          Mailbox
+        </h3>
+      </div>
+    </div>
+    <div>
+      <div class="test-mailbox-messages">
+        <div class="test-mailbox-message">
+          <div class="test-mailbox-header">
+            <div class="test-mailbox-section">
+              <div class="test-mailbox-sectionTitle">
+                To:
+              </div>
+              <div class="test-mailbox-sectionValue">
+                Франц Кафка &lt;kafka@test.shit.ua&gt;
+              </div>
+            </div>
+            <div class="test-mailbox-section">
+              <div class="test-mailbox-sectionTitle">
+                Subject:
+              </div>
+              <div class="test-mailbox-sectionValue">
+                [Writer UA] Пароль
+              </div>
+            </div>
+          </div>
+          <div class="test-mailbox-body">
+            <div>
+              <div style="font-family: &quot;Helvetica Neue&quot;,Helvetica,Arial,sans-serif;">
+                <div style="padding-bottom: 1em;">
+                  Привет, Франц!
+                </div>
+                <div>
+                  Вот твой пароль для
+                  <a href="http://aps-ua-writer.local:3022/signIn.html">
+                    входа
+                  </a>
+                  в Writer UA: kafka-secret
+                </div>
+                <div style="padding-top: 2em; font-style: italic;">
+                  Writer UA
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+-------------------- PANES --------------------
+
+<div id="pane-whocares">
+  <div>
+  </div>
+</div>

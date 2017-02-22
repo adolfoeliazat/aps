@@ -90,8 +90,10 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                                  fillTypedStorageLocal = {},
                                  fillRawStorageLocal = {})
                 askMiranda(MirandaTestImposeNextGeneratedUserToken("ivo-fucking-token"))
+                // TODO:vgrechka Impose customer password
                 ivo3.coitizeAndBootAsserting(assertStatic = {assertScreenHTML("Static confirmOrder", "2acbad6a-e169-4c0d-9938-99fac621fef5")},
                                              assertDynamic = {assertScreenHTML("Dynamic confirmOrder", "a6a44d05-7c1d-4dbf-82a2-3b42e0ca98f3")})
+                // TODO:vgrechka Email with password should be sent to customer
             }
 
             run { // Edit params -- cancel
@@ -426,7 +428,11 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 inputSetValue(fields.signUpLastName_testRef, "Кафка")
                 inputSetValue(fields.signUpEmail_testRef, "kafka@test.shit.ua")
                 checkboxSetValue(fields.agreeTerms_testRef, true)
+                askMiranda(MirandaTestImposeNextGeneratedPassword("kafka-secret"))
+                debugMailboxClear()
                 submitFormSequence("bf290946-c51f-419c-b800-ca261db3dac4")
+                // ___stopHereAndEverywhereLater()
+                debugMailboxCheck("3b410e10-6191-4ddb-8e46-49fe1da5ce75")
             }
         }
     }

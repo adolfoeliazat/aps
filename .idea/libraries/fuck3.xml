@@ -123,6 +123,7 @@
       <root url="jar://$USER_HOME$/.ideaLibSources/hibernate-core-5.2.6.Final-sources.jar!/" />
       <root url="jar://$USER_HOME$/.ideaLibSources/jackson-databind-2.8.3-sources.jar!/" />
       <root url="jar://$USER_HOME$/.ideaLibSources/jackson-core-2.8.3-sources.jar!/" />
+      <root url="jar://$USER_HOME$/.ideaLibSources/spring-data-commons-1.12.7.RELEASE-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

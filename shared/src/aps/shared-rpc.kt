@@ -211,6 +211,7 @@ annotation class Ser
 // XXX `hack` param is necessary to actually generate no-arg constructor here
 @Ser sealed class MirandaParams(hack: Unit = Unit)
 @Ser class MirandaTestImposeNextGeneratedUserToken(val token: String) : MirandaParams()
+@Ser class MirandaTestImposeNextGeneratedPassword(val password: String) : MirandaParams()
 
 
 class ReginaRequest : RequestMatumba() {

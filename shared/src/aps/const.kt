@@ -82,6 +82,7 @@ object const {
 
     object productName {
         val uaCustomer = "APS UA"
+        val uaWriter = "Writer UA"
     }
 
     object file {
