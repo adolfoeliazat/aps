@@ -25,7 +25,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
     val filesShortcutMode1 = FilesShortcutMode.B
 //    val startPoint = 1
-    val startPoint = 8
+    val startPoint = 9
     init {
 //        TestGlobal.describeStateConfig = DescribeStateConfig(showBanners = true, autoResumeAfterMs = null)
 //        TestGlobal.describeStateConfig = DescribeStateConfig(showBanners = true, autoResumeAfterMs = 2000)
@@ -409,8 +409,26 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
             run { // Admin moves order to store
                 twoStepSequence({buttonClick(buttons.moveToStore_testRef)}, "3196309c-b789-436c-89a4-27128aa59a46")
+                // TODO:vgrechka Email should be sent to customer
             }
         }
+
+        definePoint(9) {
+            bootCustomerToOrderPage(sessionNumber = 5, orderID = 1L, aid = "cddb0684-949d-4e09-a77c-18edb59aef81")
+            describeState("Customer sees that order was accepted")
+        }
+    }
+
+    private suspend fun bootCustomerToOrderPage(sessionNumber: Int, orderID: Long, aid: String): Morda {
+        val morda = Morda("ivo$sessionNumber",
+                          url = fconst.test.url.customer + "/" + makeURL(pages.uaCustomer.order_testRef, listOf(
+                              URLParamValue(UASingleOrderPage.urlQuery.id, orderID)
+                          )),
+                          fillTypedStorageLocal = {it.token = "ivo-fucking-token"},
+                          fillRawStorageLocal = {})
+        morda.coitizeAndBootAsserting(assertStatic = {assertScreenHTML(aid = "$aid--1")},
+                                      assertDynamic = {assertScreenHTML(aid = "$aid--2")})
+        return morda
     }
 
     private fun enableStatePauses() {

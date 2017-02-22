@@ -94,7 +94,7 @@ object MakeStaticSites {
                              }.toReactElement())
         }
 
-        for (p in pages.uaWriter.items) {
+        for (p in pages.uaWriter.items + pages.uaAdmin.items) {
             writePage(path = p.path, content = wholePageTicker().toToReactElementable())
         }
 
