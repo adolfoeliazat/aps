@@ -9,12 +9,15 @@ interface MeganItem<out ItemRTO> {
     fun toRTO(searchWords: List<String>): ItemRTO
 }
 
+class MeganQueryParam(val name: String, val value: Any)
+
 fun <Item, ItemRTO, Filter> megan(
     req: ItemsRequest<Filter>,
     checkShit: () -> Unit,
     table: String,
     itemClass: Class<Item>,
-    parentKey: String? = null
+    parentKey: String? = null,
+    addToWhere: (StringBuilder, MutableList<MeganQueryParam>) -> Unit
 ): ItemsResponse<ItemRTO>
 where
     Filter: Enum<Filter>,
@@ -54,24 +57,27 @@ where
         val em = emf.createEntityManager()
         em.transaction.begin()
         try {
-            val params = mutableListOf<Pair<String, Any>>()
+            val params = mutableListOf<MeganQueryParam>()
             val query = em.createNativeQuery(stringBuild {s ->
                 s += "select * from $table f where true"
+
                 if (parentKey != null) {
                     s += " and $parentKey = :parentID"
-                    params += Pair("parentID", req.parentEntityID.value!!)
+                    params += MeganQueryParam("parentID", req.parentEntityID.value!!)
                 }
+
+                addToWhere(s, params)
 
                 if (tsquery.isNotBlank()) {
                     s += " and (tsv @@ to_tsquery('$tsqueryLanguage', :tsquery)"
-                    params += Pair("tsquery", tsquery)
+                    params += MeganQueryParam("tsquery", tsquery)
                     var idIndex = 1
                     for (word in searchWords) {
                         try {
                             val long = word.toLong()
                             val paramName = "id${idIndex++}"
                             s += " or id = :$paramName"
-                            params += Pair(paramName, long)
+                            params += MeganQueryParam(paramName, long)
                         } catch (e: NumberFormatException) {}
                     }
                     s += ")"
@@ -86,7 +92,7 @@ where
             }, itemClass)
 
             query.maxResults = const.moreableChunkSize + 1
-            params.forEach {query.setParameter(it.first, it.second)}
+            params.forEach {query.setParameter(it.name, it.value)}
 
             var items: List<Item> = cast(query.resultList)
             var moreFromId: Long? = null

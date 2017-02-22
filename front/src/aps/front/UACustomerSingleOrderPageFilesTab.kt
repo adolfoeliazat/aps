@@ -73,7 +73,7 @@ class UACustomerSingleOrderPageFilesTab(val page: UASingleOrderPage, val world: 
             val cloudIconID = puid()
             return makeUsualMelindaLips(
                 tongue, viewRootID, boobsInterface,
-                icon = fa.file,
+                icon = {fa.file},
                 initialState = FileLipsState(downloadActive = false),
                 controlsDisabled = {state-> state.downloadActive},
                 smallOverlayIcon = {when (tongue.getItem().seenAsFrom) {

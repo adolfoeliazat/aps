@@ -31,10 +31,10 @@ class DashboardPage(val world: World) {
                     o- section(t("Stuff to do", "Работенка"), kdiv{o->
                         val r = res.meat
 
-                        class Metric(val value: Long, val render: () -> ToReactElementable)
+                        class Metric(val contributionToTotal: Long, val render: () -> ToReactElementable)
                         val metrics = listOf(
                             Metric(
-                                value = r.ordersToApprove,
+                                contributionToTotal = r.ordersToApprove,
                                 render = {renderWorkItem(
                                     title = t("TOTE", "Новых заказов рассмотреть"),
                                     amount = r.ordersToApprove,
@@ -44,7 +44,7 @@ class DashboardPage(val world: World) {
                                     linkKey = links.adminDashboard.ordersToApprove)}),
 
                             Metric(
-                                value = r.writerProfilesToApprove,
+                                contributionToTotal = r.writerProfilesToApprove,
                                 render = {renderWorkItem(
                                     title = t("TOTE", "Заапрувить профилей писателей"), amount = r.writerProfilesToApprove,
                                     url = makeURL(pages.uaAdmin.users, listOf(
@@ -52,12 +52,12 @@ class DashboardPage(val world: World) {
                                     )),
                                     linkKey = links.adminDashboard.writerProfilesToApprove)}))
 
-                        val total = metrics.sumByLong {it.value}
+                        val total = metrics.sumByLong {it.contributionToTotal}
                         when (total) {
                             0L -> o- div(t("TOTE", "Сюшай, савсэм нэт работы..."))
                             else -> {
                                 for (metric in metrics) {
-                                    if (metric.value > 0) {
+                                    if (metric.contributionToTotal > 0) {
                                         o- metric.render()
                                     }
                                 }

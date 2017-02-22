@@ -84,7 +84,8 @@ fun renderProfile(o: ElementBuilder, user: UserRTO) {
         o- m.col(3, fields.profilePhone.title, user.profilePhone)
     }
 
-    o- m.detailsRow(user.aboutMe, user.aboutMeHighlightRanges, title = fields.aboutMe.title)
+    if (user.aboutMe.isNotBlank())
+        o- m.detailsRow(user.aboutMe, user.aboutMeHighlightRanges, title = fields.aboutMe.title)
     renderAdminNotesIfNeeded(o, user)
 }
 

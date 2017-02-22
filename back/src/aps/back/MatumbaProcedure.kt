@@ -130,7 +130,7 @@ remoteProcedure(spec: ProcedureSpec<Req, Res>): (HttpServletRequest, HttpServlet
                                 ctx.token = token
                                 val u = userByToken2(ctx.token)
                                 ctx.user = u
-                                ctx.user_killme = u.toRTO()
+                                ctx.user_killme = u.toRTO(searchWords = listOf())
                                 if (!spec.userKinds.contains(ctx.user_killme.kind))
                                     bitch("User kind not allowed: ${ctx.user_killme.kind}")
                                 ctx.hasUser = true

@@ -52,7 +52,7 @@ class UAAdminOrdersPage {
 
                 override fun makeLipsInterface(viewRootID: String, tongue: MelindaTongueInterface<UAOrderRTO>): MelindaLipsInterface {
                     return makeUsualMelindaLips(
-                        tongue, viewRootID, bint, icon = fa.folderOpen, initialState = Unit,
+                        tongue, viewRootID, bint, icon = {fa.folderOpen}, initialState = Unit,
                         renderContent = {o ->
                             renderOrderParams(o, tongue.getItem())
                         },

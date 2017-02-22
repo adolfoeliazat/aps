@@ -25,7 +25,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
     val filesShortcutMode1 = FilesShortcutMode.B
 //    val startPoint = 1
-    val startPoint = 9
+    val startPoint = 10
     init {
 //        TestGlobal.describeStateConfig = DescribeStateConfig(showBanners = true, autoResumeAfterMs = null)
 //        TestGlobal.describeStateConfig = DescribeStateConfig(showBanners = true, autoResumeAfterMs = 2000)
@@ -439,13 +439,13 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
         definePoint(10) {
             bootDasjaWithTokenToDashboard(sessionNumber = 3, aid = "9e3a8178-3f0d-4f5b-98a3-1bb306b4c8ca")
+            twoStepSequence({linkClick(links.adminDashboard.writerProfilesToApprove_testRef)}, "959e8ffe-36f6-4c41-9fa3-d019f8d082db")
         }
     }
 
     private suspend fun bootDasjaWithTokenToDashboard(sessionNumber: Int, aid: String) {
         bootDasjaWithToken(sessionNumber, makeURL(pages.uaAdmin.dashboard_testRef, listOf()), aid)
     }
-
 
     private suspend fun bootDasjaWithTokenToOrdersToApproveList(sessionNumber: Int, aid: String) {
         bootDasjaWithToken(sessionNumber, makeURL(pages.uaAdmin.orders_testRef, listOf(

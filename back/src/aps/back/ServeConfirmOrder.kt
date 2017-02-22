@@ -51,7 +51,7 @@ import java.util.*
                         return ConfirmOrderRequest.Response(
                             orderId = order.id.toString(),
                             userSignedInAsPartOfMakingOrder = UserSignedInAsPartOfMakingOrder(
-                                user = newUser.toRTO(),
+                                user = newUser.toRTO(searchWords = listOf()),
                                 token = userToken.token
                             ))
                     } else {

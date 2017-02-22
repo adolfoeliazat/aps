@@ -382,7 +382,7 @@ fun <ItemRTO : MelindaItemRTO, LipsState> makeUsualMelindaLips(
     renderContent: (ElementBuilder) -> Unit,
     initialState: LipsState,
     controlsDisabled: (LipsState) -> Boolean = {false},
-    icon: IconClass,
+    icon: (ItemRTO) -> IconClass,
     titleLinkURL: String?,
     hasEditControl: (ItemRTO) -> Boolean,
     hasDeleteControl: (ItemRTO) -> Boolean
@@ -401,7 +401,7 @@ fun <ItemRTO : MelindaItemRTO, LipsState> makeUsualMelindaLips(
                         val c = css.cunt.header
                         o- kdiv(className = c.bar){o->
                             o- kdiv(className = c.titleAndStuff){o->
-                                o- ki(className = "${c.leftIcon} $icon")
+                                o- ki(className = "${c.leftIcon} ${icon(item)}")
                                 val theSmallOverlayIcon = smallOverlayIcon()
                                 if (theSmallOverlayIcon != null) {
                                     o- ki(className = "${c.leftOverlayBottomLeftIcon} $theSmallOverlayIcon")

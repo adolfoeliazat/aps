@@ -49,8 +49,10 @@ class User(
     @Column(length = MAX_STRING) var aboutMe: String = "",
     @Column(length = MAX_STRING) var profileRejectionReason: String? = null,
     @Column(length = MAX_STRING) var banReason: String? = null
-) : ClitoralEntity() {
-    fun toRTO(searchWords: List<String> = listOf()): UserRTO {
+) : MeganItem<UserRTO>, ClitoralEntity() {
+    override val idBang get()= id!!
+
+    override fun toRTO(searchWords: List<String>): UserRTO {
         val title = "$firstName $lastName"
         return UserRTO(
             id = id!!,
@@ -124,7 +126,7 @@ class UAOrder(
             editable = true, // TODO:vgrechka ...
             createdAt = createdAt.time,
             updatedAt = updatedAt.time,
-            customer = customer!!.toRTO(),
+            customer = customer!!.toRTO(searchWords = listOf()),
             documentType = documentType,
             price = -1,
             numPages = numPages,

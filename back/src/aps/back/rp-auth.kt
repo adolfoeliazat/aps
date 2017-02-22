@@ -26,7 +26,7 @@ import java.util.*
 
                 val token = generateUserToken()
                 tokenRepo.save(UserToken(token, user))
-                return SignInResponse(token, user.toRTO())
+                return SignInResponse(token, user.toRTO(searchWords = listOf()))
             }
         ))
     }

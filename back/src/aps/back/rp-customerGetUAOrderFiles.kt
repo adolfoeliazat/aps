@@ -7,6 +7,7 @@
 package aps.back
 
 import aps.*
+import into.kommon.*
 import org.springframework.data.repository.findOrDie
 
 @Servant class ServeUAAdminGetOrders : BitchyProcedure() {
@@ -21,7 +22,16 @@ import org.springframework.data.repository.findOrDie
                         // TODO:vgrechka ...
                     },
                     table = "ua_orders",
-                    itemClass = UAOrder::class.java
+                    itemClass = UAOrder::class.java,
+                    addToWhere = {s, params ->
+                        exhaustive/when (req.filter.value) {
+                            AdminOrderFilter.ALL -> {}
+                            AdminOrderFilter.TO_APPROVE -> {
+                                s += " and state = :state"
+                                params += MeganQueryParam("state", UAOrderState.WAITING_ADMIN_APPROVAL.name)
+                            }
+                        }
+                    }
                 )
             }
         ))
@@ -43,7 +53,15 @@ import org.springframework.data.repository.findOrDie
                     },
                     table = "ua_order_files",
                     itemClass = UAOrderFile::class.java,
-                    parentKey = "orderID"
+                    parentKey = "orderID",
+                    addToWhere = {s, params ->
+                        exhaustive/when (req.filter.value) {
+                            CustomerFileFilter.ALL -> {}
+                            CustomerFileFilter.FROM_ME -> imf("41654446-347a-4d51-b27b-bb5d9a750820")
+                            CustomerFileFilter.FROM_WRITER -> imf("537f0e0c-77f4-483e-8f5a-c29cfcfdfd5b")
+                            CustomerFileFilter.FROM_SUPPORT -> imf("20c4c6ab-1c90-4db3-b29b-f06059e676b0")
+                        }
+                    }
                 )
             }
         ))

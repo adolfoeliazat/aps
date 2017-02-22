@@ -56,7 +56,11 @@ class AdminUsersPage {
                 override fun makeLipsInterface(viewRootID: String, tongue: MelindaTongueInterface<UserRTO>): MelindaLipsInterface {
                     return makeUsualMelindaLips(
                         tongue, viewRootID, bint,
-                        icon = fa.user, // TODO:vgrechka Different icons for user kinds
+                        icon = {when (it.kind) {
+                            UserKind.CUSTOMER -> fa.user
+                            UserKind.WRITER -> fa.pencil
+                            UserKind.ADMIN -> fa.cog
+                        }},
                         initialState = Unit,
                         renderContent = {o->
                             renderProfile(o, tongue.getItem())
