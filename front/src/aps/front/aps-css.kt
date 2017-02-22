@@ -105,6 +105,13 @@ object css {
         }
     }
 
+    class WaitingBannerStyles(override val groupName: String, parent: Group?, val containerStyle: String = "") : Group(parent) {
+        val container by Style("$dollyLikeContainerBase; background-color: $LIGHT_GREEN_100; $containerStyle")
+        val message by Style("flex-grow: 1;")
+        val icon by Style("margin-right: 0.5em;")
+    }
+
+
     var allShit = ""
 
     val progressTicker = "progressTicker"
@@ -125,11 +132,7 @@ object css {
             val message by Style("flex-grow: 1;")
             val icon by Style("margin-right: 0.5em;")
         }
-        object writerProfileApprovalPendingBanner : Group(this) {
-            val container by Style("$dollyLikeContainerBase; background-color: $LIGHT_GREEN_100; margin-bottom: 1rem;")
-            val message by Style("flex-grow: 1;")
-            val icon by Style("margin-right: 0.5em;")
-        }
+        val writerProfileApprovalPendingBanner by named {WaitingBannerStyles(it, this, containerStyle = "margin-bottom: 1rem;")}
     }
 
     object dashboard : Group(null) {
@@ -195,11 +198,7 @@ object css {
         }})
 
         object forCustomer : Group(this) {
-            object waitingApprovalBanner : Group(this) {
-                val container by Style("$dollyLikeContainerBase; background-color: $LIGHT_GREEN_100;")
-                val message by Style("flex-grow: 1;")
-                val icon by Style("margin-right: 0.5em;")
-            }
+            val waitingApprovalBanner by named {WaitingBannerStyles(it, this)}
         }
 
         object whatShouldBeFixed : Group(this) {

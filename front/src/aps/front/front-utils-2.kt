@@ -71,7 +71,13 @@ fun <T : RequestMatumba> T.populateCheckingCompleteness(block: (T) -> Unit): T {
     return this
 }
 
-
+fun renderWaitingBanner(c: css.WaitingBannerStyles, message: String) =
+    kdiv(className = c.container){o->
+        o- kdiv(className = c.message){o->
+            o- ki(className = c.icon + " " + fa.hourglassHalf)
+            o- message
+        }
+    }
 
 
 

@@ -29,13 +29,8 @@ class ProfilePage {
                             }
                         }
                         UserState.PROFILE_APPROVAL_PENDING -> {
-                            val c = css.profile.writerProfileApprovalPendingBanner
-                            o- kdiv(className = c.container){o->
-                                o- kdiv(className = c.message){o->
-                                    o- ki(className = c.icon + " " + fa.hourglassHalf)
-                                    o- t("TOTE", "Мы проверяем твой профайл. Жди звонка")
-                                }
-                            }
+                            o- renderWaitingBanner(css.profile.writerProfileApprovalPendingBanner,
+                                                   t("TOTE", "Мы проверяем твой профайл. Жди звонка"))
                         }
                         UserState.PROFILE_REJECTED -> imf("bf4e024b-3745-443c-a086-2f7479a35bf0")
                         UserState.BANNED -> imf("267e687c-723e-48fe-911b-fbb556e23e9d")

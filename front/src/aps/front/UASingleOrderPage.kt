@@ -58,13 +58,8 @@ class UASingleOrderPage(val world: World) {
 
             UAOrderState.WAITING_ADMIN_APPROVAL -> when (world.user.kind) {
                 UserKind.CUSTOMER -> {
-                    val c = css.order.forCustomer.waitingApprovalBanner
-                    kdiv(className = c.container){o->
-                        o- kdiv(className = c.message){o->
-                            o- ki(className = c.icon + " " + fa.hourglassHalf)
-                            o- t("TOTE", "Мы проверяем заказ и скоро тебе позвоним")
-                        }
-                    }
+                    renderWaitingBanner(css.order.forCustomer.waitingApprovalBanner,
+                                        t("TOTE", "Мы проверяем заказ и скоро тебе позвоним"))
                 }
                 UserKind.ADMIN -> Dolly(DollyParams(
                     styles = css.dolly.normal,
