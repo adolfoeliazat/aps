@@ -79,6 +79,22 @@ fun renderWaitingBanner(c: css.WaitingBannerStyles, message: String) =
         }
     }
 
+fun renderMaybeRejectionReasonBanner(rejectionReason: String?): ToReactElementable {
+    if (rejectionReason == null) return NOTRE
+    val c = css.rejectionReasonBanner
+    return kdiv(className = c.container){o->
+        o- kdiv(className = c.title){o->
+            o- when {
+                isAdmin() -> t("TOTE", "Причина отказа (как ее видит засранец)")
+                else -> t("TOTE", "Что нужно исправить")
+            }
+        }
+        o- kdiv(className = c.body){o->
+            o- rejectionReason
+        }
+    }
+}
+
 
 
 

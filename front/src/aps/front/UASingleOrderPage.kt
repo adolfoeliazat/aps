@@ -111,23 +111,7 @@ class UASingleOrderPage {
             )},
             pageHeaderTitle = {t("TOTE", "Заказ $numberSign${order.id}")},
             subtitle = {order.title},
-            renderBelowSubtitle = fun(): ToReactElementable {
-                if (order.state != UAOrderState.WAITING_ADMIN_APPROVAL) {
-                    val whatShouldBeFixed = order.whatShouldBeFixedByCustomer
-                    if (whatShouldBeFixed != null) {
-                        val c = css.order.whatShouldBeFixed
-                        return kdiv(className = c.container){o->
-                            o- kdiv(className = c.title){o->
-                                o- t("TOTE", "Что нужно исправить")
-                            }
-                            o- kdiv(className = c.body){o->
-                                o- whatShouldBeFixed
-                            }
-                        }
-                    }
-                }
-                return NOTRE
-            }
+            renderBelowSubtitle = {renderMaybeRejectionReasonBanner(order.whatShouldBeFixedByCustomer)}
         )
         return tabitha.load()
     }

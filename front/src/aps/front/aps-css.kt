@@ -201,8 +201,10 @@ object css {
             val waitingApprovalBanner by named {WaitingBannerStyles(it, this)}
         }
 
-        object whatShouldBeFixed : Group(this) {
-            val container by Style("""
+    }
+
+    object rejectionReasonBanner : Group(null) {
+        val container by Style("""
                 background-color: $RED_50;
                 border-left: 0.4rem solid $RED_300;
                 padding-top: 0.5rem;
@@ -210,9 +212,8 @@ object css {
                 padding-bottom: 0.5rem;
                 margin-bottom: 1.5rem;
             """)
-            val title by Style("font-weight: bold;")
-            val body by Style("whitespace: pre-wrap;")
-        }
+        val title by Style("font-weight: bold;")
+        val body by Style("whitespace: pre-wrap;")
     }
 
     object textField : Group(null) {

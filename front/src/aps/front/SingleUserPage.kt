@@ -27,6 +27,7 @@ class SingleUserPage {
                         tabitha = tabitha,
                         makeAcceptanceRequestParams = ::ReginaAcceptProfile,
                         bottomGap = true)
+                    UserState.PROFILE_REJECTED -> renderMaybeRejectionReasonBanner(user.profileRejectionReason)
                     else -> NOTRE
                 }
             },
