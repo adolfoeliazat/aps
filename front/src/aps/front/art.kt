@@ -169,21 +169,23 @@ object art {
                     skipping -> {
                         when (instr) {
                             is TestInstruction.WorldPoint -> {
-                                val wpname: String = fullWorldPointName(instr)
-                                if (instr.name == from) {
-                                    dlog("Restoring world point ${wpname}")
-                                    await(WorldPointRequest.send(wpname, RESTORE))
-                                    skipping = false
-                                }
+                                die("Don't fucking use me    8b6af0bf-7fc5-4e9d-8ffb-57aee0e37174")
+//                                val wpname: String = fullWorldPointName(instr)
+//                                if (instr.name == from) {
+//                                    dlog("Restoring world point ${wpname}")
+//                                    await(WorldPointRequest.send(wpname, RESTORE))
+//                                    skipping = false
+//                                }
                             }
                         }
                     }
                     !skipping -> {
                         exhaustive/when (instr) {
                             is TestInstruction.WorldPoint -> {
-                                val wpname: String = fullWorldPointName(instr)
-                                dlog("Saving world point ${wpname}")
-                                await(WorldPointRequest.send(wpname, SAVE))
+                                die("Don't fucking use me    5583ccb6-9a7b-4128-bfa4-8b20da2e7f2e")
+//                                val wpname: String = fullWorldPointName(instr)
+//                                dlog("Saving world point ${wpname}")
+//                                await(WorldPointRequest.send(wpname, SAVE))
                             }
 
                             is TestInstruction.BeginSection -> {}

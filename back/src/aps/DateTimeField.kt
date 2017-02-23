@@ -1,5 +1,6 @@
 package aps
 
+import aps.back.*
 import into.kommon.*
 import java.sql.Timestamp
 
@@ -8,14 +9,20 @@ import java.sql.Timestamp
     name: String,
     val title: String
 ) : FormFieldBack(container, name) {
-    lateinit var value: Timestamp
+    private lateinit var _value: Timestamp
+
+    val value: Timestamp get() {
+        check(include){"Attempt to read back DateTimeField $name, which is not included"}
+        RequestGlobus.retrievedFields += this
+        return _value
+    }
 
     override fun loadOrBitch(input: Map<String, Any?>, fieldErrors: MutableList<FieldError>) {
         val rawValue = input[name]
 
         run error@{
             rawValue ?: return@error t("TOTE", "Поле обязательно")
-            value = Timestamp(rawValue as Long)
+            _value = Timestamp(rawValue as Long)
             null
         }?.let {error ->
             fieldErrors.add(FieldError(name, error))

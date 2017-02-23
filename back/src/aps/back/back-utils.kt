@@ -7,6 +7,7 @@
 package aps.back
 
 import aps.*
+import into.kommon.*
 import org.mindrot.jbcrypt.BCrypt
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -94,6 +95,23 @@ fun updateAdminNotes(entity: EntityWithAdminNotes, req: RequestWithAdminNotes) {
     if (isAdmin())
         entity.adminNotes = req.adminNotes.value
 }
+
+fun checkingAllFieldsRetrieved(req: RequestMatumba, block: () -> Unit) {
+    RequestGlobus.retrievedFields.clear()
+    block()
+    for (field in req._fields) {
+        if (field.include && field !in RequestGlobus.retrievedFields)
+            bitch("Field ${field.name} of ${req::class.simpleName} should be retrieved")
+    }
+}
+
+
+
+
+
+
+
+
 
 
 

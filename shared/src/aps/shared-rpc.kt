@@ -207,11 +207,15 @@ class UAAdminGetStuffToDoRequest : RequestMatumba() {
                    val writerProfilesToApprove: Long) : CommonResponseFieldsImpl()
 }
 
-class ReturnOrderToCustomerForFixingRequest : RequestMatumba() {
-    val orderID by longHiddenField()
+
+abstract class RejectionRequest : RequestMatumba() {
+    val entityID by longHiddenField()
     val rejectionReason = TextField(this, fields.rejectionReason)
-    class Response : CommonResponseFieldsImpl()
 }
+
+class ReturnOrderToCustomerForFixingRequest : RejectionRequest()
+
+class RejectProfileRequest : RejectionRequest()
 
 
 class MirandaRequest : RequestMatumba() {
@@ -238,6 +242,7 @@ class ReginaRequest : RequestMatumba() {
 @Ser class ReginaCustomerSendOrderForApprovalAfterFixing(val orderID: Long) : ReginaParams<GenericResponse>()
 @Ser class ReginaAdminSendOrderToStore(val orderID: Long) : ReginaParams<GenericResponse>()
 @Ser class ReginaLoadUser(val userID: Long) : ReginaParams<SimpleEntityResponse<UserRTO>>()
+@Ser class ReginaAcceptProfile(val userID: Long) : ReginaParams<GenericResponse>()
 
 
 

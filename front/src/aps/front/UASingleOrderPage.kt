@@ -5,6 +5,7 @@ package aps.front
 import aps.*
 import aps.front.frontSymbols.numberSign
 import into.kommon.*
+import kotlin.reflect.KFunction1
 
 class UASingleOrderPage {
     var tabitha by notNullOnce<Tabitha<UAOrderRTO>>()
@@ -48,34 +49,13 @@ class UASingleOrderPage {
                             renderWaitingBanner(css.order.forCustomer.waitingApprovalBanner,
                                                 t("TOTE", "Мы проверяем заказ и скоро тебе позвоним"))
                         }
-                        UserKind.ADMIN -> Dolly(DollyParams(
-                            styles = css.dolly.normal,
+                        UserKind.ADMIN -> acceptOrRejectDolly(
                             message = t("TOTE", "Что будем делать с заказом?"),
-                            buttons = listOf(
-                                DollyButton(
-                                    title = t("TOTE", "Завернуть"), level = Button.Level.DANGER, key = buttons.returnToCustomerForFixing,
-                                    onClick = {
-                                        val executed = openDangerFormModalAndWaitExecution(
-                                            title = t("TOTE", "Возвращаем на доработку"),
-                                            primaryButtonTitle = t("TOTE", "Завернуть"),
-                                            cancelButtonTitle = t("TOTE", "Не надо"),
-                                            req = ReturnOrderToCustomerForFixingRequest()-{o->
-                                                o.orderID.value = order.id
-                                                o.rejectionReason.value = t("TOTE", "Что заказчику нужно исправить?")
-                                            }
-                                        )
-                                        if (executed)
-                                            tabitha.reloadPage()
-                                    }),
-                                DollyButton(
-                                    title = t("TOTE", "В стор"), level = Button.Level.PRIMARY, key = buttons.moveToStore,
-                                    onClick = sendingDollyButtonHandler(
-                                        sendRequest = {
-                                            askRegina(ReginaAdminSendOrderToStore(orderID = order.id))
-                                        },
-                                        onSuccess = {
-                                            tabitha.reloadPage()
-                                        })))))
+                            blankRejectionRequest = ReturnOrderToCustomerForFixingRequest(),
+                            entityID = order.id,
+                            tabitha = tabitha,
+                            acceptButtonTitle = t("TOTE", "В стор"),
+                            makeAcceptanceRequestParams = ::ReginaAdminSendOrderToStore)
                         UserKind.WRITER -> wtf("a1f98aad-8f31-40da-8d93-0f48208bcb5c")
                     }
 
@@ -151,6 +131,7 @@ class UASingleOrderPage {
         )
         return tabitha.load()
     }
+
 }
 
 fun renderOrderParams(order: UAOrderRTO): ToReactElementable {

@@ -48,6 +48,7 @@ class RequestGlobusType {
     lateinit var commonRequestFields: CommonRequestFieldsHolder
     lateinit var servletRequest: HttpServletRequest
     var procedureCtx by notNullOnce<ProcedureContext>()
+    val retrievedFields = mutableSetOf<FormFieldBack>()
 }
 
 class GodServlet : HttpServlet() {

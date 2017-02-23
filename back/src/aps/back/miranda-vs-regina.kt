@@ -34,6 +34,7 @@ import org.springframework.data.repository.findOrDie
                     is ReginaCustomerSendOrderForApprovalAfterFixing -> tie(p, ::serveReginaCustomerSendOrderForApprovalAfterFixing)
                     is ReginaAdminSendOrderToStore -> tie(p, ::serveReginaAdminSendOrderToStore)
                     is ReginaLoadUser -> tie(p, ::serveReginaLoadUser)
+                    is ReginaAcceptProfile -> tie(p, ::serveReginaAcceptProfile)
                 }
             }
         ))

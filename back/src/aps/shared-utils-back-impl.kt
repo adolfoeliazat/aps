@@ -63,11 +63,17 @@ annotation class Back
     val values: Array<E>,
     possiblyUnspecified: Boolean = false
 ) : FormFieldBack(container, name, possiblyUnspecified=possiblyUnspecified) {
-    lateinit var value: E
+    private lateinit var _value: E
+
+    val value: E get() {
+        check(include){"Attempt to read back EnumHiddenField $name, which is not included"}
+        RequestGlobus.retrievedFields += this
+        return _value
+    }
 
     override fun loadOrBitch(input: Map<String, Any?>, fieldErrors: MutableList<FieldError>) {
         val string = input[name] as String
-        value = values.find{it.name == string} ?: bitch("Bad enum value: [$string]")
+        _value = values.find{it.name == string} ?: bitch("Bad enum value: [$string]")
     }
 }
 
@@ -84,11 +90,17 @@ fun <T> culprit(culprit: Culprit, f: () -> T): T {
     name: String,
     possiblyUnspecified: Boolean = false
 ) : FormFieldBack(container, name, possiblyUnspecified=possiblyUnspecified) {
-    lateinit var value: String
+    private lateinit var _value: String
+
+    val value: String get() {
+        check(include){"Attempt to read back StringHiddenField $name, which is not included"}
+        RequestGlobus.retrievedFields += this
+        return _value
+    }
 
     override fun loadOrBitch(input: Map<String, Any?>, fieldErrors: MutableList<FieldError>) {
         if (!possiblyUnspecified || specified) {
-            value = input[name] as String
+            _value = input[name] as String
         }
     }
 }
@@ -98,13 +110,19 @@ fun <T> culprit(culprit: Culprit, f: () -> T): T {
     container: RequestMatumba,
     name: String
 ) : FormFieldBack(container, name) {
-    lateinit var value: T
+    private lateinit var _value: T
+
+    val value: T get() {
+        check(include){"Attempt to read back ObjectHiddenField $name, which is not included"}
+        RequestGlobus.retrievedFields += this
+        return _value
+    }
 
     override fun loadOrBitch(input: Map<String, Any?>, fieldErrors: MutableList<FieldError>) {
         val json = input[name] as String
         // dwarnStriking("ObjectHiddenField input json", json)
         @Suppress("UNCHECKED_CAST")
-        value = mirandaInputObjectMapper.readValue(json, Object::class.java) as T
+        _value = mirandaInputObjectMapper.readValue(json, Object::class.java) as T
     }
 }
 
@@ -125,6 +143,7 @@ fun <T> culprit(culprit: Culprit, f: () -> T): T {
 
     val value: Long get() {
         check(include){"Attempt to read back LongHiddenField $name, which is not included"}
+        RequestGlobus.retrievedFields += this
         return _value
     }
 
@@ -141,10 +160,16 @@ fun <T> culprit(culprit: Culprit, f: () -> T): T {
     container: RequestMatumba,
     name: String
 ) : FormFieldBack(container, name) {
-    var value by notNullOnce<Int>()
+    private var _value by notNullOnce<Int>()
+
+    val value: Int get() {
+        check(include){"Attempt to read back IntHiddenField $name, which is not included"}
+        RequestGlobus.retrievedFields += this
+        return _value
+    }
 
     override fun loadOrBitch(input: Map<String, Any?>, fieldErrors: MutableList<FieldError>) {
-        value = (input[name] as String).toInt()
+        _value = (input[name] as String).toInt()
     }
 }
 
@@ -156,12 +181,18 @@ fun <T> culprit(culprit: Culprit, f: () -> T): T {
     container: RequestMatumba,
     name: String
 ) : FormFieldBack(container, name) {
-    var value: Long? = null
+    private var _value: Long? = null
+
+    val value: Long? get() {
+        check(include){"Attempt to read back MaybeLongHiddenField $name, which is not included"}
+        RequestGlobus.retrievedFields += this
+        return _value
+    }
 
     override fun loadOrBitch(input: Map<String, Any?>, fieldErrors: MutableList<FieldError>) {
         val x = input[name]
         if (x != null) {
-            value = (x as String).toLong()
+            _value = (x as String).toLong()
         }
     }
 }
@@ -172,8 +203,14 @@ fun <T> culprit(culprit: Culprit, f: () -> T): T {
     possiblyUnspecified: Boolean = false
 ) : FormFieldBack(container, name, possiblyUnspecified=possiblyUnspecified) {
     var loaded = false
-    var _value: String? = null
-    val value: String? get() = if (!loaded) bitch("I am not loaded") else _value
+    private var _value: String? = null
+
+    val value: String? get() {
+        check(include){"Attempt to read back IntHiddenField $name, which is not included"}
+        if (!loaded) bitch("I am not loaded")
+        RequestGlobus.retrievedFields += this
+        return _value
+    }
 
     override fun loadOrBitch(input: Map<String, Any?>, fieldErrors: MutableList<FieldError>) {
         _value = input[name] as String?
@@ -196,7 +233,11 @@ fun <T> culprit(culprit: Culprit, f: () -> T): T {
 ) : FormFieldBack(container, name, possiblyUnspecified=possiblyUnspecified) {
     lateinit var _value: java.lang.Boolean
     var value: Boolean
-        get() = _value.booleanValue()
+        get() {
+            check(include){"Attempt to read back BooleanHiddenField $name, which is not included"}
+            RequestGlobus.retrievedFields += this
+            return _value.booleanValue()
+        }
         @Dummy set(x) = wtf("@Back BooleanHiddenField.value.set should not be called")
 
     override fun loadOrBitch(input: Map<String, Any?>, fieldErrors: MutableList<FieldError>) {

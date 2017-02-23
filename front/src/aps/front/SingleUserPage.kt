@@ -18,7 +18,17 @@ class SingleUserPage {
                 askRegina(ReginaLoadUser(id))
             },
             renderBelowHeader = {
-                NOTRE
+                when (user.state) {
+                    UserState.PROFILE_APPROVAL_PENDING -> acceptOrRejectDolly(
+                        message = t("TOTE", "Что будем делать с засранцем?"),
+                        acceptButtonTitle = t("TOTE", "Принять"),
+                        blankRejectionRequest = RejectProfileRequest(),
+                        entityID = user.id,
+                        tabitha = tabitha,
+                        makeAcceptanceRequestParams = ::ReginaAcceptProfile,
+                        bottomGap = true)
+                    else -> NOTRE
+                }
             },
             makeTabs = {listOf(
                 UsualParamsTab(

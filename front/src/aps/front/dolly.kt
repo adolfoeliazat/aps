@@ -2,6 +2,7 @@ package aps.front
 
 import aps.*
 import into.kommon.*
+import kotlin.reflect.KFunction1
 
 interface DollyStyles {
     val container: String
@@ -47,7 +48,8 @@ data class DollyParams(
     val busy: Boolean = false,
     val styles: DollyStyles,
     val message: String,
-    val buttons: List<DollyButton>
+    val buttons: List<DollyButton>,
+    val bottomGap: Boolean = false
 )
 
 class Dolly(val p: DollyParams): ToReactElementable {
@@ -56,7 +58,8 @@ class Dolly(val p: DollyParams): ToReactElementable {
     override fun toReactElement() = place.toReactElement()
 
     private fun renderDolly(p: DollyParams): ToReactElementable {
-        return kdiv(className = if (p.busy) p.styles.containerBusy else p.styles.container){o->
+        return kdiv(className = if (p.busy) p.styles.containerBusy else p.styles.container,
+                    marginBottom = if (p.bottomGap) "1rem" else null){o->
             o- kdiv(className = p.styles.message){o->
                 if (p.busy) {
                     o- renderTicker()
@@ -83,8 +86,44 @@ class Dolly(val p: DollyParams): ToReactElementable {
 
 }
 
-
-//private suspend fun pizda(button: DollyButton, onSuccess: DollyButton, p: DollyParams, sendRequest: DollyButton) {
-//}
+fun <EntityRTO : TabithaEntityRTO> acceptOrRejectDolly(
+    message: String,
+    blankRejectionRequest: RejectionRequest,
+    entityID: Long,
+    tabitha: Tabitha<EntityRTO>,
+    acceptButtonTitle: String,
+    makeAcceptanceRequestParams: KFunction1<Long, ReginaParams<*>>,
+    bottomGap: Boolean = false
+): Dolly {
+    return Dolly(DollyParams(
+        styles = css.dolly.normal,
+        message = message,
+        bottomGap = bottomGap,
+        buttons = listOf(
+            DollyButton(
+                title = t("TOTE", "Завернуть"), level = Button.Level.DANGER, key = buttons.reject,
+                onClick = {
+                    val executed = openDangerFormModalAndWaitExecution(
+                        title = t("TOTE", "Возвращаем на доработку"),
+                        primaryButtonTitle = t("TOTE", "Завернуть"),
+                        cancelButtonTitle = t("TOTE", "Не надо"),
+                        req = blankRejectionRequest-{o->
+                            o.entityID.value = entityID
+                            o.rejectionReason.value = t("TOTE", "Что нужно исправить?")
+                        }
+                    )
+                    if (executed)
+                        tabitha.reloadPage()
+                }),
+            DollyButton(
+                title = acceptButtonTitle, level = Button.Level.PRIMARY, key = buttons.accept,
+                onClick = sendingDollyButtonHandler(
+                    sendRequest = {
+                        askRegina(makeAcceptanceRequestParams(entityID))
+                    },
+                    onSuccess = {
+                        tabitha.reloadPage()
+                    })))))
+}
 
 

@@ -10,6 +10,7 @@ import aps.*
 import com.google.common.hash.Hashing
 import into.kommon.*
 import org.springframework.data.repository.findOrDie
+import sun.net.www.content.text.Generic
 import java.util.*
 
 
@@ -101,16 +102,17 @@ import java.util.*
                                                 isUpdate = true)},
             runShit = fun(ctx, req: UAOrderParamsRequest): UAUpdateOrderResponse {
                 // TODO:vgrechka Security
-                val order = repo.findOrDie(req.orderID.value)-{o->
-                    o.documentType = req.documentType.value
-                    o.title = req.documentTitle.value
-                    o.numPages = req.numPages.value
-                    o.numSources = req.numSources.value
-                    o.details = req.documentDetails.value
-                    o.customerPhone = req.phone.value
-                    updateAdminNotes(o, req)
+                checkingAllFieldsRetrieved(req) {
+                    repo.findOrDie(req.orderID.value)-{o->
+                        o.documentType = req.documentType.value
+                        o.title = req.documentTitle.value
+                        o.numPages = req.numPages.value
+                        o.numSources = req.numSources.value
+                        o.details = req.documentDetails.value
+                        o.customerPhone = req.phone.value
+                        updateAdminNotes(o, req)
+                    }
                 }
-                repo.save(order)
                 return UAUpdateOrderResponse()
             }
         ))
@@ -127,10 +129,10 @@ import java.util.*
                 val order = uaOrderRepo.findOrDie(req.orderID.value)
                 // TODO:vgrechka Security
 
-                val content = Base64.getDecoder().decode(req.file.base64)
+                val content = Base64.getDecoder().decode(req.file.value.base64)
                 val file = uaOrderFileRepo.save(UAOrderFile(
                     order = order,
-                    name = req.file.fileName,
+                    name = req.file.value.fileName,
                     title = req.title.value,
                     mime = "application/octet-stream",
                     details = req.details.value,
@@ -158,20 +160,21 @@ import java.util.*
                 val file = uaOrderFileRepo.findOrDie(req.fileID.value)
                 // TODO:vgrechka Permissions
 
-                file-{o->
-                    o.title = req.title.value
-                    o.details = req.details.value
-                    if (req.file.valueKind == FileFieldValueKind.PROVIDED) {
-                        val content = Base64.getDecoder().decode(req.file.base64)
-                        o.name = req.file.fileName
-                        o.sha256 = Hashing.sha256().hashBytes(content).toString()
-                        o.sizeBytes = content.size
-                        o.content = content
+                checkingAllFieldsRetrieved(req) {
+                    file-{o->
+                        o.title = req.title.value
+                        o.details = req.details.value
+                        if (req.file.value.valueKind == FileFieldValueKind.PROVIDED) {
+                            val content = Base64.getDecoder().decode(req.file.value.base64)
+                            o.name = req.file.value.fileName
+                            o.sha256 = Hashing.sha256().hashBytes(content).toString()
+                            o.sizeBytes = content.size
+                            o.content = content
+                        }
+                        updateAdminNotes(o, req)
+                        o.touch()
                     }
-                    updateAdminNotes(o, req)
-                    o.touch()
                 }
-
                 return UAUpdateOrderFileResponse(file.toRTO(listOf()))
             }
         ))
@@ -227,11 +230,11 @@ import java.util.*
     override fun serve() {
         fuckAdmin(FuckAdminParams(
             bpc = bpc, makeRequest = {ReturnOrderToCustomerForFixingRequest()},
-            runShit = fun(ctx, req): ReturnOrderToCustomerForFixingRequest.Response {
-                val order = orderRepo.findOrDie(req.orderID.value)
+            runShit = fun(ctx, req): GenericResponse {
+                val order = orderRepo.findOrDie(req.entityID.value)
                 order.state = UAOrderState.RETURNED_TO_CUSTOMER_FOR_FIXING
                 order.whatShouldBeFixedByCustomer = req.rejectionReason.value
-                return ReturnOrderToCustomerForFixingRequest.Response()
+                return GenericResponse()
             }
         ))
     }

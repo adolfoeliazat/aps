@@ -24,7 +24,6 @@ object fields                                              : Fuckers<FieldSpec>(
     val orderCustomerEmail                                 by namedFucker {genericEmail.copy(name = it)}; val orderCustomerEmail_testRef = TestRef(orderCustomerEmail)
     val orderCustomerPhone                                 by namedFucker {genericPhone.copy(name = it)}; val orderCustomerPhone_testRef = TestRef(orderCustomerPhone)
     val password                                           by namedFucker {TextFieldSpec(it, t("TOTE", "Пароль"), TextFieldType.PASSWORD, minLen = 6, maxLen = 50)}; val password_testRef = TestRef(password)
-    val profileRejectionReason                             by namedFucker {TextFieldSpec(it, t("TOTE", "Причина отказа"), TextFieldType.TEXTAREA, 0, 5000)}; val profileRejectionReason_testRef = TestRef(profileRejectionReason)
     val banReason                                          by namedFucker {TextFieldSpec(it, t("TOTE", "Причина бана"), TextFieldType.TEXTAREA, 0, 5000)}; val banReason_testRef = TestRef(banReason)
     val adminNotes                                         by namedFucker {TextFieldSpec(it, t("TOTE", "Админские заметки"), TextFieldType.TEXTAREA, 0, 5000)}; val adminNotes_testRef = TestRef(adminNotes)
     val searchString                                       by namedFucker {TextFieldSpec(it, "", TextFieldType.STRING, 0, 50)}; val searchString_testRef = TestRef(searchString)

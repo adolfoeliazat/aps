@@ -1,6 +1,7 @@
 package aps
 
 import aps.TextFieldType.*
+import aps.back.*
 import into.kommon.*
 import org.apache.commons.validator.routines.EmailValidator
 import kotlin.properties.Delegates.notNull
@@ -16,6 +17,7 @@ import kotlin.properties.Delegates.notNull
 
     val value: String get() {
         check(include){"Attempt to read back TextField $name, which is not included"}
+        RequestGlobus.retrievedFields += this
         return _value
     }
 

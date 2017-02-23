@@ -89,12 +89,12 @@ class ResetTestDatabaseAlongWithTemplateRequest() : RequestMatumba() {
     val templateDB = StringHiddenField(this, "templateDB")
     val recreateTemplate = BooleanHiddenField(this, "recreateTemplate")
 
-    companion object {
-        fun send(templateDB: String, recreateTemplate: Boolean = false): Promisoid<GenericResponse> = callDangerousMatumba(ResetTestDatabaseAlongWithTemplateRequest().apply {
-            this.templateDB.value = templateDB
-            this.recreateTemplate.value = recreateTemplate
-        })
-    }
+//    companion object {
+//        fun send(templateDB: String, recreateTemplate: Boolean = false): Promisoid<GenericResponse> = callDangerousMatumba(ResetTestDatabaseAlongWithTemplateRequest().apply {
+//            this.templateDB.value = templateDB
+//            this.recreateTemplate.value = recreateTemplate
+//        })
+//    }
 
 //    fun rpc(): Promise<GenericResponse> = callRemoteProcedure(this)
 }
@@ -145,23 +145,6 @@ class UpdateProfileRequest : RequestMatumba() {
     class Response(val newUser: UserRTO) : CommonResponseFieldsImpl()
 }
 
-open class UpdateUserRequest() : RequestMatumba() {
-    init {imf("2eefb6a2-3cd3-4d13-a497-0da5c94f5141")}
-    class Response(val newUser: UserRTO) : CommonResponseFieldsImpl()
-
-    val id = StringHiddenField(this, "id")
-//    val immutableSignUpFields = ImmutableSignUpFields(this)
-//    val mutableSignUpFields = MutableSignUpFields(this)
-    val profileFields = ProfileFields(this)
-    val state = SelectField(this, fields.userState)
-    val profileRejectionReason = TextField(this, fields.profileRejectionReason)
-    val banReason = TextField(this, fields.banReason)
-    val adminNotes = TextField(this, fields.adminNotes)
-}
-
-class AdminCreateUserRequest: UpdateUserRequest()
-
-
 
 class ProfileFields(container: RequestMatumba) {
     val phone = TextField(container, fields.orderCustomerPhone)
@@ -175,12 +158,12 @@ class WorldPointRequest() : RequestMatumba() {
     val pointName = StringHiddenField(this, "pointName")
     val action = EnumHiddenField(this, "action", Action.values())
 
-    companion object {
-        fun send(pointName: String, action: Action): Promisoid<GenericResponse> = callDangerousMatumba(WorldPointRequest().apply {
-            this.pointName.value = pointName
-            this.action.value = action
-        })
-    }
+//    companion object {
+//        fun send(pointName: String, action: Action): Promisoid<GenericResponse> = callDangerousMatumba(WorldPointRequest().apply {
+//            this.pointName.value = pointName
+//            this.action.value = action
+//        })
+//    }
 }
 
 class GetSoftwareVersionRequest : RequestMatumba() {
@@ -255,11 +238,11 @@ class GetUserRequest() : RequestMatumba() {
 
     val id = StringHiddenField(this, "id")
 
-    companion object {
-        fun send(token: String, id: String): Promisoid<ZimbabweResponse<Response>> = callZimbabwe(GetUserRequest()-{o->
-            o.id.value = id
-        }, token)
-    }
+//    companion object {
+//        fun send(token: String, id: String): Promisoid<ZimbabweResponse<Response>> = callZimbabwe(GetUserRequest()-{o->
+//            o.id.value = id
+//        }, token)
+//    }
 }
 
 enum class AdminUserFilter(override val title: String): Titled {
@@ -339,11 +322,11 @@ class MapStackRequest : RequestMatumba() {
 
     val mangledStack = StringHiddenField(this, "mangledStack")
 
-    companion object {
-        fun send(mangledStack: String): Promisoid<Response> = callDangerousMatumba(MapStackRequest()-{o->
-            o.mangledStack.value = mangledStack
-        })
-    }
+//    companion object {
+//        fun send(mangledStack: String): Promisoid<Response> = callDangerousMatumba(MapStackRequest()-{o->
+//            o.mangledStack.value = mangledStack
+//        })
+//    }
 }
 
 class OpenSourceCodeRequest : RequestMatumba() {
@@ -351,11 +334,11 @@ class OpenSourceCodeRequest : RequestMatumba() {
 
     val sourceLocation = StringHiddenField(this, "sourceLocation")
 
-    companion object {
-        fun send(sourceLocation: String): Promisoid<Response> = callDangerousMatumba(OpenSourceCodeRequest()-{o->
-            o.sourceLocation.value = sourceLocation
-        })
-    }
+//    companion object {
+//        fun send(sourceLocation: String): Promisoid<Response> = callDangerousMatumba(OpenSourceCodeRequest()-{o->
+//            o.sourceLocation.value = sourceLocation
+//        })
+//    }
 }
 
 class TestSetUserFieldsRequest() : RequestMatumba() {

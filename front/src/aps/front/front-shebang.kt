@@ -411,7 +411,9 @@ fun OpenSourceCodeLink(def: dynamic): ReactElement {
 
                             var error: String? = null
                             try {
-                                val res = await(OpenSourceCodeRequest.send(sourceLocation))
+                                val res = await(callDangerousMatumba<OpenSourceCodeRequest.Response>(OpenSourceCodeRequest()-{o->
+                                    o.sourceLocation.value = sourceLocation
+                                }))
                                 error = res.error
                                 if (error == null) {
                                     my.linkProgress = Shitus.glyph("check")
@@ -606,7 +608,10 @@ fun errorToMappedClientStackString(shit: Throwable): Promisoid<String> {
 }
 
 fun stackToMappedClientStackString(mangledStack: String): Promisoid<String> = async {
-    val res = await(MapStackRequest.send(mangledStack))
+    val res = await(callDangerousMatumba<MapStackRequest.Response>(MapStackRequest()-{o->
+        o.mangledStack.value = mangledStack
+    }))
+//    val res = await(MapStackRequest.send(mangledStack))
     res.originalStack
 }
 

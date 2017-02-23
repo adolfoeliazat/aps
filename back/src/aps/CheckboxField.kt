@@ -1,5 +1,6 @@
 package aps
 
+import aps.back.*
 import kotlin.properties.Delegates.notNull
 
 @Back class CheckboxField(
@@ -10,6 +11,7 @@ import kotlin.properties.Delegates.notNull
 
     val value: Boolean get() {
         check(include){"Attempt to read back CheckboxField $name, which is not included"}
+        RequestGlobus.retrievedFields += this
         return _value
     }
 

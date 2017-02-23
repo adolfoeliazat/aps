@@ -303,7 +303,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
             run { // Admin rejects order
                 twoStepSequence({linkClick(links.adminDashboard.ordersToApprove_testRef)}, "e1cdd9ea-7ad0-467e-9add-c9d67c19b883")
                 twoStepSequence({linkClick(links.lips_testRef, subscript = 1L)}, "4d382cc9-c529-47bc-9026-0ceec0716a5c")
-                step({buttonClick(buttons.returnToCustomerForFixing_testRef)}, TestGlobal.modalShownLock, "0417ea80-b99b-498e-9e51-c4f829d08499")
+                step({buttonClick(buttons.reject_testRef)}, TestGlobal.modalShownLock, "0417ea80-b99b-498e-9e51-c4f829d08499")
                 formSubmissionAttemptsThenPageLoad(
                     testShit, aid = "e07d4eab-e003-4149-bfc9-9b3557aacfb5",
                     attempts = eachOrCombinationOfLasts(listOf(
@@ -402,7 +402,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
             }
 
             run { // Admin moves order to store
-                twoStepSequence({buttonClick(buttons.moveToStore_testRef)}, "3196309c-b789-436c-89a4-27128aa59a46")
+                twoStepSequence({buttonClick(buttons.accept_testRef)}, "3196309c-b789-436c-89a4-27128aa59a46")
                 // TODO:vgrechka Email should be sent to customer
             }
         }
@@ -441,7 +441,22 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
             bootDasjaWithTokenToDashboard(sessionNumber = 3, aid = "9e3a8178-3f0d-4f5b-98a3-1bb306b4c8ca")
             twoStepSequence({linkClick(links.adminDashboard.writerProfilesToApprove_testRef)}, "959e8ffe-36f6-4c41-9fa3-d019f8d082db")
             twoStepSequence({linkClick(links.lips_testRef, subscript = 3L)}, "8cca6a1f-685a-4067-a9df-a2902b8c2e2d")
+            step({buttonClick(buttons.edit_testRef)}, TestGlobal.modalShownLock, "98e46310-4fb8-4f38-ac5b-df079282a8dd")
+            inputSetValue(fields.signUpFirstName_testRef, "Франсик")
+            inputSetValue(fields.signUpLastName_testRef, "Кафунчик")
+            inputSetValue(fields.adminNotes_testRef, "Здесь был Вася...")
+            submitFormSequence("e0ec0baf-bbfa-4e4f-b2d4-76bda7d5657a")
+
+            step({buttonClick(buttons.reject_testRef)}, TestGlobal.modalShownLock, "2ebb1be5-a472-4972-b417-1a44a325a044")
+            inputSetValue(fields.rejectionReason_testRef, "Попустись, Франсик. Напиши что-то нормальное в \"эбаут ми\".")
+            rejectionSequence("26407a00-118e-43c9-8c3f-919d1b4e5b9c")
         }
+    }
+
+    private suspend fun rejectionSequence(aid: String) {
+        step(action = {submitFormSequence(testShit, useFormDoneLock = false, aid = "$aid--1")},
+             lock = TestGlobal.pageLoadedLock,
+             aid = "$aid--2")
     }
 
     private suspend fun bootDasjaWithTokenToDashboard(sessionNumber: Int, aid: String) {
