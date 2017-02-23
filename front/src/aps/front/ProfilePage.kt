@@ -40,7 +40,7 @@ class ProfilePage {
                 }
 
                 if (isWriter() && user().state == UserState.PROFILE_APPROVAL_PENDING) {
-                    renderProfile(o, user())
+                    o- renderProfile(user())
                 } else {
                     o- FormMatumba<UpdateProfileRequest, UpdateProfileRequest.Response>(FormSpec(
                         req = UpdateProfileRequest().populateCheckingCompleteness{o->
@@ -67,26 +67,28 @@ class ProfilePage {
     }
 }
 
-fun renderProfile(o: ElementBuilder, user: UserRTO) {
+fun renderProfile(user: UserRTO): ToReactElementable {
     val m = MelindaTools
-    o- m.row {o->
-        o- m.createdAtCol(3, user.createdAt)
-        user.profileUpdatedAt?.let {
-            o- m.col(3, t("Profile updated", "Профайл изменен")){o->
-                o- formatUnixTime(it)
+    return kdiv{o->
+        o- m.row {o->
+            o- m.createdAtCol(3, user.createdAt)
+            user.profileUpdatedAt?.let {
+                o- m.col(3, t("Profile updated", "Профайл изменен")){o->
+                    o- formatUnixTime(it)
+                }
             }
+            o- m.col(3, t("TOTE", "Статус"), user.state.title, className = css.user.stateLabel(user.state))
         }
-        o- m.col(3, t("TOTE", "Статус"), user.state.title, className = css.user.stateLabel(user.state))
-    }
-    o- m.row{o->
-        o- m.col(3, fields.signUpFirstName.title, user.firstName)
-        o- m.col(3, fields.signUpLastName.title, user.lastName)
-        o- m.col(3, fields.profilePhone.title, user.profilePhone)
-    }
+        o- m.row{o->
+            o- m.col(3, fields.signUpFirstName.title, user.firstName)
+            o- m.col(3, fields.signUpLastName.title, user.lastName)
+            o- m.col(3, fields.profilePhone.title, user.profilePhone)
+        }
 
-    if (user.aboutMe.isNotBlank())
-        o- m.detailsRow(user.aboutMe, user.aboutMeHighlightRanges, title = fields.aboutMe.title)
-    renderAdminNotesIfNeeded(o, user)
+        if (user.aboutMe.isNotBlank())
+            o- m.detailsRow(user.aboutMe, user.aboutMeHighlightRanges, title = fields.aboutMe.title)
+        o- renderAdminNotesIfNeeded(user)
+    }
 }
 
 

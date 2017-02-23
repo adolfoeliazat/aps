@@ -6,4 +6,7 @@
 - Full-text search for non-admin users should not look into `adminNotes` field.
   Maintain separate `tsv` and `adminTsv`.
 
+- Prevent attempts to show modal when another one is active. This means logic error in application,
+  but at least user's GUI won't be completely fucked up...
+
 

@@ -54,7 +54,7 @@ class UAAdminOrdersPage {
                     return makeUsualMelindaLips(
                         tongue, viewRootID, bint, icon = {fa.folderOpen}, initialState = Unit,
                         renderContent = {o ->
-                            renderOrderParams(o, tongue.getItem())
+                            o- renderOrderParams(tongue.getItem())
                         },
                         titleLinkURL = makeURL(pages.uaAdmin.order, listOf(
                             URLParamValue(TabithaURLQuery.id, tongue.getItem().id)

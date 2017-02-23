@@ -54,11 +54,11 @@ fun populateWithAdminNotes(o: RequestWithAdminNotes, rto: RTOWithAdminNotes) {
     }
 }
 
-fun renderAdminNotesIfNeeded(o: ElementBuilder, rto: RTOWithAdminNotes) {
-    if (isAdmin() && rto.adminNotes.isNotBlank()) {
-        o - MelindaTools.detailsRow(rto.adminNotes, rto.adminNotesHighlightRanges, title = fields.adminNotes.title)
-    }
-}
+fun renderAdminNotesIfNeeded(rto: RTOWithAdminNotes): ToReactElementable =
+    if (isAdmin() && rto.adminNotes.isNotBlank())
+        MelindaTools.detailsRow(rto.adminNotes, rto.adminNotesHighlightRanges, title = fields.adminNotes.title)
+    else
+        NOTRE
 
 fun <T : RequestMatumba> T.populateCheckingCompleteness(block: (T) -> Unit): T {
     // TODO:vgrechka Also check for excessiveness?

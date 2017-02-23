@@ -187,7 +187,7 @@ private fun renderOrderFileParams(o: ElementBuilder, orderFile: UAOrderFileRTO) 
         }
     }
     o- m.detailsRow(orderFile.details, orderFile.detailsHighlightRanges)
-    renderAdminNotesIfNeeded(o, orderFile)
+    o- renderAdminNotesIfNeeded(orderFile)
 }
 
 

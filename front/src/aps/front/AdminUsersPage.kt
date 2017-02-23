@@ -63,7 +63,7 @@ class AdminUsersPage {
                         }},
                         initialState = Unit,
                         renderContent = {o->
-                            renderProfile(o, tongue.getItem())
+                            o- renderProfile(tongue.getItem())
                         },
                         titleLinkURL = makeURL(pages.uaAdmin.user, listOf(
                             URLParamValue(TabithaURLQuery.id, tongue.getItem().id)

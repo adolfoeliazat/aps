@@ -101,7 +101,32 @@ class UASingleOrderPage {
                 }
             },
             makeTabs = {listOf(
-                OrderParamsTab(order),
+                UsualParamsTab(
+                    tabitha,
+                    tabKey = tabs.order.params,
+                    content = renderOrderParams(order),
+                    hasEditButton = when (Globus.world.user.kind) {
+                        UserKind.CUSTOMER -> order.state == UAOrderState.CUSTOMER_DRAFT
+                        UserKind.ADMIN -> true
+                        UserKind.WRITER -> imf("7ab0701a-df7a-457f-9bca-a2bedc0e5225")
+                    },
+                    editModalTitle = t("TOTE", "Параметры заказа"),
+                    formSpec = FormSpec<UAOrderParamsRequest, GenericResponse>(
+                        procedureName = "UAUpdateOrder",
+                        req = UAOrderParamsRequest(isAdmin = isAdmin(), isUpdate = true).populateCheckingCompleteness{o->
+                            o.orderID.value = order.id
+                            o.documentType.value = order.documentType
+                            o.documentTitle.value = order.title
+                            o.numPages.setValue(order.numPages)
+                            o.numSources.setValue(order.numSources)
+                            o.documentDetails.value = order.details
+                            o.firstName.value = order.customerFirstName
+                            o.lastName.value = order.customerLastName
+                            o.email.value = order.customerEmail
+                            o.phone.value = order.customerPhone
+                            populateWithAdminNotes(o, order)
+                        }
+                    )),
                 UACustomerSingleOrderPageFilesTab(order)
             )},
             pageHeaderTitle = {t("TOTE", "Заказ $numberSign${order.id}")},
@@ -126,88 +151,34 @@ class UASingleOrderPage {
         )
         return tabitha.load()
     }
-
 }
 
-private class OrderParamsTab(val order: UAOrderRTO) : TabithaTab {
-    override suspend fun load(): FormResponse2.Shitty<*>? {
-        return null
-    }
-
-    private val place = Placeholder(renderView())
-
-    private fun renderView(): ToReactElementable {
-        return kdiv{o->
-            renderOrderParams(o, order)
-        }
-    }
-
-    override val tabSpec = SimpleTabSpec(
-        key = tabs.order.params,
-        title = t("TOTE", "Параметры"),
-        content = place,
-        stripContent = kdiv{o->
-            val hasEditButton = when (Globus.world.user.kind) {
-                UserKind.CUSTOMER -> order.state == UAOrderState.CUSTOMER_DRAFT
-                UserKind.ADMIN -> true
-                UserKind.WRITER -> imf("7ab0701a-df7a-457f-9bca-a2bedc0e5225")
-            }
-            if (hasEditButton) {
-                o- Button(icon = fa.pencil, level = Button.Level.DEFAULT, key = buttons.edit) {
-                    openEditModal(
-                        title = t("TOTE", "Параметры заказа"),
-                        formSpec = FormSpec<UAOrderParamsRequest, GenericResponse>(
-                            procedureName = "UAUpdateOrder",
-                            req = UAOrderParamsRequest(isAdmin = isAdmin(), isUpdate = true).populateCheckingCompleteness{o->
-                                o.orderID.value = order.id
-                                o.documentType.value = order.documentType
-                                o.documentTitle.value = order.title
-                                o.numPages.setValue(order.numPages)
-                                o.numSources.setValue(order.numSources)
-                                o.documentDetails.value = order.details
-                                o.firstName.value = order.customerFirstName
-                                o.lastName.value = order.customerLastName
-                                o.email.value = order.customerEmail
-                                o.phone.value = order.customerPhone
-                                populateWithAdminNotes(o, order)
-                            }
-                        ),
-                        onSuccessa = {
-                            Globus.world.replaceNavigate(makeURL(pages.uaCustomer.order, listOf(
-                                URLParamValue(TabithaURLQuery.id, order.id)
-                            )))
-                        }
-                    )
-                }
-            }
-        }
-    )
-}
-
-fun renderOrderParams(o: ElementBuilder, order: UAOrderRTO) {
+fun renderOrderParams(order: UAOrderRTO): ToReactElementable {
     val m = MelindaTools
-    o- m.row {o->
-        if (order.state != UAOrderState.CUSTOMER_DRAFT) {
-            o- m.createdAtCol(3, order.createdAt)
+    return kdiv{o->
+        o- m.row {o->
+            if (order.state != UAOrderState.CUSTOMER_DRAFT) {
+                o- m.createdAtCol(3, order.createdAt)
+            }
+            o- m.col(3, t("TOTE", "Статус"), order.state.title, className = css.order.stateLabel(order.state))
         }
-        o- m.col(3, t("TOTE", "Статус"), order.state.title, className = css.order.stateLabel(order.state))
-    }
-    o- m.row{o->
-        o- m.col(3, fields.orderCustomerFirstName.title, order.customerFirstName)
-        if (order.customerLastName.isNotBlank()) {
-            o- m.col(3, fields.orderCustomerLastName.title, order.customerLastName)
+        o- m.row{o->
+            o- m.col(3, fields.orderCustomerFirstName.title, order.customerFirstName)
+            if (order.customerLastName.isNotBlank()) {
+                o- m.col(3, fields.orderCustomerLastName.title, order.customerLastName)
+            }
+            o- m.col(3, fields.orderCustomerPhone.title, order.customerPhone)
         }
-        o- m.col(3, fields.orderCustomerPhone.title, order.customerPhone)
-    }
 
-    o- m.row{o->
-        o- m.col(3, fields.uaDocumentType.title, order.documentType.title)
-        o- m.col(3, fields.numPages.title, order.numPages.toString())
-        o- m.col(3, fields.numSources.title, order.numSources.toString())
-    }
+        o- m.row{o->
+            o- m.col(3, fields.uaDocumentType.title, order.documentType.title)
+            o- m.col(3, fields.numPages.title, order.numPages.toString())
+            o- m.col(3, fields.numSources.title, order.numSources.toString())
+        }
 
-    o- m.detailsRow(order.details, order.detailsHighlightRanges, title = fields.orderDetails.title)
-    renderAdminNotesIfNeeded(o, order)
+        o- m.detailsRow(order.details, order.detailsHighlightRanges, title = fields.orderDetails.title)
+        o- renderAdminNotesIfNeeded(order)
+    }
 }
 
 

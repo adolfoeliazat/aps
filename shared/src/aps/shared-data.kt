@@ -4,6 +4,7 @@ import aps.Color.*
 
 interface TabithaEntityRTO {
     // XXX `var`s are needed by 5d324703-9255-4a67-ba25-ecc865194418
+    // TODO:vgrechka Remove above hack (and check shit doesn't break), it should not be necessary anymore
     var id: Long
 }
 
@@ -62,6 +63,7 @@ data class IntRangeRTO(
 
 interface MelindaItemRTO {
     // XXX `var`s are needed by 5d324703-9255-4a67-ba25-ecc865194418
+    // TODO:vgrechka Remove above hack (and check shit doesn't break), it should not be necessary anymore
     var id: Long
     var title: String
     var editable: Boolean
@@ -70,6 +72,7 @@ interface MelindaItemRTO {
 
 interface RTOWithAdminNotes {
     // XXX `var`s are needed by 5d324703-9255-4a67-ba25-ecc865194418
+    // TODO:vgrechka Remove above hack (and check shit doesn't break), it should not be necessary anymore
     var adminNotes: String
     var adminNotesHighlightRanges: List<IntRangeRTO>
 }

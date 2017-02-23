@@ -44,12 +44,12 @@ class User(
     @Column(length = MAX_STRING) var profilePhone: String,
     @Enumerated(EnumType.STRING) var kind: UserKind,
     @Enumerated(EnumType.STRING) var state: UserState,
-    @Column(length = MAX_STRING) var adminNotes: String = "",
+    override @Column(length = MAX_STRING) var adminNotes: String = "",
     var profileUpdatedAt: Timestamp? = null,
     @Column(length = MAX_STRING) var aboutMe: String = "",
     @Column(length = MAX_STRING) var profileRejectionReason: String? = null,
     @Column(length = MAX_STRING) var banReason: String? = null
-) : MeganItem<UserRTO>, ClitoralEntity() {
+) : MeganItem<UserRTO>, ClitoralEntity(), EntityWithAdminNotes {
     override val idBang get()= id!!
 
     override fun toRTO(searchWords: List<String>): UserRTO {

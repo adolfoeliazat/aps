@@ -65,4 +65,43 @@ fun serveReginaLoadUser(p: ReginaLoadUser): SimpleEntityResponse<UserRTO> {
     }
 }
 
+@Servant class ServeUpdateUser : BitchyProcedure() {
+    override fun serve() {
+        fuckAnyUser(FuckAnyUserParams(
+            bpc = bpc,
+            makeRequest = {UserParamsRequest(isUpdate = true)},
+            runShit = fun(ctx, req: UserParamsRequest): GenericResponse {
+                // TODO:vgrechka Security
+                check(isAdmin()){"f15046b7-c5ba-471e-836b-36fbaa56a0d6"}
+                userRepo.findOrDie(req.userID.value)-{o->
+                    o.firstName = req.firstName.value
+                    updateAdminNotes(o, req)
+                }
+                return GenericResponse()
+            }
+        ))
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

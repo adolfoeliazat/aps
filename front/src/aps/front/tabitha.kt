@@ -83,7 +83,7 @@ class Tabitha<EntityRTO>(
         TestGlobal.switchTabHalfwayLock.resumeTestAndPauseSutFromSut()
         try {
             val q = TabithaURLQuery
-            Globus.world.pushNavigate(makeURL(pages.uaCustomer.order, listOf(
+            Globus.world.pushNavigate(makeURL(page, listOf(
                 URLParamValue(q.id, entityID),
                 URLParamValue(q.tab, simpleName(key.fqn))
             )))
@@ -92,5 +92,60 @@ class Tabitha<EntityRTO>(
         }
     }
 }
+
+class UsualParamsTab<Req : RequestMatumba, Res : CommonResponseFields>(
+    tabitha: Tabitha<*>,
+    tabKey: TabKey,
+    content: ToReactElementable,
+    hasEditButton: Boolean,
+    editModalTitle: String,
+    formSpec: FormSpec<Req, Res>
+)
+    : TabithaTab
+{
+    override suspend fun load(): FormResponse2.Shitty<*>? = null
+
+    override val tabSpec = SimpleTabSpec(
+        key = tabKey,
+        title = t("TOTE", "Параметры"),
+        content = content,
+        stripContent = kdiv{o->
+            if (hasEditButton) {
+                o- Button(icon = fa.pencil, level = Button.Level.DEFAULT, key = buttons.edit) {
+                    openEditModal(
+                        title = editModalTitle,
+                        formSpec = formSpec,
+                        onSuccessa = {
+                            tabitha.reloadPage()
+                        }
+                    )
+                }
+            }
+        }
+    )
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

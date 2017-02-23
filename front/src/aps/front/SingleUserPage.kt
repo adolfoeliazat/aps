@@ -21,19 +21,24 @@ class SingleUserPage {
                 NOTRE
             },
             makeTabs = {listOf(
-                object:TabithaTab {
-                    suspend override fun load(): FormResponse2.Shitty<*>? {
-                        return null
-                    }
-
-                    override val tabSpec = SimpleTabSpec(
-                        key = tabs.user.params,
-                        title = t("TOTE", "Параметры"),
-                        content = kdiv{o->
-                            renderProfile(o, user)
+                UsualParamsTab(
+                    tabitha,
+                    tabKey = tabs.user.params,
+                    content = renderProfile(user),
+                    hasEditButton = true,
+                    editModalTitle = t("TOTE", "Параметры засранца"),
+                    formSpec = FormSpec<UserParamsRequest, GenericResponse>(
+                        procedureName = "UpdateUser",
+                        req = UserParamsRequest(isUpdate = true).populateCheckingCompleteness{o->
+                            o.userID.value = user.id
+                            o.firstName.value = user.firstName
+                            o.lastName.value = user.lastName
+                            o.email.value = user.email
+                            o.phone.value = user.profilePhone
+                            populateWithAdminNotes(o, user)
                         }
                     )
-                }
+                )
             )},
             pageHeaderTitle = {t("TOTE", "Засранец ${user.firstName} ${user.lastName}")},
             subtitle = {null},
