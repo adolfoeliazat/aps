@@ -57,7 +57,7 @@ class UAAdminOrdersPage {
                             renderOrderParams(o, tongue.getItem())
                         },
                         titleLinkURL = makeURL(pages.uaAdmin.order, listOf(
-                            URLParamValue(UASingleOrderPage.urlQuery.id, tongue.getItem().id)
+                            URLParamValue(TabithaURLQuery.id, tongue.getItem().id)
                         )),
                         hasEditControl = {false},
                         hasDeleteControl = {false}

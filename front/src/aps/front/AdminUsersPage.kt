@@ -35,7 +35,7 @@ class AdminUsersPage {
             createModalTitle = t("TOTE", "Новый засранец"),
             makeCreateRequest = {UserParamsRequest(isUpdate = false)},
             makeURLAfterCreation = {res->
-                makeURL(pages.uaAdmin.user, listOf(URLParamValue(SingleUserPage.urlQuery.id, res.userID)))
+                makeURL(pages.uaAdmin.user, listOf(URLParamValue(TabithaURLQuery.id, res.userID)))
             },
             makeURLForReload = {boobsParams ->
                 makeURL(pages.uaAdmin.users, boobsParams)
@@ -66,7 +66,7 @@ class AdminUsersPage {
                             renderProfile(o, tongue.getItem())
                         },
                         titleLinkURL = makeURL(pages.uaAdmin.user, listOf(
-                            URLParamValue(SingleUserPage.urlQuery.id, tongue.getItem().id)
+                            URLParamValue(TabithaURLQuery.id, tongue.getItem().id)
                         )),
                         hasEditControl = {false},
                         hasDeleteControl = {false}

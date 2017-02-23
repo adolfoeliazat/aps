@@ -104,8 +104,11 @@ fun <T> dejsonize(json: String, descr: String? = null): T {
     return dejsonizeValue(JSON.parse(json), descr)
 }
 
+var dejsonizeValue_lastInvocationID = -1
 fun <T> dejsonizeValue(jsThing: dynamic, descr: String? = null): T {
     // XXX 5d324703-9255-4a67-ba25-ecc865194418
+    val invocationID = ++dejsonizeValue_lastInvocationID
+    var inst: dynamic = null
     try {
         gloshit.pizda = TestSQLFiddleRequest.Response("qqq", true)
         val logShit = false
@@ -133,12 +136,12 @@ fun <T> dejsonizeValue(jsThing: dynamic, descr: String? = null): T {
                 when (clazz) {
                     "kotlin.Unit" -> Unit.asDynamic()
                     else -> {
-                        val inst = eval("new _.${clazz.replace("$", ".")}()")
+                        inst = eval("new _.${clazz.replace("$", ".")}()")
                         for (k in jsKeys(jsThing)) {
                             if (k != "\$\$\$class") {
                                 val jsValue = jsThing[k]
                                 val kotlinValue = dejsonizeValue<Any?>(jsValue)
-                                jsSet(inst, k, kotlinValue)
+                                setPropertyOrBackingField(inst, k, kotlinValue)
                                 if (jsTypeOf(jsValue) == "boolean") // XXX
                                     jsSet(inst, "is" + k.capitalize(), kotlinValue)
                             }
@@ -183,7 +186,9 @@ fun <T> dejsonizeValue(jsThing: dynamic, descr: String? = null): T {
     }
     catch(e: Throwable) {
         console.error(e.message)
-        console.error("Offending jsThing", jsThing)
+        console.error("Offending jsThing (invocationID=$invocationID)", jsThing)
+        gloshit["jsThing$invocationID"] = jsThing
+        gloshit["inst$invocationID"] = inst
         throw e
     }
 }

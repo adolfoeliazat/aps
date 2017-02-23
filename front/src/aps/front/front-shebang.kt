@@ -793,6 +793,7 @@ fun World.setShittyParamsPage() {
     setErrorPage(t("TOTE", "Не надо мне всякую херню передавать в параметрах, OK?"))
 }
 
+@Deprecated("Kill me")
 fun <T> World.setShittyResponsePage(res: FormResponse2.Shitty<T>) {
     setErrorPage(res.error)
 }

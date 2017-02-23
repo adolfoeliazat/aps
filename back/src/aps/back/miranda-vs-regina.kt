@@ -24,17 +24,21 @@ import org.springframework.data.repository.findOrDie
         fuckAnyUser(FuckAnyUserParams(
             bpc = bpc,
             makeRequest = {ReginaRequest()},
-            runShit = fun(ctx, req: ReginaRequest): ReginaRequest.Response {
+            runShit = fun(ctx, req: ReginaRequest): CommonResponseFields {
+                fun <Params : ReginaParams<Res>, Res>
+                    tie(p: Params, f: (Params) -> Res): Res =
+                        f(p)
+
                 val p = req.params.value
                 return when (p) {
-                    is ReginaCustomerSendOrderForApprovalAfterFixing -> serveReginaCustomerSendOrderForApprovalAfterFixing(p)
-                    is ReginaAdminSendOrderToStore -> serveReginaAdminSendOrderToStore(p)
+                    is ReginaCustomerSendOrderForApprovalAfterFixing -> tie(p, ::serveReginaCustomerSendOrderForApprovalAfterFixing)
+                    is ReginaAdminSendOrderToStore -> tie(p, ::serveReginaAdminSendOrderToStore)
+                    is ReginaLoadUser -> tie(p, ::serveReginaLoadUser)
                 }
             }
         ))
     }
 }
-
 
 
 

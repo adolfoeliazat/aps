@@ -2,6 +2,11 @@ package aps
 
 import aps.Color.*
 
+interface TabithaEntityRTO {
+    // XXX `var`s are needed by 5d324703-9255-4a67-ba25-ecc865194418
+    var id: Long
+}
+
 class UserRTO(
     override var id: Long,
     override var title: String,
@@ -24,7 +29,7 @@ class UserRTO(
     val aboutMeHighlightRanges: List<IntRangeRTO>,
     val roles: Set<UserRole>,
     override var editable: Boolean
-) : RTOWithAdminNotes, MelindaItemRTO
+) : RTOWithAdminNotes, MelindaItemRTO, TabithaEntityRTO
 
 class UAOrderRTO(
     override var id: Long,
@@ -48,7 +53,7 @@ class UAOrderRTO(
     val customerLastName: String,
     val whatShouldBeFixedByCustomer: String?,
     val customerEmail: String
-) : MelindaItemRTO, RTOWithAdminNotes
+) : MelindaItemRTO, RTOWithAdminNotes, TabithaEntityRTO
 
 data class IntRangeRTO(
     val start: Int,

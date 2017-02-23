@@ -3,6 +3,11 @@ package aps.back
 import aps.*
 import org.springframework.data.repository.findOrDie
 
+fun serveReginaLoadUser(p: ReginaLoadUser): SimpleEntityResponse<UserRTO> {
+    check(isAdmin()){"14b9cd37-57e6-4c82-a16d-ef37a2e38a4d"}
+    return SimpleEntityResponse(userRepo.findOrDie(p.userID).toRTO(searchWords = listOf()))
+}
+
 @Servant class ServeUpdateProfile : BitchyProcedure() {
     override fun serve() {
         fuckAnyUser(FuckAnyUserParams(

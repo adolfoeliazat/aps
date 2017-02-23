@@ -230,14 +230,14 @@ annotation class Ser
 
 
 class ReginaRequest : RequestMatumba() {
-    val params = ObjectHiddenField<ReginaParams>(this, "params")
-    class Response : CommonResponseFieldsImpl()
+    val params = ObjectHiddenField<ReginaParams<*>>(this, "params")
 }
 
 // XXX `hack` param is necessary to actually generate no-arg constructor here
-@Ser sealed class ReginaParams(hack: Unit = Unit)
-@Ser class ReginaCustomerSendOrderForApprovalAfterFixing(val orderID: Long) : ReginaParams()
-@Ser class ReginaAdminSendOrderToStore(val orderID: Long) : ReginaParams()
+@Ser sealed class ReginaParams<Res: CommonResponseFields>(hack: Unit = Unit)
+@Ser class ReginaCustomerSendOrderForApprovalAfterFixing(val orderID: Long) : ReginaParams<GenericResponse>()
+@Ser class ReginaAdminSendOrderToStore(val orderID: Long) : ReginaParams<GenericResponse>()
+@Ser class ReginaLoadUser(val userID: Long) : ReginaParams<SimpleEntityResponse<UserRTO>>()
 
 
 

@@ -36,7 +36,7 @@ class ConfirmOrderPage(val world: World) {
                 world.replaceNavigate(
                     // TODO:vgrechka Use makeUrl
                     pages.uaCustomer.order.path + ".html"
-                        + "?${UASingleOrderPage.urlQuery.id.name}=${res.meat.orderId}")
+                        + "?${TabithaURLQuery.id.name}=${res.meat.orderId}")
             }
         }
         return null

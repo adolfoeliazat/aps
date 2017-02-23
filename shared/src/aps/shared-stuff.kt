@@ -113,9 +113,9 @@ sealed class FormResponse : CommonResponseFields {
     class Shitty(val error: String, val fieldErrors: List<FieldError>): FormResponse()
 }
 
-sealed class FormResponse2<Meat> {
-    class Hunky<Meat>(val meat: Meat): FormResponse2<Meat>()
-    class Shitty<Meat>(val error: String, val fieldErrors: List<FieldError>): FormResponse2<Meat>()
+sealed class FormResponse2<out Meat> {
+    class Hunky<out Meat>(val meat: Meat): FormResponse2<Meat>()
+    class Shitty<out Meat>(val error: String, val fieldErrors: List<FieldError>): FormResponse2<Meat>()
 }
 
 class SignInResponse(val token: String, val user: UserRTO) : CommonResponseFieldsImpl()
@@ -304,9 +304,11 @@ class EntityRequest() : RequestMatumba() {
     val id = StringHiddenField(this, "id")
 }
 
-class EntityResponse<Item> (
-    val entity: Item
-)
+interface EntityResponse<out T> {
+    val entity: T
+}
+
+class SimpleEntityResponse<out T>(override val entity: T) : CommonResponseFieldsImpl(), EntityResponse<T>
 
 class ItemsRequest<Filter>(filterValues: Array<Filter>) : RequestMatumba()
 where Filter: Enum<Filter>, Filter: Titled {
@@ -473,7 +475,7 @@ abstract class CommonResponseFieldsImpl : CommonResponseFields {
 
 class LoadUAOrderRequest : RequestMatumba() {
     val id by longHiddenField()
-    class Response(val order: UAOrderRTO) : CommonResponseFieldsImpl()
+    class Response(override val entity: UAOrderRTO) : CommonResponseFieldsImpl(), EntityResponse<UAOrderRTO>
 }
 
 enum class Color(val string: String) {

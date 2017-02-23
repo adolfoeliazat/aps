@@ -237,23 +237,23 @@ import java.util.*
     }
 }
 
-fun serveReginaCustomerSendOrderForApprovalAfterFixing(p: ReginaCustomerSendOrderForApprovalAfterFixing): ReginaRequest.Response {
+fun serveReginaCustomerSendOrderForApprovalAfterFixing(p: ReginaCustomerSendOrderForApprovalAfterFixing): GenericResponse {
     check(requestUser.kind == UserKind.CUSTOMER){"70630d2d-6796-4af8-8ac6-16e09a8b37e1"}
     // TODO:vgrechka Security
     val order = uaOrderRepo.findOrDie(p.orderID)
     check(order.state == UAOrderState.RETURNED_TO_CUSTOMER_FOR_FIXING){"698dd409-f382-45df-9e65-fff590302dd0"}
     order.state = UAOrderState.WAITING_ADMIN_APPROVAL
-    return ReginaRequest.Response()
+    return GenericResponse()
 }
 
-fun serveReginaAdminSendOrderToStore(p: ReginaAdminSendOrderToStore): ReginaRequest.Response {
+fun serveReginaAdminSendOrderToStore(p: ReginaAdminSendOrderToStore): GenericResponse {
     check(requestUser.kind == UserKind.ADMIN){"0af9f1b0-b5fb-4fb2-b3a9-198a0185ee15"}
     // TODO:vgrechka Security
     val order = uaOrderRepo.findOrDie(p.orderID)
     check(order.state in setOf(UAOrderState.WAITING_ADMIN_APPROVAL)){"7af262c7-2a28-43f8-910a-ccf3569142e9"}
     order.whatShouldBeFixedByCustomer = null
     order.state = UAOrderState.IN_STORE
-    return ReginaRequest.Response()
+    return GenericResponse()
 }
 
 

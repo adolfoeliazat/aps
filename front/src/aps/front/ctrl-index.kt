@@ -9,6 +9,11 @@ object tabs                              : Fuckers<TabKey>(null) {
         val messages                     by namedFucker(::TabKey); val messages_testRef = TestRef(messages)
     }
 
+    object user                          : Fuckers<TabKey>(this) {
+        val params                       by namedFucker(::TabKey); val params_testRef = TestRef(params)
+    }
+
+
     object shebang                       : Fuckers<TabKey>(this) {
         val diff                         by namedFucker(::TabKey); val diff_testRef = TestRef(diff)
         val actualPaste                  by namedFucker(::TabKey); val actualPaste_testRef = TestRef(actualPaste)

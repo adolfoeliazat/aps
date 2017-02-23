@@ -53,7 +53,7 @@ suspend fun askMiranda(params: MirandaParams): MirandaRequest.Response =
         o.params.value = params
     })
 
-suspend fun askRegina(params: ReginaParams): FormResponse2<ReginaRequest.Response> =
+suspend fun <Res : CommonResponseFields> askRegina(params: ReginaParams<Res>): FormResponse2<Res> =
     _send3SofteningShit(ReginaRequest()-{o->
         o.params.value = params
     })

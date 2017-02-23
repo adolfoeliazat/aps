@@ -10,7 +10,7 @@ class TestDownloadContext {
     var shit by notNull<DownloadFileResponse>()
 }
 
-class UACustomerSingleOrderPageFilesTab(val page: UASingleOrderPage, val world: World, val order: UAOrderRTO) : CustomerSingleUAOrderPageTab {
+class UACustomerSingleOrderPageFilesTab(val order: UAOrderRTO) : TabithaTab {
     var boobsInterface by notNullOnce<MelindaBoobsInterface>()
 
     override val tabSpec = object:TabSpec {
@@ -54,7 +54,7 @@ class UACustomerSingleOrderPageFilesTab(val page: UASingleOrderPage, val world: 
     }
 
     private fun myURLParamValues(): List<URLParamValue<*>> {
-        val q = UASingleOrderPage.urlQuery
+        val q = TabithaURLQuery
         val paramValues = listOf(
             URLParamValue(q.id, order.id),
             URLParamValue(q.tab, simpleName(tabs.order.files.fqn))

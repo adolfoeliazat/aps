@@ -329,7 +329,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
             run { // Customer refreshes order page
                 val ivo4 = Morda("ivo4",
                                  url = fconst.test.url.customer + "/" + makeURL(pages.uaCustomer.order_testRef, listOf(
-                                     URLParamValue(UASingleOrderPage.urlQuery.id, 1L)
+                                     URLParamValue(TabithaURLQuery.id, 1L)
                                  )),
                                  fillTypedStorageLocal = {it.token = "ivo-fucking-token"},
                                  fillRawStorageLocal = {})
@@ -440,6 +440,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
         definePoint(10) {
             bootDasjaWithTokenToDashboard(sessionNumber = 3, aid = "9e3a8178-3f0d-4f5b-98a3-1bb306b4c8ca")
             twoStepSequence({linkClick(links.adminDashboard.writerProfilesToApprove_testRef)}, "959e8ffe-36f6-4c41-9fa3-d019f8d082db")
+            twoStepSequence({linkClick(links.lips_testRef, subscript = 3L)}, "8cca6a1f-685a-4067-a9df-a2902b8c2e2d")
         }
     }
 
@@ -479,7 +480,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
     private suspend fun bootIvoWithTokenToOrderPage(sessionNumber: Int, orderID: Long, aid: String) {
         val morda = Morda("ivo$sessionNumber",
                           url = fconst.test.url.customer + "/" + makeURL(pages.uaCustomer.order_testRef, listOf(
-                              URLParamValue(UASingleOrderPage.urlQuery.id, orderID)
+                              URLParamValue(TabithaURLQuery.id, orderID)
                           )),
                           fillTypedStorageLocal = {it.token = "ivo-fucking-token"},
                           fillRawStorageLocal = {})
