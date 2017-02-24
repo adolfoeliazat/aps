@@ -96,13 +96,14 @@ fun updateAdminNotes(entity: EntityWithAdminNotes, req: RequestWithAdminNotes) {
         entity.adminNotes = req.adminNotes.value
 }
 
-fun checkingAllFieldsRetrieved(req: RequestMatumba, block: () -> Unit) {
+inline fun <T> checkingAllFieldsRetrieved(req: RequestMatumba, block: () -> T): T {
     RequestGlobus.retrievedFields.clear()
-    block()
+    val res = block()
     for (field in req._fields) {
         if (field.include && field !in RequestGlobus.retrievedFields)
             bitch("Field ${field.name} of ${req::class.simpleName} should be retrieved")
     }
+    return res
 }
 
 

@@ -235,6 +235,57 @@ interface UAOrderFileRepository : CrudRepository<UAOrderFile, Long> {
 }
 
 
+@Entity @Table(name = "user_params_history_items",
+               indexes = arrayOf(
+               ))
+class UserParamsHistoryItem(
+    val entityID: Long,
+    @Column(length = MAX_STRING) var descr: String
+)
+    : ClitoralEntity()
+{
+
+}
+
+
+
+@Entity @Table(name = "history_items",
+               indexes = arrayOf(
+               ))
+class HistoryItem<Entity, EntityRTO>(
+    val entityID: Long,
+    @Column(length = MAX_STRING) var entityClassName: String,
+    @Column(length = MAX_STRING) var descr: String
+)
+    : ClitoralEntity(), MeganItem<HistoryItemRTO<EntityRTO>>
+{
+    override val idBang get()= id!!
+
+    override fun toRTO(searchWords: List<String>): HistoryItemRTO<EntityRTO> {
+        val emf = springctx.getBean(EntityManagerFactory::class.java)
+        val em = emf.createEntityManager()
+        em.transaction.begin()
+        try {
+            val entityClass = Class.forName("aps.back.$entityClassName")
+            val q = em.createQuery("select x from $entityClassName x where x.id = :entityID", entityClass)
+            q.setParameter("entityID", entityID)
+            val entity: ToRtoable<EntityRTO> = cast(q.singleResult)
+            val title = "TODO e9d41cce-0e1b-4421-970c-e8e8acf7d2b4"
+            return HistoryItemRTO(
+                id = idBang,
+                title = title,
+                titleHighlightRanges = highlightRanges(title, searchWords),
+                editable = false,
+                value = entity.toRTO(searchWords),
+                descr = descr
+            )
+        } finally {
+            em.transaction.rollback()
+            em.close()
+        }
+    }
+}
+
 private fun highlightRanges(text: String, searchWords: List<String>): List<IntRangeRTO> {
     val lang = Language.UA
     val analyzer = when (lang) {

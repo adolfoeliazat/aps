@@ -67,6 +67,40 @@ fun serveReginaLoadUser(p: ReginaLoadUser): SimpleEntityResponse<UserRTO> {
     }
 }
 
+@Servant class ServeGetUserParamsHistoryItems : BitchyProcedure() {
+    override fun serve() {
+        fuckAnyUser(FuckAnyUserParams(
+            bpc = bpc,
+            makeRequest = {ItemsRequest(UserParamsHistoryFilter.values())},
+            runShit = fun(ctx, req): ItemsResponse<HistoryItemRTO<UserRTO>> {
+                imf("ed59885a-42ab-4715-9645-f65007bb57ce")
+//                return megan<HistoryItem<User, UserRTO>, HistoryItemRTO<UserRTO>, UserParamsHistoryFilter>(
+//                    req = req,
+//                    checkShit = {
+//                        // TODO:vgrechka ...
+//                    },
+//                    table = "user_params_history_items",
+//                    itemClass = UserParamsHistoryItem::class.java
+////                    addToWhere = {s, params ->
+////                        fun filterByState(state: UserState) {
+////                            s += " and state = :state"
+////                            params += MeganQueryParam("state", state.name)
+////                        }
+////
+////                        exhaustive/when (req.filter.value) {
+////                            AdminUserFilter.ALL -> {}
+////                            AdminUserFilter.COOL -> filterByState(UserState.COOL)
+////                            AdminUserFilter.PROFILE_APPROVAL_PENDING -> filterByState(UserState.PROFILE_APPROVAL_PENDING)
+////                            AdminUserFilter.PROFILE_REJECTED -> filterByState(UserState.PROFILE_REJECTED)
+////                            AdminUserFilter.BANNED -> filterByState(UserState.BANNED)
+////                        }
+////                    }
+//                )
+            }
+        ))
+    }
+}
+
 @Servant class ServeUpdateUser : BitchyProcedure() {
     override fun serve() {
         fuckAnyUser(FuckAnyUserParams(

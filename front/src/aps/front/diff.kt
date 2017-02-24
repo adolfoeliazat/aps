@@ -29,7 +29,7 @@ fun renderDiff(
     tabSpecs.add(SimpleTabSpec(
         key = tabs.shebang.diff,
         title = "Diff",
-        content = kdiv(whiteSpace = "pre"){o->
+        renderBody = {kdiv(whiteSpace = "pre"){o->
             val placeholders = mutableListOf<Placeholder>()
             var prevLabel: String? = null
             val JsDiff = global.JsDiff
@@ -65,19 +65,19 @@ fun renderDiff(
                     o- placeholders.last()
                 }
             }
-        }))
+        }}))
 
     if (actualPaste != null) {
-        tabSpecs.add(SimpleTabSpec(key = tabs.shebang.actualPaste,
-                             title = "Actual Paste",
-                             content = kdiv{o->
-                                 o- Input(json("initialValue" to actualPaste,
-                                                "kind" to "textarea",
-                                                "rows" to 10,
-                                                "style" to json("width" to "100%",
-                                                                "height" to "100%"),
-                                                "untested" to true))
-                             }))
+        tabSpecs.add(SimpleTabSpec(
+            key = tabs.shebang.actualPaste,
+            title = "Actual Paste",
+            renderBody = {kdiv{o->
+                o- Input(json("initialValue" to actualPaste,
+                              "kind" to "textarea",
+                              "rows" to 10,
+                              "style" to json("width" to "100%",
+                                              "height" to "100%"),
+                              "untested" to true))}}))
     }
 
     val tabs = Tabs2(initialActiveKey = tabs.shebang.diff, tabs = tabSpecs)

@@ -32,10 +32,10 @@ class SingleUserPage {
                 }
             },
             makeTabs = {listOf(
-                UsualParamsTab(
+                UsualParamsTab<UserRTO, UserParamsHistoryFilter, UserParamsRequest, GenericResponse>(
                     tabitha,
                     tabKey = tabs.user.params,
-                    content = renderProfile(user),
+                    renderBody = {renderProfile(user)},
                     hasEditButton = true,
                     editModalTitle = t("TOTE", "Параметры засранца"),
                     formSpec = FormSpec<UserParamsRequest, GenericResponse>(
@@ -48,6 +48,13 @@ class SingleUserPage {
                             o.phone.value = user.profilePhone
                             populateWithAdminNotes(o, user)
                         }
+                    ),
+                    historyParams = HistoryParams(
+                        renderItem = {tongue-> renderProfile(tongue.getItem().value)},
+                        sendItemsRequest = {req-> sendGetUserParamsHistoryItems(req)},
+                        historyFilterValues = UserParamsHistoryFilter.values(),
+                        defaultHistoryFilterValue = UserParamsHistoryFilter.ALL,
+                        historyFilterSelectKey = selects.userParamsHistoryFilter
                     )
                 )
             )},

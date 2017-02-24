@@ -16,6 +16,17 @@ import kotlin.properties.Delegates.notNull
 
 // TODO:vgrechka Simplify this shit
 
+
+object effects2 {
+    suspend fun blinkOn(target: JQuery, opts: BlinkOpts = BlinkOpts()): BlinkerOperations {
+        return await(effects).blinkOn(target, opts)
+    }
+}
+
+
+
+
+
 private var initialized = false
 private var _effects by notNull<EffectsAPI>()
 private var pane by notNull<String>()

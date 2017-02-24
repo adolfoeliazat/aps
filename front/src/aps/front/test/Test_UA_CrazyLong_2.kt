@@ -19,7 +19,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
     object sessionIndex {
         val ivo1=1; val ivo2=2; val ivo3=3; val ivo4=4; val ivo5=5
         val kafka1=1; val kafka2=2; val kafka3=3
-        val dasja1=1; val dasja2=2; val dasja3=3; val dasja4=4
+        val dasja1=1; val dasja2=2; val dasja3=3; val dasja4=4; val dasja5=5
     }
 
     enum class FilesShortcutMode { ALL, A, B }
@@ -30,8 +30,8 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
     }
 
     val filesShortcutMode1 = FilesShortcutMode.B
-//    val startPoint = 1
-    val startPoint = 11
+    val startPoint = 1
+//    val startPoint = 11
     init {
 //        TestGlobal.describeStateConfig = DescribeStateConfig(showBanners = true, autoResumeAfterMs = null)
 //        TestGlobal.describeStateConfig = DescribeStateConfig(showBanners = true, autoResumeAfterMs = 2000)
@@ -431,7 +431,15 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
         }
 
         definePoint(11) {
-            bootWriterWithTokenToProfilePage("kafka", sessionIndex.kafka3, "c896ce76-1483-4da7-9ebf-2504a87e18d5")
+            run { // Kafka changes phone in profile
+                bootWriterWithTokenToProfilePage("kafka", sessionIndex.kafka3, "c896ce76-1483-4da7-9ebf-2504a87e18d5")
+                setProfileFields_submitForm(profilePhone = "+38 (099) 432-54-75", aid = "195b4d45-8f7b-4579-9c7c-8ee385484ee4")
+            }
+
+            run { // Admin looks at profile change history
+                bootAdmin_openWriterToApprove(sessionIndex.dasja5, 3L, "21af756c-20b0-48be-89a5-7b0c2e1654b8")
+                step({buttonClick(buttons.history_testRef)}, TestGlobal.pageLoadedLock, "84837274-ff9a-4ae8-81ae-566685fe87fc")
+            }
         }
     }
 
@@ -446,19 +454,28 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
              lock = TestGlobal.pageLoadedLock, aid = "$aid--3")
     }
 
-    suspend fun setProfileFields_submitForm(firstName: String? = null, lastName: String? = null, aboutMe: String? = null, adminNotes: String? = null, aid: String) {
+    suspend fun setProfileFields_submitForm(firstName: String? = null, lastName: String? = null, aboutMe: String? = null, adminNotes: String? = null, profilePhone: String? = null, aid: String) {
         firstName?.let {inputSetValue(fields.signUpFirstName_testRef, it)}
         lastName?.let {inputSetValue(fields.signUpLastName_testRef, it)}
         aboutMe?.let {inputSetValue(fields.aboutMe_testRef, it)}
         adminNotes?.let {inputSetValue(fields.adminNotes_testRef, it)}
+        profilePhone?.let {inputSetValue(fields.profilePhone_testRef, it)}
         submitFormSequence(aid)
     }
 
     private suspend fun bootAdmin_openWriterToApprove_beginEditing(sessionNumber: Int, writerID: Long, aid: String) {
+        bootAdmin_openWriterToApprove(sessionNumber, writerID, aid)
+        openEditingModal(aid)
+    }
+
+    private suspend fun openEditingModal(aid: String) {
+        step({buttonClick(buttons.edit_testRef)}, TestGlobal.modalShownLock, "$aid--4")
+    }
+
+    private suspend fun bootAdmin_openWriterToApprove(sessionNumber: Int, writerID: Long, aid: String) {
         bootAdminWithTokenToDashboard(sessionNumber, "$aid--1")
         twoStepSequence({linkClick(links.adminDashboard.writerProfilesToApprove_testRef)}, "$aid--2")
         twoStepSequence({linkClick(links.lips_testRef, subscript = writerID)}, "$aid--3")
-        step({buttonClick(buttons.edit_testRef)}, TestGlobal.modalShownLock, "$aid--4")
     }
 
     private suspend fun bootWriterWithTokenToProfilePage(nick: String, sessionNumber: Int, aid: String) {

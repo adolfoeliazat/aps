@@ -8,6 +8,15 @@ interface TabithaEntityRTO {
     var id: Long
 }
 
+class HistoryItemRTO<RTO>(
+    val value: RTO,
+    val descr: String,
+    override var id: Long,
+    override var title: String,
+    override var editable: Boolean,
+    override var titleHighlightRanges: List<IntRangeRTO>
+) : MelindaItemRTO
+
 class UserRTO(
     override var id: Long,
     override var title: String,

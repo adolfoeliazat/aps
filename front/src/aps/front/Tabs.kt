@@ -15,15 +15,15 @@ class TabKey(override val fqn: String) : Fucker(), FQNed
 interface TabSpec {
     val key: TabKey
     val title: String
-    val content: ToReactElementable
-    val stripContent: ToReactElementable
+    val renderBody: () -> ToReactElementable
+    val renderStrip: () -> ToReactElementable
 }
 
 class SimpleTabSpec(
     override val key: TabKey,
     override val title: String,
-    override val content: ToReactElementable,
-    override val stripContent: ToReactElementable = kdiv()
+    override val renderBody: () -> ToReactElementable,
+    override val renderStrip: () -> ToReactElementable = {kdiv()}
 ) : TabSpec
 
 interface TabFiddling {
@@ -90,12 +90,12 @@ class Tabs2(
             }
 
             o- kdiv(position = "absolute", right = 0, top = 0){o->
-                o- activeTab.stripContent
+                o- activeTab.renderStrip()
             }
         }
 
         o- kdiv(marginTop=5){o->
-            o- activeTab.content
+            o- activeTab.renderBody()
         }
     }
 

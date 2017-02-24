@@ -11,6 +11,7 @@ object tabs                              : Fuckers<TabKey>(null) {
 
     object user                          : Fuckers<TabKey>(this) {
         val params                       by namedFucker(::TabKey); val params_testRef = TestRef(params)
+        val paramsHistory                by namedFucker(::TabKey); val paramsHistory_testRef = TestRef(paramsHistory)
     }
 
 
@@ -32,6 +33,7 @@ object buttons                           : Fuckers<ButtonKey>(null) {
     val cancel                           by namedFucker(::ButtonKey); val cancel_testRef = TestRef(cancel)
     val refreshPage                      by namedFucker(::ButtonKey); val refreshPage_testRef = TestRef(refreshPage)
     val showMore                         by namedFucker(::ButtonKey); val showMore_testRef = TestRef(showMore)
+    val history                          by namedFucker(::ButtonKey); val history_testRef = TestRef(history)
 
     object modal                         : Fuckers<ButtonKey>(this) {
         val ok                           by namedFucker(::ButtonKey); val ok_testRef = TestRef(ok)
@@ -62,6 +64,8 @@ object inputs                            : Fuckers<InputKey>(null) {
 object selects                           : Fuckers<SelectKey<*>>(null) {
     val ordering                         by namedFucker({SelectKey<Ordering>(it)}); val ordering_testRef = TestRef(ordering)
     val customerFileFilter               by namedFucker({SelectKey<CustomerFileFilter>(it)}); val customerFileFilter_testRef = TestRef(customerFileFilter)
+    val userParamsHistoryFilter          by namedFucker({SelectKey<UserParamsHistoryFilter>(it)}); val userParamsHistoryFilter_testRef = TestRef(userParamsHistoryFilter)
+
     val adminOrderFilter                 by namedFucker({SelectKey<AdminOrderFilter>(it)}); val adminOrderFilter_testRef = TestRef(adminOrderFilter)
     val adminUserFilter                  by namedFucker({SelectKey<AdminUserFilter>(it)}); val adminUserFilter_testRef = TestRef(adminUserFilter)
 }

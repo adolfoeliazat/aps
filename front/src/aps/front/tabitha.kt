@@ -1,6 +1,7 @@
 package aps.front
 
 import aps.*
+import into.kommon.*
 
 object TabithaURLQuery : URLQueryParamsMarker {
     val id by LongURLParam()
@@ -72,10 +73,10 @@ class Tabitha<EntityRTO>(
         return pageLoadedFineResult
     }
 
-    suspend fun reloadPage() {
+    suspend fun reloadPage(paramValues: List<URLParamValue<*>> = listOf()) {
         Globus.world.replaceNavigate(makeURL(page, listOf(
             URLParamValue(TabithaURLQuery.id, entityID)
-        )))
+        ) + paramValues))
     }
 
     suspend fun clickOnTab(key: TabKey) {
@@ -93,37 +94,127 @@ class Tabitha<EntityRTO>(
     }
 }
 
-class UsualParamsTab<Req : RequestMatumba, Res : CommonResponseFields>(
+class UsualParamsTab<ItemRTO, HistoryFilter, Req : RequestMatumba, Res : CommonResponseFields>(
     tabitha: Tabitha<*>,
     tabKey: TabKey,
-    content: ToReactElementable,
+    renderBody: () -> ToReactElementable,
     hasEditButton: Boolean,
     editModalTitle: String,
-    formSpec: FormSpec<Req, Res>
+    formSpec: FormSpec<Req, Res>,
+    val historyParams: HistoryParams<ItemRTO, HistoryFilter>? = null
 )
     : TabithaTab
+where
+    HistoryFilter : Enum<HistoryFilter>,
+    HistoryFilter : Titled
 {
-    override suspend fun load(): FormResponse2.Shitty<*>? = null
+    enum class Mode {
+        CURRENT, HISTORY
+    }
+    private val mode get()= urlQuery.paramsMode.get()
+
+    private var historyBoobs by notNullOnce<MelindaBoobsInterface>()
+
+    override suspend fun load(): FormResponse2.Shitty<*>? {
+        if (mode == Mode.HISTORY) {
+            historyParams!!
+            val boobs = MelindaBoobs<
+                HistoryItemRTO<ItemRTO>, HistoryFilter,
+                Nothing, Nothing, // CreateRequest, CreateResponse
+                Nothing, Nothing  // UpdateItemRequest, UpdateItemResponse
+            >(
+                createParams = null,
+                makeURLForReload = {boobsParams->
+                    makeURL(pages.uaCustomer.order, boobsParams + listOf(
+                        URLParamValue(urlQuery.paramsMode, Mode.HISTORY)
+                    ))
+                },
+                filterValues = historyParams.historyFilterValues,
+                defaultFilterValue = historyParams.defaultHistoryFilterValue,
+                filterSelectKey = historyParams.historyFilterSelectKey,
+                vaginalInterface = MelindaVaginalInterface(
+                    sendItemsRequest = historyParams.sendItemsRequest,
+                    shouldShowFilter = {true},
+                    getParentEntityID = {TabithaURLQuery.id.get()},
+                    humanItemTypeName = t("TOTE", "imf db47abf8-ae10-4450-8328-7eeace10c476"),
+                    makeDeleteItemRequest = {unsupported("bae3c22e-5397-4b7d-82fa-7558f7836f39")},
+                    updateParams = null,
+                    makeLipsInterface = {viewRootID, tongue -> makeUsualMelindaLips(
+                        tongue, viewRootID, historyBoobs,
+                        icon = {fa.calendarMinusO},
+                        initialLipsState = Unit,
+                        renderContent = {o->
+                            o- historyParams.renderItem(tongue)
+                        },
+                        titleLinkURL = null,
+                        hasEditControl = {false},
+                        hasDeleteControl = {false}
+                    )}
+                )
+            )
+            historyBoobs = boobs.boobsInterface
+            boobs.load()
+        }
+
+        return null
+    }
+
+    object urlQuery : URLQueryParamsMarker {
+        val paramsMode by EnumURLParam(Mode.values(), default = Mode.CURRENT)
+    }
 
     override val tabSpec = SimpleTabSpec(
         key = tabKey,
-        title = t("TOTE", "Параметры"),
-        content = content,
-        stripContent = kdiv{o->
-            if (hasEditButton) {
-                o- Button(icon = fa.pencil, level = Button.Level.DEFAULT, key = buttons.edit) {
-                    openEditModal(
-                        title = editModalTitle,
-                        formSpec = formSpec,
-                        onSuccessa = {
-                            tabitha.reloadPage()
+        title = when (mode) {
+            UsualParamsTab.Mode.CURRENT -> t("TOTE", "Параметры")
+            UsualParamsTab.Mode.HISTORY -> t("TOTE", "Параметры: история")
+        },
+        renderBody = {when (mode) {
+            UsualParamsTab.Mode.CURRENT -> renderBody()
+            UsualParamsTab.Mode.HISTORY -> historyBoobs.mainContent
+        }},
+        renderStrip = {kdiv{o->
+            o- when (mode) {
+                Mode.CURRENT -> hor2{o->
+                    if (historyParams != null) {
+                        o- Button(icon = fa.calendar, level = Button.Level.DEFAULT, key = buttons.history) {
+                            effects2.blinkOn(it.jqel)
+                            tabitha.reloadPage(listOf(URLParamValue(urlQuery.paramsMode, Mode.HISTORY)))
                         }
-                    )
+                    }
+
+                    if (hasEditButton) {
+                        o- Button(icon = fa.pencil, level = Button.Level.DEFAULT, key = buttons.edit) {
+                            openEditModal(
+                                title = editModalTitle,
+                                formSpec = formSpec,
+                                onSuccessa = {
+                                    tabitha.reloadPage()
+                                }
+                            )
+                        }
+                    }
                 }
+
+                Mode.HISTORY -> historyBoobs.controlsContent
             }
-        }
+        }}
     )
+
 }
+
+class HistoryParams<ItemRTO, Filter>(
+    val renderItem: (tongue: MelindaTongueInterface<HistoryItemRTO<ItemRTO>>) -> ToReactElementable,
+    val sendItemsRequest: suspend (req: ItemsRequest<Filter>) -> FormResponse2<ItemsResponse<HistoryItemRTO<ItemRTO>>>,
+    val historyFilterValues: Array<Filter>,
+    val defaultHistoryFilterValue: Filter,
+    val historyFilterSelectKey: SelectKey<Filter>
+) where
+    Filter : Enum<Filter>,
+    Filter : Titled
+{
+}
+
 
 
 

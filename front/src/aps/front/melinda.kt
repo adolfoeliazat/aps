@@ -6,27 +6,33 @@ import into.kommon.*
 import org.w3c.dom.Element
 import kotlin.js.json
 
-interface MelindaVaginalInterface<
+class MelindaVaginalUpdateParams<ItemRTO, out UpdateItemRequest, in UpdateItemResponse>(
+    val makeUpdateItemRequest: (item: ItemRTO) -> UpdateItemRequest,
+    val updateItemProcedureNameIfNotDefault: String?,
+    val getItemFromUpdateItemResponse: (res: UpdateItemResponse) -> ItemRTO
+) where
+    UpdateItemRequest : RequestMatumba,
+    UpdateItemResponse : CommonResponseFields
+
+class MelindaVaginalInterface<
     ItemRTO,
     Filter,
     out UpdateItemRequest,
     in UpdateItemResponse>
+(
+    val sendItemsRequest: suspend (req: ItemsRequest<Filter>) -> FormResponse2<ItemsResponse<ItemRTO>>,
+    val shouldShowFilter: () -> Boolean,
+    val getParentEntityID: () -> Long?,
+    val humanItemTypeName: String,
+    val makeDeleteItemRequest: () -> DeleteRequest,
+    val makeLipsInterface: (viewRootID: String, tongue: MelindaTongueInterface<ItemRTO>) -> MelindaLipsInterface,
+    val updateParams: MelindaVaginalUpdateParams<ItemRTO, UpdateItemRequest, UpdateItemResponse>?
+)
 where
     Filter : Enum<Filter>,
     Filter : Titled,
     UpdateItemRequest : RequestMatumba,
     UpdateItemResponse : CommonResponseFields
-{
-    suspend fun sendItemsRequest(req: ItemsRequest<Filter>): FormResponse2<ItemsResponse<ItemRTO>>
-    fun shouldShowFilter(): Boolean
-    fun getParentEntityID(): Long?
-    val humanItemTypeName: String
-    fun makeDeleteItemRequest(): DeleteRequest
-    fun makeUpdateItemRequest(item: ItemRTO): UpdateItemRequest
-    val updateItemProcedureNameIfNotDefault: String?
-    fun getItemFromUpdateItemResponse(res: UpdateItemResponse): ItemRTO
-    fun makeLipsInterface(viewRootID: String, tongue: MelindaTongueInterface<ItemRTO>): MelindaLipsInterface
-}
 
 interface MelindaBoobsInterface {
     val controlsContent: ToReactElementable
@@ -44,19 +50,24 @@ interface MelindaTongueInterface<out Item> {
     fun getItem(): Item
 }
 
-class MelindaBoobs<
-    Item,
-    Filter,
-    CreateRequest,
-    CreateResponse,
-    UpdateItemRequest,
-    UpdateItemResponse>
-(
+class MelindaCreateParams<CreateRequest, CreateResponse>(
     val hasCreateButton: Boolean,
     val createModalTitle: String,
     val makeCreateRequest: () -> CreateRequest,
     val createProcedureNameIfNotDefault: String? = null,
-    val makeURLAfterCreation: (CreateResponse) -> String,
+    val makeURLAfterCreation: (CreateResponse) -> String
+) where
+    CreateRequest : RequestMatumba,
+    CreateResponse : CommonResponseFields
+
+
+class MelindaBoobs<
+    Item,
+    Filter,
+    CreateRequest, CreateResponse,
+    UpdateItemRequest, UpdateItemResponse>
+(
+    val createParams: MelindaCreateParams<CreateRequest, CreateResponse>?,
     val makeURLForReload: (boobsParams: List<URLParamValue<*>>) -> String,
     val filterValues: Array<Filter>,
     val defaultFilterValue: Filter,
@@ -64,8 +75,7 @@ class MelindaBoobs<
     val vaginalInterface: MelindaVaginalInterface<
         Item,
         Filter,
-        UpdateItemRequest,
-        UpdateItemResponse>
+        UpdateItemRequest, UpdateItemResponse>
 ) where
     Filter: Enum<Filter>,
     Filter: Titled,
@@ -105,17 +115,17 @@ class MelindaBoobs<
                         asu {reload(refreshButtonID)}
                     }
 
-                    if (hasCreateButton) {
+                    if (createParams != null) {
                         o- Button(icon = fa.plus, level = Button.Level.PRIMARY, key = buttons.plus) {
                             openEditModal( // TODO:vgrechka Replace `Edit` with something more general
-                                title = createModalTitle,
+                                title = createParams.createModalTitle,
                                 formSpec = FormSpec<CreateRequest, CreateResponse>(
                                     ui = Globus.world,
-                                    procedureName = createProcedureNameIfNotDefault,
-                                    req = makeCreateRequest()
+                                    procedureName = createParams.createProcedureNameIfNotDefault,
+                                    req = createParams.makeCreateRequest()
                                 ),
                                 onSuccessa = {res->
-                                    Globus.world.replaceNavigate(makeURLAfterCreation(res))
+                                    Globus.world.replaceNavigate(createParams.makeURLAfterCreation(res))
                                 }
                             )
                         }
@@ -300,22 +310,23 @@ class MelindaBoobs<
             }
 
             override suspend fun onEdit() {
+                val uparams = bang(vaginalInterface.updateParams)
                 openEditModal(
                     title = t("TOTE", "Файл") + " " + numberSign + item.id,
                     formSpec = FormSpec<UpdateItemRequest, UpdateItemResponse>(
                         ui = Globus.world,
-                        procedureName = vaginalInterface.updateItemProcedureNameIfNotDefault,
-                        req = vaginalInterface.makeUpdateItemRequest(item)
+                        procedureName = uparams.updateItemProcedureNameIfNotDefault,
+                        req = uparams.makeUpdateItemRequest(item)
                     ),
                     onSuccessa = {res->
-                        item = vaginalInterface.getItemFromUpdateItemResponse(res)
+                        item = uparams.getItemFromUpdateItemResponse(res)
                         enterViewMode()
                     }
                 )
             }
         }
 
-        val lipsInterface = vaginalInterface.makeLipsInterface(viewRootID = viewRootID, tongue = tongueInterface)
+        val lipsInterface = vaginalInterface.makeLipsInterface(viewRootID, tongueInterface)
 
         init {
             enterViewMode()
@@ -383,7 +394,7 @@ fun <ItemRTO : MelindaItemRTO, LipsState> makeUsualMelindaLips(
     tinySubtitle: () -> String? = {null},
     renderAdditionalControls: (ElementBuilder, LipsState, updateTitleControls: (LipsState) -> Unit) -> Unit = {_,_,_->},
     renderContent: (ElementBuilder) -> Unit,
-    initialState: LipsState,
+    initialLipsState: LipsState,
     controlsDisabled: (LipsState) -> Boolean = {false},
     icon: (ItemRTO) -> IconClass,
     titleLinkURL: String?,
@@ -393,7 +404,7 @@ fun <ItemRTO : MelindaItemRTO, LipsState> makeUsualMelindaLips(
     : MelindaLipsInterface
 {
     return object:MelindaLipsInterface {
-        private val titleControlsPlace = Placeholder(renderTitleControls(initialState))
+        private val titleControlsPlace = Placeholder(renderTitleControls(initialLipsState))
 
         override fun renderItem(): ToReactElementable {
             val m = MelindaTools

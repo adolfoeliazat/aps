@@ -260,6 +260,10 @@ enum class CustomerFileFilter(override val title: String): Titled {
     FROM_SUPPORT(t("TOTE", "От саппорта"))
 }
 
+enum class UserParamsHistoryFilter(override val title: String): Titled {
+    ALL(t("TOTE", "Все"))
+}
+
 enum class AdminOrderFilter(override val title: String): Titled {
     ALL(t("TOTE", "Все")),
     TO_APPROVE(t("TOTE", "Ждут аппрува"))

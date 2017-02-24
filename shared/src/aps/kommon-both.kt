@@ -15,6 +15,7 @@ fun imf(what: String = "me"): Nothing = throw Exception("Implement $what, please
 fun wtf(msg: String = "...WTF didn't you describe this WTF?"): Nothing = throw Exception("WTF: $msg")
 fun die(msg: String = "You've just killed me, motherfucker!"): Nothing = throw Exception("Aarrgghh... $msg")
 fun fuckOff(msg: String = "Don't call me"): Nothing = throw Exception("Fuck off... $msg")
+fun unsupported(what: String = "Didn't bother to describe"): Nothing = throw Exception("Unsupported: $what")
 
 fun <R> measuringAndPrinting(block: () -> R): R {
     val start = currentTimeMillis()

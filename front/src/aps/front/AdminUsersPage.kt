@@ -31,48 +31,45 @@ class AdminUsersPage {
 
     fun makeBoobs(): MelindaBoobs<UserRTO, AdminUserFilter, UserParamsRequest, CreateUserResponse, UserParamsRequest, UpdateUserResponse> {
         return MelindaBoobs(
-            hasCreateButton = false,
-            createModalTitle = t("TOTE", "Новый засранец"),
-            makeCreateRequest = {UserParamsRequest(isUpdate = false)},
-            makeURLAfterCreation = {res->
-                makeURL(pages.uaAdmin.user, listOf(URLParamValue(TabithaURLQuery.id, res.userID)))
-            },
+            createParams = MelindaCreateParams(
+                hasCreateButton = false,
+                createModalTitle = t("TOTE", "Новый засранец"),
+                makeCreateRequest = {UserParamsRequest(isUpdate = false)},
+                makeURLAfterCreation = {res->
+                    makeURL(pages.uaAdmin.user, listOf(URLParamValue(TabithaURLQuery.id, res.userID)))
+                }
+            ),
             makeURLForReload = {boobsParams ->
                 makeURL(pages.uaAdmin.users, boobsParams)
             },
             filterValues = AdminUserFilter.values(),
             defaultFilterValue = AdminUserFilter.ALL,
             filterSelectKey = selects.adminUserFilter,
-            vaginalInterface = object:MelindaVaginalInterface<UserRTO, AdminUserFilter, UserParamsRequest, UpdateUserResponse> {
-                suspend override fun sendItemsRequest(req: ItemsRequest<AdminUserFilter>) = sendGetUsers(req)
-                override fun shouldShowFilter() = true
-                override fun getParentEntityID() = null
-                override val humanItemTypeName = t("TOTE", "засранец")
-                override fun makeDeleteItemRequest() = DeleteUserRequest()
-                override fun getItemFromUpdateItemResponse(res: UpdateUserResponse) = wtf("User should not be edited via vaginal interface    9820b940-e2c6-4b7a-995a-059b6ea9f175")
-                override val updateItemProcedureNameIfNotDefault get()= wtf("User should not be edited through vaginal interface    8ae8ddd0-fa99-4f6f-8a85-86323eea34ad")
-                override fun makeUpdateItemRequest(item: UserRTO): UserParamsRequest = wtf("User should not be edited through vaginal interface    95e613bf-844a-4db3-aeb9-65a00169d16a")
-
-                override fun makeLipsInterface(viewRootID: String, tongue: MelindaTongueInterface<UserRTO>): MelindaLipsInterface {
-                    return makeUsualMelindaLips(
-                        tongue, viewRootID, bint,
-                        icon = {when (it.kind) {
-                            UserKind.CUSTOMER -> fa.user
-                            UserKind.WRITER -> fa.pencil
-                            UserKind.ADMIN -> fa.cog
-                        }},
-                        initialState = Unit,
-                        renderContent = {o->
-                            o- renderProfile(tongue.getItem())
-                        },
-                        titleLinkURL = makeURL(pages.uaAdmin.user, listOf(
-                            URLParamValue(TabithaURLQuery.id, tongue.getItem().id)
-                        )),
-                        hasEditControl = {false},
-                        hasDeleteControl = {false}
-                    )
-                }
-            }
+            vaginalInterface = MelindaVaginalInterface<UserRTO, AdminUserFilter, UserParamsRequest, UpdateUserResponse> (
+                sendItemsRequest = {req -> sendGetUsers(req)},
+                shouldShowFilter = {true},
+                getParentEntityID = {null},
+                humanItemTypeName = t("TOTE", "засранец"),
+                makeDeleteItemRequest = {DeleteUserRequest()},
+                updateParams = null,
+                makeLipsInterface = {viewRootID, tongue -> makeUsualMelindaLips(
+                    tongue, viewRootID, bint,
+                    icon = {when (it.kind) {
+                        UserKind.CUSTOMER -> fa.user
+                        UserKind.WRITER -> fa.pencil
+                        UserKind.ADMIN -> fa.cog
+                    }},
+                    initialLipsState = Unit,
+                    renderContent = {o->
+                        o- renderProfile(tongue.getItem())
+                    },
+                    titleLinkURL = makeURL(pages.uaAdmin.user, listOf(
+                        URLParamValue(TabithaURLQuery.id, tongue.getItem().id)
+                    )),
+                    hasEditControl = {false},
+                    hasDeleteControl = {false}
+                )}
+            )
         )
     }
 }

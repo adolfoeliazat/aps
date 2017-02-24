@@ -110,6 +110,9 @@ import java.util.*
                         o.numSources = req.numSources.value
                         o.details = req.documentDetails.value
                         o.customerPhone = req.phone.value
+                        o.customerFirstName = req.firstName.value
+                        o.customerLastName = req.lastName.value
+                        o.customerEmail = req.email.value
                         updateAdminNotes(o, req)
                     }
                 }
@@ -129,10 +132,12 @@ import java.util.*
                 val order = uaOrderRepo.findOrDie(req.orderID.value)
                 // TODO:vgrechka Security
 
-                val content = Base64.getDecoder().decode(req.file.value.base64)
+                val requestFile = req.file.value as? FileField.Value.Provided ?: wtf("6ae5b17c-9d66-4569-aa17-4ea142e8f383")
+
+                val content = Base64.getDecoder().decode(requestFile.base64)
                 val file = uaOrderFileRepo.save(UAOrderFile(
                     order = order,
-                    name = req.file.value.fileName,
+                    name = requestFile.fileName,
                     title = req.title.value,
                     mime = "application/octet-stream",
                     details = req.details.value,
@@ -157,16 +162,16 @@ import java.util.*
             bpc = bpc, makeRequest = {UAOrderFileParamsRequest(isAdmin = requestUser.kind == UserKind.ADMIN,
                                                                isUpdate = true)},
             runShit = fun(ctx, req): UAUpdateOrderFileResponse {
-                val file = uaOrderFileRepo.findOrDie(req.fileID.value)
-                // TODO:vgrechka Permissions
-
                 checkingAllFieldsRetrieved(req) {
+                    val file = uaOrderFileRepo.findOrDie(req.fileID.value)
+                    // TODO:vgrechka Check permissions
                     file-{o->
                         o.title = req.title.value
                         o.details = req.details.value
-                        if (req.file.value.valueKind == FileFieldValueKind.PROVIDED) {
-                            val content = Base64.getDecoder().decode(req.file.value.base64)
-                            o.name = req.file.value.fileName
+                        val requestFile = req.file.value
+                        if (requestFile is FileField.Value.Provided) {
+                            val content = Base64.getDecoder().decode(requestFile.base64)
+                            o.name = requestFile.fileName
                             o.sha256 = Hashing.sha256().hashBytes(content).toString()
                             o.sizeBytes = content.size
                             o.content = content
@@ -174,8 +179,8 @@ import java.util.*
                         updateAdminNotes(o, req)
                         o.touch()
                     }
+                    return UAUpdateOrderFileResponse(file.toRTO(listOf()))
                 }
-                return UAUpdateOrderFileResponse(file.toRTO(listOf()))
             }
         ))
     }

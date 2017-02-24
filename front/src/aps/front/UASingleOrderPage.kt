@@ -81,10 +81,10 @@ class UASingleOrderPage {
                 }
             },
             makeTabs = {listOf(
-                UsualParamsTab(
+                UsualParamsTab<UAOrderRTO, /*HistoryFilter=*/ Nothing, UAOrderParamsRequest, GenericResponse>(
                     tabitha,
                     tabKey = tabs.order.params,
-                    content = renderOrderParams(order),
+                    renderBody = {renderOrderParams(order)},
                     hasEditButton = when (Globus.world.user.kind) {
                         UserKind.CUSTOMER -> order.state == UAOrderState.CUSTOMER_DRAFT
                         UserKind.ADMIN -> true

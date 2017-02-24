@@ -28,8 +28,8 @@ open class Button(
     val dropDownMenuDirection: MenuDirection = Button.MenuDirection.DOWN,
     val narrowCaret: Boolean = false,
     val onClick: () -> Unit = {},
-    var onClicka: suspend () -> Unit = {}
-) : Control2(Attrs(id = id)) {
+    var onClicka: suspend (Button) -> Unit = {}
+) : Control2(Attrs(id = id ?: puid())) {
 
     enum class MenuDirection(val string: String) {
         DOWN("down"),
@@ -51,7 +51,7 @@ open class Button(
 
     open suspend fun click() {
         onClick()
-        onClicka()
+        onClicka(this)
     }
 
     override fun render(): ToReactElementable {
@@ -152,6 +152,7 @@ open class Button(
         }
     }
 
+    val jqel get()= byid(elementID)
 }
 
 suspend fun buttonClick(key: TestRef<ButtonKey>, handOpts: HandOpts = HandOpts()) {
