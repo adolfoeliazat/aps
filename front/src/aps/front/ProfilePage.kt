@@ -18,7 +18,9 @@ class ProfilePage {
             body = kdiv{o->
                 exhaustive/when (user().kind) {
                     UserKind.WRITER -> when (user().state) {
-                        UserState.COOL -> {}
+                        UserState.COOL -> {
+                            o- renderBannerCalmWarning(t("TOTE", "При изменении профиля, пока мы его будем проверять, сервис будет недоступен"))
+                        }
                         UserState.PROFILE_PENDING -> {
                             o- renderBanner1(t("TOTE", "Сначала заполняешь профиль. Админ связывается с тобой и активирует аккаунт. Потом все остальное."))
                         }
@@ -27,7 +29,6 @@ class ProfilePage {
                                                    t("TOTE", "Мы проверяем твой профайл. Жди звонка"))
                         }
                         UserState.PROFILE_REJECTED -> {
-                            // o- renderBanner1(t("TOTE", "Админ завернул твой профиль, прими поздравления"))
                             o- renderMaybeRejectionReasonBanner(user().profileRejectionReason)
                         }
                         UserState.BANNED -> imf("267e687c-723e-48fe-911b-fbb556e23e9d")

@@ -18,7 +18,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
     object sessionIndex {
         val ivo1=1; val ivo2=2; val ivo3=3; val ivo4=4; val ivo5=5
-        val kafka1=1; val kafka2=2
+        val kafka1=1; val kafka2=2; val kafka3=3
         val dasja1=1; val dasja2=2; val dasja3=3; val dasja4=4
     }
 
@@ -31,7 +31,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
     val filesShortcutMode1 = FilesShortcutMode.B
 //    val startPoint = 1
-    val startPoint = 10
+    val startPoint = 11
     init {
 //        TestGlobal.describeStateConfig = DescribeStateConfig(showBanners = true, autoResumeAfterMs = null)
 //        TestGlobal.describeStateConfig = DescribeStateConfig(showBanners = true, autoResumeAfterMs = 2000)
@@ -428,6 +428,10 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 acceptanceSequence("eb74a065-0f4e-4b5c-9110-eb9a7d2ed78c")
                 // TODO:vgrechka Send email about accepting writer's profile
             }
+        }
+
+        definePoint(11) {
+            bootWriterWithTokenToProfilePage("kafka", sessionIndex.kafka3, "c896ce76-1483-4da7-9ebf-2504a87e18d5")
         }
     }
 

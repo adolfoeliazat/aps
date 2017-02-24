@@ -105,6 +105,16 @@ fun renderBanner1(msg: String): ToReactElementable {
     }
 }
 
+fun renderBannerCalmWarning(msg: String): ToReactElementable {
+    val c = css.bannerCalmWarning
+    return kdiv(className = c.container){o->
+        o- kdiv(className = c.message){o->
+            o- ki(className = c.icon + " " + fa.warning)
+            o- msg
+        }
+    }
+}
+
 
 
 
