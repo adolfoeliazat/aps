@@ -95,6 +95,15 @@ fun renderMaybeRejectionReasonBanner(rejectionReason: String?): ToReactElementab
     }
 }
 
+fun renderBanner1(msg: String): ToReactElementable {
+    val c = css.banner1
+    return kdiv(className = c.container){o->
+        o- kdiv(className = c.message){o->
+            o- ki(className = c.icon + " " + fa.chevronRight)
+            o- msg
+        }
+    }
+}
 
 
 

@@ -126,12 +126,13 @@ object css {
         val modalPane by Style("")
     }
 
+    object banner1 : Group(null) {
+        val container by Style("$dollyLikeContainerBase; background-color: $BLUE_GRAY_50; margin-bottom: 1rem;")
+        val message by Style("flex-grow: 1;")
+        val icon by Style("margin-right: 0.5em;")
+    }
+
     object profile : Group(null) {
-        object writerProfilePendingBanner : Group(this) {
-            val container by Style("$dollyLikeContainerBase; background-color: $BLUE_GRAY_50; margin-bottom: 1rem;")
-            val message by Style("flex-grow: 1;")
-            val icon by Style("margin-right: 0.5em;")
-        }
         val writerProfileApprovalPendingBanner by named {WaitingBannerStyles(it, this, containerStyle = "margin-bottom: 1rem;")}
     }
 

@@ -16,6 +16,12 @@ import kotlin.browser.window
 class Test_UA_CrazyLong_2 : FuckingScenario() {
     // http://aps-ua-writer.local:3022/faq.html?test=Test_UA_CrazyLong_2&stopOnAssertions=true&dontStopOnCorrectAssertions=true&animateUserActions=false&handPauses=true
 
+    object sessionIndex {
+        val ivo1=1; val ivo2=2; val ivo3=3; val ivo4=4; val ivo5=5
+        val kafka1=1; val kafka2=2
+        val dasja1=1; val dasja2=2; val dasja3=3; val dasja4=4
+    }
+
     enum class FilesShortcutMode { ALL, A, B }
 
     object testdata {
@@ -44,12 +50,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
         definePoint(1) {
             run { // Make order
-                val ivo1 = Morda("ivo1",
-                                 url = fconst.test.url.customer,
-                                 fillTypedStorageLocal = {},
-                                 fillRawStorageLocal = {})
-                ivo1.coitizeAndBootAsserting(assertStatic = {assertAnonymousCustomerStaticIndexScreen()},
-                                             assertDynamic = {assertAnonymousCustomerDynamicIndexScreen()})
+                bootFreshCustomer("ivo", sessionIndex.ivo1)
 
                 topNavItemSequence(page = pages.uaCustomer.makeOrder_testRef,
                                    aid = "00c34b38-a47d-4ae5-a8f3-6cceadb0d481")
@@ -76,16 +77,16 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
             // TODO:vgrechka Try to access order page before it's confirmed (should say "fuck you" to user)
 
             run { // Wrong confirmation secret
-                val ivo2 = Morda("ivo2",
+                val morda = Morda("ivo${sessionIndex.ivo2}",
                                  url = makeConfirmationURL("wrong-secret"),
                                  fillTypedStorageLocal = {},
                                  fillRawStorageLocal = {})
-                ivo2.coitizeAndBootAsserting(assertStatic = {assertScreenHTML("Static confirmOrder", "7d46b2b1-e303-4146-9a3f-a89e02a1fe23")},
+                morda.coitizeAndBootAsserting(assertStatic = {assertScreenHTML("Static confirmOrder", "7d46b2b1-e303-4146-9a3f-a89e02a1fe23")},
                                              assertDynamic = {assertScreenHTML("Dynamic confirmOrder", "45a5842e-ffe9-4e78-9261-9a5056a3c11f")})
             }
 
             run { // Correct confirmation secret
-                val ivo3 = Morda("ivo3",
+                val ivo3 = Morda("ivo${sessionIndex.ivo3}",
                                  url = makeConfirmationURL("top-fucking-secret"),
                                  fillTypedStorageLocal = {},
                                  fillRawStorageLocal = {})
@@ -284,13 +285,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
         definePoint(6) {
             run { // Admin comes into play
-                val dasja1 = Morda("dasja1", url = fconst.test.url.writer, fillTypedStorageLocal = {}, fillRawStorageLocal = {})
-                dasja1.coitizeAndBootAsserting(assertStatic = {assertAnonymousWriterStaticIndexScreen()}, assertDynamic = {assertAnonymousWriterDynamicIndexScreen()})
-                topNavItemSequence(page = pages.uaWriter.signIn_testRef, aid = "aea03aff-9c1a-4aaa-9786-ce4be57018fd")
-                inputSetValue(fields.signInEmail_testRef, "dasja@test.shit.ua")
-                inputSetValue(fields.signInPassword_testRef, "dasja-secret")
-                askMiranda(MirandaTestImposeNextGeneratedUserToken("dasja-fucking-token"))
-                submitFormSequence(testShit, aid = "0132de44-85ca-41a5-b926-859e2bd07461")
+                bootAdminWithPassword(sessionIndex.dasja1)
             }
 
             run { // Error loading orders to approve
@@ -327,14 +322,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
         definePoint(7) {
             run { // Customer refreshes order page
-                val ivo4 = Morda("ivo4",
-                                 url = fconst.test.url.customer + "/" + makeURL(pages.uaCustomer.order_testRef, listOf(
-                                     URLParamValue(TabithaURLQuery.id, 1L)
-                                 )),
-                                 fillTypedStorageLocal = {it.token = "ivo-fucking-token"},
-                                 fillRawStorageLocal = {})
-                ivo4.coitizeAndBootAsserting(assertStatic = {assertScreenHTML(aid = "b47798c3-e6cb-4821-82f2-93022cfeed4a")},
-                                             assertDynamic = {assertScreenHTML(aid = "fb1a72f2-8f96-4d6f-a021-a5afc4c083cd")})
+                bootCustomerWithTokenToOrderPage("ivo", sessionIndex.ivo4, orderID = 1, aid = "a298e6af-61e6-4db1-812f-16e0d6d75c5c")
                 describeState("Customer sees what should be fixed")
             }
 
@@ -359,7 +347,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
         definePoint(8) {
             run { // Admin refreshes orders page
-                bootDasjaWithTokenToOrdersToApproveList(sessionNumber = 2, aid = "8265b753-393d-4ec5-9ff4-9107b0643aec")
+                bootAdminWithTokenToOrdersToApproveList(sessionIndex.dasja2, aid = "8265b753-393d-4ec5-9ff4-9107b0643aec")
                 describeState("Admin sees the order in the list of shit to be approved again")
             }
 
@@ -402,32 +390,17 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
             }
 
             run { // Admin moves order to store
-                twoStepSequence({buttonClick(buttons.accept_testRef)}, "3196309c-b789-436c-89a4-27128aa59a46")
+                acceptanceSequence("3196309c-b789-436c-89a4-27128aa59a46")
                 // TODO:vgrechka Email should be sent to customer
             }
         }
 
         definePoint(9) {
-            bootIvoWithTokenToOrderPage(sessionNumber = 5, orderID = 1L, aid = "cddb0684-949d-4e09-a77c-18edb59aef81")
+            bootCustomerWithTokenToOrderPage("ivo", sessionIndex.ivo5, orderID = 1L, aid = "cddb0684-949d-4e09-a77c-18edb59aef81")
             describeState("Customer sees that order was accepted")
 
             run { // Writer kafka signs up
-                bootFreshWriterToIndexPage(nick = "kafka", sessionNumber = 1, aid = "0c1de407-a3f8-406c-8527-37103d452016")
-                topNavItemSequence(pages.uaWriter.signIn_testRef, "be84642f-617e-4761-b254-b802363fbc25")
-                twoStepSequence({linkClick(links.createAccount_testRef)}, "630255f9-1e42-4844-babf-a49fe8711489")
-
-                inputSetValue(fields.signUpFirstName_testRef, "Франц")
-                inputSetValue(fields.signUpLastName_testRef, "Кафка")
-                inputSetValue(fields.signUpEmail_testRef, "kafka@test.shit.ua")
-                checkboxSetValue(fields.agreeTerms_testRef, true)
-                askMiranda(MirandaTestImposeNextGeneratedPassword("kafka-secret"))
-                debugMailboxClear()
-                submitFormSequence("bf290946-c51f-419c-b800-ca261db3dac4")
-                // ___stopHereAndEverywhereLater()
-                debugMailboxCheck("3b410e10-6191-4ddb-8e46-49fe1da5ce75")
-
-                inputSetValue(fields.signInPassword_testRef, "kafka-secret")
-                submitFormSequence("3589a205-9de3-4ea2-9352-04efccaf92bb")
+                bootFreshWriter_signUp_checkEmail_signIn("kafka", sessionIndex.kafka1, firstName = "Франц", lastName = "Кафка", aid = "3b1ccb97-e64f-4066-afcb-b55c94c9193f")
             }
 
             run { // Kafka fills profile
@@ -438,38 +411,130 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
         }
 
         definePoint(10) {
-            bootDasjaWithTokenToDashboard(sessionNumber = 3, aid = "9e3a8178-3f0d-4f5b-98a3-1bb306b4c8ca")
-            twoStepSequence({linkClick(links.adminDashboard.writerProfilesToApprove_testRef)}, "959e8ffe-36f6-4c41-9fa3-d019f8d082db")
-            twoStepSequence({linkClick(links.lips_testRef, subscript = 3L)}, "8cca6a1f-685a-4067-a9df-a2902b8c2e2d")
-            step({buttonClick(buttons.edit_testRef)}, TestGlobal.modalShownLock, "98e46310-4fb8-4f38-ac5b-df079282a8dd")
-            inputSetValue(fields.signUpFirstName_testRef, "Франсик")
-            inputSetValue(fields.signUpLastName_testRef, "Кафунчик")
-            inputSetValue(fields.adminNotes_testRef, "Здесь был Вася...")
-            submitFormSequence("e0ec0baf-bbfa-4e4f-b2d4-76bda7d5657a")
+            run { // Admin rejects Kafka's profile
+                bootAdmin_openWriterToApprove_beginEditing(sessionIndex.dasja3, 3L, "9e3a8178-3f0d-4f5b-98a3-1bb306b4c8ca")
+                setProfileFields_submitForm(firstName = "Франсик", lastName = "Кафунчик", adminNotes = "Здесь был Вася...", aid = "f9e763e5-e9ad-45fe-bc34-d5332cc20602")
+                rejectionSequence("Попустись, Франсик. Напиши что-то нормальное в \"эбаут ми\".", "2ebb1be5-a472-4972-b417-1a44a325a044")
+            }
 
-            step({buttonClick(buttons.reject_testRef)}, TestGlobal.modalShownLock, "2ebb1be5-a472-4972-b417-1a44a325a044")
-            inputSetValue(fields.rejectionReason_testRef, "Попустись, Франсик. Напиши что-то нормальное в \"эбаут ми\".")
-            rejectionSequence("26407a00-118e-43c9-8c3f-919d1b4e5b9c")
+            run { // Kafka fixes his shit
+                bootWriterWithTokenToProfilePage("kafka", sessionIndex.kafka2, "f35ff2f9-dc3a-40af-993a-42500c72d550")
+                setProfileFields_submitForm(firstName = "Франс", lastName = "Кафка", aboutMe = "Я жалкий писака, ничтожный червь. Любая черная работа. Вкалываю за еду.", aid = "fba9f715-ab21-46a4-8f63-196b2c1de652")
+            }
+
+            run { // Admin finally accepts motherfucker
+                bootAdmin_openWriterToApprove_beginEditing(sessionIndex.dasja4, 3L, "95028cf3-051e-412b-8042-9005e13edc10")
+                setProfileFields_submitForm(adminNotes = "Отлично. Нам рабы нужны.", aid = "f7a8b9ac-dbb4-4cd5-8640-a40f2da8e604")
+                acceptanceSequence("eb74a065-0f4e-4b5c-9110-eb9a7d2ed78c")
+                // TODO:vgrechka Send email about accepting writer's profile
+            }
         }
     }
 
-    private suspend fun rejectionSequence(aid: String) {
-        step(action = {submitFormSequence(testShit, useFormDoneLock = false, aid = "$aid--1")},
-             lock = TestGlobal.pageLoadedLock,
-             aid = "$aid--2")
+    private suspend fun acceptanceSequence(aid: String) {
+        twoStepSequence({buttonClick(buttons.accept_testRef)}, aid)
     }
 
-    private suspend fun bootDasjaWithTokenToDashboard(sessionNumber: Int, aid: String) {
-        bootDasjaWithToken(sessionNumber, makeURL(pages.uaAdmin.dashboard_testRef, listOf()), aid)
+    private suspend fun rejectionSequence(reason: String, aid: String) {
+        step({buttonClick(buttons.reject_testRef)}, TestGlobal.modalShownLock, "$aid--1")
+        inputSetValue(fields.rejectionReason_testRef, reason)
+        step(action = {submitFormSequence(testShit, useFormDoneLock = false, aid = "$aid--2")},
+             lock = TestGlobal.pageLoadedLock, aid = "$aid--3")
     }
 
-    private suspend fun bootDasjaWithTokenToOrdersToApproveList(sessionNumber: Int, aid: String) {
-        bootDasjaWithToken(sessionNumber, makeURL(pages.uaAdmin.orders_testRef, listOf(
+    suspend fun setProfileFields_submitForm(firstName: String? = null, lastName: String? = null, aboutMe: String? = null, adminNotes: String? = null, aid: String) {
+        firstName?.let {inputSetValue(fields.signUpFirstName_testRef, it)}
+        lastName?.let {inputSetValue(fields.signUpLastName_testRef, it)}
+        aboutMe?.let {inputSetValue(fields.aboutMe_testRef, it)}
+        adminNotes?.let {inputSetValue(fields.adminNotes_testRef, it)}
+        submitFormSequence(aid)
+    }
+
+    private suspend fun bootAdmin_openWriterToApprove_beginEditing(sessionNumber: Int, writerID: Long, aid: String) {
+        bootAdminWithTokenToDashboard(sessionNumber, "$aid--1")
+        twoStepSequence({linkClick(links.adminDashboard.writerProfilesToApprove_testRef)}, "$aid--2")
+        twoStepSequence({linkClick(links.lips_testRef, subscript = writerID)}, "$aid--3")
+        step({buttonClick(buttons.edit_testRef)}, TestGlobal.modalShownLock, "$aid--4")
+    }
+
+    private suspend fun bootWriterWithTokenToProfilePage(nick: String, sessionNumber: Int, aid: String) {
+        bootWriterWithToken(nick, sessionNumber, makeURL(pages.uaWriter.profile, listOf()), aid = aid)
+    }
+
+    private suspend fun bootFreshWriter_signUp_checkEmail_signIn(nick: String, sessionNumber: Int, firstName: String, lastName: String, aid: String) {
+        bootFreshWriter(nick, sessionNumber, aid = "$aid--1")
+
+        topNavItemSequence(pages.uaWriter.signIn_testRef, "$aid--2")
+        twoStepSequence({linkClick(links.createAccount_testRef)}, "$aid--3")
+
+        inputSetValue(fields.signUpFirstName_testRef, firstName)
+        inputSetValue(fields.signUpLastName_testRef, lastName)
+        inputSetValue(fields.signUpEmail_testRef, "$nick@test.shit.ua")
+        checkboxSetValue(fields.agreeTerms_testRef, true)
+        askMiranda(MirandaTestImposeNextGeneratedPassword("$nick-secret"))
+        debugMailboxClear()
+        submitFormSequence("$aid--4")
+        debugMailboxCheck("$aid--5")
+
+        inputSetValue(fields.signInPassword_testRef, "$nick-secret")
+        askMiranda(MirandaTestImposeNextGeneratedUserToken("$nick-fucking-token"))
+        submitFormSequence("$aid--6")
+    }
+
+    private suspend fun bootCustomerWithTokenToOrderPage(nick: String, sessionNumber: Int, orderID: Long, aid: String) {
+        bootCustomerWithToken(nick, sessionNumber, makeURL(pages.uaCustomer.order_testRef, listOf(
+            URLParamValue(TabithaURLQuery.id, orderID)
+        )), aid)
+    }
+
+    private suspend fun bootCustomerWithToken(nick: String, sessionNumber: Int, url: String, aid: String) {
+        val morda = Morda("$nick$sessionNumber",
+                          url = fconst.test.url.customer + "/" + url,
+                          fillTypedStorageLocal = {it.token = "$nick-fucking-token"},
+                          fillRawStorageLocal = {})
+        morda.coitizeAndBootAsserting(assertStatic = {assertScreenHTML(aid = "$aid--1")},
+                                      assertDynamic = {assertScreenHTML(aid = "$aid--2")})
+    }
+
+    private suspend fun bootWriterWithToken(nick: String, sessionNumber: Int, url: String, aid: String) {
+        val morda = Morda("$nick$sessionNumber",
+                          url = fconst.test.url.writer + "/" + url,
+                          fillTypedStorageLocal = {it.token = "$nick-fucking-token"},
+                          fillRawStorageLocal = {})
+        morda.coitizeAndBootAsserting(assertStatic = {assertScreenHTML(aid = "$aid--1")},
+                                      assertDynamic = {assertScreenHTML(aid = "$aid--2")})
+    }
+
+    private suspend fun bootFreshCustomer(nick: String, sessionNumber: Int) {
+        val morda = Morda("$nick$sessionNumber",
+                          url = fconst.test.url.customer,
+                          fillTypedStorageLocal = {},
+                          fillRawStorageLocal = {})
+        morda.coitizeAndBootAsserting(assertStatic = {assertAnonymousCustomerStaticIndexScreen()},
+                                      assertDynamic = {assertAnonymousCustomerDynamicIndexScreen()})
+    }
+
+    private suspend fun bootAdminWithPassword(sessionNumber: Int) {
+        val morda = Morda("dasja$sessionNumber", url = fconst.test.url.writer, fillTypedStorageLocal = {}, fillRawStorageLocal = {})
+        morda.coitizeAndBootAsserting(assertStatic = {assertAnonymousWriterStaticIndexScreen()}, assertDynamic = {assertAnonymousWriterDynamicIndexScreen()})
+        topNavItemSequence(page = pages.uaWriter.signIn_testRef, aid = "aea03aff-9c1a-4aaa-9786-ce4be57018fd")
+        inputSetValue(fields.signInEmail_testRef, "dasja@test.shit.ua")
+        inputSetValue(fields.signInPassword_testRef, "dasja-secret")
+        askMiranda(MirandaTestImposeNextGeneratedUserToken("dasja-fucking-token"))
+        submitFormSequence(testShit, aid = "0132de44-85ca-41a5-b926-859e2bd07461")
+    }
+
+    private suspend fun bootAdminWithTokenToDashboard(sessionNumber: Int, aid: String) {
+        bootAdminWithToken(sessionNumber, makeURL(pages.uaAdmin.dashboard_testRef, listOf()), aid)
+    }
+
+    private suspend fun bootAdminWithTokenToOrdersToApproveList(sessionNumber: Int, aid: String) {
+        bootAdminWithToken(sessionNumber, makeURL(pages.uaAdmin.orders_testRef, listOf(
             URLParamValue(UAAdminOrdersPage().makeBoobs().urlQuery.filter, AdminOrderFilter.TO_APPROVE)
         )), aid)
     }
 
-    private suspend fun bootDasjaWithToken(sessionNumber: Int, url: String, aid: String) {
+    private suspend fun bootAdminWithToken(sessionNumber: Int, url: String, aid: String) {
         val morda = Morda(
             "dasja$sessionNumber",
             url = fconst.test.url.writer + "/" + url,
@@ -483,7 +548,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
         submitFormSequence(testShit, aid = aid)
     }
 
-    private suspend fun bootFreshWriterToIndexPage(nick: String, sessionNumber: Int, aid: String) {
+    private suspend fun bootFreshWriter(nick: String, sessionNumber: Int, aid: String) {
         val morda = Morda("$nick$sessionNumber",
                           url = fconst.test.url.writer + "/" + makeURL(pages.uaWriter.index_testRef, listOf()),
                           fillTypedStorageLocal = {},
@@ -491,18 +556,6 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
         morda.coitizeAndBootAsserting(assertStatic = {assertScreenHTML(aid = "$aid--1")},
                                       assertDynamic = {assertScreenHTML(aid = "$aid--2")})
     }
-
-    private suspend fun bootIvoWithTokenToOrderPage(sessionNumber: Int, orderID: Long, aid: String) {
-        val morda = Morda("ivo$sessionNumber",
-                          url = fconst.test.url.customer + "/" + makeURL(pages.uaCustomer.order_testRef, listOf(
-                              URLParamValue(TabithaURLQuery.id, orderID)
-                          )),
-                          fillTypedStorageLocal = {it.token = "ivo-fucking-token"},
-                          fillRawStorageLocal = {})
-        morda.coitizeAndBootAsserting(assertStatic = {assertScreenHTML(aid = "$aid--1")},
-                                      assertDynamic = {assertScreenHTML(aid = "$aid--2")})
-    }
-
 
     private fun enableStatePauses() {
         TestGlobal.describeStateConfig = DescribeStateConfig(showBanners = true, autoResumeAfterMs = null)

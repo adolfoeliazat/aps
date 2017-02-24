@@ -20,19 +20,16 @@ class ProfilePage {
                     UserKind.WRITER -> when (user().state) {
                         UserState.COOL -> {}
                         UserState.PROFILE_PENDING -> {
-                            val c = css.profile.writerProfilePendingBanner
-                            o- kdiv(className = c.container){o->
-                                o- kdiv(className = c.message){o->
-                                    o- ki(className = c.icon + " " + fa.chevronRight)
-                                    o- t("TOTE", "Сначала заполняешь профиль. Админ связывается с тобой и активирует аккаунт. Потом все остальное.")
-                                }
-                            }
+                            o- renderBanner1(t("TOTE", "Сначала заполняешь профиль. Админ связывается с тобой и активирует аккаунт. Потом все остальное."))
                         }
                         UserState.PROFILE_APPROVAL_PENDING -> {
                             o- renderWaitingBanner(css.profile.writerProfileApprovalPendingBanner,
                                                    t("TOTE", "Мы проверяем твой профайл. Жди звонка"))
                         }
-                        UserState.PROFILE_REJECTED -> imf("bf4e024b-3745-443c-a086-2f7479a35bf0")
+                        UserState.PROFILE_REJECTED -> {
+                            // o- renderBanner1(t("TOTE", "Админ завернул твой профиль, прими поздравления"))
+                            o- renderMaybeRejectionReasonBanner(user().profileRejectionReason)
+                        }
                         UserState.BANNED -> imf("267e687c-723e-48fe-911b-fbb556e23e9d")
                     }
                     UserKind.CUSTOMER -> imf("f0297187-dd11-48c2-aae9-dbe643a6a784")
