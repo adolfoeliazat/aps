@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/melinda.kt" line="436" />
-    <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/melinda.kt" line="410" />
+    <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/melinda.kt" line="439" />
+    <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/melinda.kt" line="413" />
     <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/assertScreenHTML.kt" line="426" />
     <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/assertScreenHTML.kt" line="405" />
     <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/assertScreenHTML.kt" line="62" />
@@ -37,12 +37,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="623d9374-21ec-4085-99fa-3e54b1e3521c" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/back/src/aps/emoji-back.kt" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/front/src/aps/front/emoji-front.kt" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/shared/src/aps/emoji-shared.kt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dictionaries/Vladimir.xml" afterPath="$PROJECT_DIR$/.idea/dictionaries/Vladimir.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/version.txt" afterPath="$PROJECT_DIR$/back/src/aps/version.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/MakeStaticSites.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/MakeStaticSites.kt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/ProfilePage.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/ProfilePage.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/aps-css.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/aps-css.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/front-utils-2.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/front-utils-2.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/test/Test_UA_CrazyLong_2.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/test/Test_UA_CrazyLong_2.kt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/ServeDevStaticSites.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/ServeDevStaticSites.kt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/melinda.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/melinda.kt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shared/src/aps/shared-stuff.kt" afterPath="$PROJECT_DIR$/shared/src/aps/shared-stuff.kt" />
     </list>
     <ignored path="aps.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -113,83 +118,69 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="SingleUserPage.kt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/front/src/aps/front/SingleUserPage.kt">
+      <file leaf-file-name="melinda.kt" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/front/src/aps/front/melinda.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="480">
-              <caret line="26" column="24" lean-forward="false" selection-start-line="26" selection-start-column="24" selection-end-line="26" selection-end-column="24" />
-              <folding>
-                <element signature="e#19#52#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="456">
+              <caret line="352" column="19" lean-forward="false" selection-start-line="352" selection-start-column="19" selection-end-line="352" selection-end-column="19" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="shared-data.kt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/shared-back-junction/src/aps/shared-data.kt">
+      <file leaf-file-name="emoji-front.kt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/front/src/aps/front/emoji-front.kt">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="144">
-              <caret line="10" column="6" lean-forward="false" selection-start-line="10" selection-start-column="6" selection-end-line="10" selection-end-column="6" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="clitoral-entities.kt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/back/src/aps/back/clitoral-entities.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="288">
-              <caret line="66" column="33" lean-forward="false" selection-start-line="66" selection-start-column="33" selection-end-line="66" selection-end-column="33" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="UASingleOrderPage.kt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/front/src/aps/front/UASingleOrderPage.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="24">
-              <caret line="9" column="20" lean-forward="false" selection-start-line="9" selection-start-column="20" selection-end-line="9" selection-end-column="20" />
+              <caret line="6" column="4" lean-forward="false" selection-start-line="6" selection-start-column="4" selection-end-line="6" selection-end-column="4" />
               <folding>
-                <element signature="e#60#167#0" expanded="true" />
+                <element signature="e#13#53#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="dolly.kt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/front/src/aps/front/dolly.kt">
+      <file leaf-file-name="emoji-shared.kt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/shared-front-junction/src/aps/emoji-shared.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding>
-                <element signature="e#19#85#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="aps-css.kt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/front/src/aps/front/aps-css.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="258">
-              <caret line="128" column="4" lean-forward="false" selection-start-line="128" selection-start-column="4" selection-end-line="128" selection-end-column="4" />
+            <state relative-caret-position="120">
+              <caret line="5" column="0" lean-forward="false" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="shared-data.kt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/shared-front-junction/src/aps/shared-data.kt">
+      <file leaf-file-name="emoji-back.kt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/back/src/aps/emoji-back.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="72">
+              <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="shared-stuff.kt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/shared-back-junction/src/aps/shared-stuff.kt">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="293">
-              <caret line="54" column="8" lean-forward="false" selection-start-line="54" selection-start-column="8" selection-end-line="54" selection-end-column="8" />
+              <caret line="44" column="60" lean-forward="false" selection-start-line="44" selection-start-column="60" selection-end-line="44" selection-end-column="60" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Test_UA_CrazyLong_2.kt" pinned="false" current-in-tab="true">
+      <file leaf-file-name="shared-stuff.kt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/shared-front-junction/src/aps/shared-stuff.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="317">
+              <caret line="45" column="4" lean-forward="false" selection-start-line="45" selection-start-column="4" selection-end-line="45" selection-end-column="4" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Test_UA_CrazyLong_2.kt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/front/src/aps/front/test/Test_UA_CrazyLong_2.kt">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="336">
@@ -201,21 +192,31 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ProfilePage.kt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/front/src/aps/front/ProfilePage.kt">
+      <file leaf-file-name="ServeDevStaticSites.kt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/front/src/aps/front/ServeDevStaticSites.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="264">
-              <caret line="29" column="31" lean-forward="false" selection-start-line="29" selection-start-column="31" selection-end-line="29" selection-end-column="31" />
+            <state relative-caret-position="192">
+              <caret line="20" column="8" lean-forward="false" selection-start-line="20" selection-start-column="8" selection-end-line="20" selection-end-column="8" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="front-utils-2.kt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/front/src/aps/front/front-utils-2.kt">
+      <file leaf-file-name="MakeStaticSites.kt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/front/src/aps/front/MakeStaticSites.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="456">
-              <caret line="97" column="0" lean-forward="false" selection-start-line="97" selection-start-column="0" selection-end-line="97" selection-end-column="0" />
+            <state relative-caret-position="384">
+              <caret line="25" column="0" lean-forward="false" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ProfilePage.kt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/front/src/aps/front/ProfilePage.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="336">
+              <caret line="76" column="108" lean-forward="false" selection-start-line="76" selection-start-column="108" selection-end-line="76" selection-end-column="108" />
               <folding />
             </state>
           </provider>
@@ -319,13 +320,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/shared-back-junction/src/aps/shared-data.kt" />
-        <option value="$PROJECT_DIR$/back/src/aps/back/MatumbaProcedure.kt" />
-        <option value="$PROJECT_DIR$/back/src/aps/back/ServeConfirmOrder.kt" />
-        <option value="$PROJECT_DIR$/back/src/aps/back/bitchy-procedures.kt" />
-        <option value="$PROJECT_DIR$/back/src/aps/back/rp-auth.kt" />
-        <option value="$PROJECT_DIR$/front/src/aps/front/melinda.kt" />
-        <option value="$PROJECT_DIR$/back/src/aps/back/megan.kt" />
         <option value="$PROJECT_DIR$/back/src/aps/back/rp-customerGetUAOrderFiles.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/page-index.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/tabina.kt" />
@@ -361,15 +355,22 @@
         <option value="$PROJECT_DIR$/front/src/aps/front/dolly.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/ctrl-index.kt" />
         <option value="$PROJECT_DIR$/shared-front-junction/src/aps/field-index.kt" />
-        <option value="$PROJECT_DIR$/shared-front-junction/src/aps/shared-stuff.kt" />
         <option value="$PROJECT_DIR$/back/src/aps/back/rp-user.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/UASingleOrderPage.kt" />
         <option value="$PROJECT_DIR$/back/src/aps/back/clitoral-entities.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/SingleUserPage.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/aps-css.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/front-utils-2.kt" />
-        <option value="$PROJECT_DIR$/front/src/aps/front/ProfilePage.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/test/Test_UA_CrazyLong_2.kt" />
+        <option value="$PROJECT_DIR$/front/src/aps/front/ServeDevStaticSites.kt" />
+        <option value="$PROJECT_DIR$/shared-front-junction/src/aps/shared-stuff.kt" />
+        <option value="$PROJECT_DIR$/front/src/aps/front/MakeStaticSites.kt" />
+        <option value="$PROJECT_DIR$/front/src/aps/front/emoji.kt" />
+        <option value="$PROJECT_DIR$/back/src/aps/emoji-back.kt" />
+        <option value="$PROJECT_DIR$/front/src/aps/front/ProfilePage.kt" />
+        <option value="$PROJECT_DIR$/shared-front-junction/src/aps/emoji-shared.kt" />
+        <option value="$PROJECT_DIR$/front/src/aps/front/melinda.kt" />
+        <option value="$PROJECT_DIR$/front/src/aps/front/emoji-front.kt" />
       </list>
     </option>
   </component>
@@ -503,7 +504,7 @@
     <ConfirmationsSetting value="1" id="Add" />
   </component>
   <component name="ProjectView">
-    <navigator proportions="" version="1">
+    <navigator currentView="ProjectPane" proportions="" version="1">
       <flattenPackages />
       <showMembers />
       <showModules />
@@ -516,7 +517,47 @@
       <manualOrder />
       <foldersAlwaysOnTop value="true" />
     </navigator>
-    <panes />
+    <panes>
+      <pane id="PackagesPane" />
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="aps" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="front" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="shared-front-junction" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="aps" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="aps" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="front" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+      <pane id="Scratches" />
+    </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="settings.editor.selected.configurable" value="project.kotlinCompiler" />
@@ -526,7 +567,7 @@
     <property name="project.structure.side.proportion" value="0.29066667" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/back/lib/postgresql-9.4.1211.jar!/" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$2/Languages" value="kotlin" />
-    <property name="SearchEverywhereHistoryKey" value="profilepage&#9;null&#9;null&#10;front-u&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/front-utils-2.kt&#10;userrto&#9;null&#9;null&#10;front-utils2&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/front-utils-2.kt&#10;singleuser&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/SingleUserPage.kt&#10;servereject&#9;null&#9;null&#10;dollypa&#9;null&#9;null&#10;dolly&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/dolly.kt&#10;serveregina&#9;null&#9;null&#10;servereturnor&#9;null&#9;null&#10;singleorder&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/UASingleOrderPage.kt&#10;serveupdatefile&#9;null&#9;null&#10;serveupdateuser&#9;null&#9;null&#10;serveupdateorder&#9;null&#9;null&#10;backutils&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/back-utils.kt&#10;formfieldback&#9;null&#9;null&#10;kotlin&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/kotlin-bugs.kt&#10;globus&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/Globus.kt&#10;checkingret&#9;null&#9;null&#10;requestglob&#9;null&#9;null&#10;longhidden&#9;null&#9;null&#10;popucomp&#9;null&#9;null&#10;usualta&#9;null&#9;null&#10;tabit&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/tabitha.kt&#10;todo&#9;FILE&#9;file://E:/work/aps/doc/todo.txt&#10;user&#9;null&#9;null&#10;serveuaupdate&#9;null&#9;null&#10;usualparams&#9;null&#9;null&#10;usual&#9;null&#9;null&#10;tabi&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/tabitha.kt&#10;paramstab&#9;null&#9;null&#10;jsset&#9;null&#9;null&#10;simpleentityresponse&#9;null&#9;null&#10;rp-user&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/rp-user.kt&#10;ctrl-in&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/ctrl-index.kt&#10;simpletab&#9;null&#9;null&#10;askregina&#9;null&#9;null&#10;orderfilerto&#9;null&#9;null&#10;entityresponse&#9;null&#9;null&#10;melindaboobs&#9;null&#9;null&#10;singorderpage&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/UASingleOrderPage.kt&#10;uaorder&#9;null&#9;null&#10;servegetusers&#9;null&#9;null&#10;userspage&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/AdminUsersPage.kt&#10;renderprofil&#9;null&#9;null&#10;servegetorders&#9;null&#9;null&#10;shared-util2&#9;FILE&#9;file://E:/work/aps/shared-back-junction/src/aps/shared-utils-2.kt&#10;servegetst&#9;null&#9;null&#10;orderspage&#9;null&#9;null&#10;renderprofi&#9;null&#9;null" />
+    <property name="SearchEverywhereHistoryKey" value="renderprofile&#9;null&#9;null&#10;renderprofi&#9;null&#9;null&#10;makestatic&#9;null&#9;null&#10;servesta&#9;null&#9;null&#10;profilepage&#9;null&#9;null&#10;front-u&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/front-utils-2.kt&#10;userrto&#9;null&#9;null&#10;front-utils2&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/front-utils-2.kt&#10;singleuser&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/SingleUserPage.kt&#10;servereject&#9;null&#9;null&#10;dollypa&#9;null&#9;null&#10;dolly&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/dolly.kt&#10;serveregina&#9;null&#9;null&#10;servereturnor&#9;null&#9;null&#10;singleorder&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/UASingleOrderPage.kt&#10;serveupdatefile&#9;null&#9;null&#10;serveupdateuser&#9;null&#9;null&#10;serveupdateorder&#9;null&#9;null&#10;backutils&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/back-utils.kt&#10;formfieldback&#9;null&#9;null&#10;kotlin&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/kotlin-bugs.kt&#10;globus&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/Globus.kt&#10;checkingret&#9;null&#9;null&#10;requestglob&#9;null&#9;null&#10;longhidden&#9;null&#9;null&#10;popucomp&#9;null&#9;null&#10;usualta&#9;null&#9;null&#10;tabit&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/tabitha.kt&#10;todo&#9;FILE&#9;file://E:/work/aps/doc/todo.txt&#10;user&#9;null&#9;null&#10;serveuaupdate&#9;null&#9;null&#10;usualparams&#9;null&#9;null&#10;usual&#9;null&#9;null&#10;tabi&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/tabitha.kt&#10;paramstab&#9;null&#9;null&#10;jsset&#9;null&#9;null&#10;simpleentityresponse&#9;null&#9;null&#10;rp-user&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/rp-user.kt&#10;ctrl-in&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/ctrl-index.kt&#10;simpletab&#9;null&#9;null&#10;askregina&#9;null&#9;null&#10;orderfilerto&#9;null&#9;null&#10;entityresponse&#9;null&#9;null&#10;melindaboobs&#9;null&#9;null&#10;singorderpage&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/UASingleOrderPage.kt&#10;uaorder&#9;null&#9;null&#10;servegetusers&#9;null&#9;null&#10;userspage&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/AdminUsersPage.kt&#10;renderprofil&#9;null&#9;null&#10;servegetorders&#9;null&#9;null" />
     <property name="two.files.diff.last.used.file" value="C:/opt/Redis/redis.windows-service.conf" />
     <property name="last.edited.regexp" value="" />
   </component>
@@ -954,13 +995,6 @@
       <option name="presentableId" value="Default" />
       <updated>1473062986795</updated>
     </task>
-    <task id="LOCAL-00409" summary="A piece of... code">
-      <created>1487253008969</created>
-      <option name="number" value="00409" />
-      <option name="presentableId" value="LOCAL-00409" />
-      <option name="project" value="LOCAL" />
-      <updated>1487253008970</updated>
-    </task>
     <task id="LOCAL-00410" summary="A piece of... code">
       <created>1487259150388</created>
       <option name="number" value="00410" />
@@ -1297,7 +1331,14 @@
       <option name="project" value="LOCAL" />
       <updated>1487877229861</updated>
     </task>
-    <option name="localTasksCounter" value="458" />
+    <task id="LOCAL-00458" summary="A piece of... code">
+      <created>1487913561345</created>
+      <option name="number" value="00458" />
+      <option name="presentableId" value="LOCAL-00458" />
+      <option name="project" value="LOCAL" />
+      <updated>1487913561345</updated>
+    </task>
+    <option name="localTasksCounter" value="459" />
     <servers />
   </component>
   <component name="TodoView">
@@ -1550,58 +1591,6 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/front/src/aps/front/rpc.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="456">
-          <caret line="143" column="32" lean-forward="false" selection-start-line="143" selection-start-column="32" selection-end-line="143" selection-end-column="32" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/front/src/aps/front/kjs-reflection.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="7" column="0" lean-forward="false" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
-          <folding>
-            <element signature="e#60#93#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/front/src/aps/front/melinda.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="293">
-          <caret line="365" column="8" lean-forward="false" selection-start-line="365" selection-start-column="8" selection-end-line="365" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/front/src/aps/front/AdminUsersPage.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="65" column="45" lean-forward="false" selection-start-line="65" selection-start-column="45" selection-end-line="65" selection-end-column="45" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/front/src/aps/front/UACustomerSingleOrderPageFilesTab.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="293">
-          <caret line="189" column="32" lean-forward="false" selection-start-line="189" selection-start-column="32" selection-end-line="189" selection-end-column="32" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/front/src/aps/front/page-orders.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="432">
-          <caret line="52" column="16" lean-forward="false" selection-start-line="52" selection-start-column="16" selection-end-line="52" selection-end-column="16" />
-          <folding>
-            <element signature="e#19#52#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/front/src/aps/front/modal.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="269">
@@ -1739,14 +1728,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/shared-back-junction/src/aps/shared-stuff.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="618">
-          <caret line="357" column="6" lean-forward="false" selection-start-line="357" selection-start-column="6" selection-end-line="357" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/front/src/aps/front/art.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="605">
@@ -1862,14 +1843,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/shared-front-junction/src/aps/shared-stuff.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="432">
-          <caret line="155" column="38" lean-forward="false" selection-start-line="155" selection-start-column="38" selection-end-line="155" selection-end-column="38" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/back/src/aps/back/rp-user.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="120">
@@ -1967,14 +1940,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/front/src/aps/front/ProfilePage.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="264">
-          <caret line="29" column="31" lean-forward="false" selection-start-line="29" selection-start-column="31" selection-end-line="29" selection-end-column="31" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/front/src/aps/front/test/Test_UA_CrazyLong_2.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="336">
@@ -1982,6 +1947,80 @@
           <folding>
             <marker date="1487913545433" expanded="true" signature="26:179" ph="..." />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/ServeDevStaticSites.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="192">
+          <caret line="20" column="8" lean-forward="false" selection-start-line="20" selection-start-column="8" selection-end-line="20" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/shared-front-junction/src/aps/shared-stuff.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="317">
+          <caret line="45" column="4" lean-forward="false" selection-start-line="45" selection-start-column="4" selection-end-line="45" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/MakeStaticSites.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="384">
+          <caret line="25" column="0" lean-forward="false" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/shared-back-junction/src/aps/shared-stuff.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="293">
+          <caret line="44" column="60" lean-forward="false" selection-start-line="44" selection-start-column="60" selection-end-line="44" selection-end-column="60" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/back/src/aps/emoji-back.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="72">
+          <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/ProfilePage.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="336">
+          <caret line="76" column="108" lean-forward="false" selection-start-line="76" selection-start-column="108" selection-end-line="76" selection-end-column="108" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/shared-front-junction/src/aps/emoji-shared.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="5" column="0" lean-forward="false" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/emoji-front.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="144">
+          <caret line="6" column="4" lean-forward="false" selection-start-line="6" selection-start-column="4" selection-end-line="6" selection-end-column="4" />
+          <folding>
+            <element signature="e#13#53#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/melinda.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="456">
+          <caret line="352" column="19" lean-forward="false" selection-start-line="352" selection-start-column="19" selection-end-line="352" selection-end-column="19" />
+          <folding />
         </state>
       </provider>
     </entry>

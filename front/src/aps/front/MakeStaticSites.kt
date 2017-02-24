@@ -1050,6 +1050,7 @@ object MakeStaticSites {
         document.head.appendChild(link)
     }
     </script>
+
     </head>
     <body style="padding-top: 50px; padding-bottom: 0px; overflow-y: scroll;">
     <div id="${fconst.elementID.topNavbarContainer}">

@@ -74,7 +74,7 @@ fun renderProfile(user: UserRTO): ToReactElementable {
                     o- formatUnixTime(it)
                 }
             }
-            o- m.col(3, t("TOTE", "Статус"), user.state.title, className = css.user.stateLabel(user.state))
+            o- m.col(3, t("TOTE", "Статус"), user.state.title, className = css.user.stateLabel(user.state), emojiStart = user.state.emoji)
         }
         o- m.row{o->
             o- m.col(3, fields.signUpFirstName.title, user.firstName)
@@ -87,6 +87,12 @@ fun renderProfile(user: UserRTO): ToReactElementable {
         o- renderAdminNotesIfNeeded(user)
     }
 }
+
+
+
+
+
+
 
 
 

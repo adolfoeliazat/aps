@@ -42,8 +42,8 @@ interface Titled {
     val title: String
 }
 
-enum class UserState(override val title: String) : Titled {
-    COOL(t("TOTE", "Прохладный")),
+enum class UserState(override val title: String, val emoji: Emoji? = null) : Titled {
+    COOL(t("TOTE", "Прохладный"), emojis.sunglasses),
     PROFILE_PENDING(t("TOTE", "Без профиля")),
     PROFILE_APPROVAL_PENDING(t("TOTE", "Ждет аппрува профиля")),
     PROFILE_REJECTED(t("TOTE", "Профиль завернут")),
