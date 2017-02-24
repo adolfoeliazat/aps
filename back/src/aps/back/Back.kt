@@ -114,7 +114,8 @@ private fun selfSanityCheck() {
     } catch (e: Throwable) {
         die("Compile me with freaking noarg, OK?")
     }
-    val method = clazz.getMethod("getEmail")
+
+    val method = clazz.getMethod("getFields")
     if (Modifier.isFinal(method.modifiers)) {
         die("Compile me with freaking allopen, OK?")
     }

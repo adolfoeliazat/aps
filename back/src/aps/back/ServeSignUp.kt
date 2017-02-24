@@ -25,20 +25,22 @@ import java.util.*
             bpc = bpc, makeRequest = {SignUpRequest()},
             runShit = fun(ctx, req: SignUpRequest): SignUpRequest.Response {
                 val password = generatePassword()
-                val user = userRepo.save(User(
-                    email = req.email.value,
-                    firstName = req.firstName.value,
-                    lastName = req.lastName.value,
-                    passwordHash = hashPassword(password),
-                    profilePhone = "",
-                    kind = when (ctx.clientKind) {
-                        ClientKind.UA_CUSTOMER -> UserKind.CUSTOMER
-                        ClientKind.UA_WRITER -> UserKind.WRITER
-                    },
-                    state = when (ctx.clientKind) {
-                        ClientKind.UA_CUSTOMER -> imf("477250b3-8fde-4881-8794-888d76674fef")
-                        ClientKind.UA_WRITER -> UserState.PROFILE_PENDING
-                    }
+                val user = saveUserToRepo(User(
+                    fields = UserFields(
+                        firstName = req.firstName.value,
+                        email = req.email.value,
+                        lastName = req.lastName.value,
+                        passwordHash = hashPassword(password),
+                        profilePhone = "",
+                        kind = when (ctx.clientKind) {
+                            ClientKind.UA_CUSTOMER -> UserKind.CUSTOMER
+                            ClientKind.UA_WRITER -> UserKind.WRITER
+                        },
+                        state = when (ctx.clientKind) {
+                            ClientKind.UA_CUSTOMER -> imf("477250b3-8fde-4881-8794-888d76674fef")
+                            ClientKind.UA_WRITER -> UserState.PROFILE_PENDING
+                        }
+                    )
                 ))
 
                 val signInURL = ctx.clientRoot + "/signIn.html"
@@ -47,13 +49,13 @@ import java.util.*
                     ClientKind.UA_WRITER -> const.productName.uaWriter
                 }
                 EmailMatumba.send(Email(
-                    to = "${user.firstName} ${user.lastName} <${user.email}>",
+                    to = "${user.fields.firstName} ${user.fields.lastName} <${user.fields.email}>",
                     subject = "[$productName] Пароль",
                     html = dedent(t(
                         en = """TOTE""",
                         ua = """
                             <div style='font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;'>
-                                <div style='padding-bottom: 1em;'>Привет, ${escapeHTML(user.firstName)}!</div>
+                                <div style='padding-bottom: 1em;'>Привет, ${escapeHTML(user.fields.firstName)}!</div>
                                 <div>Вот твой пароль для <a href="$signInURL">входа</a> в $productName: $password</div>
                                 <div style='padding-top: 2em; font-style: italic;'>$productName</div>
                             </div>

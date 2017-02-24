@@ -98,7 +98,7 @@ import java.util.*
     override fun serve() {
         fuckAnyUser(FuckAnyUserParams(
             bpc = bpc,
-            makeRequest = {UAOrderParamsRequest(isAdmin = requestUser.kind == UserKind.ADMIN,
+            makeRequest = {UAOrderParamsRequest(isAdmin = requestUser.fields.kind == UserKind.ADMIN,
                                                 isUpdate = true)},
             runShit = fun(ctx, req: UAOrderParamsRequest): UAUpdateOrderResponse {
                 // TODO:vgrechka Security
@@ -146,8 +146,8 @@ import java.util.*
                     sizeBytes = content.size,
                     content = content,
                     creator = requestUser,
-                    forCustomerSeenAsFrom = requestUser.kind, // TODO:vgrechka ...
-                    forWriterSeenAsFrom = requestUser.kind // TODO:vgrechka ...
+                    forCustomerSeenAsFrom = requestUser.fields.kind, // TODO:vgrechka ...
+                    forWriterSeenAsFrom = requestUser.fields.kind // TODO:vgrechka ...
                 ))
 
                 return UACreateOrderFileResponse(file.id!!)
@@ -159,7 +159,7 @@ import java.util.*
 @Servant class ServeUAUpdateOrderFile : BitchyProcedure() {
     override fun serve() {
         fuckAnyUser(FuckAnyUserParams(
-            bpc = bpc, makeRequest = {UAOrderFileParamsRequest(isAdmin = requestUser.kind == UserKind.ADMIN,
+            bpc = bpc, makeRequest = {UAOrderFileParamsRequest(isAdmin = requestUser.fields.kind == UserKind.ADMIN,
                                                                isUpdate = true)},
             runShit = fun(ctx, req): UAUpdateOrderFileResponse {
                 checkingAllFieldsRetrieved(req) {
@@ -246,7 +246,7 @@ import java.util.*
 }
 
 fun serveReginaCustomerSendOrderForApprovalAfterFixing(p: ReginaCustomerSendOrderForApprovalAfterFixing): GenericResponse {
-    check(requestUser.kind == UserKind.CUSTOMER){"70630d2d-6796-4af8-8ac6-16e09a8b37e1"}
+    check(requestUser.fields.kind == UserKind.CUSTOMER){"70630d2d-6796-4af8-8ac6-16e09a8b37e1"}
     // TODO:vgrechka Security
     val order = uaOrderRepo.findOrDie(p.orderID)
     check(order.state == UAOrderState.RETURNED_TO_CUSTOMER_FOR_FIXING){"698dd409-f382-45df-9e65-fff590302dd0"}
@@ -255,7 +255,7 @@ fun serveReginaCustomerSendOrderForApprovalAfterFixing(p: ReginaCustomerSendOrde
 }
 
 fun serveReginaAdminSendOrderToStore(p: ReginaAdminSendOrderToStore): GenericResponse {
-    check(requestUser.kind == UserKind.ADMIN){"0af9f1b0-b5fb-4fb2-b3a9-198a0185ee15"}
+    check(requestUser.fields.kind == UserKind.ADMIN){"0af9f1b0-b5fb-4fb2-b3a9-198a0185ee15"}
     // TODO:vgrechka Security
     val order = uaOrderRepo.findOrDie(p.orderID)
     check(order.state in setOf(UAOrderState.WAITING_ADMIN_APPROVAL)){"7af262c7-2a28-43f8-910a-ccf3569142e9"}

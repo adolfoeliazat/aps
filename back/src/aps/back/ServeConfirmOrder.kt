@@ -27,16 +27,18 @@ import java.util.*
                     if (order.state != UAOrderState.WAITING_EMAIL_CONFIRMATION)
                         bitchExpectedly(t("TOTE", "Хватит уже этот заказ подтверждать, ага?"))
 
-                    val user = userRepo.findByEmail(order.customerEmail)
+                    val user = userRepo.findByFields_Email(order.customerEmail)
                     if (user == null) {
-                        val newUser = userRepo.save(User(
-                            email = order.customerEmail,
-                            firstName = order.customerFirstName,
-                            lastName = order.customerLastName,
-                            passwordHash = hashPassword(generatePassword()),
-                            profilePhone = order.customerPhone,
-                            kind = UserKind.CUSTOMER,
-                            state = UserState.COOL
+                        val newUser = saveUserToRepo(User(
+                            fields = UserFields(
+                                email = order.customerEmail,
+                                firstName = order.customerFirstName,
+                                lastName = order.customerLastName,
+                                passwordHash = hashPassword(generatePassword()),
+                                profilePhone = order.customerPhone,
+                                kind = UserKind.CUSTOMER,
+                                state = UserState.COOL
+                            )
                         ))
                         orderRepo.save(order-{o->
                             o.customer = newUser

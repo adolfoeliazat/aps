@@ -11,18 +11,23 @@ private const val MAX_STRING = 10000
 private const val MAX_BLOB = 10 * 1024 * 1024
 
 val userRepo get() = springctx.getBean(UserRepository::class.java)!!
+val userParamsHistoryItemRepo get() = springctx.getBean(UserParamsHistoryItemRepository::class.java)!!
 val uaOrderRepo get() = springctx.getBean(UAOrderRepository::class.java)!!
 val uaOrderFileRepo get() = springctx.getBean(UAOrderFileRepository::class.java)!!
+
+private fun currentTimestampForEntity(): Timestamp {
+    return when {
+        isRequestThread() -> RequestGlobus.stamp
+        else -> Timestamp(currentTimeMillis())
+    }
+}
 
 @MappedSuperclass
 abstract class ClitoralEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
 
-    var createdAt = when {
-        isRequestThread() -> RequestGlobus.stamp
-        else -> Timestamp(currentTimeMillis())
-    }
+    var createdAt = currentTimestampForEntity()
     var updatedAt = createdAt
     var deleted = false
 
@@ -32,13 +37,10 @@ abstract class ClitoralEntity {
 
 }
 
-@Entity @Table(name = "users",
-               indexes = arrayOf(
-                   Index(columnList = "email")
-               ))
-class User(
-    @Column(length = MAX_STRING) var email: String,
+@Embeddable @AllOpen @NoArgCtor
+data class UserFields(
     @Column(length = MAX_STRING) var firstName: String,
+    @Column(length = MAX_STRING) var email: String,
     @Column(length = MAX_STRING) var lastName: String,
     @Column(length = MAX_STRING) var passwordHash: String,
     @Column(length = MAX_STRING) var profilePhone: String,
@@ -49,30 +51,41 @@ class User(
     @Column(length = MAX_STRING) var aboutMe: String = "",
     @Column(length = MAX_STRING) var profileRejectionReason: String? = null,
     @Column(length = MAX_STRING) var banReason: String? = null
-) : MeganItem<UserRTO>, ClitoralEntity(), EntityWithAdminNotes {
+) : EntityWithAdminNotes
+
+
+@Entity @Table(name = "users",
+               indexes = arrayOf(
+                   Index(columnList = "email")
+               ))
+class User(
+    @Embedded var fields: UserFields
+)
+    : MeganItem<UserRTO>, ClitoralEntity()
+{
     override val idBang get()= id!!
 
     override fun toRTO(searchWords: List<String>): UserRTO {
-        val title = "$firstName $lastName"
+        val title = "${fields.firstName} ${fields.lastName}"
         return UserRTO(
             id = id!!,
             createdAt = createdAt.time,
             updatedAt = updatedAt.time,
-            profileUpdatedAt = profileUpdatedAt?.time,
-            kind = kind,
+            profileUpdatedAt = fields.profileUpdatedAt?.time,
+            kind = fields.kind,
             lang = Language.UA,
-            email = email,
-            state = state,
-            profileRejectionReason = profileRejectionReason,
-            banReason = banReason,
-            adminNotes = adminNotes,
-            adminNotesHighlightRanges = highlightRanges(adminNotes, searchWords),
-            firstName = firstName,
-            lastName = lastName,
-            aboutMe = aboutMe,
-            aboutMeHighlightRanges = highlightRanges(aboutMe, searchWords),
+            email = fields.email,
+            state = fields.state,
+            profileRejectionReason = fields.profileRejectionReason,
+            banReason = fields.banReason,
+            adminNotes = fields.adminNotes,
+            adminNotesHighlightRanges = highlightRanges(fields.adminNotes, searchWords),
+            firstName = fields.firstName,
+            lastName = fields.lastName,
+            aboutMe = fields.aboutMe,
+            aboutMeHighlightRanges = highlightRanges(fields.aboutMe, searchWords),
             roles = setOf(),
-            profilePhone = profilePhone,
+            profilePhone = fields.profilePhone,
             editable = false,
             title = title,
             titleHighlightRanges = highlightRanges(title, searchWords)
@@ -81,9 +94,47 @@ class User(
 }
 
 interface UserRepository : CrudRepository<User, Long> {
-    fun findByEmail(x: String): User?
-    fun countByKindAndState(kind: UserKind, state: UserState): Long
+    fun findByFields_Email(x: String): User?
+    fun countByFields_KindAndFields_State(kind: UserKind, state: UserState): Long
 }
+
+
+@Entity @Table(name = "user_params_history_items",
+               indexes = arrayOf(
+               ))
+class UserParamsHistoryItem(
+    val historyItem_entityID: Long,
+    @Column(length = MAX_STRING) var historyItem_descr: String,
+    @Embedded var fields: UserFields
+)
+    : ClitoralEntity()
+{
+    var historyItem_createdAt: Timestamp = currentTimestampForEntity()
+}
+
+interface UserParamsHistoryItemRepository : CrudRepository<UserParamsHistoryItem, Long> {
+}
+
+fun saveUserToRepo(entity: User, entityRepo: UserRepository = userRepo, historyRepo: UserParamsHistoryItemRepository = userParamsHistoryItemRepo): User {
+    val res = entityRepo.save(entity)
+    saveUserParamsHistory(entity, historyRepo, descr = "Created shit")
+    return res
+}
+
+fun saveUserParamsHistory(entity: User, historyRepo: UserParamsHistoryItemRepository = userParamsHistoryItemRepo, descr: String = "Updated shit") {
+    historyRepo.save(
+        UserParamsHistoryItem(
+            historyItem_entityID = entity.idBang,
+            historyItem_descr = descr,
+            fields = entity.fields.copy()
+        )-{o->
+            o.createdAt = entity.createdAt
+            o.updatedAt = entity.updatedAt
+            o.deleted = entity.deleted
+        }
+    )
+}
+
 
 interface EntityWithAdminNotes {
     var adminNotes: String
@@ -202,7 +253,7 @@ class UAOrderFile(
             detailsHighlightRanges = highlightRanges(details, searchWords),
             editable = run {
                 val user = requestUser
-                when (user.kind) {
+                when (user.fields.kind) {
                     UserKind.ADMIN -> true
                     UserKind.CUSTOMER -> order.state in setOf(UAOrderState.CUSTOMER_DRAFT, UAOrderState.RETURNED_TO_CUSTOMER_FOR_FIXING)
                     UserKind.WRITER -> imf("UAOrderFileRTO.editable for writer")
@@ -212,10 +263,10 @@ class UAOrderFile(
                 searchWords.isEmpty() -> listOf()
                 else -> highlightRanges(name.chopOffFileExtension(), searchWords)
             },
-            seenAsFrom = when (requestUser.kind) {
+            seenAsFrom = when (requestUser.fields.kind) {
                 UserKind.CUSTOMER -> forCustomerSeenAsFrom
                 UserKind.WRITER -> forWriterSeenAsFrom
-                UserKind.ADMIN -> creator.kind
+                UserKind.ADMIN -> creator.fields.kind
             },
             titleHighlightRanges = when {
                 searchWords.isEmpty() -> listOf()
@@ -232,19 +283,6 @@ class UAOrderFile(
 }
 
 interface UAOrderFileRepository : CrudRepository<UAOrderFile, Long> {
-}
-
-
-@Entity @Table(name = "user_params_history_items",
-               indexes = arrayOf(
-               ))
-class UserParamsHistoryItem(
-    val entityID: Long,
-    @Column(length = MAX_STRING) var descr: String
-)
-    : ClitoralEntity()
-{
-
 }
 
 
