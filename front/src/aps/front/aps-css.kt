@@ -604,7 +604,14 @@ object css {
     }
 
     object history : Group(null) {
-        val shit by Style("background-color: $GRAY_200; border-bottom: 1px $GRAY_500 dotted;")
+        val shit by Style("""
+            background-color: #f5f5f5;
+            border-left: 0.4rem solid #9e9e9e;
+            padding-left: 1rem;
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+            margin-bottom: 0.5rem;
+        """)
     }
 
 

@@ -345,8 +345,8 @@ class MelindaBoobs<
 }
 
 object MelindaTools {
-    fun row(build: (ElementBuilder) -> Unit) =
-        kdiv(className = "row", marginBottom = "0.5em"){o->
+    fun row(marginBottom: String? = "0.5em", build: (ElementBuilder) -> Unit) =
+        kdiv(className = "row", marginBottom = marginBottom){o->
             build(o)
         }
 

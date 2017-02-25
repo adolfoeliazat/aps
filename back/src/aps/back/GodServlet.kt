@@ -49,6 +49,9 @@ class RequestGlobusType {
     lateinit var servletRequest: HttpServletRequest
     var procedureCtx by notNullOnce<ProcedureContext>()
     val retrievedFields = mutableSetOf<FormFieldBack>()
+    var requesterOrAnonymous by notNullOnce<User>()
+    var requesterOrAnonymousInitialFields by notNullOnce<UserFields>()
+    var shitIsDangerous by notNullOnce<Boolean>()
 }
 
 class GodServlet : HttpServlet() {

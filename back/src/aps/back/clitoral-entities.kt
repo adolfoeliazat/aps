@@ -35,8 +35,10 @@ abstract class ClitoralEntity0 {
 
     @PreUpdate
     fun preFuckingUpdate() {
-        if (this is User) {
-            saveUserParamsHistory(this)
+        if (!RequestGlobus.shitIsDangerous) {
+            if (this is User) {
+                saveUserParamsHistory(this)
+            }
         }
     }
 }
@@ -144,9 +146,9 @@ interface UserRepository : CrudRepository<User, Long> {
     var createdAt: Timestamp = currentTimestampForEntity(),
 
     @ManyToOne(fetch = FetchType.LAZY) // @JoinColumn(name = "historyItem_changerID", nullable = false)
-    var changer: User,
+    var requester: User,
 
-    @Embedded var thenChanger: UserFields
+    @Embedded var thenRequester: UserFields
 )
 
 @Entity @Table(name = "user_params_history_items",
@@ -163,15 +165,15 @@ class UserParamsHistoryItem(
         val entityID = history.entityID
         val title = history.descr
 
-        val changer = history.changer
+        val changer = history.requester
         return UserParamsHistoryItemRTO(
             descr = history.descr,
             entity = entity.toRTO(entityID, searchWords),
 
             // HistoryItemRTOFields
             createdAt = history.createdAt.time,
-            changer = changer.toRTO(searchWords = listOf()),
-            changerThen = history.thenChanger.toRTO(changer.id!!, searchWords = listOf()),
+            requester = changer.toRTO(searchWords = listOf()),
+            thenRequester = history.thenRequester.toRTO(changer.id!!, searchWords = listOf()),
 
             // MelindaItemRTO
             id = idBang,
@@ -192,17 +194,13 @@ fun saveUserToRepo(entity: User): User {
 }
 
 fun saveUserParamsHistory(entity: User, descr: String = "Updated shit") {
-    val changer = requestUserMaybe ?: when (RequestGlobus.procedureCtx.clientKind) {
-        ClientKind.UA_CUSTOMER -> userRepo.findOrDie(const.userID.anonymousCustomer)
-        ClientKind.UA_WRITER -> userRepo.findOrDie(const.userID.anonymousWriter)
-    }
     userParamsHistoryItemRepo.save(
         UserParamsHistoryItem(
             history = HistoryFields(
                 entityID = entity.idBang,
                 descr = descr,
-                changer = changer,
-                thenChanger = changer.user.copy()
+                requester = RequestGlobus.requesterOrAnonymous,
+                thenRequester = RequestGlobus.requesterOrAnonymousInitialFields
             ),
             entity = entity.user.copy()
         )

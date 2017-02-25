@@ -30,8 +30,8 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
     }
 
     val filesShortcutMode1 = FilesShortcutMode.B
-//    val startPoint = 1
-    val startPoint = 11
+    val startPoint = 1
+//    val startPoint = 11
     init {
 //        TestGlobal.describeStateConfig = DescribeStateConfig(showBanners = true, autoResumeAfterMs = null)
 //        TestGlobal.describeStateConfig = DescribeStateConfig(showBanners = true, autoResumeAfterMs = 2000)
@@ -406,7 +406,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
             run { // Kafka fills profile
                 inputSetValue(fields.profilePhone_testRef, "+38 (099) 432-54-55")
-                inputSetValue(fields.aboutMe_testRef, "О себе? Вы че, охренели там? Я Кафка. Кафка я, ебаный Франс, бля! Уроды...")
+                inputSetValue(fields.aboutMe_testRef, "О себе? Вы че, охренели там? Я Кафка. Кафка я, ебаный Франц, бля! Уроды...")
                 submitFormSequence("0747ffeb-2906-4a94-8e45-8d24d92b9abf")
             }
         }
@@ -420,7 +420,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
             run { // Kafka fixes his shit
                 bootWriterWithTokenToProfilePage("kafka", sessionIndex.kafka2, "f35ff2f9-dc3a-40af-993a-42500c72d550")
-                setProfileFields_submitForm(firstName = "Франс", lastName = "Кафка", aboutMe = "Я жалкий писака, ничтожный червь. Любая черная работа. Вкалываю за еду.", aid = "fba9f715-ab21-46a4-8f63-196b2c1de652")
+                setProfileFields_submitForm(firstName = "Франц", lastName = "Кафка", aboutMe = "Я жалкий писака, ничтожный червь. Любая черная работа. Вкалываю за еду.", aid = "fba9f715-ab21-46a4-8f63-196b2c1de652")
             }
 
             run { // Admin finally accepts motherfucker

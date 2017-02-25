@@ -55,13 +55,13 @@ class SingleUserPage {
                             val m = MelindaTools
                             kdiv{o->
                                 o- kdiv(className = css.history.shit){o->
-                                    o- m.row{o->
-                                        o- m.col(3, t("TOTE", "Кто изменил"), contentStyle = Style(display = "flex")){o->
-                                            o- renderUserKindIconWithGap(historyItem.changer.kind)
+                                    o- m.row(marginBottom = null){o->
+                                        o- m.col(6, t("TOTE", "Кто изменил"), contentStyle = Style(display = "flex", alignItems = "center")){o->
+                                            o- renderUserKindIconWithGap(historyItem.requester.kind)
                                             o- span(stringBuild{o->
-                                                val currentName = fullName(historyItem.changer)
+                                                val currentName = fullName(historyItem.requester)
                                                 o += currentName
-                                                val thenName = fullName(historyItem.changerThen.firstName, historyItem.changerThen.lastName)
+                                                val thenName = fullName(historyItem.thenRequester.firstName, historyItem.thenRequester.lastName)
                                                 if (thenName != currentName)
                                                     o += " (${t("then", "тогда")} $thenName)"
                                             })

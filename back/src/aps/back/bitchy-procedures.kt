@@ -236,12 +236,21 @@ fun <Req : RequestMatumba, Res : CommonResponseFields>
                             if (rmap["token"] != systemDangerousToken()) {
                                 bitch("Invalid dangerous token")
                             }
-//                            check(ctx.user == null){"24cfadfe-ea54-4586-8860-24d35c961f7b"}
-//                            ctx.user = userRepo.findOrDie(const.userID.testScenario)
+                            RequestGlobus.shitIsDangerous = true
+                        } else {
+                            RequestGlobus.shitIsDangerous = false
                         }
 
                         p.validate(ctx, req)
                         if (ctx.fieldErrors.isNotEmpty()) bitchExpectedly(t("Please fix errors below", "Пожалуйста, исправьте ошибки ниже"))
+
+                        if (!RequestGlobus.shitIsDangerous) {
+                            RequestGlobus.requesterOrAnonymous = ctx.user ?: when (ctx.clientKind) {
+                                ClientKind.UA_CUSTOMER -> userRepo.findOrDie(const.userID.anonymousCustomer)
+                                ClientKind.UA_WRITER -> userRepo.findOrDie(const.userID.anonymousWriter)
+                            }
+                            RequestGlobus.requesterOrAnonymousInitialFields = RequestGlobus.requesterOrAnonymous.user.copy()
+                        }
 
                         return p.runShit(ctx, req)
                     }

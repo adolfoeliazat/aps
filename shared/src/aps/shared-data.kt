@@ -123,8 +123,8 @@ enum class UAOrderState(override val title: String) : Titled {
 
 interface HistoryItemRTOFields {
     val createdAt: Long
-    val changer: UserRTO
-    val changerThen: UserRTO
+    val requester: UserRTO
+    val thenRequester: UserRTO
 }
 
 class UserParamsHistoryItemRTO(
@@ -133,8 +133,8 @@ class UserParamsHistoryItemRTO(
 
     // HistoryItemRTOFields
     override val createdAt: Long,
-    override val changer: UserRTO,
-    override val changerThen: UserRTO,
+    override val requester: UserRTO,
+    override val thenRequester: UserRTO,
 
     // MelindaItemRTO
     override val id: Long,
