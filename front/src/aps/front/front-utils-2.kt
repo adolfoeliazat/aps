@@ -115,6 +115,16 @@ fun renderBannerCalmWarning(msg: String): ToReactElementable {
     }
 }
 
+fun renderUserKindIconWithGap(userKind: UserKind) =
+    ki(className = userKindIcon(userKind).className, marginRight = "0.5rem")
+
+fun userKindIcon(userKind: UserKind): IconClass {
+    return when (userKind) {
+        UserKind.CUSTOMER -> fa.user
+        UserKind.WRITER -> fa.pencil
+        UserKind.ADMIN -> fa.cog
+    }
+}
 
 
 

@@ -17,6 +17,10 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.NullNode
 import com.zaxxer.hikari.HikariDataSource
+import org.hibernate.boot.model.naming.Identifier
+import org.hibernate.boot.model.naming.ImplicitJoinColumnNameSource
+import org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl
+import org.hibernate.boot.model.source.spi.AttributePath
 import org.jooq.*
 import org.jooq.SelectField
 import org.jooq.conf.ParamType
@@ -37,6 +41,7 @@ import java.util.concurrent.CompletionStage
 import java.util.concurrent.Executor
 import javax.annotation.Generated
 import javax.persistence.EntityManagerFactory
+import kotlin.system.exitProcess
 
 val PG_LOCAL_DATE_TIME = DateTimeFormatterBuilder()
     .parseCaseInsensitive()
@@ -370,7 +375,7 @@ class PostgresJSONBJacksonJsonNodeConverter : Converter<Any?, JsonNode> {
     }
 }
 
-fun enhanceDBSchema() {
+fun enhanceDB() {
     // TODO:vgrechka Check if necessary columns/indexes are already there
     val emf = springctx.getBean(EntityManagerFactory::class.java)
     val em = emf.createEntityManager()
@@ -391,12 +396,12 @@ fun enhanceDBSchema() {
             begin
               new.tsv \:=
                  setweight(to_tsvector('pg_catalog.russian', ' '
-                     ||' '|| regexp_replace(coalesce(new.name, ''), '\..*$', '')
-                     ||' '|| coalesce(new.title, '')
+                     ||' '|| regexp_replace(coalesce(new.orderFile_name, ''), '\..*$', '')
+                     ||' '|| coalesce(new.orderFile_title, '')
                      ),'A')
                  ||
                  setweight(to_tsvector('pg_catalog.russian', ' '
-                     ||' '|| coalesce(new.details, '')
+                     ||' '|| coalesce(new.orderFile_details, '')
                      ),'B')
               ;
               return new;
@@ -406,16 +411,42 @@ fun enhanceDBSchema() {
             create trigger ua_order_files__tsvector_update
                 before insert or update on ua_order_files
                 for each row execute procedure ua_order_files__tsv_trigger();
+
+            -- ======================== SYSTEM USERS =======================
+
+            -- insert into users(id, user_email, user_firstName, user_lastName, user_common_deleted, user_common_createdAt, user_common_updatedAt, user_passwordHash, user_profilePhone, user_kind, user_state, user_adminNotes, user_aboutMe)
+                        -- values (-10, 'TestScenario@system', 'TestScenario', 'System', false, now(), now(), 'boobs', 'boobs', '${UserKind.ADMIN.name}', '${UserState.COOL.name}', 'boobs', 'boobs');
         """)
         q.executeUpdate()
     } finally {
         em.transaction.commit()
         em.close()
     }
+
+    userRepo.save(User(UserFields(CommonFields(), firstName = "Anonymous", lastName = "Customer", email = "No fucking email", passwordHash = "No fucking password", profilePhone = "No fucking phone", kind = UserKind.CUSTOMER, state = UserState.COOL, adminNotes = ""))-{o->
+        o.id = const.userID.anonymousCustomer
+    })
+    userRepo.save(User(UserFields(CommonFields(), firstName = "Anonymous", lastName = "Writer", email = "No fucking email", passwordHash = "No fucking password", profilePhone = "No fucking phone", kind = UserKind.WRITER, state = UserState.COOL, adminNotes = ""))-{o->
+        o.id = const.userID.anonymousWriter
+    })
 }
 
 
+class APSHibernateNamingStrategy : ImplicitNamingStrategyJpaCompliantImpl() {
+    override fun transformAttributePath(attributePath: AttributePath): String {
+        return attributePath.fullPath.replace(".", "_")
+    }
 
+    override fun determineJoinColumnName(source: ImplicitJoinColumnNameSource): Identifier {
+        val name: String
+        if (source.nature == ImplicitJoinColumnNameSource.Nature.ELEMENT_COLLECTION || source.attributePath == null ) {
+            name = transformEntityName(source.entityNaming) + "__" + source.referencedColumnName.text
+        } else {
+            name = transformAttributePath(source.attributePath) + "__" + source.referencedColumnName.text
+        }
+        return toIdentifier(name, source.buildingContext)
+    }
+}
 
 
 

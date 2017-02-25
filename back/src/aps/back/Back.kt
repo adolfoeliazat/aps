@@ -92,7 +92,8 @@ fun reallyBoot() {
         }
     }
 
-    enhanceDBSchema()
+    // TODO:vgrechka This is only good during tests
+    enhanceDB()
 
     val port = (System.getenv("PORT") ?: "8080").toInt()
     Server(port).apply {
@@ -115,7 +116,7 @@ private fun selfSanityCheck() {
         die("Compile me with freaking noarg, OK?")
     }
 
-    val method = clazz.getMethod("getFields")
+    val method = clazz.getMethod("getUser") // Embedded
     if (Modifier.isFinal(method.modifiers)) {
         die("Compile me with freaking allopen, OK?")
     }

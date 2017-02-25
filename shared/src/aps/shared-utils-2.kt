@@ -91,6 +91,8 @@ inline fun <T> Iterable<T>.sumByLong(selector: (T) -> Long): Long {
     return sum
 }
 
+fun fullName(x: UserRTO) = fullName(x.firstName, x.lastName)
+fun fullName(firstName: String, lastName: String) = "$firstName $lastName".trim()
 
 
 

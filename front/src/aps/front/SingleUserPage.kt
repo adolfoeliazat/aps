@@ -50,7 +50,27 @@ class SingleUserPage {
                         }
                     ),
                     historyParams = HistoryParams<UserParamsHistoryItemRTO, UserParamsHistoryFilter>(
-                        renderItem = {tongue-> renderProfile(tongue.getItem().entity)},
+                        renderItem = {
+                            val historyItem = it.getItem()
+                            val m = MelindaTools
+                            kdiv{o->
+                                o- kdiv(className = css.history.shit){o->
+                                    o- m.row{o->
+                                        o- m.col(3, t("TOTE", "Кто изменил"), contentStyle = Style(display = "flex")){o->
+                                            o- renderUserKindIconWithGap(historyItem.changer.kind)
+                                            o- span(stringBuild{o->
+                                                val currentName = fullName(historyItem.changer)
+                                                o += currentName
+                                                val thenName = fullName(historyItem.changerThen.firstName, historyItem.changerThen.lastName)
+                                                if (thenName != currentName)
+                                                    o += " (${t("then", "тогда")} $thenName)"
+                                            })
+                                        }
+                                    }
+                                }
+                                o- renderProfile(historyItem.entity)
+                            }
+                        },
                         sendItemsRequest = {req-> sendGetUserParamsHistoryItems(req)},
                         historyFilterValues = UserParamsHistoryFilter.values(),
                         defaultHistoryFilterValue = UserParamsHistoryFilter.ALL,
@@ -58,7 +78,7 @@ class SingleUserPage {
                     )
                 )
             )},
-            pageHeaderTitle = {t("TOTE", "Засранец ${user.firstName} ${user.lastName}")},
+            pageHeaderTitle = {t("TOTE", "Засранец ${const.text.numberSign}${user.id}: ${user.firstName} ${user.lastName}")},
             subtitle = {null},
             renderBelowSubtitle = fun(): ToReactElementable {
                 return NOTRE

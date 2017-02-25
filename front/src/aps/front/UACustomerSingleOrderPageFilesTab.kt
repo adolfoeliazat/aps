@@ -93,7 +93,7 @@ class UACustomerSingleOrderPageFilesTab(val order: UAOrderRTO) : TabithaTab {
 
     private class FileLipsState(val downloadActive: Boolean)
 
-    val vaginalInterface = MelindaVaginalInterface<UAOrderFileRTO, CustomerFileFilter, UAOrderFileParamsRequest, UAUpdateOrderFileResponse> (
+    val vaginalInterface = MelindaVagina<UAOrderFileRTO, CustomerFileFilter, UAOrderFileParamsRequest, UAUpdateOrderFileResponse> (
         updateParams = MelindaVaginalUpdateParams(
             updateItemProcedureNameIfNotDefault = "UAUpdateOrderFile",
             getItemFromUpdateItemResponse = {res-> res.updatedFile},
@@ -125,11 +125,7 @@ class UACustomerSingleOrderPageFilesTab(val order: UAOrderRTO) : TabithaTab {
                 icon = {fa.file},
                 initialLipsState = FileLipsState(downloadActive = false),
                 controlsDisabled = {state-> state.downloadActive},
-                smallOverlayIcon = {when (tongue.getItem().seenAsFrom) {
-                    UserKind.CUSTOMER -> fa.user
-                    UserKind.WRITER -> fa.pencil
-                    UserKind.ADMIN -> fa.cog
-                }},
+                smallOverlayIcon = {userKindIcon(tongue.getItem().seenAsFrom)},
                 tinySubtitle = {when (tongue.getItem().seenAsFrom) {
                     Globus.world.user.kind -> t("Mine", "Мой")
                     UserKind.CUSTOMER -> t("From customer", "От заказчика")

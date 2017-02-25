@@ -94,6 +94,12 @@ object const {
 
         val testFiles get()= "$APS_HOME/back/testfiles"
     }
+
+    object userID {
+//        val testScenario = -10L
+        val anonymousCustomer = -20L
+        val anonymousWriter = -30L
+    }
 }
 
 

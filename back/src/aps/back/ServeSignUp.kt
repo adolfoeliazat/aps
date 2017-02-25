@@ -20,7 +20,7 @@ import into.kommon.*
             runShit = fun(ctx, req: SignUpRequest): SignUpRequest.Response {
                 val password = generatePassword()
                 val user = saveUserToRepo(User(
-                    fields = UserFields(
+                    user = UserFields(
                         firstName = req.firstName.value,
                         email = req.email.value,
                         lastName = req.lastName.value,
@@ -44,13 +44,13 @@ import into.kommon.*
                     ClientKind.UA_WRITER -> const.productName.uaWriter
                 }
                 EmailMatumba.send(Email(
-                    to = "${user.fields.firstName} ${user.fields.lastName} <${user.fields.email}>",
+                    to = "${user.user.firstName} ${user.user.lastName} <${user.user.email}>",
                     subject = "[$productName] Пароль",
                     html = dedent(t(
                         en = """TOTE""",
                         ua = """
                             <div style='font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;'>
-                                <div style='padding-bottom: 1em;'>Привет, ${escapeHTML(user.fields.firstName)}!</div>
+                                <div style='padding-bottom: 1em;'>Привет, ${escapeHTML(user.user.firstName)}!</div>
                                 <div>Вот твой пароль для <a href="$signInURL">входа</a> в $productName: $password</div>
                                 <div style='padding-top: 2em; font-style: italic;'>$productName</div>
                             </div>

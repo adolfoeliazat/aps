@@ -270,12 +270,11 @@ object css {
                                    hover = "color: $BLUE_GRAY_500;")
             val rightIconActive by Style(style = "color: $BLUE_GRAY_500;")
             val rightIconDisabled by Style(style = "color: $GRAY_500;")
-
             val controls by Style("padding-right: 0.5rem;")
             val titleAndStuff by Style("flex-grow: 1;")
-
             val linkStyle = "color: $BLACK_BOOT;"
             val titleLink by Style(link = linkStyle, visited = linkStyle, hover = linkStyle, active = linkStyle)
+            val secondTitle by Style("margin-left: 1rem; font-size: 85%;")
         }
 
         val bodyEditing by Style("""
@@ -602,6 +601,10 @@ object css {
             val content by Style("""
                 background-color: $WHITE;""")
         }
+    }
+
+    object history : Group(null) {
+        val shit by Style("background-color: $GRAY_200; border-bottom: 1px $GRAY_500 dotted;")
     }
 
 

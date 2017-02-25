@@ -105,9 +105,8 @@ class UsualParamsTab<ItemRTO, HistoryItemRTO, HistoryFilter, Req : RequestMatumb
 )
     : TabithaTab
 where
-    HistoryFilter : Enum<HistoryFilter>,
-    HistoryFilter : Titled,
-    HistoryItemRTO : MelindaItemRTO
+    HistoryFilter : Enum<HistoryFilter>, HistoryFilter : Titled,
+    HistoryItemRTO : MelindaItemRTO, HistoryItemRTO : HistoryItemRTOFields
 {
     enum class Mode {
         CURRENT, HISTORY
@@ -129,7 +128,7 @@ where
                 filterValues = historyParams.historyFilterValues,
                 defaultFilterValue = historyParams.defaultHistoryFilterValue,
                 filterSelectKey = historyParams.historyFilterSelectKey,
-                vaginalInterface = MelindaVaginalInterface<HistoryItemRTO, HistoryFilter, /*UpdateItemRequest=*/ Nothing, /*UpdateItemResponse=*/ Nothing>(
+                vaginalInterface = MelindaVagina<HistoryItemRTO, HistoryFilter, /*UpdateItemRequest=*/ Nothing, /*UpdateItemResponse=*/ Nothing>(
                     sendItemsRequest = historyParams.sendItemsRequest,
                     shouldShowFilter = {true},
                     getParentEntityID = {TabithaURLQuery.id.get()},
@@ -138,14 +137,16 @@ where
                     updateParams = null,
                     makeLipsInterface = {viewRootID, tongue -> makeUsualMelindaLips(
                         tongue, viewRootID, historyBoobs,
-                        icon = {fa.calendarMinusO},
+                        icon = {fa.calendarCheckO},
                         initialLipsState = Unit,
                         renderContent = {o->
                             o- historyParams.renderItem(tongue)
                         },
                         titleLinkURL = null,
                         hasEditControl = {false},
-                        hasDeleteControl = {false}
+                        hasDeleteControl = {false},
+                        drawID = {false},
+                        secondTitle = {formatUnixTime(tongue.getItem().createdAt, includeTZ = false)}
                     )}
                 )
             )

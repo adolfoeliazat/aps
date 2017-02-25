@@ -51,18 +51,10 @@ interface DefinitionStackHolder {
 //    }
 //}
 
-fun label(title: String) = klabel{o->
-    o- title
-}
-
-fun span(s: String? = null, style: Style = Style()) =
-    kspan(style = style){o->
-        o- s
-    }
-
-fun div(s: String? = null) = kdiv{o->
-    o- s
-}
+fun label(title: String) = klabel {it-title}
+fun span(s: String? = null, style: Style = Style()) = kspan(style = style) {it-s}
+fun span(s: String? = null, className: String) = kspan(className = className) {it-s}
+fun div(s: String? = null) = kdiv {it-s}
 
 
 

@@ -2,7 +2,11 @@ package aps.back
 
 import aps.*
 import into.kommon.*
+import org.hibernate.annotations.GenericGenerator
+import org.hibernate.engine.spi.SharedSessionContractImplementor
+import org.hibernate.id.IdentityGenerator
 import org.springframework.data.repository.CrudRepository
+import org.springframework.data.repository.findOrDie
 import java.sql.Timestamp
 import javax.persistence.*
 
@@ -10,6 +14,7 @@ private const val MAX_STRING = 10000
 private const val MAX_BLOB = 10 * 1024 * 1024
 
 val userRepo get() = springctx.getBean(UserRepository::class.java)!!
+val userTokenRepo get() = springctx.getBean(UserTokenRepository::class.java)!!
 val userParamsHistoryItemRepo get() = springctx.getBean(UserParamsHistoryItemRepository::class.java)!!
 val uaOrderRepo get() = springctx.getBean(UAOrderRepository::class.java)!!
 val uaOrderFileRepo get() = springctx.getBean(UAOrderFileRepository::class.java)!!
@@ -23,13 +28,26 @@ private fun currentTimestampForEntity(): Timestamp {
 
 @MappedSuperclass
 abstract class ClitoralEntity0 {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "IdentityIfNotSetGenerator")
+    @GenericGenerator(name = "IdentityIfNotSetGenerator", strategy = "aps.back.IdentityIfNotSetGenerator")
     var id: Long? = null
 
     @PreUpdate
     fun preFuckingUpdate() {
         if (this is User) {
             saveUserParamsHistory(this)
+        }
+    }
+}
+
+@Suppress("Unused")
+class IdentityIfNotSetGenerator : IdentityGenerator() {
+    override fun generate(s: SharedSessionContractImplementor?, obj: Any?): java.io.Serializable {
+        val id = (obj as ClitoralEntity0).id
+        return when {
+            id != null -> id
+            else -> super.generate(s, obj)
         }
     }
 }
@@ -104,50 +122,59 @@ data class UserFields(
 
 
 @Entity @Table(name = "users",
-               indexes = arrayOf(Index(columnList = "email")))
-class User(@Embedded var fields: UserFields)
+               indexes = arrayOf(Index(columnList = "user_email")))
+class User(@Embedded var user: UserFields)
     : MeganItem<UserRTO>, ClitoralEntity0()
 {
     override val idBang get() = id!!
 
     override fun toRTO(searchWords: List<String>): UserRTO {
-        return fields.toRTO(idBang, searchWords)
+        return user.toRTO(idBang, searchWords)
     }
 }
 
 interface UserRepository : CrudRepository<User, Long> {
-    fun findByFields_Email(x: String): User?
-    fun countByFields_KindAndFields_State(kind: UserKind, state: UserState): Long
+    fun findByUser_Email(x: String): User?
+    fun countByUser_KindAndUser_State(kind: UserKind, state: UserState): Long
 }
 
 @Embeddable class HistoryFields(
-    val historyItem_entityID: Long,
-    @Column(length = MAX_STRING) var historyItem_descr: String,
-    var historyItem_createdAt: Timestamp = currentTimestampForEntity()
+    val entityID: Long,
+    @Column(length = MAX_STRING) var descr: String,
+    var createdAt: Timestamp = currentTimestampForEntity(),
+
+    @ManyToOne(fetch = FetchType.LAZY) // @JoinColumn(name = "historyItem_changerID", nullable = false)
+    var changer: User,
+
+    @Embedded var thenChanger: UserFields
 )
 
 @Entity @Table(name = "user_params_history_items",
                indexes = arrayOf())
 class UserParamsHistoryItem(
-    @Embedded var historyFields: HistoryFields,
-    @Embedded var entityFields: UserFields
+    @Embedded var history: HistoryFields,
+    @Embedded var entity: UserFields
 )
     : ClitoralEntity0(), MeganItem<UserParamsHistoryItemRTO>
 {
     override val idBang get() = id!!
 
     override fun toRTO(searchWords: List<String>): UserParamsHistoryItemRTO {
-        val entityID = historyFields.historyItem_entityID
-        val title = historyFields.historyItem_descr
+        val entityID = history.entityID
+        val title = history.descr
 
+        val changer = history.changer
         return UserParamsHistoryItemRTO(
-            historyItem_id = idBang,
-            historyItem_descr = historyFields.historyItem_descr,
-            historyItem_createdAt = historyFields.historyItem_createdAt.time,
-            entity = entityFields.toRTO(entityID, searchWords),
+            descr = history.descr,
+            entity = entity.toRTO(entityID, searchWords),
+
+            // HistoryItemRTOFields
+            createdAt = history.createdAt.time,
+            changer = changer.toRTO(searchWords = listOf()),
+            changerThen = history.thenChanger.toRTO(changer.id!!, searchWords = listOf()),
 
             // MelindaItemRTO
-            id = entityID,
+            id = idBang,
             title = title,
             editable = false,
             titleHighlightRanges = highlightRanges(title, searchWords)
@@ -158,20 +185,26 @@ class UserParamsHistoryItem(
 interface UserParamsHistoryItemRepository : CrudRepository<UserParamsHistoryItem, Long> {
 }
 
-fun saveUserToRepo(entity: User, entityRepo: UserRepository = userRepo, historyRepo: UserParamsHistoryItemRepository = userParamsHistoryItemRepo): User {
-    val res = entityRepo.save(entity)
-    saveUserParamsHistory(entity, historyRepo, descr = "Created shit")
+fun saveUserToRepo(entity: User): User {
+    val res = userRepo.save(entity)
+    saveUserParamsHistory(entity, descr = "Created shit")
     return res
 }
 
-fun saveUserParamsHistory(entity: User, historyRepo: UserParamsHistoryItemRepository = userParamsHistoryItemRepo, descr: String = "Updated shit") {
-    historyRepo.save(
+fun saveUserParamsHistory(entity: User, descr: String = "Updated shit") {
+    val changer = requestUserMaybe ?: when (RequestGlobus.procedureCtx.clientKind) {
+        ClientKind.UA_CUSTOMER -> userRepo.findOrDie(const.userID.anonymousCustomer)
+        ClientKind.UA_WRITER -> userRepo.findOrDie(const.userID.anonymousWriter)
+    }
+    userParamsHistoryItemRepo.save(
         UserParamsHistoryItem(
-            historyFields = HistoryFields(
-                historyItem_entityID = entity.idBang,
-                historyItem_descr = descr
+            history = HistoryFields(
+                entityID = entity.idBang,
+                descr = descr,
+                changer = changer,
+                thenChanger = changer.user.copy()
             ),
-            entityFields = entity.fields.copy()
+            entity = entity.user.copy()
         )
     )
 }
@@ -197,13 +230,13 @@ data class UAOrderFields(
     @Column(length = MAX_STRING) var whatShouldBeFixedByCustomer : String? = null,
     override @Column(length = MAX_STRING) var adminNotes: String,
 
-    @ManyToOne(fetch = FetchType.EAGER) @JoinColumn(name = "customerID", nullable = true)
+    @ManyToOne(fetch = FetchType.EAGER) // @JoinColumn(name = "customerID", nullable = true)
     var customer: User? // TODO:vgrechka Think about nullability of this shit. Order can be draft, before customer even confirmed herself
 ) : FieldsWithAdminNotes
 
 @Entity @Table(name = "ua_orders",
-               indexes = arrayOf(Index(columnList = "confirmationSecret")))
-class UAOrder(@Embedded var fields: UAOrderFields)
+               indexes = arrayOf(Index(columnList = "order_confirmationSecret")))
+class UAOrder(@Embedded var order: UAOrderFields)
     : ClitoralEntity0(), MeganItem<UAOrderRTO>
 {
     override val idBang get()= id!!
@@ -211,33 +244,33 @@ class UAOrder(@Embedded var fields: UAOrderFields)
     override fun toRTO(searchWords: List<String>): UAOrderRTO {
         return UAOrderRTO(
             id = id!!,
-            title = fields.title,
-            titleHighlightRanges = highlightRanges(fields.title, searchWords),
-            detailsHighlightRanges = highlightRanges(fields.details, searchWords),
+            title = order.title,
+            titleHighlightRanges = highlightRanges(order.title, searchWords),
+            detailsHighlightRanges = highlightRanges(order.details, searchWords),
             editable = true, // TODO:vgrechka ...
-            createdAt = fields.common.createdAt.time,
-            updatedAt = fields.common.updatedAt.time,
-            customer = fields.customer!!.toRTO(searchWords = listOf()),
-            documentType = fields.documentType,
+            createdAt = order.common.createdAt.time,
+            updatedAt = order.common.updatedAt.time,
+            customer = order.customer!!.toRTO(searchWords = listOf()),
+            documentType = order.documentType,
             price = -1,
-            numPages = fields.numPages,
-            numSources = fields.numSources,
-            details = fields.details,
-            adminNotes = fields.adminNotes,
-            adminNotesHighlightRanges = highlightRanges(fields.adminNotes, searchWords),
-            state = fields.state,
-            customerPhone = fields.customerPhone,
-            customerFirstName = fields.customerFirstName,
-            customerLastName = fields.customerLastName,
-            customerEmail = fields.customerEmail,
-            whatShouldBeFixedByCustomer = fields.whatShouldBeFixedByCustomer
+            numPages = order.numPages,
+            numSources = order.numSources,
+            details = order.details,
+            adminNotes = order.adminNotes,
+            adminNotesHighlightRanges = highlightRanges(order.adminNotes, searchWords),
+            state = order.state,
+            customerPhone = order.customerPhone,
+            customerFirstName = order.customerFirstName,
+            customerLastName = order.customerLastName,
+            customerEmail = order.customerEmail,
+            whatShouldBeFixedByCustomer = order.whatShouldBeFixedByCustomer
         )
     }
 }
 
 interface UAOrderRepository : CrudRepository<UAOrder, Long> {
-    fun findByFields_ConfirmationSecret(x: String): UAOrder?
-    fun countByFields_State(x: UAOrderState): Long
+    fun findByOrder_ConfirmationSecret(x: String): UAOrder?
+    fun countByOrder_State(x: UAOrderState): Long
 }
 
 @Entity @Table(name = "user_tokens",
@@ -245,7 +278,7 @@ interface UAOrderRepository : CrudRepository<UAOrder, Long> {
 class UserToken(
     @Column(length = MAX_STRING) var token: String,
 
-    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "userID", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY) // @JoinColumn(name = "userID", nullable = false)
     var user: User?
 ) : ClitoralEntity()
 
@@ -268,17 +301,17 @@ data class UAOrderFileFields(
     @Enumerated(EnumType.STRING) var forCustomerSeenAsFrom: UserKind,
     @Enumerated(EnumType.STRING) var forWriterSeenAsFrom: UserKind,
 
-    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "creatorID", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY) // @JoinColumn(name = "creatorID", nullable = false)
     var creator: User,
 
-    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "orderID", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY) // @JoinColumn(name = "orderID", nullable = false)
     var order: UAOrder
 ) : FieldsWithAdminNotes
 
 
 @Entity @Table(name = "ua_order_files",
                indexes = arrayOf())
-class UAOrderFile(@Embedded var fields: UAOrderFileFields)
+class UAOrderFile(@Embedded var orderFile: UAOrderFileFields)
     : ClitoralEntity0(), MeganItem<UAOrderFileRTO>
 {
     override val idBang get()= id!!
@@ -286,38 +319,38 @@ class UAOrderFile(@Embedded var fields: UAOrderFileFields)
     override fun toRTO(searchWords: List<String>): UAOrderFileRTO {
         return UAOrderFileRTO(
             id = id!!,
-            createdAt = fields.common.createdAt.time,
-            updatedAt = fields.common.updatedAt.time,
-            name = fields.name,
-            title = fields.title,
-            details = fields.details,
-            sizeBytes = fields.sizeBytes,
-            detailsHighlightRanges = highlightRanges(fields.details, searchWords),
+            createdAt = orderFile.common.createdAt.time,
+            updatedAt = orderFile.common.updatedAt.time,
+            name = orderFile.name,
+            title = orderFile.title,
+            details = orderFile.details,
+            sizeBytes = orderFile.sizeBytes,
+            detailsHighlightRanges = highlightRanges(orderFile.details, searchWords),
             editable = run {
                 val user = requestUser
-                when (user.fields.kind) {
+                when (user.user.kind) {
                     UserKind.ADMIN -> true
-                    UserKind.CUSTOMER -> fields.order.fields.state in setOf(UAOrderState.CUSTOMER_DRAFT, UAOrderState.RETURNED_TO_CUSTOMER_FOR_FIXING)
+                    UserKind.CUSTOMER -> orderFile.order.order.state in setOf(UAOrderState.CUSTOMER_DRAFT, UAOrderState.RETURNED_TO_CUSTOMER_FOR_FIXING)
                     UserKind.WRITER -> imf("UAOrderFileRTO.editable for writer")
                 }
             },
             nameHighlightRanges = when {
                 searchWords.isEmpty() -> listOf()
-                else -> highlightRanges(fields.name.chopOffFileExtension(), searchWords)
+                else -> highlightRanges(orderFile.name.chopOffFileExtension(), searchWords)
             },
-            seenAsFrom = when (requestUser.fields.kind) {
-                UserKind.CUSTOMER -> fields.forCustomerSeenAsFrom
-                UserKind.WRITER -> fields.forWriterSeenAsFrom
-                UserKind.ADMIN -> fields.creator.fields.kind
+            seenAsFrom = when (requestUser.user.kind) {
+                UserKind.CUSTOMER -> orderFile.forCustomerSeenAsFrom
+                UserKind.WRITER -> orderFile.forWriterSeenAsFrom
+                UserKind.ADMIN -> orderFile.creator.user.kind
             },
             titleHighlightRanges = when {
                 searchWords.isEmpty() -> listOf()
-                else -> highlightRanges(fields.title, searchWords)
+                else -> highlightRanges(orderFile.title, searchWords)
             },
-            adminNotes = fields.adminNotes,
+            adminNotes = orderFile.adminNotes,
             adminNotesHighlightRanges = when {
                 searchWords.isEmpty() -> listOf()
-                else -> highlightRanges(fields.adminNotes, searchWords)
+                else -> highlightRanges(orderFile.adminNotes, searchWords)
             }
         )
     }

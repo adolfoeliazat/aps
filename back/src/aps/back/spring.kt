@@ -36,6 +36,7 @@ open class AppConfig {
             o.setShowSql(true)
         }
         o.jpaPropertyMap.put(Environment.HBM2DDL_AUTO, "create-drop")
+        o.jpaPropertyMap.put(Environment.IMPLICIT_NAMING_STRATEGY, APSHibernateNamingStrategy::class.qualifiedName)
         o.setPackagesToScan("aps.back")
         o.dataSource = dataSource
     }

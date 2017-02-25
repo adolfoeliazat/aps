@@ -292,10 +292,8 @@ adminProcedure(
 //}
 
 fun userByToken2(token: String): User {
-    val repo = springctx.getBean(UserTokenRepository::class.java)
-    val ut = repo.findByToken(token) ?: bitch("Invalid token")
-    val user = ut.user!!
-    return user
+    val ut = userTokenRepo.findByToken(token) ?: bitch("Invalid token")
+    return ut.user!!
 }
 
 

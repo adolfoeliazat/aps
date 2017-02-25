@@ -23,6 +23,7 @@ import org.mindrot.jbcrypt.BCrypt
 import org.springframework.beans.factory.support.BeanDefinitionRegistry
 import org.springframework.beans.factory.support.DefaultListableBeanFactory
 import org.springframework.context.annotation.AnnotationConfigApplicationContext
+import org.springframework.data.jpa.repository.JpaContext
 import java.awt.MouseInfo
 import java.awt.Robot
 import java.awt.event.InputEvent
@@ -124,7 +125,7 @@ testProcedure(
             bpc = bpc, makeRequest = {RecreateTestDatabaseSchemaRequest()},
             runShit = fun(ctx, req): GenericResponse {
                 springctx = AnnotationConfigApplicationContext(AppConfig::class.java) // New context -- new EMF
-                enhanceDBSchema()
+                enhanceDB()
                 seedUsers()
                 return GenericResponse()
             }
@@ -132,10 +133,7 @@ testProcedure(
     }
 
     fun seedUsers() {
-        saveUserToRepo(
-            // XXX If using global `userRepo` or `userParamsHistoryItemRepo`, it bitches like "Pre-bound JDBC Connection found!.."
-            entityRepo = userRepo, historyRepo = historyRepo,
-            entity = User(fields = UserFields(email = "dasja@test.shit.ua", firstName = "Дася", lastName = "Админовна", profilePhone = "911", kind = UserKind.ADMIN, state = UserState.COOL, passwordHash = BCrypt.hashpw("dasja-secret", BCrypt.gensalt()), adminNotes = "")))
+        userRepo.save(User(user = UserFields(email = "dasja@test.shit.ua", firstName = "Дася", lastName = "Админовна", profilePhone = "911", kind = UserKind.ADMIN, state = UserState.COOL, passwordHash = BCrypt.hashpw("dasja-secret", BCrypt.gensalt()), adminNotes = "")))
     }
 }
 

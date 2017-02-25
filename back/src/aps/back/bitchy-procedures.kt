@@ -2,6 +2,8 @@ package aps.back
 
 import aps.*
 import into.kommon.*
+import org.springframework.data.jpa.repository.JpaContext
+import org.springframework.data.repository.findOrDie
 import java.sql.Timestamp
 import java.util.*
 import javax.servlet.http.HttpServletRequest
@@ -234,6 +236,8 @@ fun <Req : RequestMatumba, Res : CommonResponseFields>
                             if (rmap["token"] != systemDangerousToken()) {
                                 bitch("Invalid dangerous token")
                             }
+//                            check(ctx.user == null){"24cfadfe-ea54-4586-8860-24d35c961f7b"}
+//                            ctx.user = userRepo.findOrDie(const.userID.testScenario)
                         }
 
                         p.validate(ctx, req)

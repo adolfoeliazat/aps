@@ -27,7 +27,7 @@ import org.springframework.data.repository.findOrDie
                         exhaustive/when (req.filter.value) {
                             AdminOrderFilter.ALL -> {}
                             AdminOrderFilter.TO_APPROVE -> {
-                                s += " and state = :state"
+                                s += " and order_state = :state"
                                 params += MeganQueryParam("state", UAOrderState.WAITING_ADMIN_APPROVAL.name)
                             }
                         }
@@ -53,7 +53,7 @@ import org.springframework.data.repository.findOrDie
                     },
                     table = "ua_order_files",
                     itemClass = UAOrderFile::class.java,
-                    parentKey = "orderID",
+                    parentKey = "orderFile_order__id",
                     addToWhere = {s, params ->
                         exhaustive/when (req.filter.value) {
                             CustomerFileFilter.ALL -> {}

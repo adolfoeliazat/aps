@@ -20,9 +20,9 @@ import java.util.*
             bpc = bpc, makeRequest = {SignInWithPasswordRequest()},
             runShit = fun(ctx, req: SignInWithPasswordRequest): SignInResponse {
                 val vagueFuckYouMessage = t("Invalid email or password", "Неверная почта или пароль")
-                val user = userRepo.findByFields_Email(req.email.value) ?: bitchExpectedly(vagueFuckYouMessage)
+                val user = userRepo.findByUser_Email(req.email.value) ?: bitchExpectedly(vagueFuckYouMessage)
 
-                if (!BCrypt.checkpw(req.password.value, user.fields.passwordHash)) bitchExpectedly(vagueFuckYouMessage)
+                if (!BCrypt.checkpw(req.password.value, user.user.passwordHash)) bitchExpectedly(vagueFuckYouMessage)
 
                 val token = generateUserToken()
                 tokenRepo.save(UserToken(token, user))

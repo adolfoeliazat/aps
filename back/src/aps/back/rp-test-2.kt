@@ -153,7 +153,7 @@ private fun snapshotFileNameBase(snapshotName: String) =
                         val repo = springctx.getBean(UserTokenRepository::class.java)
                         val ut = repo.findOne(1) ?: wtf("No token with ID 1")
                         val user = ut.user!!
-                        dwarnStriking("firstName = ${user.fields.firstName}; lastName = ${user.fields.lastName}")
+                        dwarnStriking("firstName = ${user.user.firstName}; lastName = ${user.user.lastName}")
                     }
                     else -> wtf("what = ${req.what.value}")
                 }

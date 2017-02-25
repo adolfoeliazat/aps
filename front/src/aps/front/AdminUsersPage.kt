@@ -45,7 +45,7 @@ class AdminUsersPage {
             filterValues = AdminUserFilter.values(),
             defaultFilterValue = AdminUserFilter.ALL,
             filterSelectKey = selects.adminUserFilter,
-            vaginalInterface = MelindaVaginalInterface<UserRTO, AdminUserFilter, UserParamsRequest, UpdateUserResponse> (
+            vaginalInterface = MelindaVagina<UserRTO, AdminUserFilter, UserParamsRequest, UpdateUserResponse> (
                 sendItemsRequest = {req -> sendGetUsers(req)},
                 shouldShowFilter = {true},
                 getParentEntityID = {null},
@@ -54,11 +54,7 @@ class AdminUsersPage {
                 updateParams = null,
                 makeLipsInterface = {viewRootID, tongue -> makeUsualMelindaLips(
                     tongue, viewRootID, bint,
-                    icon = {when (it.kind) {
-                        UserKind.CUSTOMER -> fa.user
-                        UserKind.WRITER -> fa.pencil
-                        UserKind.ADMIN -> fa.cog
-                    }},
+                    icon = {userKindIcon(it.kind)},
                     initialLipsState = Unit,
                     renderContent = {o->
                         o- renderProfile(tongue.getItem())

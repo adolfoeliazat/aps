@@ -121,18 +121,27 @@ enum class UAOrderState(override val title: String) : Titled {
     IN_STORE(t("TOTE", "Ищем писателей"))
 }
 
+interface HistoryItemRTOFields {
+    val createdAt: Long
+    val changer: UserRTO
+    val changerThen: UserRTO
+}
+
 class UserParamsHistoryItemRTO(
-    val historyItem_id: Long,
-    val historyItem_descr: String,
-    val historyItem_createdAt: Long,
     val entity: UserRTO,
+    val descr: String,
+
+    // HistoryItemRTOFields
+    override val createdAt: Long,
+    override val changer: UserRTO,
+    override val changerThen: UserRTO,
 
     // MelindaItemRTO
     override val id: Long,
     override val title: String,
     override val editable: Boolean,
     override val titleHighlightRanges: List<IntRangeRTO>
-) : MelindaItemRTO
+) : MelindaItemRTO, HistoryItemRTOFields
 
 
 

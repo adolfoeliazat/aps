@@ -82,9 +82,9 @@ fun hashPassword(clearText: String): String = BCrypt.hashpw(clearText, BCrypt.ge
 
 
 val requestUserMaybe get() = RequestGlobus.procedureCtx.user
-val requestUser get()= requestUserMaybe!!
+val requestUser get() = requestUserMaybe!!
 
-fun isAdmin() = requestUserMaybe?.fields?.kind == UserKind.ADMIN
+fun isAdmin() = requestUserMaybe?.user?.kind == UserKind.ADMIN
 
 fun adminNotesForCreate(req: RequestWithAdminNotes) = when {
     isAdmin() -> req.adminNotes.value

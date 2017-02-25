@@ -36,7 +36,7 @@ class UAAdminOrdersPage {
             filterValues = AdminOrderFilter.values(),
             defaultFilterValue = AdminOrderFilter.ALL,
             filterSelectKey = selects.adminOrderFilter,
-            vaginalInterface = MelindaVaginalInterface<UAOrderRTO, AdminOrderFilter, UAOrderParamsRequest, UAUpdateOrderResponse>(
+            vaginalInterface = MelindaVagina<UAOrderRTO, AdminOrderFilter, UAOrderParamsRequest, UAUpdateOrderResponse>(
                 sendItemsRequest = {req-> sendUAAdminGetOrders(req)},
                 shouldShowFilter = {true},
                 getParentEntityID = {null},

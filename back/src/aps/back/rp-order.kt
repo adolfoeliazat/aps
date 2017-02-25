@@ -28,7 +28,7 @@ import java.util.*
                     ?: UUID.randomUUID().toString()
 
                 val order = repo.save(UAOrder(
-                    fields = UAOrderFields(
+                    order = UAOrderFields(
                         documentType = req.documentType.value,
                         title = req.documentTitle.value,
                         numPages = req.numPages.value,
@@ -53,8 +53,8 @@ import java.util.*
                     </tr>"""
 
                 val customerName = stringBuild {s->
-                    s += order.fields.customerFirstName
-                    order.fields.customerLastName.let {
+                    s += order.order.customerFirstName
+                    order.order.customerLastName.let {
                         if (it.isNotBlank())
                             s += " " + it
                     }
@@ -76,13 +76,13 @@ import java.util.*
                                         Заказ №${order.id}
                                     </h3>
                                     <table style='border-spacing: 0; border-collapse: collapse;'>
-                                        ${row(fields.uaDocumentType.title, order.fields.documentType.title)}
-                                        ${row(fields.documentTitle.title, order.fields.title)}
-                                        ${row(fields.numPages.title, order.fields.numPages)}
-                                        ${row(fields.numSources.title, order.fields.numSources)}
+                                        ${row(fields.uaDocumentType.title, order.order.documentType.title)}
+                                        ${row(fields.documentTitle.title, order.order.title)}
+                                        ${row(fields.numPages.title, order.order.numPages)}
+                                        ${row(fields.numSources.title, order.order.numSources)}
                                     </table>
                                     <div style='font-weight: bold; padding-top: $vspacing; padding-bottom: $vspacing;'>${fields.orderDetails.title}</div>
-                                    <div style='white-space: pre-wrap;'>${escapeHTML(order.fields.details)}</div>
+                                    <div style='white-space: pre-wrap;'>${escapeHTML(order.order.details)}</div>
                                     <div style='padding-top: 2em; font-style: italic;'>${const.productName.uaCustomer}</div>
                                 </div>
                             """
@@ -100,22 +100,22 @@ import java.util.*
     override fun serve() {
         fuckAnyUser(FuckAnyUserParams(
             bpc = bpc,
-            makeRequest = {UAOrderParamsRequest(isAdmin = requestUser.fields.kind == UserKind.ADMIN,
+            makeRequest = {UAOrderParamsRequest(isAdmin = requestUser.user.kind == UserKind.ADMIN,
                                                 isUpdate = true)},
             runShit = fun(ctx, req: UAOrderParamsRequest): UAUpdateOrderResponse {
                 // TODO:vgrechka Security
                 checkingAllFieldsRetrieved(req) {
                     repo.findOrDie(req.orderID.value)-{o->
-                        o.fields.documentType = req.documentType.value
-                        o.fields.title = req.documentTitle.value
-                        o.fields.numPages = req.numPages.value
-                        o.fields.numSources = req.numSources.value
-                        o.fields.details = req.documentDetails.value
-                        o.fields.customerPhone = req.phone.value
-                        o.fields.customerFirstName = req.firstName.value
-                        o.fields.customerLastName = req.lastName.value
-                        o.fields.customerEmail = req.email.value
-                        updateAdminNotes(o.fields, req)
+                        o.order.documentType = req.documentType.value
+                        o.order.title = req.documentTitle.value
+                        o.order.numPages = req.numPages.value
+                        o.order.numSources = req.numSources.value
+                        o.order.details = req.documentDetails.value
+                        o.order.customerPhone = req.phone.value
+                        o.order.customerFirstName = req.firstName.value
+                        o.order.customerLastName = req.lastName.value
+                        o.order.customerEmail = req.email.value
+                        updateAdminNotes(o.order, req)
                     }
                 }
                 return UAUpdateOrderResponse()
@@ -138,7 +138,7 @@ import java.util.*
 
                 val content = Base64.getDecoder().decode(requestFile.base64)
                 val file = uaOrderFileRepo.save(UAOrderFile(
-                    fields = UAOrderFileFields(
+                    orderFile = UAOrderFileFields(
                         order = order,
                         name = requestFile.fileName,
                         title = req.title.value,
@@ -149,8 +149,8 @@ import java.util.*
                         sizeBytes = content.size,
                         content = content,
                         creator = requestUser,
-                        forCustomerSeenAsFrom = requestUser.fields.kind, // TODO:vgrechka ...
-                        forWriterSeenAsFrom = requestUser.fields.kind // TODO:vgrechka ...
+                        forCustomerSeenAsFrom = requestUser.user.kind, // TODO:vgrechka ...
+                        forWriterSeenAsFrom = requestUser.user.kind // TODO:vgrechka ...
                     )
                 ))
 
@@ -163,25 +163,25 @@ import java.util.*
 @Servant class ServeUAUpdateOrderFile : BitchyProcedure() {
     override fun serve() {
         fuckAnyUser(FuckAnyUserParams(
-            bpc = bpc, makeRequest = {UAOrderFileParamsRequest(isAdmin = requestUser.fields.kind == UserKind.ADMIN,
+            bpc = bpc, makeRequest = {UAOrderFileParamsRequest(isAdmin = requestUser.user.kind == UserKind.ADMIN,
                                                                isUpdate = true)},
             runShit = fun(ctx, req): UAUpdateOrderFileResponse {
                 checkingAllFieldsRetrieved(req) {
                     val file = uaOrderFileRepo.findOrDie(req.fileID.value)
                     // TODO:vgrechka Check permissions
                     file-{o->
-                        o.fields.title = req.title.value
-                        o.fields.details = req.details.value
+                        o.orderFile.title = req.title.value
+                        o.orderFile.details = req.details.value
                         val requestFile = req.file.value
                         if (requestFile is FileField.Value.Provided) {
                             val content = Base64.getDecoder().decode(requestFile.base64)
-                            o.fields.name = requestFile.fileName
-                            o.fields.sha256 = Hashing.sha256().hashBytes(content).toString()
-                            o.fields.sizeBytes = content.size
-                            o.fields.content = content
+                            o.orderFile.name = requestFile.fileName
+                            o.orderFile.sha256 = Hashing.sha256().hashBytes(content).toString()
+                            o.orderFile.sizeBytes = content.size
+                            o.orderFile.content = content
                         }
-                        updateAdminNotes(o.fields, req)
-                        o.fields.common.touch()
+                        updateAdminNotes(o.orderFile, req)
+                        o.orderFile.common.touch()
                     }
                     return UAUpdateOrderFileResponse(file.toRTO(listOf()))
                 }
@@ -212,9 +212,9 @@ import java.util.*
                 val file = fileRepo.findOrDie(req.fileID.value)
                 // TODO:vgrechka @security Check permissions
                 return DownloadFileResponse(
-                    fileName = file.fields.name,
-                    base64 = Base64.getEncoder().encodeToString(file.fields.content),
-                    sha256 = Hashing.sha256().hashBytes(file.fields.content).toString()
+                    fileName = file.orderFile.name,
+                    base64 = Base64.getEncoder().encodeToString(file.orderFile.content),
+                    sha256 = Hashing.sha256().hashBytes(file.orderFile.content).toString()
                 )
             }
         ))
@@ -228,7 +228,7 @@ import java.util.*
             runShit = fun(ctx, req): UACustomerSendOrderDraftForApprovalRequest.Response {
                 // TODO:vgrechka @security Check permissions
                 val order = orderRepo.findOrDie(req.orderID.value)
-                order.fields.state = UAOrderState.WAITING_ADMIN_APPROVAL
+                order.order.state = UAOrderState.WAITING_ADMIN_APPROVAL
                 return UACustomerSendOrderDraftForApprovalRequest.Response()
             }
         ))
@@ -241,8 +241,8 @@ import java.util.*
             bpc = bpc, makeRequest = {ReturnOrderToCustomerForFixingRequest()},
             runShit = fun(ctx, req): GenericResponse {
                 val order = orderRepo.findOrDie(req.entityID.value)
-                order.fields.state = UAOrderState.RETURNED_TO_CUSTOMER_FOR_FIXING
-                order.fields.whatShouldBeFixedByCustomer = req.rejectionReason.value
+                order.order.state = UAOrderState.RETURNED_TO_CUSTOMER_FOR_FIXING
+                order.order.whatShouldBeFixedByCustomer = req.rejectionReason.value
                 return GenericResponse()
             }
         ))
@@ -250,21 +250,21 @@ import java.util.*
 }
 
 fun serveReginaCustomerSendOrderForApprovalAfterFixing(p: ReginaCustomerSendOrderForApprovalAfterFixing): GenericResponse {
-    check(requestUser.fields.kind == UserKind.CUSTOMER){"70630d2d-6796-4af8-8ac6-16e09a8b37e1"}
+    check(requestUser.user.kind == UserKind.CUSTOMER){"70630d2d-6796-4af8-8ac6-16e09a8b37e1"}
     // TODO:vgrechka Security
     val order = uaOrderRepo.findOrDie(p.orderID)
-    check(order.fields.state == UAOrderState.RETURNED_TO_CUSTOMER_FOR_FIXING){"698dd409-f382-45df-9e65-fff590302dd0"}
-    order.fields.state = UAOrderState.WAITING_ADMIN_APPROVAL
+    check(order.order.state == UAOrderState.RETURNED_TO_CUSTOMER_FOR_FIXING){"698dd409-f382-45df-9e65-fff590302dd0"}
+    order.order.state = UAOrderState.WAITING_ADMIN_APPROVAL
     return GenericResponse()
 }
 
 fun serveReginaAdminSendOrderToStore(p: ReginaAdminSendOrderToStore): GenericResponse {
-    check(requestUser.fields.kind == UserKind.ADMIN){"0af9f1b0-b5fb-4fb2-b3a9-198a0185ee15"}
+    check(requestUser.user.kind == UserKind.ADMIN){"0af9f1b0-b5fb-4fb2-b3a9-198a0185ee15"}
     // TODO:vgrechka Security
     val order = uaOrderRepo.findOrDie(p.orderID)
-    check(order.fields.state in setOf(UAOrderState.WAITING_ADMIN_APPROVAL)){"7af262c7-2a28-43f8-910a-ccf3569142e9"}
-    order.fields.whatShouldBeFixedByCustomer = null
-    order.fields.state = UAOrderState.IN_STORE
+    check(order.order.state in setOf(UAOrderState.WAITING_ADMIN_APPROVAL)){"7af262c7-2a28-43f8-910a-ccf3569142e9"}
+    order.order.whatShouldBeFixedByCustomer = null
+    order.order.state = UAOrderState.IN_STORE
     return GenericResponse()
 }
 

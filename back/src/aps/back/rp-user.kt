@@ -18,15 +18,15 @@ fun serveReginaLoadUser(p: ReginaLoadUser): SimpleEntityResponse<UserRTO> {
                     // TODO:vgrechka Security
                     val user = ctx.user!!
                     user-{o->
-                        o.fields.firstName = req.firstName.value
-                        o.fields.lastName = req.lastName.value
-                        o.fields.profilePhone = req.profilePhone.value
-                        o.fields.aboutMe = req.aboutMe.value
-                        o.fields.common.updatedAt = RequestGlobus.stamp
-                        o.fields.profileUpdatedAt = RequestGlobus.stamp
+                        o.user.firstName = req.firstName.value
+                        o.user.lastName = req.lastName.value
+                        o.user.profilePhone = req.profilePhone.value
+                        o.user.aboutMe = req.aboutMe.value
+                        o.user.common.updatedAt = RequestGlobus.stamp
+                        o.user.profileUpdatedAt = RequestGlobus.stamp
 
-                        if (o.fields.kind == UserKind.WRITER) {
-                            o.fields.state = UserState.PROFILE_APPROVAL_PENDING
+                        if (o.user.kind == UserKind.WRITER) {
+                            o.user.state = UserState.PROFILE_APPROVAL_PENDING
                         }
                     }
                     return UpdateProfileRequest.Response(user.toRTO(searchWords = listOf()))
@@ -51,7 +51,7 @@ fun serveReginaLoadUser(p: ReginaLoadUser): SimpleEntityResponse<UserRTO> {
                     itemClass = User::class.java,
                     addToWhere = {s, params ->
                         fun filterByState(state: UserState) {
-                            s += " and state = :state"
+                            s += " and user_state = :state"
                             params += MeganQueryParam("state", state.name)
                         }
 
@@ -82,7 +82,7 @@ fun serveReginaLoadUser(p: ReginaLoadUser): SimpleEntityResponse<UserRTO> {
                     },
                     table = "user_params_history_items",
                     itemClass = UserParamsHistoryItem::class.java,
-                    parentKey = "historyItem_entityID",
+                    parentKey = "history_entityID",
                     addToWhere = {_,_->}
                 )
             }
@@ -101,11 +101,11 @@ fun serveReginaLoadUser(p: ReginaLoadUser): SimpleEntityResponse<UserRTO> {
                 checkingAllFieldsRetrieved(req) {
                     val user = userRepo.findOrDie(req.userID.value)
                     user-{o->
-                        o.fields.firstName = req.firstName.value
-                        o.fields.lastName = req.lastName.value
-                        o.fields.email = req.email.value
-                        o.fields.profilePhone = req.phone.value
-                        updateAdminNotes(o.fields, req)
+                        o.user.firstName = req.firstName.value
+                        o.user.lastName = req.lastName.value
+                        o.user.email = req.email.value
+                        o.user.profilePhone = req.phone.value
+                        updateAdminNotes(o.user, req)
                     }
                 }
                 return GenericResponse()
@@ -120,8 +120,8 @@ fun serveReginaLoadUser(p: ReginaLoadUser): SimpleEntityResponse<UserRTO> {
             bpc = bpc, makeRequest = {RejectProfileRequest()},
             runShit = fun(ctx, req): GenericResponse {
                 userRepo.findOrDie(req.entityID.value)-{o->
-                    o.fields.state = UserState.PROFILE_REJECTED
-                    o.fields.profileRejectionReason = req.rejectionReason.value
+                    o.user.state = UserState.PROFILE_REJECTED
+                    o.user.profileRejectionReason = req.rejectionReason.value
                 }
                 return GenericResponse()
             }
@@ -130,12 +130,12 @@ fun serveReginaLoadUser(p: ReginaLoadUser): SimpleEntityResponse<UserRTO> {
 }
 
 fun serveReginaAcceptProfile(p: ReginaAcceptProfile): GenericResponse {
-    check(requestUser.fields.kind == UserKind.ADMIN){"0efef8d0-8598-4056-ba55-cd8bb1910cb8"}
+    check(requestUser.user.kind == UserKind.ADMIN){"0efef8d0-8598-4056-ba55-cd8bb1910cb8"}
     // TODO:vgrechka Security
     userRepo.findOrDie(p.userID)-{o->
-        check(o.fields.state in setOf(UserState.PROFILE_APPROVAL_PENDING)){"7af262c7-2a28-43f8-910a-ccf3569142e9"}
-        o.fields.profileRejectionReason = null
-        o.fields.state = UserState.COOL
+        check(o.user.state in setOf(UserState.PROFILE_APPROVAL_PENDING)){"7af262c7-2a28-43f8-910a-ccf3569142e9"}
+        o.user.profileRejectionReason = null
+        o.user.state = UserState.COOL
     }
     return GenericResponse()
 }

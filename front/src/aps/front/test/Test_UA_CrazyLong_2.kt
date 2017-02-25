@@ -95,6 +95,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 ivo3.coitizeAndBootAsserting(assertStatic = {assertScreenHTML("Static confirmOrder", "2acbad6a-e169-4c0d-9938-99fac621fef5")},
                                              assertDynamic = {assertScreenHTML("Dynamic confirmOrder", "a6a44d05-7c1d-4dbf-82a2-3b42e0ca98f3")})
                 // TODO:vgrechka Email with password should be sent to customer
+                // ___stopHereAndEverywhereLater()
             }
 
             run { // Edit params -- cancel

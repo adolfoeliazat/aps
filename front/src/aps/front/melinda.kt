@@ -14,7 +14,7 @@ class MelindaVaginalUpdateParams<ItemRTO, out UpdateItemRequest, in UpdateItemRe
     UpdateItemRequest : RequestMatumba,
     UpdateItemResponse : CommonResponseFields
 
-class MelindaVaginalInterface<
+class MelindaVagina<
     ItemRTO,
     Filter,
     out UpdateItemRequest,
@@ -72,7 +72,7 @@ class MelindaBoobs<
     val filterValues: Array<Filter>,
     val defaultFilterValue: Filter,
     val filterSelectKey: SelectKey<Filter>,
-    val vaginalInterface: MelindaVaginalInterface<
+    val vaginalInterface: MelindaVagina<
         Item,
         Filter,
         UpdateItemRequest, UpdateItemResponse>
@@ -391,6 +391,8 @@ fun <ItemRTO : MelindaItemRTO, LipsState> makeUsualMelindaLips(
     viewRootID: String,
     boobsInterface: MelindaBoobsInterface,
     smallOverlayIcon: () -> IconClass? = {null},
+    secondTitle: () -> String? = {null},
+    drawID: () -> Boolean = {true},
     tinySubtitle: () -> String? = {null},
     renderAdditionalControls: (ElementBuilder, LipsState, updateTitleControls: (LipsState) -> Unit) -> Unit = {_,_,_->},
     renderContent: (ElementBuilder) -> Unit,
@@ -415,35 +417,53 @@ fun <ItemRTO : MelindaItemRTO, LipsState> makeUsualMelindaLips(
                         val c = css.cunt.header
                         o- kdiv(className = c.bar){o->
                             o- kdiv(className = c.titleAndStuff){o->
-                                o- ki(className = "${c.leftIcon} ${icon(item)}")
-                                val theSmallOverlayIcon = smallOverlayIcon()
-                                if (theSmallOverlayIcon != null) {
-                                    o- ki(className = "${c.leftOverlayBottomLeftIcon} $theSmallOverlayIcon")
-                                }
-                                o- " "
-                                val titleContent = highlightedShit(item.title, item.titleHighlightRanges, tag = "span")
-                                if (titleLinkURL != null)
-                                    o- urlLink(url = titleLinkURL, content = titleContent, className = c.titleLink, key = SubscriptLinkKey(links.lips, item.id))
-                                else
-                                    o- titleContent
-
-                                val idColor: Color?
-                                val idBackground: Color?
-                                if (boobsInterface.getSearchString().split(Regex("\\s+")).contains(item.id.toString())) {
-                                    idColor = Color.GRAY_800
-                                    idBackground = Color.AMBER_200
-                                } else {
-                                    idColor = Color.GRAY_500
-                                    idBackground = null
-                                }
-                                o- kspan(marginLeft = "0.5em", fontSize = "75%", color = idColor, backgroundColor = idBackground){o->
-                                    o- "$numberSign${item.id}"
+                                run { // Icons
+                                    o- ki(className = "${c.leftIcon} ${icon(item)}")
+                                    val theSmallOverlayIcon = smallOverlayIcon()
+                                    if (theSmallOverlayIcon != null) {
+                                        o- ki(className = "${c.leftOverlayBottomLeftIcon} $theSmallOverlayIcon")
+                                    }
+                                    o- " "
                                 }
 
-                                val theTinySubtitle = tinySubtitle()
-                                if (theTinySubtitle != null) {
-                                    o- kspan(marginLeft = "0.5em", fontSize = "75%", color = Color.GRAY_500){o->
-                                        o- theTinySubtitle
+                                run { // Title
+                                    val titleContent = highlightedShit(item.title, item.titleHighlightRanges, tag = "span")
+                                    if (titleLinkURL != null)
+                                        o- urlLink(url = titleLinkURL, content = titleContent, className = c.titleLink, key = SubscriptLinkKey(links.lips, item.id))
+                                    else
+                                        o- titleContent
+                                }
+
+                                run { // Second title
+                                    val theSecondTitle = secondTitle()
+                                    if (theSecondTitle != null) {
+                                        o- span(theSecondTitle, className = c.secondTitle)
+                                    }
+                                }
+
+                                run { // ID
+                                    if (drawID()) {
+                                        val idColor: Color?
+                                        val idBackground: Color?
+                                        if (boobsInterface.getSearchString().split(Regex("\\s+")).contains(item.id.toString())) {
+                                            idColor = Color.GRAY_800
+                                            idBackground = Color.AMBER_200
+                                        } else {
+                                            idColor = Color.GRAY_500
+                                            idBackground = null
+                                        }
+                                        o- kspan(marginLeft = "0.5em", fontSize = "75%", color = idColor, backgroundColor = idBackground){o->
+                                            o- "$numberSign${item.id}"
+                                        }
+                                    }
+                                }
+
+                                run { // Tiny subtitle
+                                    val theTinySubtitle = tinySubtitle()
+                                    if (theTinySubtitle != null) {
+                                        o- kspan(marginLeft = "0.5em", fontSize = "75%", color = Color.GRAY_500){o->
+                                            o- theTinySubtitle
+                                        }
                                     }
                                 }
                             }
