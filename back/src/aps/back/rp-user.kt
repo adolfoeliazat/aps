@@ -29,7 +29,6 @@ fun serveReginaLoadUser(p: ReginaLoadUser): SimpleEntityResponse<UserRTO> {
                             o.fields.state = UserState.PROFILE_APPROVAL_PENDING
                         }
                     }
-                    saveUserParamsHistory(user)
                     return UpdateProfileRequest.Response(user.toRTO(searchWords = listOf()))
                 }
             }
@@ -121,7 +120,6 @@ fun serveReginaLoadUser(p: ReginaLoadUser): SimpleEntityResponse<UserRTO> {
                         o.fields.profilePhone = req.phone.value
                         updateAdminNotes(o.fields, req)
                     }
-                    saveUserParamsHistory(user)
                 }
                 return GenericResponse()
             }

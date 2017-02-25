@@ -25,6 +25,13 @@ private fun currentTimestampForEntity(): Timestamp {
 abstract class ClitoralEntity0 {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
+
+    @PreUpdate
+    fun preFuckingUpdate() {
+        if (this is User) {
+            saveUserParamsHistory(this)
+        }
+    }
 }
 
 @MappedSuperclass
