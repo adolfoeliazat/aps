@@ -81,7 +81,7 @@ class UASingleOrderPage {
                 }
             },
             makeTabs = {listOf(
-                UsualParamsTab<UAOrderRTO, /*HistoryFilter=*/ Nothing, UAOrderParamsRequest, GenericResponse>(
+                UsualParamsTab<UAOrderRTO, /*HistoryItemRTO=*/ Nothing, /*HistoryFilter=*/ Nothing, UAOrderParamsRequest, GenericResponse>(
                     tabitha,
                     tabKey = tabs.order.params,
                     renderBody = {renderOrderParams(order)},

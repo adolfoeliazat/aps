@@ -32,7 +32,7 @@ class SingleUserPage {
                 }
             },
             makeTabs = {listOf(
-                UsualParamsTab<UserRTO, UserParamsHistoryFilter, UserParamsRequest, GenericResponse>(
+                UsualParamsTab<UserRTO, UserParamsHistoryItemRTO, UserParamsHistoryFilter, UserParamsRequest, GenericResponse>(
                     tabitha,
                     tabKey = tabs.user.params,
                     renderBody = {renderProfile(user)},
@@ -49,8 +49,8 @@ class SingleUserPage {
                             populateWithAdminNotes(o, user)
                         }
                     ),
-                    historyParams = HistoryParams(
-                        renderItem = {tongue-> renderProfile(tongue.getItem().value)},
+                    historyParams = HistoryParams<UserParamsHistoryItemRTO, UserParamsHistoryFilter>(
+                        renderItem = {tongue-> renderProfile(tongue.getItem().entity)},
                         sendItemsRequest = {req-> sendGetUserParamsHistoryItems(req)},
                         historyFilterValues = UserParamsHistoryFilter.values(),
                         defaultHistoryFilterValue = UserParamsHistoryFilter.ALL,

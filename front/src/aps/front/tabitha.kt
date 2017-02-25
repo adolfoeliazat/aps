@@ -94,19 +94,20 @@ class Tabitha<EntityRTO>(
     }
 }
 
-class UsualParamsTab<ItemRTO, HistoryFilter, Req : RequestMatumba, Res : CommonResponseFields>(
+class UsualParamsTab<ItemRTO, HistoryItemRTO, HistoryFilter, Req : RequestMatumba, Res : CommonResponseFields>(
     tabitha: Tabitha<*>,
     tabKey: TabKey,
     renderBody: () -> ToReactElementable,
     hasEditButton: Boolean,
     editModalTitle: String,
     formSpec: FormSpec<Req, Res>,
-    val historyParams: HistoryParams<ItemRTO, HistoryFilter>? = null
+    val historyParams: HistoryParams<HistoryItemRTO, HistoryFilter>? = null
 )
     : TabithaTab
 where
     HistoryFilter : Enum<HistoryFilter>,
-    HistoryFilter : Titled
+    HistoryFilter : Titled,
+    HistoryItemRTO : MelindaItemRTO
 {
     enum class Mode {
         CURRENT, HISTORY
@@ -118,11 +119,7 @@ where
     override suspend fun load(): FormResponse2.Shitty<*>? {
         if (mode == Mode.HISTORY) {
             historyParams!!
-            val boobs = MelindaBoobs<
-                HistoryItemRTO<ItemRTO>, HistoryFilter,
-                Nothing, Nothing, // CreateRequest, CreateResponse
-                Nothing, Nothing  // UpdateItemRequest, UpdateItemResponse
-            >(
+            val boobs = MelindaBoobs<HistoryItemRTO, HistoryFilter, /*CreateRequest=*/ Nothing, /*CreateResponse=*/ Nothing, /*UpdateItemRequest=*/ Nothing, /*UpdateItemResponse=*/ Nothing>(
                 createParams = null,
                 makeURLForReload = {boobsParams->
                     makeURL(pages.uaCustomer.order, boobsParams + listOf(
@@ -132,7 +129,7 @@ where
                 filterValues = historyParams.historyFilterValues,
                 defaultFilterValue = historyParams.defaultHistoryFilterValue,
                 filterSelectKey = historyParams.historyFilterSelectKey,
-                vaginalInterface = MelindaVaginalInterface(
+                vaginalInterface = MelindaVaginalInterface<HistoryItemRTO, HistoryFilter, /*UpdateItemRequest=*/ Nothing, /*UpdateItemResponse=*/ Nothing>(
                     sendItemsRequest = historyParams.sendItemsRequest,
                     shouldShowFilter = {true},
                     getParentEntityID = {TabithaURLQuery.id.get()},
@@ -203,17 +200,15 @@ where
 
 }
 
-class HistoryParams<ItemRTO, Filter>(
-    val renderItem: (tongue: MelindaTongueInterface<HistoryItemRTO<ItemRTO>>) -> ToReactElementable,
-    val sendItemsRequest: suspend (req: ItemsRequest<Filter>) -> FormResponse2<ItemsResponse<HistoryItemRTO<ItemRTO>>>,
+class HistoryParams<HistoryItemRTO, Filter>(
+    val renderItem: (tongue: MelindaTongueInterface<HistoryItemRTO>) -> ToReactElementable,
+    val sendItemsRequest: suspend (req: ItemsRequest<Filter>) -> FormResponse2<ItemsResponse<HistoryItemRTO>>,
     val historyFilterValues: Array<Filter>,
     val defaultHistoryFilterValue: Filter,
     val historyFilterSelectKey: SelectKey<Filter>
 ) where
     Filter : Enum<Filter>,
     Filter : Titled
-{
-}
 
 
 

@@ -71,7 +71,36 @@ data class UserFields(
     @Column(length = MAX_STRING) var aboutMe: String = "",
     @Column(length = MAX_STRING) var profileRejectionReason: String? = null,
     @Column(length = MAX_STRING) var banReason: String? = null
-) : FieldsWithAdminNotes
+)
+    : FieldsWithAdminNotes
+{
+    fun toRTO(id: Long, searchWords: List<String>): UserRTO {
+        val title = "$firstName $lastName"
+        return UserRTO(
+            id = id,
+            createdAt = common.createdAt.time,
+            updatedAt = common.updatedAt.time,
+            profileUpdatedAt = profileUpdatedAt?.time,
+            kind = kind,
+            lang = Language.UA,
+            email = email,
+            state = state,
+            profileRejectionReason = profileRejectionReason,
+            banReason = banReason,
+            adminNotes = adminNotes,
+            adminNotesHighlightRanges = highlightRanges(adminNotes, searchWords),
+            firstName = firstName,
+            lastName = lastName,
+            aboutMe = aboutMe,
+            aboutMeHighlightRanges = highlightRanges(aboutMe, searchWords),
+            roles = setOf(),
+            profilePhone = profilePhone,
+            editable = false,
+            title = title,
+            titleHighlightRanges = highlightRanges(title, searchWords)
+        )
+    }
+}
 
 
 @Entity @Table(name = "users",
@@ -79,33 +108,10 @@ data class UserFields(
 class User(@Embedded var fields: UserFields)
     : MeganItem<UserRTO>, ClitoralEntity0()
 {
-    override val idBang get()= id!!
+    override val idBang get() = id!!
 
     override fun toRTO(searchWords: List<String>): UserRTO {
-        val title = "${fields.firstName} ${fields.lastName}"
-        return UserRTO(
-            id = id!!,
-            createdAt = fields.common.createdAt.time,
-            updatedAt = fields.common.updatedAt.time,
-            profileUpdatedAt = fields.profileUpdatedAt?.time,
-            kind = fields.kind,
-            lang = Language.UA,
-            email = fields.email,
-            state = fields.state,
-            profileRejectionReason = fields.profileRejectionReason,
-            banReason = fields.banReason,
-            adminNotes = fields.adminNotes,
-            adminNotesHighlightRanges = highlightRanges(fields.adminNotes, searchWords),
-            firstName = fields.firstName,
-            lastName = fields.lastName,
-            aboutMe = fields.aboutMe,
-            aboutMeHighlightRanges = highlightRanges(fields.aboutMe, searchWords),
-            roles = setOf(),
-            profilePhone = fields.profilePhone,
-            editable = false,
-            title = title,
-            titleHighlightRanges = highlightRanges(title, searchWords)
-        )
+        return fields.toRTO(idBang, searchWords)
     }
 }
 
@@ -126,8 +132,27 @@ class UserParamsHistoryItem(
     @Embedded var historyFields: HistoryFields,
     @Embedded var entityFields: UserFields
 )
-    : ClitoralEntity0()
+    : ClitoralEntity0(), MeganItem<UserParamsHistoryItemRTO>
 {
+    override val idBang get() = id!!
+
+    override fun toRTO(searchWords: List<String>): UserParamsHistoryItemRTO {
+        val entityID = historyFields.historyItem_entityID
+        val title = historyFields.historyItem_descr
+
+        return UserParamsHistoryItemRTO(
+            historyItem_id = idBang,
+            historyItem_descr = historyFields.historyItem_descr,
+            historyItem_createdAt = historyFields.historyItem_createdAt.time,
+            entity = entityFields.toRTO(entityID, searchWords),
+
+            // MelindaItemRTO
+            id = entityID,
+            title = title,
+            editable = false,
+            titleHighlightRanges = highlightRanges(title, searchWords)
+        )
+    }
 }
 
 interface UserParamsHistoryItemRepository : CrudRepository<UserParamsHistoryItem, Long> {

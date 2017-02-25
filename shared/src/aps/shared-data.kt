@@ -1,21 +1,17 @@
 package aps
 
-import aps.Color.*
-
 interface TabithaEntityRTO {
-    // XXX `var`s are needed by 5d324703-9255-4a67-ba25-ecc865194418
-    // TODO:vgrechka Remove above hack (and check shit doesn't break), it should not be necessary anymore
-    var id: Long
+    val id: Long
 }
 
-class HistoryItemRTO<RTO>(
-    val value: RTO,
-    val descr: String,
-    override var id: Long,
-    override var title: String,
-    override var editable: Boolean,
-    override var titleHighlightRanges: List<IntRangeRTO>
-) : MelindaItemRTO
+//class HistoryItemRTO<RTO>(
+//    val value: RTO,
+//    val descr: String,
+//    override var id: Long,
+//    override var title: String,
+//    override var editable: Boolean,
+//    override var titleHighlightRanges: List<IntRangeRTO>
+//) : MelindaItemRTO
 
 class UserRTO(
     override var id: Long,
@@ -71,19 +67,15 @@ data class IntRangeRTO(
 )
 
 interface MelindaItemRTO {
-    // XXX `var`s are needed by 5d324703-9255-4a67-ba25-ecc865194418
-    // TODO:vgrechka Remove above hack (and check shit doesn't break), it should not be necessary anymore
-    var id: Long
-    var title: String
-    var editable: Boolean
-    var titleHighlightRanges: List<IntRangeRTO>
+    val id: Long
+    val title: String
+    val editable: Boolean
+    val titleHighlightRanges: List<IntRangeRTO>
 }
 
 interface RTOWithAdminNotes {
-    // XXX `var`s are needed by 5d324703-9255-4a67-ba25-ecc865194418
-    // TODO:vgrechka Remove above hack (and check shit doesn't break), it should not be necessary anymore
-    var adminNotes: String
-    var adminNotesHighlightRanges: List<IntRangeRTO>
+    val adminNotes: String
+    val adminNotesHighlightRanges: List<IntRangeRTO>
 }
 
 class UAOrderFileRTO(
@@ -129,7 +121,18 @@ enum class UAOrderState(override val title: String) : Titled {
     IN_STORE(t("TOTE", "Ищем писателей"))
 }
 
+class UserParamsHistoryItemRTO(
+    val historyItem_id: Long,
+    val historyItem_descr: String,
+    val historyItem_createdAt: Long,
+    val entity: UserRTO,
 
+    // MelindaItemRTO
+    override val id: Long,
+    override val title: String,
+    override val editable: Boolean,
+    override val titleHighlightRanges: List<IntRangeRTO>
+) : MelindaItemRTO
 
 
 
