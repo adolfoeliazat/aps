@@ -14,7 +14,7 @@ import aps.*
             bpc = bpc, makeRequest = {UAAdminGetStuffToDoRequest()},
             runShit = fun(ctx, req): UAAdminGetStuffToDoRequest.Response {
                 return UAAdminGetStuffToDoRequest.Response(
-                    ordersToApprove = uaOrderRepo.countByState(UAOrderState.WAITING_ADMIN_APPROVAL),
+                    ordersToApprove = uaOrderRepo.countByFields_State(UAOrderState.WAITING_ADMIN_APPROVAL),
                     writerProfilesToApprove = userRepo.countByFields_KindAndFields_State(UserKind.WRITER, UserState.PROFILE_APPROVAL_PENDING)
                 )
             }

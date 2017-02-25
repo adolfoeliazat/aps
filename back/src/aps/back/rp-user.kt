@@ -14,22 +14,24 @@ fun serveReginaLoadUser(p: ReginaLoadUser): SimpleEntityResponse<UserRTO> {
         fuckAnyUser(FuckAnyUserParams(
             bpc = bpc, makeRequest = {UpdateProfileRequest()},
             runShit = fun(ctx, req): UpdateProfileRequest.Response {
-                // TODO:vgrechka Security
-                val user = ctx.user!!
-                user-{o->
-                    o.fields.firstName = req.firstName.value
-                    o.fields.lastName = req.lastName.value
-                    o.fields.profilePhone = req.profilePhone.value
-                    o.fields.aboutMe = req.aboutMe.value
-                    o.updatedAt = RequestGlobus.stamp
-                    o.fields.profileUpdatedAt = RequestGlobus.stamp
+                checkingAllFieldsRetrieved(req) {
+                    // TODO:vgrechka Security
+                    val user = ctx.user!!
+                    user-{o->
+                        o.fields.firstName = req.firstName.value
+                        o.fields.lastName = req.lastName.value
+                        o.fields.profilePhone = req.profilePhone.value
+                        o.fields.aboutMe = req.aboutMe.value
+                        o.fields.common.updatedAt = RequestGlobus.stamp
+                        o.fields.profileUpdatedAt = RequestGlobus.stamp
 
-                    if (o.fields.kind == UserKind.WRITER) {
-                        o.fields.state = UserState.PROFILE_APPROVAL_PENDING
+                        if (o.fields.kind == UserKind.WRITER) {
+                            o.fields.state = UserState.PROFILE_APPROVAL_PENDING
+                        }
                     }
+                    saveUserParamsHistory(user)
+                    return UpdateProfileRequest.Response(user.toRTO(searchWords = listOf()))
                 }
-                saveUserParamsHistory(user)
-                return UpdateProfileRequest.Response(user.toRTO(searchWords = listOf()))
             }
         ))
     }

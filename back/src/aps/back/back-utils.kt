@@ -91,9 +91,9 @@ fun adminNotesForCreate(req: RequestWithAdminNotes) = when {
     else -> ""
 }
 
-fun updateAdminNotes(entity: EntityWithAdminNotes, req: RequestWithAdminNotes) {
+fun updateAdminNotes(fields: FieldsWithAdminNotes, req: RequestWithAdminNotes) {
     if (isAdmin())
-        entity.adminNotes = req.adminNotes.value
+        fields.adminNotes = req.adminNotes.value
 }
 
 inline fun <T> checkingAllFieldsRetrieved(req: RequestMatumba, block: () -> T): T {

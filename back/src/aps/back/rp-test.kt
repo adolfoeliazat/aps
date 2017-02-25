@@ -135,7 +135,7 @@ testProcedure(
         saveUserToRepo(
             // XXX If using global `userRepo` or `userParamsHistoryItemRepo`, it bitches like "Pre-bound JDBC Connection found!.."
             entityRepo = userRepo, historyRepo = historyRepo,
-            entity = User(fields = UserFields(email = "dasja@test.shit.ua", firstName = "Дася", lastName = "Админовна", profilePhone = "911", kind = UserKind.ADMIN, state = UserState.COOL, passwordHash = BCrypt.hashpw("dasja-secret", BCrypt.gensalt()))))
+            entity = User(fields = UserFields(email = "dasja@test.shit.ua", firstName = "Дася", lastName = "Админовна", profilePhone = "911", kind = UserKind.ADMIN, state = UserState.COOL, passwordHash = BCrypt.hashpw("dasja-secret", BCrypt.gensalt()), adminNotes = "")))
     }
 }
 

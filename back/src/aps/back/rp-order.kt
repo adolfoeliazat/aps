@@ -28,19 +28,21 @@ import java.util.*
                     ?: UUID.randomUUID().toString()
 
                 val order = repo.save(UAOrder(
-                    documentType = req.documentType.value,
-                    title = req.documentTitle.value,
-                    numPages = req.numPages.value,
-                    numSources = req.numSources.value,
-                    details = req.documentDetails.value,
-                    state = UAOrderState.WAITING_EMAIL_CONFIRMATION,
-                    confirmationSecret = confirmationSecret,
-                    customerPhone = req.phone.value,
-                    customer = user,
-                    customerFirstName = req.firstName.value,
-                    customerLastName = req.lastName.value,
-                    customerEmail = req.email.value,
-                    adminNotes = adminNotesForCreate(req)
+                    fields = UAOrderFields(
+                        documentType = req.documentType.value,
+                        title = req.documentTitle.value,
+                        numPages = req.numPages.value,
+                        numSources = req.numSources.value,
+                        details = req.documentDetails.value,
+                        state = UAOrderState.WAITING_EMAIL_CONFIRMATION,
+                        confirmationSecret = confirmationSecret,
+                        customerPhone = req.phone.value,
+                        customer = user,
+                        customerFirstName = req.firstName.value,
+                        customerLastName = req.lastName.value,
+                        customerEmail = req.email.value,
+                        adminNotes = adminNotesForCreate(req)
+                    )
                 ))
 
                 val vspacing = "0.5em"
@@ -51,8 +53,8 @@ import java.util.*
                     </tr>"""
 
                 val customerName = stringBuild {s->
-                    s += order.customerFirstName
-                    order.customerLastName.let {
+                    s += order.fields.customerFirstName
+                    order.fields.customerLastName.let {
                         if (it.isNotBlank())
                             s += " " + it
                     }
@@ -74,13 +76,13 @@ import java.util.*
                                         Заказ №${order.id}
                                     </h3>
                                     <table style='border-spacing: 0; border-collapse: collapse;'>
-                                        ${row(fields.uaDocumentType.title, order.documentType.title)}
-                                        ${row(fields.documentTitle.title, order.title)}
-                                        ${row(fields.numPages.title, order.numPages)}
-                                        ${row(fields.numSources.title, order.numSources)}
+                                        ${row(fields.uaDocumentType.title, order.fields.documentType.title)}
+                                        ${row(fields.documentTitle.title, order.fields.title)}
+                                        ${row(fields.numPages.title, order.fields.numPages)}
+                                        ${row(fields.numSources.title, order.fields.numSources)}
                                     </table>
                                     <div style='font-weight: bold; padding-top: $vspacing; padding-bottom: $vspacing;'>${fields.orderDetails.title}</div>
-                                    <div style='white-space: pre-wrap;'>${escapeHTML(order.details)}</div>
+                                    <div style='white-space: pre-wrap;'>${escapeHTML(order.fields.details)}</div>
                                     <div style='padding-top: 2em; font-style: italic;'>${const.productName.uaCustomer}</div>
                                 </div>
                             """
@@ -104,16 +106,16 @@ import java.util.*
                 // TODO:vgrechka Security
                 checkingAllFieldsRetrieved(req) {
                     repo.findOrDie(req.orderID.value)-{o->
-                        o.documentType = req.documentType.value
-                        o.title = req.documentTitle.value
-                        o.numPages = req.numPages.value
-                        o.numSources = req.numSources.value
-                        o.details = req.documentDetails.value
-                        o.customerPhone = req.phone.value
-                        o.customerFirstName = req.firstName.value
-                        o.customerLastName = req.lastName.value
-                        o.customerEmail = req.email.value
-                        updateAdminNotes(o, req)
+                        o.fields.documentType = req.documentType.value
+                        o.fields.title = req.documentTitle.value
+                        o.fields.numPages = req.numPages.value
+                        o.fields.numSources = req.numSources.value
+                        o.fields.details = req.documentDetails.value
+                        o.fields.customerPhone = req.phone.value
+                        o.fields.customerFirstName = req.firstName.value
+                        o.fields.customerLastName = req.lastName.value
+                        o.fields.customerEmail = req.email.value
+                        updateAdminNotes(o.fields, req)
                     }
                 }
                 return UAUpdateOrderResponse()
@@ -136,18 +138,20 @@ import java.util.*
 
                 val content = Base64.getDecoder().decode(requestFile.base64)
                 val file = uaOrderFileRepo.save(UAOrderFile(
-                    order = order,
-                    name = requestFile.fileName,
-                    title = req.title.value,
-                    mime = "application/octet-stream",
-                    details = req.details.value,
-                    adminNotes = adminNotesForCreate(req),
-                    sha256 = Hashing.sha256().hashBytes(content).toString(),
-                    sizeBytes = content.size,
-                    content = content,
-                    creator = requestUser,
-                    forCustomerSeenAsFrom = requestUser.fields.kind, // TODO:vgrechka ...
-                    forWriterSeenAsFrom = requestUser.fields.kind // TODO:vgrechka ...
+                    fields = UAOrderFileFields(
+                        order = order,
+                        name = requestFile.fileName,
+                        title = req.title.value,
+                        mime = "application/octet-stream",
+                        details = req.details.value,
+                        adminNotes = adminNotesForCreate(req),
+                        sha256 = Hashing.sha256().hashBytes(content).toString(),
+                        sizeBytes = content.size,
+                        content = content,
+                        creator = requestUser,
+                        forCustomerSeenAsFrom = requestUser.fields.kind, // TODO:vgrechka ...
+                        forWriterSeenAsFrom = requestUser.fields.kind // TODO:vgrechka ...
+                    )
                 ))
 
                 return UACreateOrderFileResponse(file.id!!)
@@ -166,18 +170,18 @@ import java.util.*
                     val file = uaOrderFileRepo.findOrDie(req.fileID.value)
                     // TODO:vgrechka Check permissions
                     file-{o->
-                        o.title = req.title.value
-                        o.details = req.details.value
+                        o.fields.title = req.title.value
+                        o.fields.details = req.details.value
                         val requestFile = req.file.value
                         if (requestFile is FileField.Value.Provided) {
                             val content = Base64.getDecoder().decode(requestFile.base64)
-                            o.name = requestFile.fileName
-                            o.sha256 = Hashing.sha256().hashBytes(content).toString()
-                            o.sizeBytes = content.size
-                            o.content = content
+                            o.fields.name = requestFile.fileName
+                            o.fields.sha256 = Hashing.sha256().hashBytes(content).toString()
+                            o.fields.sizeBytes = content.size
+                            o.fields.content = content
                         }
-                        updateAdminNotes(o, req)
-                        o.touch()
+                        updateAdminNotes(o.fields, req)
+                        o.fields.common.touch()
                     }
                     return UAUpdateOrderFileResponse(file.toRTO(listOf()))
                 }
@@ -208,9 +212,9 @@ import java.util.*
                 val file = fileRepo.findOrDie(req.fileID.value)
                 // TODO:vgrechka @security Check permissions
                 return DownloadFileResponse(
-                    fileName = file.name,
-                    base64 = Base64.getEncoder().encodeToString(file.content),
-                    sha256 = Hashing.sha256().hashBytes(file.content).toString()
+                    fileName = file.fields.name,
+                    base64 = Base64.getEncoder().encodeToString(file.fields.content),
+                    sha256 = Hashing.sha256().hashBytes(file.fields.content).toString()
                 )
             }
         ))
@@ -224,7 +228,7 @@ import java.util.*
             runShit = fun(ctx, req): UACustomerSendOrderDraftForApprovalRequest.Response {
                 // TODO:vgrechka @security Check permissions
                 val order = orderRepo.findOrDie(req.orderID.value)
-                order.state = UAOrderState.WAITING_ADMIN_APPROVAL
+                order.fields.state = UAOrderState.WAITING_ADMIN_APPROVAL
                 return UACustomerSendOrderDraftForApprovalRequest.Response()
             }
         ))
@@ -237,8 +241,8 @@ import java.util.*
             bpc = bpc, makeRequest = {ReturnOrderToCustomerForFixingRequest()},
             runShit = fun(ctx, req): GenericResponse {
                 val order = orderRepo.findOrDie(req.entityID.value)
-                order.state = UAOrderState.RETURNED_TO_CUSTOMER_FOR_FIXING
-                order.whatShouldBeFixedByCustomer = req.rejectionReason.value
+                order.fields.state = UAOrderState.RETURNED_TO_CUSTOMER_FOR_FIXING
+                order.fields.whatShouldBeFixedByCustomer = req.rejectionReason.value
                 return GenericResponse()
             }
         ))
@@ -249,8 +253,8 @@ fun serveReginaCustomerSendOrderForApprovalAfterFixing(p: ReginaCustomerSendOrde
     check(requestUser.fields.kind == UserKind.CUSTOMER){"70630d2d-6796-4af8-8ac6-16e09a8b37e1"}
     // TODO:vgrechka Security
     val order = uaOrderRepo.findOrDie(p.orderID)
-    check(order.state == UAOrderState.RETURNED_TO_CUSTOMER_FOR_FIXING){"698dd409-f382-45df-9e65-fff590302dd0"}
-    order.state = UAOrderState.WAITING_ADMIN_APPROVAL
+    check(order.fields.state == UAOrderState.RETURNED_TO_CUSTOMER_FOR_FIXING){"698dd409-f382-45df-9e65-fff590302dd0"}
+    order.fields.state = UAOrderState.WAITING_ADMIN_APPROVAL
     return GenericResponse()
 }
 
@@ -258,9 +262,9 @@ fun serveReginaAdminSendOrderToStore(p: ReginaAdminSendOrderToStore): GenericRes
     check(requestUser.fields.kind == UserKind.ADMIN){"0af9f1b0-b5fb-4fb2-b3a9-198a0185ee15"}
     // TODO:vgrechka Security
     val order = uaOrderRepo.findOrDie(p.orderID)
-    check(order.state in setOf(UAOrderState.WAITING_ADMIN_APPROVAL)){"7af262c7-2a28-43f8-910a-ccf3569142e9"}
-    order.whatShouldBeFixedByCustomer = null
-    order.state = UAOrderState.IN_STORE
+    check(order.fields.state in setOf(UAOrderState.WAITING_ADMIN_APPROVAL)){"7af262c7-2a28-43f8-910a-ccf3569142e9"}
+    order.fields.whatShouldBeFixedByCustomer = null
+    order.fields.state = UAOrderState.IN_STORE
     return GenericResponse()
 }
 

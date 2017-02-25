@@ -133,8 +133,8 @@ Kotlin Version Upgrade Procedure
 * Fix shit
 
 
-Kotlin compiler args
-====================
+Kotlin compiler command line arguments
+======================================
 
 -Xplugin
 C:\Users\Vladimir\.IdeaIC2017.1\config\plugins\Kotlin\kotlinc\lib\noarg-compiler-plugin.jar
@@ -144,6 +144,8 @@ plugin:org.jetbrains.kotlin.noarg:annotation=aps.back.Fucking
 plugin:org.jetbrains.kotlin.noarg:annotation=javax.persistence.MappedSuperclass
 -P
 plugin:org.jetbrains.kotlin.noarg:annotation=javax.persistence.Entity
+-P
+plugin:org.jetbrains.kotlin.noarg:annotation=javax.persistence.Embeddable
 -P
 plugin:org.jetbrains.kotlin.noarg:annotation=aps.NoArgCtor
 -P
@@ -156,6 +158,8 @@ plugin:org.jetbrains.kotlin.allopen:annotation=aps.back.Fucking
 plugin:org.jetbrains.kotlin.allopen:annotation=javax.persistence.MappedSuperclass
 -P
 plugin:org.jetbrains.kotlin.allopen:annotation=javax.persistence.Entity
+-P
+plugin:org.jetbrains.kotlin.allopen:annotation=javax.persistence.Embeddable
 -P
 plugin:org.jetbrains.kotlin.allopen:annotation=aps.AllOpen
 -P

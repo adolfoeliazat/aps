@@ -21,28 +21,29 @@ import java.util.*
                 if (ctx.hasUser) {
                     imf("2e07612f-cf94-4f39-b153-592b2e8b5a30")
                 } else {
-                    val order = orderRepo.findByConfirmationSecret(req.secret.value)
+                    val order = orderRepo.findByFields_ConfirmationSecret(req.secret.value)
                         ?: bitchExpectedly(t("TOTE", "Че за хрень ты мне тут передаешь в параметрах? Скопируй ссылку из письма нормально, или я не знаю..."))
 
-                    if (order.state != UAOrderState.WAITING_EMAIL_CONFIRMATION)
+                    if (order.fields.state != UAOrderState.WAITING_EMAIL_CONFIRMATION)
                         bitchExpectedly(t("TOTE", "Хватит уже этот заказ подтверждать, ага?"))
 
-                    val user = userRepo.findByFields_Email(order.customerEmail)
+                    val user = userRepo.findByFields_Email(order.fields.customerEmail)
                     if (user == null) {
                         val newUser = saveUserToRepo(User(
                             fields = UserFields(
-                                email = order.customerEmail,
-                                firstName = order.customerFirstName,
-                                lastName = order.customerLastName,
+                                email = order.fields.customerEmail,
+                                firstName = order.fields.customerFirstName,
+                                lastName = order.fields.customerLastName,
                                 passwordHash = hashPassword(generatePassword()),
-                                profilePhone = order.customerPhone,
+                                profilePhone = order.fields.customerPhone,
                                 kind = UserKind.CUSTOMER,
-                                state = UserState.COOL
+                                state = UserState.COOL,
+                                adminNotes = ""
                             )
                         ))
                         orderRepo.save(order-{o->
-                            o.customer = newUser
-                            o.state = UAOrderState.CUSTOMER_DRAFT
+                            o.fields.customer = newUser
+                            o.fields.state = UAOrderState.CUSTOMER_DRAFT
                         })
 
                         val userToken = userTokenRepo.save(UserToken(

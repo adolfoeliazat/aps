@@ -7,13 +7,7 @@
 package aps.back
 
 import aps.*
-import aps.back.generated.jooq.Tables.*
-import aps.back.generated.jooq.enums.*
 import into.kommon.*
-import org.jooq.exception.DataAccessException
-import org.jooq.impl.DSL.row
-import org.mindrot.jbcrypt.BCrypt
-import java.util.*
 
 @Servant class ServeSignUp : BitchyProcedure() {
     override fun serve() {
@@ -39,7 +33,8 @@ import java.util.*
                         state = when (ctx.clientKind) {
                             ClientKind.UA_CUSTOMER -> imf("477250b3-8fde-4881-8794-888d76674fef")
                             ClientKind.UA_WRITER -> UserState.PROFILE_PENDING
-                        }
+                        },
+                        adminNotes = ""
                     )
                 ))
 
