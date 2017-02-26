@@ -240,7 +240,7 @@ data class Style(
     }
 }
 
-class ControlShitMe : ShitWithRenderFunction, FuckingControl {
+class ControlShitMe : ShitWithRenderFunction, WithElementID {
     override lateinit var render: () -> ReactElement
 
     lateinit var controlTypeName: String

@@ -18,7 +18,7 @@ data class HandOpts(
 )
 
 object TestUserActionAnimation {
-    fun hand(target: Control2, opts: HandOpts = HandOpts()): Promisoid<Unit> = hand(target.elementID, opts)
+    fun hand(target: WithElementID, opts: HandOpts = HandOpts()): Promisoid<Unit> = hand(target.elementID, opts)
 
     @JsName("hand")
     fun hand(

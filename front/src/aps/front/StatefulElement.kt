@@ -16,7 +16,7 @@ object js {
     val Error = js("Error")
 }
 
-abstract class StatefulElement(val tame: String? = null, override val elementID: String = "" + puid()) : ToReactElementable, FuckingControl {
+abstract class StatefulElement(val tame: String? = null, override val elementID: String = "" + puid()) : ToReactElementable, WithElementID {
     abstract val defaultControlTypeName: String
 
     var controlTypeName: String = defaultControlTypeName

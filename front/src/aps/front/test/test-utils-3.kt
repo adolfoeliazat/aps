@@ -3,6 +3,7 @@ package aps.front
 import aps.*
 import aps.front.testutils.*
 import into.kommon.*
+import into.mochka.assert
 import into.mochka.assertEquals
 import kotlin.browser.window
 
@@ -69,6 +70,10 @@ suspend fun describeState(descr: String) {
     showTestBanner(ctx, title = descr, subtitle = "", kind = TestBannerKind.PAUSE)
 }
 
+suspend fun burgerKicClick(subscript: Any? = null, aid: String) {
+    kicClick(kics.burger_testRef, subscript)
+    assertScreenHTML(aid = aid)
+}
 
 
 

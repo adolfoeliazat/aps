@@ -75,13 +75,15 @@ object selects                           : Fuckers<SelectKey<*>>(null) {
 object links                             : Fuckers<LinkKey>(null) {
     val createAccount                    by namedFucker(::LinkKey); val createAccount_testRef = TestRef(createAccount)
     val signUp                           by namedFucker(::LinkKey); val signUp_testRef = TestRef(signUp)
-    val lips                             by namedFucker(::LinkKey); val lips_testRef = TestRef(lips)
+    val lipsTitle                        by namedFucker(::LinkKey); val lipsTitle_testRef = TestRef(lipsTitle)
+    val compareBelow                     by namedFucker(::LinkKey); val compareBelow_testRef = TestRef(compareBelow)
 
     object adminDashboard                : Fuckers<LinkKey>(null) {
         val ordersToApprove              by namedFucker(::LinkKey); val ordersToApprove_testRef = TestRef(ordersToApprove)
         val writerProfilesToApprove      by namedFucker(::LinkKey); val writerProfilesToApprove_testRef = TestRef(writerProfilesToApprove)
     }
 }
+
 
 
 

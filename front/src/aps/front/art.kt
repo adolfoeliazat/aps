@@ -98,12 +98,12 @@ typealias ControlID = String
 typealias TestStateContributor = (TestStateContributions) -> Unit
 
 interface TestStateContributions {
-    fun put(control: FuckingControl, key: String, value: String)
+    fun put(control: WithElementID, key: String, value: String)
 }
 
 object art {
     lateinit var testSpeed: String
-    val stateContributionsByControl = mutableMapOf<FuckingControl, MutableMap<String, String>>()
+    val stateContributionsByControl = mutableMapOf<WithElementID, MutableMap<String, String>>()
     val halted: Boolean = false
     var respectArtPauses: Boolean = false
     var stepDescriptions: dynamic = jsArrayOf()
@@ -959,7 +959,7 @@ fun invokeStateContributions(actual: MutableMap<String, Any>?) {
 
     for (contribute in art.uiStateContributions.values) {
         contribute(object:TestStateContributions {
-            override fun put(control: FuckingControl, key: String, value: String) {
+            override fun put(control: WithElementID, key: String, value: String) {
                 if (actual != null && actual.containsKey(key)) {
                     val message = "uiStateContribution put duplication: key=${key}, value=${value}"
 
@@ -1324,11 +1324,7 @@ fun sortKeys(o: dynamic) {
     }
 }
 
-interface FuckingControl {
-    val elementID: String
-}
-
-fun findContributionsByControlAndChildren(target: FuckingControl): Map<String, String> {
+fun findContributionsByControlAndChildren(target: WithElementID): Map<String, String> {
     val contributions = mutableMapOf<String, String>()
     art.stateContributionsByControl[target]?.let {contributions.putAll(it)}
     Shitus.byid(target.elementID).find('*').each({

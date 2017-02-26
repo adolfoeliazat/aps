@@ -298,7 +298,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
             run { // Admin rejects order
                 twoStepSequence({linkClick(links.adminDashboard.ordersToApprove_testRef)}, "e1cdd9ea-7ad0-467e-9add-c9d67c19b883")
-                twoStepSequence({linkClick(links.lips_testRef, subscript = 1L)}, "4d382cc9-c529-47bc-9026-0ceec0716a5c")
+                twoStepSequence({linkClick(links.lipsTitle_testRef, subscript = 1L)}, "4d382cc9-c529-47bc-9026-0ceec0716a5c")
                 step({buttonClick(buttons.reject_testRef)}, TestGlobal.modalShownLock, "0417ea80-b99b-498e-9e51-c4f829d08499")
                 formSubmissionAttemptsThenPageLoad(
                     testShit, aid = "e07d4eab-e003-4149-bfc9-9b3557aacfb5",
@@ -353,7 +353,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
             }
 
             run { // Admin makes minor changes to files
-                twoStepSequence({linkClick(links.lips_testRef, subscript = 1L)}, "394199d1-73da-4a7d-b462-13d5e8e0a789")
+                twoStepSequence({linkClick(links.lipsTitle_testRef, subscript = 1L)}, "394199d1-73da-4a7d-b462-13d5e8e0a789")
                 tabSequence(tabs.order.files_testRef, "d3461e3e-4a41-42f5-8cec-451b70e4bfbb", "63b49f23-604a-4184-8ac8-28c73027473b")
 
                 describeState("Admin can edit files")
@@ -440,6 +440,10 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
             run { // Admin looks at profile change history
                 bootAdmin_openWriterToApprove(sessionIndex.dasja5, 3L, "21af756c-20b0-48be-89a5-7b0c2e1654b8")
                 step({buttonClick(buttons.history_testRef)}, TestGlobal.pageLoadedLock, "84837274-ff9a-4ae8-81ae-566685fe87fc")
+                // ___stopHereAndEverywhereLater()
+                burgerKicClick(subscript = 9L, aid = "ed3da430-f954-4c31-b923-0a60c6276b54")
+                sleep(100)
+                linkClick(links.compareBelow_testRef, subscript = 9L)
             }
         }
     }
@@ -476,7 +480,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
     private suspend fun bootAdmin_openWriterToApprove(sessionNumber: Int, writerID: Long, aid: String) {
         bootAdminWithTokenToDashboard(sessionNumber, "$aid--1")
         twoStepSequence({linkClick(links.adminDashboard.writerProfilesToApprove_testRef)}, "$aid--2")
-        twoStepSequence({linkClick(links.lips_testRef, subscript = writerID)}, "$aid--3")
+        twoStepSequence({linkClick(links.lipsTitle_testRef, subscript = writerID)}, "$aid--3")
     }
 
     private suspend fun bootWriterWithTokenToProfilePage(nick: String, sessionNumber: Int, aid: String) {

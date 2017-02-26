@@ -437,7 +437,7 @@ fun <ItemRTO : MelindaItemRTO, LipsState> makeUsualMelindaLips(
                                 run { // Title
                                     val titleContent = highlightedShit(item.title, item.titleHighlightRanges, tag = "span")
                                     if (titleLinkURL != null)
-                                        o- urlLink(url = titleLinkURL, content = titleContent, className = c.titleLink, key = SubscriptLinkKey(links.lips, item.id))
+                                        o- urlLink(url = titleLinkURL, content = titleContent, className = c.titleLink, key = SubscriptLinkKey(links.lipsTitle, item.id))
                                     else
                                         o- titleContent
                                 }
@@ -528,13 +528,10 @@ fun <ItemRTO : MelindaItemRTO, LipsState> makeUsualMelindaLips(
                                     "style" to json("minWidth" to "10rem")),
                                 menu.items.map {item->
                                     reactCreateElement("li", json(), listOf(
-                                        reactCreateElement("a", json(
-                                            "href" to "#",
-                                            "onClick" to {e: MouseEvent -> async {
-                                                preventAndStop(e)
-                                                item.act()}}),
-                                            listOf(
-                                                item.title.asReactElement()))))})
+                                        link2(key = item.linkKey, title = item.title) {
+                                            item.act()
+                                        }.toReactElement()
+                                    ))})
                         }
                     }
                 }
@@ -542,7 +539,6 @@ fun <ItemRTO : MelindaItemRTO, LipsState> makeUsualMelindaLips(
         }
     }
 }
-
 
 
 

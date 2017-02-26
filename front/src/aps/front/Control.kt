@@ -224,7 +224,7 @@ open class ControlInstanceSpec {
     }
 }
 
-abstract class Control(val cis: ControlInstanceSpec = ControlInstanceSpec()) : ToReactElementable, FuckingControl {
+abstract class Control(val cis: ControlInstanceSpec = ControlInstanceSpec()) : ToReactElementable, WithElementID {
     abstract fun defaultControlTypeName(): String
     abstract fun render(): ReactElement
     open fun contributeTestState(state: TestStateContributions) {}

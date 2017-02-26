@@ -2,6 +2,7 @@ package aps.front
 
 import aps.*
 import into.kommon.*
+import jquery.jq
 
 open class KicKey(override val fqn: String) : Fucker(), FQNed
 
@@ -26,9 +27,15 @@ class kic(
         }
     }
 
-    suspend fun click() {
+    suspend fun click(fromTest: Boolean = false) {
         onClick()
         onClicka()
+
+        if (fromTest) {
+            if (dataToggle == "dropdown") {
+                byid(elementID).asDynamic().dropdown("toggle")
+            }
+        }
     }
 
     override fun render(): ToReactElementable =
@@ -51,7 +58,7 @@ suspend fun kicClick(key: TestRef<KicKey>, subscript: Any? = null, handOpts: Han
     val target = kic.instance(if (subscript == null) key.it
                               else SubscriptKicKey(key.it, subscript))
     await(TestUserActionAnimation.hand(target, handOpts))
-    notAwait {target.click()}
+    notAwait {target.click(fromTest = true)}
 }
 
 

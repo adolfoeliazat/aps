@@ -35,7 +35,11 @@ data class Attrs(
     val onMouseLeava: (suspend (MouseEvent) -> Unit)? = null
 )
 
-abstract class Control2(val attrs: Attrs = Attrs()) : ToReactElementable, FuckingControl {
+interface WithElementID {
+    val elementID: String
+}
+
+abstract class Control2(val attrs: Attrs = Attrs()) : ToReactElementable, WithElementID {
     abstract protected fun render(): ToReactElementable
 
     open fun componentWillMount        (){}

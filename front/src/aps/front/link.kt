@@ -152,13 +152,17 @@ data class LinkParams(
     val title: String? = null
 )
 
+interface ILink : WithElementID {
+    fun click()
+}
+
 class Link(
     val params: LinkParams,
     attrs: Attrs = Attrs(),
     val style: Style = Style(),
     val key: LinkKey? = null,
     val doClick: (suspend () -> Unit)? = null
-) : Control2(attrs) {
+) : Control2(attrs), ILink {
     init {
         check(params.content != null || params.title != null) {"Either content or title"}
     }
@@ -166,9 +170,9 @@ class Link(
     val content = params.content ?: oldShitAsToReactElementable(jsFacing_spancTitle(json("title" to params.title)))
 
     companion object {
-        val instances = mutableMapOf<LinkKey, Link>()
+        val instances = mutableMapOf<LinkKey, ILink>()
 
-        fun instance(key: LinkKey): Link {
+        fun instance(key: LinkKey): ILink {
             return instances[key] ?: bitch("No Link keyed `${key.fqn}`")
         }
     }
@@ -185,7 +189,7 @@ class Link(
         }
     }
 
-    fun click() {
+    override fun click() {
         async {doClick!!()}
     }
 
@@ -211,6 +215,38 @@ class Link(
         ))
     }
 }
+
+fun link2(title: String, key: LinkKey?, onClick: suspend () -> Unit): ToReactElementable =
+    object : Control2(), ILink {
+        override fun render(): ToReactElementable {
+            return ToReactElementable.from(reactCreateElement(
+                "a",
+                json("id" to elementID,
+                     "href" to "#",
+                     "onClick" to {e: MouseEvent -> async {
+                         preventAndStop(e)
+                         onClick()}}),
+                listOf(
+                    title.asReactElement())))
+        }
+
+        override fun componentDidMount() {
+            if (key != null) {
+                Link.instances[key] = this
+            }
+        }
+
+        override fun componentWillUnmount() {
+            if (key != null) {
+                Link.instances.remove(key)
+            }
+        }
+
+        override fun click() {async{
+            onClick()               // Because React's onclick is separate from normal DOM onclick
+            byid(elementID).click() // This is for Bootstrap do its stuff, e.g. hide dropdown menu
+        }}
+    }
 
 @GenerateSignatureMixes
 fun link(
