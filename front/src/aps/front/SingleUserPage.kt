@@ -56,7 +56,7 @@ class SingleUserPage {
                             kdiv{o->
                                 o- kdiv(className = css.history.shit){o->
                                     o- m.row(marginBottom = null){o->
-                                        o- m.col(6, t("TOTE", "Кто изменил"), contentStyle = Style(display = "flex", alignItems = "center")){o->
+                                        o- m.col(6, t("TOTE", "Кто сделал"), contentStyle = Style(display = "flex", alignItems = "center")){o->
                                             o- renderUserKindIconWithGap(historyItem.requester.kind)
                                             o- span(stringBuild{o->
                                                 val currentName = fullName(historyItem.requester)

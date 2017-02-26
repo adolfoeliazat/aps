@@ -42,12 +42,12 @@ interface Titled {
     val title: String
 }
 
-enum class UserState(override val title: String, val emoji: Emoji? = null) : Titled {
-    COOL(t("TOTE", "Прохладный"), emojis.sunglasses),
-    PROFILE_PENDING(t("TOTE", "Без профиля")),
-    PROFILE_APPROVAL_PENDING(t("TOTE", "Ждет аппрува профиля")),
-    PROFILE_REJECTED(t("TOTE", "Профиль завернут")),
-    BANNED(t("TOTE", "Забанен"));
+enum class UserState(override val title: String, val icon: XIcon? = null, val style: String = "") : Titled {
+    COOL(t("TOTE", "Прохладный"),                                emojis.tw.sunglasses, "background-color: $WHITE;"),
+    PROFILE_PENDING(t("TOTE", "Без профиля"),                    emojis.one.nameBadge, "background-color: $GRAY_200;"),
+    PROFILE_APPROVAL_PENDING(t("TOTE", "Ждет аппрува профиля"),  emojis.tw.clock8, "background-color: $ORANGE_100;"),
+    PROFILE_REJECTED(t("TOTE", "Профиль завернут"),              emojis.one.fuckYou_medium, "background-color: $RED_100;"),
+    BANNED(t("TOTE", "Забанен"),                                 emojis.tw.noEntry, "background-color: $RED_300;");
 }
 
 class TimestampRTO(val value: String) {

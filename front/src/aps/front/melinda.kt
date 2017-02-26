@@ -358,12 +358,12 @@ object MelindaTools {
             }
         }
 
-    fun col(size: Int, title: String, value: String, className: String? = null, emojiStart: Emoji? = null) =
-        col(size, title, contentClassName = className){o->
-            emojiStart?.let {
-                o- emojiStart.render(Style(marginRight = "0.5rem", marginTop = "-2px"))
+    fun col(size: Int, title: String, value: String, contentClassName: String? = null, textClassName: String? = null, icon: XIcon? = null) =
+        col(size, title, contentClassName = contentClassName){o->
+            icon?.let {
+                o- icon.render(Style(marginRight = "0.5rem", marginTop = "-2px"))
             }
-            o- value
+            o- span(value, className = textClassName)
         }
 
 

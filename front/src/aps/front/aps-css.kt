@@ -182,13 +182,7 @@ object css {
     }
 
     object user : Group(null) {
-        val stateLabel by EnumStyle(UserState.values(), {when (it) {
-            UserState.COOL -> Style("background-color: $WHITE;")
-            UserState.PROFILE_PENDING -> Style("background-color: $AMBER_100;")
-            UserState.PROFILE_APPROVAL_PENDING -> Style("background-color: $ORANGE_100;")
-            UserState.PROFILE_REJECTED -> Style("background-color: $RED_100;")
-            UserState.BANNED -> Style("background-color: $RED_300;")
-        }})
+        val stateLabel by EnumStyle(UserState.values(), {Style(it.style)})
     }
 
     object order : Group(null) {

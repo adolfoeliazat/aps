@@ -125,7 +125,7 @@ fun renderOrderParams(order: UAOrderRTO): ToReactElementable {
             if (order.state != UAOrderState.CUSTOMER_DRAFT) {
                 o- m.createdAtCol(3, order.createdAt)
             }
-            o- m.col(3, t("TOTE", "Статус"), order.state.title, className = css.order.stateLabel(order.state))
+            o- m.col(3, t("TOTE", "Статус"), order.state.title, contentClassName = css.order.stateLabel(order.state))
         }
         o- m.row{o->
             o- m.col(3, fields.orderCustomerFirstName.title, order.customerFirstName)
