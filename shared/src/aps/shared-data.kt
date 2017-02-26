@@ -1,5 +1,7 @@
 package aps
 
+import aps.Color.*
+
 interface TabithaEntityRTO {
     val id: Long
 }
@@ -109,16 +111,16 @@ enum class UADocumentType(override val title: String) : Titled {
     OTHER(t("TOTE", "Другое"))
 }
 
-enum class UAOrderState(override val title: String) : Titled {
-    CREATED(t("TOTE", "Создан")),
-    CUSTOMER_DRAFT(t("TOTE", "Черновик")),
-    LOOKING_FOR_WRITERS(t("TOTE", "Ищем писателей")),
-    WAITING_FOR_PAYMENT(t("TOTE", "Ждем оплаты")),
-    WRITER_ASSIGNED(t("TOTE", "Писатель назначен")),
-    WAITING_EMAIL_CONFIRMATION(t("TOTE", "Ждем подтверждения имейла")),
-    WAITING_ADMIN_APPROVAL(t("TOTE", "Ждем одобрения админом")),
-    RETURNED_TO_CUSTOMER_FOR_FIXING(t("TOTE", "Заказчик фиксит заявку")),
-    IN_STORE(t("TOTE", "Ищем писателей"))
+enum class UAOrderState(override val title: String, val icon: XIcon? = null, val style: String = "") : Titled {
+    CREATED(t("TOTE", "Создан"),                                            null, "background-color: green;"),
+    CUSTOMER_DRAFT(t("TOTE", "Черновик"),                                   null, "background-color: green;"),
+    LOOKING_WRITERS(t("TOTE", "Ищем писателей"),                            null, "background-color: green;"),
+    WAITING_PAYMENT(t("TOTE", "Ждем оплаты"),                               null, "background-color: green;"),
+    WRITER_ASSIGNED(t("TOTE", "Писатель назначен"),                         null, "background-color: green;"),
+    WAITING_EMAIL_CONFIRMATION(t("TOTE", "Ждем подтверждения имейла"),      null, "background-color: green;"),
+    WAITING_ADMIN_APPROVAL(t("TOTE", "Ждем одобрения админом"),             null, "background-color: $AMBER_100;"),
+    RETURNED_TO_CUSTOMER_FOR_FIXING(t("TOTE", "Заказчик фиксит заявку"),    null, "background-color: $RED_50;"),
+    IN_STORE(t("TOTE", "Ищем писателей"),                                   null, "background-color: $BLUE_100;")
 }
 
 interface HistoryItemRTOFields {

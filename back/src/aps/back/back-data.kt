@@ -102,31 +102,31 @@ fun JQUaDocumentType.toApp(): UADocumentType = when (this) {
     JQUaDocumentType.OTHER-> UADocumentType.OTHER
 }
 
-fun DocumentUrgency.toJOOQ(): JQDocumentUrgency = when (this) {
-    DocumentUrgency.H12 -> JQDocumentUrgency.H12
-    DocumentUrgency.H24 -> JQDocumentUrgency.H24
-    DocumentUrgency.D3 -> JQDocumentUrgency.D3
-    DocumentUrgency.D5 -> JQDocumentUrgency.D5
-    DocumentUrgency.D7 -> JQDocumentUrgency.D7
-    DocumentUrgency.D8 -> JQDocumentUrgency.D8
-}
+//fun DocumentUrgency.toJOOQ(): JQDocumentUrgency = when (this) {
+//    DocumentUrgency.H12 -> JQDocumentUrgency.H12
+//    DocumentUrgency.H24 -> JQDocumentUrgency.H24
+//    DocumentUrgency.D3 -> JQDocumentUrgency.D3
+//    DocumentUrgency.D5 -> JQDocumentUrgency.D5
+//    DocumentUrgency.D7 -> JQDocumentUrgency.D7
+//    DocumentUrgency.D8 -> JQDocumentUrgency.D8
+//}
+//
+//fun JQUaOrderState.toApp(): UAOrderState = when (this) {
+//    JQUaOrderState.CREATED -> UAOrderState.CREATED
+//    JQUaOrderState.LOOKING_FOR_WRITERS -> UAOrderState.LOOKING_WRITERS
+//    JQUaOrderState.WAITING_FOR_PAYMENT -> UAOrderState.WAITING_FOR_PAYMENT
+//    JQUaOrderState.WRITER_ASSIGNED -> UAOrderState.WRITER_ASSIGNED
+//    JQUaOrderState.WAITING_EMAIL_CONFIRMATION -> UAOrderState.WAITING_EMAIL_CONFIRMATION
+//}
 
-fun JQUaOrderState.toApp(): UAOrderState = when (this) {
-    JQUaOrderState.CREATED -> UAOrderState.CREATED
-    JQUaOrderState.LOOKING_FOR_WRITERS -> UAOrderState.LOOKING_FOR_WRITERS
-    JQUaOrderState.WAITING_FOR_PAYMENT -> UAOrderState.WAITING_FOR_PAYMENT
-    JQUaOrderState.WRITER_ASSIGNED -> UAOrderState.WRITER_ASSIGNED
-    JQUaOrderState.WAITING_EMAIL_CONFIRMATION -> UAOrderState.WAITING_EMAIL_CONFIRMATION
-}
-
-fun UAOrderState.toJOOQ(): JQUaOrderState = when (this) {
-    UAOrderState.CREATED -> JQUaOrderState.CREATED
-    UAOrderState.LOOKING_FOR_WRITERS -> JQUaOrderState.LOOKING_FOR_WRITERS
-    UAOrderState.WAITING_FOR_PAYMENT -> JQUaOrderState.WAITING_FOR_PAYMENT
-    UAOrderState.WRITER_ASSIGNED -> JQUaOrderState.WRITER_ASSIGNED
-    UAOrderState.WAITING_EMAIL_CONFIRMATION -> JQUaOrderState.WAITING_EMAIL_CONFIRMATION
-    else -> die("Fuck UAOrderState.toJOOQ")
-}
+//fun UAOrderState.toJOOQ(): JQUaOrderState = when (this) {
+//    UAOrderState.CREATED -> JQUaOrderState.CREATED
+//    UAOrderState.LOOKING_FOR_WRITERS -> JQUaOrderState.LOOKING_FOR_WRITERS
+//    UAOrderState.WAITING_FOR_PAYMENT -> JQUaOrderState.WAITING_FOR_PAYMENT
+//    UAOrderState.WRITER_ASSIGNED -> JQUaOrderState.WRITER_ASSIGNED
+//    UAOrderState.WAITING_EMAIL_CONFIRMATION -> JQUaOrderState.WAITING_EMAIL_CONFIRMATION
+//    else -> die("Fuck UAOrderState.toJOOQ")
+//}
 
 //fun ProcedureContext.loadUser(id: Long): UserRTO {
 //    return tracingSQL("Select user") {q

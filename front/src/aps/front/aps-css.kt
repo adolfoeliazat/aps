@@ -186,17 +186,7 @@ object css {
     }
 
     object order : Group(null) {
-        val stateLabel by EnumStyle(UAOrderState.values(), {when (it) {
-            UAOrderState.CREATED -> Style("background-color: green;")
-            UAOrderState.CUSTOMER_DRAFT -> Style("background-color: green;")
-            UAOrderState.LOOKING_FOR_WRITERS -> Style("background-color: green;")
-            UAOrderState.WAITING_FOR_PAYMENT -> Style("background-color: green;")
-            UAOrderState.WRITER_ASSIGNED -> Style("background-color: green;")
-            UAOrderState.WAITING_EMAIL_CONFIRMATION -> Style("background-color: green;")
-            UAOrderState.WAITING_ADMIN_APPROVAL -> Style("background-color: $AMBER_100;")
-            UAOrderState.RETURNED_TO_CUSTOMER_FOR_FIXING -> Style("background-color: $RED_50;")
-            UAOrderState.IN_STORE -> Style("background-color: $BLUE_100;")
-        }})
+        val stateLabel by EnumStyle(UAOrderState.values(), {Style(it.style)})
 
         object forCustomer : Group(this) {
             val waitingApprovalBanner by named {WaitingBannerStyles(it, this)}
