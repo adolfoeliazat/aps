@@ -13,6 +13,7 @@ class kic(
     id: String? = null,
     val key: KicKey? = null,
     val style: Style = Style(),
+    val dataToggle: String? = null,
     val onClick: () -> Unit = {},
     val onClicka: suspend () -> Unit = {}
 ) : Control2(Attrs(id = id)) {
@@ -31,7 +32,7 @@ class kic(
     }
 
     override fun render(): ToReactElementable =
-        ki(id = elementID, className = className, baseStyle = style, onClick = {async{click()}})
+        ki(Attrs(id = elementID, className = className, dataToggle = dataToggle, onClick = {async{click()}}), style)
 
     override fun componentDidMount() {
         if (key != null) {

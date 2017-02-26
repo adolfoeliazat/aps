@@ -9,4 +9,6 @@
 - Prevent attempts to show modal when another one is active. This means logic error in application,
   but at least user's GUI won't be completely fucked up...
 
+- [Minor] Before doing visual capture make sure all images (e.g. emojis) have loaded
+
 

@@ -123,10 +123,10 @@ open class Button(
                                     reactCreateElement(
                                         "a",
                                         json("href" to "#",
-                                             "onClick" to {e: ReactEvent->
+                                             "onClick" to {e: ReactEvent-> async {
                                                  preventAndStop(e)
                                                  item.act()
-                                             }),
+                                             }}),
                                         listOf(
                                             asReactElement(item.title)
                                         )

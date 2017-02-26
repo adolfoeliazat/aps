@@ -57,10 +57,10 @@ class AdminUsersPage {
                     icon = {userKindIcon(it.kind)},
                     initialLipsState = Unit,
                     renderContent = {o->
-                        o- renderProfile(tongue.getItem())
+                        o- renderProfile(tongue.item)
                     },
                     titleLinkURL = makeURL(pages.uaAdmin.user, listOf(
-                        URLParamValue(TabithaURLQuery.id, tongue.getItem().id)
+                        URLParamValue(TabithaURLQuery.id, tongue.item.id)
                     )),
                     hasEditControl = {false},
                     hasDeleteControl = {false}

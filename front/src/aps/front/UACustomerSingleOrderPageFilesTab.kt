@@ -125,8 +125,8 @@ class UACustomerSingleOrderPageFilesTab(val order: UAOrderRTO) : TabithaTab {
                 icon = {fa.file},
                 initialLipsState = FileLipsState(downloadActive = false),
                 controlsDisabled = {state-> state.downloadActive},
-                smallOverlayIcon = {userKindIcon(tongue.getItem().seenAsFrom)},
-                tinySubtitle = {when (tongue.getItem().seenAsFrom) {
+                smallOverlayIcon = {userKindIcon(tongue.item.seenAsFrom)},
+                tinySubtitle = {when (tongue.item.seenAsFrom) {
                     Globus.world.user.kind -> t("Mine", "Мой")
                     UserKind.CUSTOMER -> t("From customer", "От заказчика")
                     UserKind.WRITER -> t("From writer", "От писателя")
@@ -140,11 +140,11 @@ class UACustomerSingleOrderPageFilesTab(val order: UAOrderRTO) : TabithaTab {
                     o- kic("${fa.cloudDownload} $cloudClass",
                            id = cloudIconID,
                            style = Style(marginTop = "0.45rem"),
-                           key = SubscriptKicKey(kics.order.file.download, tongue.getItem().id),
-                           onClicka = disableableHandler(state.downloadActive) {onDownload(cloudIconID, tongue.getItem(), updateTitleControls)})
+                           key = SubscriptKicKey(kics.download, tongue.item.id),
+                           onClicka = disableableHandler(state.downloadActive) {onDownload(cloudIconID, tongue.item, updateTitleControls)})
                 },
                 renderContent = {o->
-                    val orderFile = tongue.getItem()
+                    val orderFile = tongue.item
                     renderOrderFileParams(o, orderFile)
                 },
                 titleLinkURL = null,

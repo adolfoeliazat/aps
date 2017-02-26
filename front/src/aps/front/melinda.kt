@@ -4,6 +4,7 @@ import aps.*
 import aps.const.text.numberSign
 import into.kommon.*
 import org.w3c.dom.Element
+import org.w3c.dom.events.MouseEvent
 import kotlin.js.json
 
 class MelindaVaginalUpdateParams<ItemRTO, out UpdateItemRequest, in UpdateItemResponse>(
@@ -47,8 +48,11 @@ interface MelindaLipsInterface {
 interface MelindaTongueInterface<out Item> {
     suspend fun onEdit()
     suspend fun onDelete()
-    fun getItem(): Item
+    val items: List<Item>
+    val itemIndex: Int
 }
+
+val <Item> MelindaTongueInterface<Item>.item: Item get() = items[itemIndex]
 
 class MelindaCreateParams<CreateRequest, CreateResponse>(
     val hasCreateButton: Boolean,
@@ -96,6 +100,7 @@ class MelindaBoobs<
     private var chunksLoaded = 0
     private var controlsContent by notNullOnce<Control2>()
     private var mainContent by notNullOnce<ToReactElementable>()
+    private var liveItems by notNullOnce<MutableList<Item>>() // Items can change in here as result of user editing shit, without the need to reload everything
 
     fun makeStripContent() {
         controlsContent = object:Control2(Attrs()) {
@@ -217,6 +222,8 @@ class MelindaBoobs<
             is FormResponse2.Shitty -> res
             is FormResponse2.Hunky -> {
                 val meat = res.meat
+                liveItems = meat.items.toMutableList()
+
                 makeStripContent()
 
                 val items = makeItemsControl(meat, noItemsMessage = true, chunkIndex = chunksLoaded - 1)
@@ -230,16 +237,15 @@ class MelindaBoobs<
     }
 
     private fun makeItemsControl(meat: ItemsResponse<Item>, noItemsMessage: Boolean, chunkIndex: Int, containerID: String? = null): ToReactElementable {
-        if (meat.items.isEmpty()) {
+        if (liveItems.isEmpty()) {
             return if (noItemsMessage) span(const.msg.noItems)
             else NOTRE
         }
 
         return kdiv(id = containerID){o->
             o- kdiv(className = css.lipsItemContainer){o->
-                for ((fileIndex, _orderFile) in meat.items.withIndex()) {
-                    MelindaTongue(_orderFile, o)
-                }
+                for (i in 0..liveItems.lastIndex)
+                    MelindaTongue(i, o)
             }
 
             meat.moreFromID?.let {moreFromID ->
@@ -286,13 +292,13 @@ class MelindaBoobs<
         }
     }
 
-    inner class MelindaTongue(initialItem: Item, o: ElementBuilder) {
+    inner class MelindaTongue(itemIndex: Int, o: ElementBuilder) {
         var itemPlace = Placeholder()
-        var item = initialItem
         val viewRootID = puid()
 
-        val tongueInterface = object: MelindaTongueInterface<Item> {
-            override fun getItem(): Item = item
+        val tongueInterface = object:MelindaTongueInterface<Item> {
+            override val items = liveItems
+            override val itemIndex = itemIndex
 
             override suspend fun onDelete() {
                 val executed = modalConfirmAndDelete(
@@ -319,7 +325,7 @@ class MelindaBoobs<
                         req = uparams.makeUpdateItemRequest(item)
                     ),
                     onSuccessa = {res->
-                        item = uparams.getItemFromUpdateItemResponse(res)
+                        liveItems[itemIndex] = uparams.getItemFromUpdateItemResponse(res)
                         enterViewMode()
                     }
                 )
@@ -398,10 +404,12 @@ fun <ItemRTO : MelindaItemRTO, LipsState> makeUsualMelindaLips(
     renderContent: (ElementBuilder) -> Unit,
     initialLipsState: LipsState,
     controlsDisabled: (LipsState) -> Boolean = {false},
+    // TODO:vgrechka Remove ItemRTO parameter from lambdas, as it can be obtained from tongueInterface
     icon: (ItemRTO) -> IconClass,
     titleLinkURL: String?,
     hasEditControl: (ItemRTO) -> Boolean,
-    hasDeleteControl: (ItemRTO) -> Boolean
+    hasDeleteControl: (ItemRTO) -> Boolean,
+    burgerMenu: () -> Menu? = {null}
 )
     : MelindaLipsInterface
 {
@@ -410,7 +418,7 @@ fun <ItemRTO : MelindaItemRTO, LipsState> makeUsualMelindaLips(
 
         override fun renderItem(): ToReactElementable {
             val m = MelindaTools
-            val item = tongueInterface.getItem()
+            val item = tongueInterface.item
             return kdiv(id = viewRootID, className = css.lipsItem, opacity = 1.0){o->
                 o- m.row{o->
                     o- kdiv(className = "col-md-12"){o->
@@ -477,18 +485,12 @@ fun <ItemRTO : MelindaItemRTO, LipsState> makeUsualMelindaLips(
         }
 
         private fun renderTitleControls(state: LipsState): ToReactElementable {
-            val item = tongueInterface.getItem()
+            val item = tongueInterface.item
             val disabled = controlsDisabled(state)
-
-            val trashClass: String
-            val pencilClass: String
             val c = css.cunt.header
-            if (disabled) {
-                trashClass = c.rightIconDisabled
-                pencilClass = c.rightIconDisabled
-            } else {
-                trashClass = c.rightIcon
-                pencilClass = c.rightIcon
+            val iconClass = when {
+                disabled -> c.rightIconDisabled
+                else -> c.rightIcon
             }
 
             return hor3(Attrs(className = c.controls)){o->
@@ -499,15 +501,42 @@ fun <ItemRTO : MelindaItemRTO, LipsState> makeUsualMelindaLips(
 
                 if (item.editable) {
                     if (hasDeleteControl(item))
-                        o- kic("${fa.trash} $trashClass",
+                        o- kic("${fa.trash} $iconClass",
                                style = Style(),
-                               key = SubscriptKicKey(kics.order.file.delete, item.id),
+                               key = SubscriptKicKey(kics.delete, item.id),
                                onClicka = disableableHandler(disabled) {tongueInterface.onDelete()})
                     if (hasEditControl(item))
-                        o- kic("${fa.pencil} $pencilClass",
+                        o- kic("${fa.pencil} $iconClass",
                                style = Style(),
-                               key = SubscriptKicKey(kics.order.file.edit, item.id),
+                               key = SubscriptKicKey(kics.edit, item.id),
                                onClicka = disableableHandler(disabled) {tongueInterface.onEdit()})
+                }
+
+                burgerMenu()?.let {menu->
+                    if (menu.items.isNotEmpty()) {
+                        o- kdiv(className = "dropdown"){o->
+                            o- kic("${fa.bars} $iconClass",
+                                   style = Style(),
+                                   dataToggle = "dropdown",
+                                   key = SubscriptKicKey(kics.burger, item.id),
+                                   onClicka = disableableHandler(disabled) {
+
+                                   })
+
+                            o- reactCreateElement("ul", json(
+                                    "className" to "dropdown-menu dropdown-menu-right",
+                                    "style" to json("minWidth" to "10rem")),
+                                menu.items.map {item->
+                                    reactCreateElement("li", json(), listOf(
+                                        reactCreateElement("a", json(
+                                            "href" to "#",
+                                            "onClick" to {e: MouseEvent -> async {
+                                                preventAndStop(e)
+                                                item.act()}}),
+                                            listOf(
+                                                item.title.asReactElement()))))})
+                        }
+                    }
                 }
             }
         }

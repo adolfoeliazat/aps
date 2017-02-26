@@ -53,6 +53,7 @@ class faIcon(val icon: String, @Mix attrs: Attrs, @Mix val style: Style): Contro
 //    return jsFacing_elcl(me)
 //}
 
+@Deprecated("Kill me")
 enum class FAIcon(val string: String) {
     ELLIPSIS_V("ellipsis-v"), BARS("bars");
 

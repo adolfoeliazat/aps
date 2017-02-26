@@ -51,7 +51,7 @@ class SingleUserPage {
                     ),
                     historyParams = HistoryParams<UserParamsHistoryItemRTO, UserParamsHistoryFilter>(
                         renderItem = {
-                            val historyItem = it.getItem()
+                            val historyItem = it.item
                             val m = MelindaTools
                             kdiv{o->
                                 o- kdiv(className = css.history.shit){o->

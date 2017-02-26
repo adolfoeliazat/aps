@@ -38,10 +38,10 @@ class BurgerDropdownButton(
                     reactCreateElement("li", json(), listOf(
                         reactCreateElement("a", json(
                             "href" to "#",
-                            "onClick" to {e: MouseEvent ->
+                            "onClick" to {e: MouseEvent -> async {
                                 preventAndStop(e)
                                 item.act()
-                            }
+                            }}
                         ), listOf(
                             item.title.asReactElement()
                         ))

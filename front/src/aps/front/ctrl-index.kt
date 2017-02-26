@@ -48,11 +48,13 @@ object buttons                           : Fuckers<ButtonKey>(null) {
 }
 
 object kics                              : Fuckers<KicKey>(null) {
+    val download                         by namedFucker(::KicKey); val download_testRef = TestRef(download)
+    val delete                           by namedFucker(::KicKey); val delete_testRef = TestRef(delete)
+    val edit                             by namedFucker(::KicKey); val edit_testRef = TestRef(edit)
+    val burger                           by namedFucker(::KicKey); val burger_testRef = TestRef(burger)
+
     object order                         : Fuckers<KicKey>(this) {
         object file                      : Fuckers<KicKey>(this) {
-            val download                 by namedFucker(::KicKey); val download_testRef = TestRef(download)
-            val delete                   by namedFucker(::KicKey); val delete_testRef = TestRef(delete)
-            val edit                     by namedFucker(::KicKey); val edit_testRef = TestRef(edit)
         }
     }
 }

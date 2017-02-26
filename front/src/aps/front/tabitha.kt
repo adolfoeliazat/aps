@@ -146,7 +146,17 @@ where
                         hasEditControl = {false},
                         hasDeleteControl = {false},
                         drawID = {false},
-                        secondTitle = {formatUnixTime(tongue.getItem().createdAt, includeTZ = false)}
+                        secondTitle = {formatUnixTime(tongue.item.createdAt, includeTZ = false)},
+                        burgerMenu = {
+                            Menu(mutableListOf<MenuItem>()-{o->
+                                if (tongue.itemIndex < tongue.items.lastIndex) {
+                                    val itemBelow = tongue.items[tongue.itemIndex + 1]
+                                    o += MenuItem(t("TOTE", "Сравнить вниз")) {
+                                        clog("Comparing", "this", formatUnixTime(tongue.item.createdAt), "other", formatUnixTime(itemBelow.createdAt))
+                                    }
+                                }
+                            })
+                        }
                     )}
                 )
             )
