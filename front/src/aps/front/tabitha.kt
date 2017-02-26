@@ -119,17 +119,17 @@ where
         if (mode == Mode.HISTORY) {
             historyParams!!
 
-            fun makeFuckingLips(viewRootID: String? = null, item: () -> HistoryItemRTO, burgerMenu: () -> Menu? = {null}) = makeUsualMelindaLips(
+            fun makeFuckingLips(viewRootID: String? = null, thisItem: HistoryItemRTO, thatItem: HistoryItemRTO? = null, burgerMenu: () -> Menu? = {null}) = makeUsualMelindaLips(
                 viewRootID, historyBoobs,
                 icon = {fa.calendarCheckO},
                 initialLipsState = Unit,
                 renderContent = {o ->
-                    o- historyParams.renderItem(item())
+                    o- historyParams.renderItem(thisItem, thatItem)
                 },
                 titleLinkURL = null,
                 drawID = {true},
-                secondTitle = {formatUnixTime(item().createdAt, includeTZ = false)},
-                getItem = item,
+                secondTitle = {formatUnixTime(thisItem.createdAt, includeTZ = false)},
+                getItem = {thisItem},
                 burgerMenu = burgerMenu
             )
 
@@ -152,28 +152,25 @@ where
                     updateParams = null,
                     makeLipsInterface = {viewRootID, tongue -> makeFuckingLips(
                         viewRootID,
-                        item = tongue.toItemSupplier(),
+                        thisItem = tongue.item,
                         burgerMenu = {
                             Menu(mutableListOf<MenuItem>()-{o->
                                 if (tongue.itemIndex < tongue.items.lastIndex) {
-                                    val thisItem = tongue.item
+                                    val itemAbove = tongue.item
                                     val itemBelow = tongue.items[tongue.itemIndex + 1]
 
                                     o += MenuItem(t("TOTE", "Сравнить вниз"), linkKey = SubscriptLinkKey(links.compareBelow, tongue.item.id)) {
                                         clog("Comparing", "this", formatUnixTime(tongue.item.createdAt), "other", formatUnixTime(itemBelow.createdAt))
                                         // TODO:vgrechka Generalize
-                                        val specificItem = thisItem as UserParamsHistoryItemRTO
+                                        val specificItem = itemAbove as UserParamsHistoryItemRTO
                                         val specificBelowItem = itemBelow as UserParamsHistoryItemRTO
                                         openModal(OpenModalParams(
                                             title = t("TOTE", "Сравнение"),
                                             width = "90rem",
                                             body = kdiv{o->
                                                 val c = css.history.diff
-                                                o- makeFuckingLips(item = {thisItem}).renderItem()
-                                                o- makeFuckingLips(item = {itemBelow}).renderItem()
-                                            },
-                                            footer = kdiv{o->
-
+                                                o- makeFuckingLips(thisItem = itemAbove, thatItem = itemBelow).renderItem()
+                                                o- makeFuckingLips(thisItem = itemBelow, thatItem = itemAbove).renderItem()
                                             }
                                         ))
                                     }
@@ -234,7 +231,7 @@ where
 }
 
 class HistoryParams<HistoryItemRTO, Filter>(
-    val renderItem: (HistoryItemRTO) -> ToReactElementable,
+    val renderItem: (thisItem: HistoryItemRTO, thatItem: HistoryItemRTO?) -> ToReactElementable,
     val sendItemsRequest: suspend (req: ItemsRequest<Filter>) -> FormResponse2<ItemsResponse<HistoryItemRTO>>,
     val historyFilterValues: Array<Filter>,
     val defaultHistoryFilterValue: Filter,

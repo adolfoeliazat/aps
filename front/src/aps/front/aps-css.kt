@@ -607,6 +607,8 @@ object css {
         }
     }
 
+    val redOutline by Style("border: 0.3rem solid #f44336;")
+
 
     val lipsItemContainer by Style("")
     val lipsItem by Style("margin-bottom: 1.5rem;")

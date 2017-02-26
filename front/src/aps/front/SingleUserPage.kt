@@ -50,8 +50,10 @@ class SingleUserPage {
                         }
                     ),
                     historyParams = HistoryParams<UserParamsHistoryItemRTO, UserParamsHistoryFilter>(
-                        renderItem = {
-                            renderUserParamsHistoryItem(it)
+                        renderItem = {thisItem, thatItem ->
+                            renderUserParamsHistoryItem(
+                                thisItem,
+                                outlinePhone = thatItem != null && thisItem.entity.profilePhone != thatItem.entity.profilePhone)
                         },
                         sendItemsRequest = {req-> sendGetUserParamsHistoryItems(req)},
                         historyFilterValues = UserParamsHistoryFilter.values(),

@@ -2,6 +2,26 @@
 
 package aps.front
 
+
+//fun qwe() {
+//    class X(val f: (() -> Unit)?)
+//    val x = X({})
+//
+//    if (x.f != null) {
+//        x.f() // Compiler error: Reference has a nullable type...
+//    }
+//}
+//
+//fun asd() {
+//    class X(val a: Int?)
+//    val x = X(10)
+//
+//    if (x.a != null) {
+//        val b: Int = x.a // Smart cast works
+//    }
+//}
+
+
 //fun main(args: Array<String>) {
 //    async {Q.qwe()}
 //}

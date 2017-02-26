@@ -18,7 +18,7 @@ class OpenModalParams(
     val title: String,
     val body: ToReactElementable,
     val width: String? = null,
-    val footer: ToReactElementable
+    val footer: ToReactElementable? = null
 )
 
 interface ModalOperations {
@@ -57,8 +57,10 @@ fun openModal(p: OpenModalParams): ModalOperations {
                             }
                         }
                     }
-                    o- kdiv(className = "modal-footer"){o->
-                        o- p.footer
+                    if (p.footer != null) {
+                        o- kdiv(className = "modal-footer"){o->
+                            o- p.footer
+                        }
                     }
                 }
             }
