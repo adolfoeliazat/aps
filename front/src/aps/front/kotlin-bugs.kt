@@ -2,6 +2,22 @@
 
 package aps.front
 
+//fun main(args: Array<String>) {
+//    async {Q.qwe()}
+//}
+//
+//object Q {
+//    suspend fun qwe() {
+//        fun f() = console.log("fffffffffffffffff")
+//
+//        val g = ::f
+//        g()
+//
+//        asd() // If this line is commented out, it works
+//    }
+//
+//    suspend fun asd() {}
+//}
 
 //fun main(args: Array<String>) {
 //    inline fun g(block: () -> Unit) {

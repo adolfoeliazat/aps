@@ -53,7 +53,7 @@ class AdminUsersPage {
                 makeDeleteItemRequest = {DeleteUserRequest()},
                 updateParams = null,
                 makeLipsInterface = {viewRootID, tongue -> makeUsualMelindaLips(
-                    tongue, viewRootID, bint,
+                    viewRootID, bint,
                     icon = {userKindIcon(it.kind)},
                     initialLipsState = Unit,
                     renderContent = {o->
@@ -62,8 +62,7 @@ class AdminUsersPage {
                     titleLinkURL = makeURL(pages.uaAdmin.user, listOf(
                         URLParamValue(TabithaURLQuery.id, tongue.item.id)
                     )),
-                    hasEditControl = {false},
-                    hasDeleteControl = {false}
+                    getItem = tongue.toItemSupplier()
                 )}
             )
         )

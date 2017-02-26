@@ -52,7 +52,8 @@ interface MelindaTongueInterface<out Item> {
     val itemIndex: Int
 }
 
-val <Item> MelindaTongueInterface<Item>.item: Item get() = items[itemIndex]
+val <Item> MelindaTongueInterface<Item>.item get() = items[itemIndex]
+fun <Item> MelindaTongueInterface<Item>.toItemSupplier() = {item}
 
 class MelindaCreateParams<CreateRequest, CreateResponse>(
     val hasCreateButton: Boolean,
@@ -392,9 +393,18 @@ object MelindaTools {
     }
 }
 
+class MakeUsualMelindaLipsCallbacks(
+    val onDelete: (suspend () -> Unit)? = null,
+    val onEdit: (suspend () -> Unit)? = null
+)
+
+fun <T> MelindaTongueInterface<T>.toMakeUsualMelindaLipsCallbacks() = MakeUsualMelindaLipsCallbacks(
+    onDelete = {this.onDelete()},
+    onEdit = {this.onEdit()}
+)
+
 fun <ItemRTO : MelindaItemRTO, LipsState> makeUsualMelindaLips(
-    tongueInterface: MelindaTongueInterface<ItemRTO>,
-    viewRootID: String,
+    viewRootID: String? = null,
     boobsInterface: MelindaBoobsInterface,
     smallOverlayIcon: () -> IconClass? = {null},
     secondTitle: () -> String? = {null},
@@ -407,8 +417,8 @@ fun <ItemRTO : MelindaItemRTO, LipsState> makeUsualMelindaLips(
     // TODO:vgrechka Remove ItemRTO parameter from lambdas, as it can be obtained from tongueInterface
     icon: (ItemRTO) -> IconClass,
     titleLinkURL: String?,
-    hasEditControl: (ItemRTO) -> Boolean,
-    hasDeleteControl: (ItemRTO) -> Boolean,
+    getItem: () -> ItemRTO,
+    callbacks: MakeUsualMelindaLipsCallbacks = MakeUsualMelindaLipsCallbacks(),
     burgerMenu: () -> Menu? = {null}
 )
     : MelindaLipsInterface
@@ -418,7 +428,7 @@ fun <ItemRTO : MelindaItemRTO, LipsState> makeUsualMelindaLips(
 
         override fun renderItem(): ToReactElementable {
             val m = MelindaTools
-            val item = tongueInterface.item
+            val item = getItem()
             return kdiv(id = viewRootID, className = css.lipsItem, opacity = 1.0){o->
                 o- m.row{o->
                     o- kdiv(className = "col-md-12"){o->
@@ -485,7 +495,7 @@ fun <ItemRTO : MelindaItemRTO, LipsState> makeUsualMelindaLips(
         }
 
         private fun renderTitleControls(state: LipsState): ToReactElementable {
-            val item = tongueInterface.item
+            val item = getItem()
             val disabled = controlsDisabled(state)
             val c = css.cunt.header
             val iconClass = when {
@@ -500,16 +510,18 @@ fun <ItemRTO : MelindaItemRTO, LipsState> makeUsualMelindaLips(
                 renderAdditionalControls(o, state, updateTitleControls)
 
                 if (item.editable) {
-                    if (hasDeleteControl(item))
+                    callbacks.onDelete?.let {act->
                         o- kic("${fa.trash} $iconClass",
                                style = Style(),
                                key = SubscriptKicKey(kics.delete, item.id),
-                               onClicka = disableableHandler(disabled) {tongueInterface.onDelete()})
-                    if (hasEditControl(item))
+                               onClicka = disableableHandler(disabled) {act()})
+                    }
+                    callbacks.onEdit?.let {act->
                         o- kic("${fa.pencil} $iconClass",
                                style = Style(),
                                key = SubscriptKicKey(kics.edit, item.id),
-                               onClicka = disableableHandler(disabled) {tongueInterface.onEdit()})
+                               onClicka = disableableHandler(disabled) {act()})
+                    }
                 }
 
                 burgerMenu()?.let {menu->
@@ -539,7 +551,6 @@ fun <ItemRTO : MelindaItemRTO, LipsState> makeUsualMelindaLips(
         }
     }
 }
-
 
 
 

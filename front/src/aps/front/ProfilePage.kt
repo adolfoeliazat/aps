@@ -89,7 +89,26 @@ fun renderProfile(user: UserRTO): ToReactElementable {
     }
 }
 
-
+fun renderUserParamsHistoryItem(item: UserParamsHistoryItemRTO): ElementBuilder {
+    val m = MelindaTools
+    return kdiv{o->
+        o- kdiv(className = css.history.shit){o->
+            o- m.row(marginBottom = null){o->
+                o- m.col(6, t("TOTE", "Кто сделал"), contentStyle = Style(display = "flex", alignItems = "center")){o->
+                    o- renderUserKindIconWithGap(item.requester.kind)
+                    o- span(stringBuild {o ->
+                        val currentName = fullName(item.requester)
+                        o += currentName
+                        val thenName = fullName(item.thenRequester.firstName, item.thenRequester.lastName)
+                        if (thenName != currentName)
+                            o += " (${t("then", "тогда")} $thenName)"
+                    })
+                }
+            }
+        }
+        o- renderProfile(item.entity)
+    }
+}
 
 
 

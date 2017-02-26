@@ -118,6 +118,21 @@ where
     override suspend fun load(): FormResponse2.Shitty<*>? {
         if (mode == Mode.HISTORY) {
             historyParams!!
+
+            fun makeFuckingLips(viewRootID: String? = null, item: () -> HistoryItemRTO, burgerMenu: () -> Menu? = {null}) = makeUsualMelindaLips(
+                viewRootID, historyBoobs,
+                icon = {fa.calendarCheckO},
+                initialLipsState = Unit,
+                renderContent = {o ->
+                    o- historyParams.renderItem(item())
+                },
+                titleLinkURL = null,
+                drawID = {true},
+                secondTitle = {formatUnixTime(item().createdAt, includeTZ = false)},
+                getItem = item,
+                burgerMenu = burgerMenu
+            )
+
             val boobs = MelindaBoobs<HistoryItemRTO, HistoryFilter, /*CreateRequest=*/ Nothing, /*CreateResponse=*/ Nothing, /*UpdateItemRequest=*/ Nothing, /*UpdateItemResponse=*/ Nothing>(
                 createParams = null,
                 makeURLForReload = {boobsParams->
@@ -135,29 +150,36 @@ where
                     humanItemTypeName = t("TOTE", "imf db47abf8-ae10-4450-8328-7eeace10c476"),
                     makeDeleteItemRequest = {unsupported("bae3c22e-5397-4b7d-82fa-7558f7836f39")},
                     updateParams = null,
-                    makeLipsInterface = {viewRootID, tongue -> makeUsualMelindaLips(
-                        tongue, viewRootID, historyBoobs,
-                        icon = {fa.calendarCheckO},
-                        initialLipsState = Unit,
-                        renderContent = {o->
-                            o- historyParams.renderItem(tongue)
-                        },
-                        titleLinkURL = null,
-                        hasEditControl = {false},
-                        hasDeleteControl = {false},
-                        drawID = {true},
-                        secondTitle = {formatUnixTime(tongue.item.createdAt, includeTZ = false)},
+                    makeLipsInterface = {viewRootID, tongue -> makeFuckingLips(
+                        viewRootID,
+                        item = tongue.toItemSupplier(),
                         burgerMenu = {
                             Menu(mutableListOf<MenuItem>()-{o->
                                 if (tongue.itemIndex < tongue.items.lastIndex) {
+                                    val thisItem = tongue.item
                                     val itemBelow = tongue.items[tongue.itemIndex + 1]
+
                                     o += MenuItem(t("TOTE", "Сравнить вниз"), linkKey = SubscriptLinkKey(links.compareBelow, tongue.item.id)) {
                                         clog("Comparing", "this", formatUnixTime(tongue.item.createdAt), "other", formatUnixTime(itemBelow.createdAt))
+                                        // TODO:vgrechka Generalize
+                                        val specificItem = thisItem as UserParamsHistoryItemRTO
+                                        val specificBelowItem = itemBelow as UserParamsHistoryItemRTO
+                                        openModal(OpenModalParams(
+                                            title = t("TOTE", "Сравнение"),
+                                            width = "90rem",
+                                            body = kdiv{o->
+                                                val c = css.history.diff
+                                                o- makeFuckingLips(item = {thisItem}).renderItem()
+                                                o- makeFuckingLips(item = {itemBelow}).renderItem()
+                                            },
+                                            footer = kdiv{o->
+
+                                            }
+                                        ))
                                     }
                                 }
                             })
-                        }
-                    )}
+                        })}
                 )
             )
             historyBoobs = boobs.boobsInterface
@@ -212,7 +234,7 @@ where
 }
 
 class HistoryParams<HistoryItemRTO, Filter>(
-    val renderItem: (tongue: MelindaTongueInterface<HistoryItemRTO>) -> ToReactElementable,
+    val renderItem: (HistoryItemRTO) -> ToReactElementable,
     val sendItemsRequest: suspend (req: ItemsRequest<Filter>) -> FormResponse2<ItemsResponse<HistoryItemRTO>>,
     val historyFilterValues: Array<Filter>,
     val defaultHistoryFilterValue: Filter,

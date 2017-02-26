@@ -121,7 +121,7 @@ class UACustomerSingleOrderPageFilesTab(val order: UAOrderRTO) : TabithaTab {
         makeLipsInterface = {viewRootID, tongue ->
             val cloudIconID = puid()
             makeUsualMelindaLips(
-                tongue, viewRootID, boobsInterface,
+                viewRootID, boobsInterface,
                 icon = {fa.file},
                 initialLipsState = FileLipsState(downloadActive = false),
                 controlsDisabled = {state-> state.downloadActive},
@@ -148,8 +148,8 @@ class UACustomerSingleOrderPageFilesTab(val order: UAOrderRTO) : TabithaTab {
                     renderOrderFileParams(o, orderFile)
                 },
                 titleLinkURL = null,
-                hasEditControl = {true},
-                hasDeleteControl = {true}
+                callbacks = tongue.toMakeUsualMelindaLipsCallbacks(),
+                getItem = tongue.toItemSupplier()
             )
         }
     )

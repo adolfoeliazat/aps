@@ -596,6 +596,15 @@ object css {
             padding-bottom: 0.5rem;
             margin-bottom: 0.5rem;
         """)
+
+        object diff : Group(this) {
+            val item by Style("")
+            val header by Style("")
+            val title by Style("")
+            val stamp by Style("")
+            val separator by Style("")
+            val body by Style("")
+        }
     }
 
 

@@ -14,10 +14,8 @@ class OpenModalParamsButton(
 )
 
 class OpenModalParams(
-    val leftMarginColor: Color,
+    val leftMarginColor: Color? = null,
     val title: String,
-//    val okButton: OpenModalParamsButton,
-//    val cancelButton: OpenModalParamsButton,
     val body: ToReactElementable,
     val width: String? = null,
     val footer: ToReactElementable
@@ -42,7 +40,8 @@ fun openModal(p: OpenModalParams): ModalOperations {
             fadeClass += testOffClassSuffix
         o- kdiv(Attrs(className = "modal $fadeClass", id = modalID, tabIndex = -1)){o->
             o- kdiv(className = "modal-dialog", width = p.width){o->
-                o- kdiv(className = "modal-content", borderLeft = "0.5em solid ${p.leftMarginColor}"){o->
+                val borderLeft = p.leftMarginColor?.let {"0.5em solid $it"}
+                o- kdiv(className = "modal-content", borderLeft = borderLeft){o->
                     o- kdiv(className = "modal-header", baseStyle = Style(borderTopLeftRadius = 6, borderTopRightRadius = 6)){o->
                         o- Button(id = timesButtonID, title = times, className = "close", dataDismiss = "modal")
                         o- h4(className = "modal-title"){o->
