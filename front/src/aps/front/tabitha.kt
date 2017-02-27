@@ -218,16 +218,18 @@ where
                 Mode.CURRENT -> hor2{o->
                     if (historyParams != null) {
                         o- Button(icon = fa.adjust, level = Button.Level.DEFAULT, key = buttons.compare) {
-                            val res = askRegina(ReginaGetPairOfLastHistoryItems(
-                                type = historyParams.historyItemClass,
-                                entityID = tabitha.entityID))
-                            exhaustive/when (res) {
-                                is FormResponse2.Shitty -> openErrorModal(res.error)
-                                is FormResponse2.Hunky -> {
-                                    if (res.meat.prelastItem != null) {
-                                        openComparisonModal(res.meat.lastItem, res.meat.prelastItem)
-                                    } else {
-                                        openInfoModal(t("TOTE", "В истории только одна запись -- не с чем сравнивать"))
+                            twoStepBlinkingSut(it.jqel) {
+                                val res = askRegina(ReginaGetPairOfLastHistoryItems(
+                                    type = historyParams.historyItemClass,
+                                    entityID = tabitha.entityID))
+                                exhaustive/when (res) {
+                                    is FormResponse2.Shitty -> openErrorModal(res.error)
+                                    is FormResponse2.Hunky -> {
+                                        if (res.meat.prelastItem != null) {
+                                            openComparisonModal(res.meat.lastItem, res.meat.prelastItem)
+                                        } else {
+                                            openInfoModal(t("TOTE", "В истории только одна запись -- не с чем сравнивать"))
+                                        }
                                     }
                                 }
                             }

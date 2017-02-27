@@ -453,7 +453,11 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                     testCompareBelow(scrollTop = 1740, subscript = 3L, stateDescr = "Diff: state, phone, about me", aid = "ecc07cbe-e6b0-437c-b54e-21e326680072")
                 }
                 twoStepSequence({buttonClick(buttons.back_testRef)}, "fa9cb012-92d4-4f28-a451-af5faf5a2fd7")
-                step({buttonClick(buttons.compare_testRef)}, TestGlobal.modalShownLock, "af4df80e-761e-4e53-b217-0abfa783d26b")
+                halfwayThenModalSequence(
+                    action = {buttonClick(buttons.compare_testRef)},
+                    modalAction = {clog("fuck you")},
+                    aid = "af4df80e-761e-4e53-b217-0abfa783d26b"
+                )
             }
         }
     }
