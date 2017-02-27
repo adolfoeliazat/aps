@@ -555,6 +555,32 @@ fun <ItemRTO : MelindaItemRTO, LipsState> makeUsualMelindaLips(
     }
 }
 
+class BoobyLoader<Item, Filter, CreateRequest, CreateResponse, UpdateItemRequest, UpdateItemResponse>(
+    val header: String,
+    val makeBoobs: () -> MelindaBoobs<Item, Filter, CreateRequest, CreateResponse, UpdateItemRequest, UpdateItemResponse>
+) where
+    Filter: Enum<Filter>, Filter: Titled,
+    Item : MelindaItemRTO,
+    CreateRequest : RequestMatumba, CreateResponse : CommonResponseFields,
+    UpdateItemRequest : RequestMatumba, UpdateItemResponse : CommonResponseFields
+{
+    var bint by notNullOnce<MelindaBoobsInterface>()
+
+    suspend fun load(): PageLoadingError? {
+        val boobs = makeBoobs()
+
+        bint = boobs.boobsInterface
+        boobs.load()?.let {return PageLoadingError(it.error)}
+        Globus.world.setPage(Page(header = usualHeader(header),
+                                  headerControls = kdiv {o ->
+                                      o - bint.controlsContent
+                                  },
+                                  body = bint.mainContent))
+        return pageLoadedFineResult
+    }
+}
+
+
 
 
 

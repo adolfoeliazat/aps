@@ -39,7 +39,7 @@ class DashboardPage(val world: World) {
                                     title = t("TOTE", "Новых заказов рассмотреть"),
                                     amount = r.ordersToApprove,
                                     url = makeURL(pages.uaAdmin.orders, listOf(
-                                        URLParamValue(UAAdminOrdersPage().makeBoobs().urlQuery.filter, AdminOrderFilter.TO_APPROVE)
+                                        URLParamValue(UAAdminOrdersPage().booby.makeBoobs().urlQuery.filter, AdminOrderFilter.TO_APPROVE)
                                     )),
                                     linkKey = links.adminDashboard.ordersToApprove)}),
 

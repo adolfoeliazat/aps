@@ -4,24 +4,11 @@ import aps.*
 import into.kommon.*
 
 class UAAdminOrdersPage {
-    private var bint by notNullOnce<MelindaBoobsInterface>()
+    suspend fun load() = booby.load()
 
-    // TODO:vgrechka Deduplicate    f5af6cdf-3fa1-4b09-985e-f949e187fa60
-    suspend fun load(): PageLoadingError? {
-        val boobs = makeBoobs()
-
-        bint = boobs.boobsInterface
-        boobs.load()?.let {return PageLoadingError(it.error)}
-        Globus.world.setPage(Page(header = usualHeader(t("TOTE", "Заказы")),
-                                  headerControls = kdiv{o->
-                                      o- bint.controlsContent
-                                  },
-                                  body = bint.mainContent))
-        return pageLoadedFineResult
-    }
-
-    fun makeBoobs(): MelindaBoobs<UAOrderRTO, AdminOrderFilter, UAOrderParamsRequest, UACreateOrderResponse, UAOrderParamsRequest, UAUpdateOrderResponse> {
-        return MelindaBoobs(
+    val booby: BoobyLoader<UAOrderRTO, AdminOrderFilter, UAOrderParamsRequest, UACreateOrderResponse, UAOrderParamsRequest, UAUpdateOrderResponse> by mere(BoobyLoader(
+        header = t("TOTE", "Заказы"),
+        makeBoobs = {MelindaBoobs<UAOrderRTO, AdminOrderFilter, UAOrderParamsRequest, UACreateOrderResponse, UAOrderParamsRequest, UAUpdateOrderResponse>(
             createParams = MelindaCreateParams(
                 hasCreateButton = false,
                 createModalTitle = t("TOTE", "Новый заказ"),
@@ -46,7 +33,7 @@ class UAAdminOrdersPage {
 
                 makeLipsInterface = {viewRootID, tongue -> makeUsualMelindaLips(
                     viewRootID,
-                    searchString = bint.getSearchString(),
+                    searchString = booby.bint.getSearchString(),
                     icon = {fa.folderOpen},
                     initialLipsState = Unit,
                     renderContent = {o ->
@@ -58,44 +45,10 @@ class UAAdminOrdersPage {
                     getItem = tongue.toItemSupplier()
                 )}
             )
-        )
-    }
+        )}
+    ))
 }
 
-class UACustomerOrdersPage(val world: World) {
-    suspend fun load(): PageLoadingError? {
-        imf("")
-//        val m = Pizdalinda<UAOrderRTO, Nothing, CustomerOrderFilter>(
-//            ui = world,
-//            urlPath = "orders.html",
-//            procedureName = "customerGetOrders",
-//            header = {t("My Orders", "Мои заказы")},
-//            filterSelectValues = CustomerOrderFilter.values(),
-//            defaultFilter = CustomerOrderFilter.ALL,
-//
-//            renderItem = {index, order ->
-//                kdiv {o ->
-//                    o - "pizda"
-//                }
-//            }
-//        )
-//
-//        m.specifyPlus(
-//            plusFormSpec = FormSpec<UAOrderParamsRequest, UAOrderParamsRequest.Response>(
-//                req = UAOrderParamsRequest(),
-//                ui = world,
-//                primaryButtonTitle = t("Create", "Создать"),
-//                cancelButtonTitle = const.text.shebang.defaultCancelButtonTitle),
-//            onPlusFormSuccessa = {res->
-//                world.pushNavigate(makeURL(pages.uaCustomer.order, listOf(
-//                    URLParamValue(UASingleOrderPage.urlQuery.id, res.orderID)
-//                )))
-//            }
-//        )
-//
-//        m.ignita()
-        return null
-    }
-}
+
 
 

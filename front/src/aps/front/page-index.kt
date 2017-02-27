@@ -16,7 +16,7 @@ object pages {
         val signUp by namedFucker(::signUpPage); val signUp_testRef = TestRef(signUp)
         val makeOrder by namedFucker {PageSpec(it, t("Make Order", "Заказать"), skipFirstTimeRendering = false, requiresSignIn = false) {MakeOrderPage(it).load()}}; val makeOrder_testRef = TestRef(makeOrder)
         val confirmOrder by namedFucker {PageSpec(it, navTitle = null, skipFirstTimeRendering = false, requiresSignIn = false) {ConfirmOrderPage(it).load()}}; val confirmOrder_testRef = TestRef(confirmOrder)
-        val orders by namedFucker {privatePage(it, t("My Orders", "Мои заказы")) {UACustomerOrdersPage(it).load()}}; val orders_testRef = TestRef(orders)
+        val orders by namedFucker {privatePage(it, t("My Orders", "Мои заказы")) {imf("95d83cfe-afd6-44bb-9d42-ed096dc13e74")}}; val orders_testRef = TestRef(orders)
         val order by namedFucker {privatePage(it) {UASingleOrderPage().load()}}; val order_testRef = TestRef(order)
         val support by namedFucker {privatePage(it, t("Support", "Поддержка")) {imf()}}
         val dashboard by namedFucker {privatePage(it) {DashboardPage(it).load()}}
@@ -30,7 +30,7 @@ object pages {
         val samples by namedFucker {staticPage(it, t("Samples", "Примеры"))}
         val faq by namedFucker {staticPage(it, t("FAQ", "ЧаВо"))}
         val orders by namedFucker {privatePage(it, t("My Orders", "Мои заказы")) {imf()}}
-        val store by namedFucker {privatePage(it, t("Store", "Стор")) {imf()}}
+        val store by namedFucker {privatePage(it, t("Store", "Стор")) {StorePage().load()}}
         val profile by namedFucker {PageSpec(it, navTitle = null, skipFirstTimeRendering = false, requiresSignIn = true) {ProfilePage().load()}}
         val dashboard by namedFucker {privatePage(it) {DashboardPage(it).load()}}
         val signIn by namedFucker(::signInPage); val signIn_testRef = TestRef(signIn)

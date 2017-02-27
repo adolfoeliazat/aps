@@ -21,7 +21,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
     object sessionIndex {
         val ivo1=1; val ivo2=2; val ivo3=3; val ivo4=4; val ivo5=5
         val kafka1=1; val kafka2=2; val kafka3=3
-        val gogol1=1;
+        val gogol1=1; val gogol2=2;
         val dasja1=1; val dasja2=2; val dasja3=3; val dasja4=4; val dasja5=5; val dasja6=6
     }
 
@@ -487,7 +487,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
         }
 
         definePoint (13) {
-
+            bootWriterWithToken("gogol", sessionIndex.gogol2, makeURL(pages.uaWriter.store, listOf()), aid = "8ce00463-19a8-4239-a113-7cd1d2255189")
         }
     }
 
@@ -613,7 +613,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
     private suspend fun bootAdminWithTokenToOrdersToApproveList(sessionNumber: Int, aid: String) {
         bootAdminWithToken(sessionNumber, makeURL(pages.uaAdmin.orders_testRef, listOf(
-            URLParamValue(UAAdminOrdersPage().makeBoobs().urlQuery.filter, AdminOrderFilter.TO_APPROVE)
+            URLParamValue(UAAdminOrdersPage().booby.makeBoobs().urlQuery.filter, AdminOrderFilter.TO_APPROVE)
         )), aid)
     }
 

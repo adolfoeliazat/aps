@@ -72,6 +72,7 @@ object selects                           : Fuckers<SelectKey<*>>(null) {
 
     val adminOrderFilter                 by namedFucker({SelectKey<AdminOrderFilter>(it)}); val adminOrderFilter_testRef = TestRef(adminOrderFilter)
     val adminUserFilter                  by namedFucker({SelectKey<AdminUserFilter>(it)}); val adminUserFilter_testRef = TestRef(adminUserFilter)
+    val storeFilter                      by namedFucker({SelectKey<StoreFilter>(it)}); val storeFilter_testRef = TestRef(storeFilter)
 }
 
 object links                             : Fuckers<LinkKey>(null) {

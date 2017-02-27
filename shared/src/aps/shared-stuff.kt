@@ -269,6 +269,10 @@ enum class AdminOrderFilter(override val title: String): Titled {
     TO_APPROVE(t("TOTE", "Ждут аппрува"))
 }
 
+enum class StoreFilter(override val title: String): Titled {
+    ALL(t("TOTE", "Все"))
+}
+
 enum class WriterFileFilter(override val title: String): Titled {
     ALL(t("TOTE", "Все")),
     FROM_ME(t("TOTE", "Мои")),
