@@ -384,9 +384,9 @@ object MelindaTools {
             o- formatUnixTime(value)
         }
 
-    fun detailsRow(value: String, highlightRanges: List<IntRangeRTO>, title: String? = null): ToReactElementable {
+    fun detailsRow(value: String, highlightRanges: List<IntRangeRTO>, title: String? = null, contentClassName: String? = null): ToReactElementable {
         return row{o->
-            o- col(12, title ?: t("Details", "Детали"), Style(whiteSpace = "pre-wrap")){o->
+            o- col(12, title ?: t("Details", "Детали"), Style(whiteSpace = "pre-wrap"), contentClassName = contentClassName){o->
                 o- highlightedShit(value, highlightRanges, style = Style(marginBottom = "0px"))
             }
         }

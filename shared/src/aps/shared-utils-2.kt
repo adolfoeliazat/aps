@@ -94,7 +94,10 @@ inline fun <T> Iterable<T>.sumByLong(selector: (T) -> Long): Long {
 fun fullName(x: UserRTO) = fullName(x.firstName, x.lastName)
 fun fullName(firstName: String, lastName: String) = "$firstName $lastName".trim()
 
-
+fun <T> Boolean.then(block: () -> T): T? = when (this) {
+    true -> block()
+    else -> null
+}
 
 
 

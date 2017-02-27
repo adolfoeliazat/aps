@@ -65,7 +65,7 @@ class ProfilePage {
     }
 }
 
-fun renderProfile(user: UserRTO, outlinePhone: Boolean = false): ToReactElementable {
+fun renderProfile(user: UserRTO, opts: UserRTORenderingOptions = UserRTORenderingOptions()): ToReactElementable {
     val m = MelindaTools
     return kdiv{o->
         o- m.row {o->
@@ -80,16 +80,21 @@ fun renderProfile(user: UserRTO, outlinePhone: Boolean = false): ToReactElementa
         o- m.row{o->
             o- m.col(3, fields.signUpFirstName.title, user.firstName)
             o- m.col(3, fields.signUpLastName.title, user.lastName)
-            o- m.col(3, fields.profilePhone.title, user.profilePhone, contentClassName = ifOrNull(outlinePhone){css.redOutline})
+            o- m.col(3, fields.profilePhone.title, user.profilePhone, contentClassName = opts.outlinePhone.then{css.redOutline})
         }
 
         if (user.aboutMe.isNotBlank())
-            o- m.detailsRow(user.aboutMe, user.aboutMeHighlightRanges, title = fields.aboutMe.title)
+            o- m.detailsRow(user.aboutMe, user.aboutMeHighlightRanges, title = fields.aboutMe.title, contentClassName = opts.outlineAboutMe.then{css.redOutline})
         o- renderAdminNotesIfNeeded(user)
     }
 }
 
-fun renderUserParamsHistoryItem(item: UserParamsHistoryItemRTO, outlinePhone: Boolean = false): ElementBuilder {
+class UserRTORenderingOptions(
+    val outlinePhone: Boolean = false,
+    val outlineAboutMe: Boolean = false
+)
+
+fun renderUserParamsHistoryItem(item: UserParamsHistoryItemRTO, opts: UserRTORenderingOptions = UserRTORenderingOptions()): ElementBuilder {
     val m = MelindaTools
     return kdiv{o->
         o- kdiv(className = css.history.shit){o->
@@ -106,7 +111,7 @@ fun renderUserParamsHistoryItem(item: UserParamsHistoryItemRTO, outlinePhone: Bo
                 }
             }
         }
-        o- renderProfile(item.entity, outlinePhone = outlinePhone)
+        o- renderProfile(item.entity, opts)
     }
 }
 
