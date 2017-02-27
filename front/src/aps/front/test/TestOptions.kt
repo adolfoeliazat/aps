@@ -13,7 +13,8 @@ data class TestOptions(
     val ignoreIncorrect: Boolean = false,
     val skipRambling: Boolean = false,
     val addTestOffClassSuffixes: Boolean = false,
-    val fastFileUpload: Boolean = false
+    val fastFileUpload: Boolean = false,
+    val sleepAfterEachAssertionMs: Int? = null
 ) {
     fun toURLQuery(): String {
         return buildString {

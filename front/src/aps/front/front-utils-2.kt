@@ -54,9 +54,9 @@ fun populateWithAdminNotes(o: RequestWithAdminNotes, rto: RTOWithAdminNotes) {
     }
 }
 
-fun renderAdminNotesIfNeeded(rto: RTOWithAdminNotes): ToReactElementable =
+fun renderAdminNotesIfNeeded(rto: RTOWithAdminNotes, opts: RTOWithAdminNotesRenderingOptions = RTOWithAdminNotesRenderingOptions()): ToReactElementable =
     if (isAdmin() && rto.adminNotes.isNotBlank())
-        MelindaTools.detailsRow(rto.adminNotes, rto.adminNotesHighlightRanges, title = fields.adminNotes.title)
+        MelindaTools.detailsRow(rto.adminNotes, rto.adminNotesHighlightRanges, title = fields.adminNotes.title, contentClassName = opts.outlineAdminNotes.then{css.redOutline})
     else
         NOTRE
 

@@ -440,12 +440,26 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
             run { // Admin looks at profile change history
                 bootAdmin_openWriterToApprove(sessionIndex.dasja5, 3L, "21af756c-20b0-48be-89a5-7b0c2e1654b8")
                 step({buttonClick(buttons.history_testRef)}, TestGlobal.pageLoadedLock, "84837274-ff9a-4ae8-81ae-566685fe87fc")
-                // ___stopHereAndEverywhereLater()
-                burgerKicClick(subscript = 9L, aid = "ed3da430-f954-4c31-b923-0a60c6276b54")
-                sleep(100)
-                linkClick(links.compareBelow_testRef, subscript = 9L)
+                // ___showStateDescriptions()
+                testCompareBelow(subscript = 9L, stateDescr = "Diff: states, phones", aid = "ed3da430-f954-4c31-b923-0a60c6276b54")
+                testCompareBelow(scrollTop = 381, subscript = 8L, stateDescr = "Diff: states", aid = "95099fb6-44bd-4991-b869-32b276790fdf")
+                testCompareBelow(scrollTop = 670, subscript = 7L, stateDescr = "Diff: admin notes", aid = "bf86d1cc-44ba-46a1-b1aa-60d30074a71c")
+                testCompareBelow(scrollTop = 955, subscript = 6L, stateDescr = "Diff: state, first and last name, about me", aid = "0bcbcdb9-6755-4e9a-9e6b-3a24d0ca4ce3")
+                testCompareBelow(scrollTop = 1240, subscript = 5L, stateDescr = "Diff: state", aid = "6e39db54-bb04-4d46-a8d3-4ead49c87e37")
+                testCompareBelow(scrollTop = 1540, subscript = 4L, stateDescr = "Diff: first and last name", aid = "a0da8f07-14c2-4062-ad61-4018cec2a336")
+                testCompareBelow(scrollTop = 1740, subscript = 3L, stateDescr = "Diff: state, phone, about me", aid = "ecc07cbe-e6b0-437c-b54e-21e326680072")
             }
         }
+    }
+
+    private suspend fun testCompareBelow(subscript: Long, stateDescr: String, scrollTop: Int? = null, aid: String) {
+        if (scrollTop != null)
+            scrollBodyGradually(scrollTop)
+        burgerKicClick(subscript = subscript, aid = "$aid--1")
+        sleep(100)
+        step({linkClick(links.compareBelow_testRef, subscript = subscript)}, TestGlobal.modalShownLock, "$aid--2")
+        describeState(stateDescr)
+        modalCloseWaiting()
     }
 
     private suspend fun acceptanceSequence(aid: String) {
@@ -723,7 +737,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
         submitFormSequence(testShit, aid = "${p.aid}--2")
     }
 
-    private suspend fun ___stopHereAndEverywhereLater() {
+    private suspend fun ___stopHereAndEverywhereAfter() {
         stopEverywhere()
         describeState("Doing stopHereAndEverywhereLater()...")
     }
@@ -735,6 +749,20 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
             dontStopOnCorrectAssertions = false
         )
         TestGlobal.describeStateConfig = DescribeStateConfig(showBanners = true, autoResumeAfterMs = null)
+    }
+
+    fun ___slowAssertionsEverywhereAfter() {
+        TestGlobal.forcedTestOpts = testOpts().copy(
+            sleepAfterEachAssertionMs = 2000
+        )
+    }
+
+    fun ___showStateDescriptions() {
+        TestGlobal.describeStateConfig = DescribeStateConfig(showBanners = true, autoResumeAfterMs = null)
+    }
+
+    fun ___showStateDescriptionsButAutoResume() {
+        TestGlobal.describeStateConfig = DescribeStateConfig(showBanners = true, autoResumeAfterMs = 5000)
     }
 }
 

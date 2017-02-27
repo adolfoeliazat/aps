@@ -75,24 +75,38 @@ fun renderProfile(user: UserRTO, opts: UserRTORenderingOptions = UserRTORenderin
                     o- formatUnixTime(it)
                 }
             }
-            o- m.col(3, t("TOTE", "Статус"), user.state.title, textClassName = css.user.stateLabel(user.state), icon = user.state.icon)
+            o- m.col(3, t("TOTE", "Статус"), user.state.title, textClassName = css.user.stateLabel(user.state), icon = user.state.icon, contentClassName = opts.outlineState.then{css.redOutline})
         }
         o- m.row{o->
-            o- m.col(3, fields.signUpFirstName.title, user.firstName)
-            o- m.col(3, fields.signUpLastName.title, user.lastName)
+            o- m.col(3, fields.signUpFirstName.title, user.firstName, contentClassName = opts.outlineFirstName.then{css.redOutline})
+            o- m.col(3, fields.signUpLastName.title, user.lastName, contentClassName = opts.outlineLastName.then{css.redOutline})
             o- m.col(3, fields.profilePhone.title, user.profilePhone, contentClassName = opts.outlinePhone.then{css.redOutline})
         }
 
         if (user.aboutMe.isNotBlank())
             o- m.detailsRow(user.aboutMe, user.aboutMeHighlightRanges, title = fields.aboutMe.title, contentClassName = opts.outlineAboutMe.then{css.redOutline})
-        o- renderAdminNotesIfNeeded(user)
+        o- renderAdminNotesIfNeeded(user, opts.adminNotesOptions)
     }
 }
 
 class UserRTORenderingOptions(
     val outlinePhone: Boolean = false,
-    val outlineAboutMe: Boolean = false
+    val outlineAboutMe: Boolean = false,
+    val outlineState: Boolean = false,
+    val outlineFirstName: Boolean = false,
+    val outlineLastName: Boolean = false,
+    val adminNotesOptions: RTOWithAdminNotesRenderingOptions = RTOWithAdminNotesRenderingOptions()
 )
+
+class RTOWithAdminNotesRenderingOptions(
+    val outlineAdminNotes: Boolean = false
+) {
+    companion object {
+        fun fromComparedPair(thisShit: RTOWithAdminNotes, thatShit: RTOWithAdminNotes) = RTOWithAdminNotesRenderingOptions(
+            outlineAdminNotes = thisShit.adminNotes != thatShit.adminNotes
+        )
+    }
+}
 
 fun renderUserParamsHistoryItem(item: UserParamsHistoryItemRTO, opts: UserRTORenderingOptions = UserRTORenderingOptions()): ElementBuilder {
     val m = MelindaTools

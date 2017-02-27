@@ -7,6 +7,8 @@ import into.kommon.*
 import jquery.jq
 import kotlin.js.json
 
+private var currentModalOperations: ModalOperations? = null
+
 class OpenModalParamsButton(
     val title: String,
     val level: Button.Level,
@@ -80,6 +82,8 @@ fun openModal(p: OpenModalParams): ModalOperations {
     jqModal.on("hide.bs.modal") {
     }
     jqModal.on("hidden.bs.modal") {
+        currentModalOperations = null
+
         jqbody.css("overflow-y", "scroll")
         jq(".navbar-fixed-top").css("padding-right", "")
         jqbody.removeClass(css.shebang.paddingRightScrollbarWidthImportant)
@@ -92,12 +96,14 @@ fun openModal(p: OpenModalParams): ModalOperations {
     }
     jqModal.modal(json())
 
-    return object:ModalOperations {
+    val operations = object:ModalOperations {
         override suspend fun close() {
             byid(timesButtonID).click()
             await(shit.promise)
         }
     }
+    currentModalOperations = operations
+    return operations
 }
 
 fun <Req : RequestMatumba, Res : CommonResponseFields>
@@ -214,6 +220,9 @@ fun openErrorModal(msg: String): ModalOperations {
     return modal
 }
 
+suspend fun modalCloseWaiting() {
+    bang(currentModalOperations).close()
+}
 
 
 

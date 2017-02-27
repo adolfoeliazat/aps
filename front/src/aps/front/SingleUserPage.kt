@@ -55,7 +55,11 @@ class SingleUserPage {
                                 thatItem == null -> UserRTORenderingOptions()
                                 else -> UserRTORenderingOptions(
                                     outlinePhone = thisItem.entity.profilePhone != thatItem.entity.profilePhone,
-                                    outlineAboutMe = thisItem.entity.aboutMe != thatItem.entity.aboutMe
+                                    outlineState = thisItem.entity.state != thatItem.entity.state,
+                                    outlineFirstName = thisItem.entity.firstName != thatItem.entity.firstName,
+                                    outlineLastName = thisItem.entity.lastName != thatItem.entity.lastName,
+                                    outlineAboutMe = thisItem.entity.aboutMe != thatItem.entity.aboutMe,
+                                    adminNotesOptions = RTOWithAdminNotesRenderingOptions.fromComparedPair(thisItem.entity, thatItem.entity)
                                 )}
                             )
                         },
@@ -76,4 +80,7 @@ class SingleUserPage {
     }
 
 }
+
+
+
 

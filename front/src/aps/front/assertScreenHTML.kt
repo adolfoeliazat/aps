@@ -61,7 +61,12 @@ suspend fun assertScreenHTML(descr: String? = null, aid: String, opts: AssertScr
 }
 
 suspend fun assertScreenHTML(p: AssertScreenHTMLParams) {
-    if (TestGlobal.skipAllFreakingAssertions) return
+    if (TestGlobal.skipAllFreakingAssertions) {
+        testOpts().sleepAfterEachAssertionMs?.let {
+            sleep(it)
+        }
+        return
+    }
 
     val opts = p.opts ?: TestGlobal.defaultAssertScreenOpts
 //    lastAssertScreenHTMLParams = p
@@ -114,7 +119,6 @@ suspend fun assertScreenHTML(p: AssertScreenHTMLParams) {
 
     if (testOpts().stopOnAssertions) {
         await(object {
-
             init {
                 ctx.verticalPosition = opts.bannerVerticalPosition
                 ctx.horizontalPosition = opts.bannerHorizontalPosition

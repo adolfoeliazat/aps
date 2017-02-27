@@ -289,6 +289,10 @@ suspend fun scrollBodyGradually(targetTop: Double, bursts: Int = fconst.defaultS
     await(scrollBodyGraduallyPromise(targetTop, bursts))
 }
 
+suspend fun scrollBodyGradually(targetTop: Int, bursts: Int = fconst.defaultScrollBursts) {
+    scrollBodyGradually(targetTop.toDouble(), bursts)
+}
+
 suspend fun scrollBodyToBottomGradually() {
     sleep(0)
     scrollBodyGradually(jqbody.height().toDouble() - jqwindow.height().toDouble() + const.topNavbarHeight)
