@@ -21,7 +21,8 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
     object sessionIndex {
         val ivo1=1; val ivo2=2; val ivo3=3; val ivo4=4; val ivo5=5
         val kafka1=1; val kafka2=2; val kafka3=3
-        val dasja1=1; val dasja2=2; val dasja3=3; val dasja4=4; val dasja5=5
+        val gogol1=1;
+        val dasja1=1; val dasja2=2; val dasja3=3; val dasja4=4; val dasja5=5; val dasja6=6
     }
 
     enum class FilesShortcutMode { ALL, A, B }
@@ -33,7 +34,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
     val filesShortcutMode1 = FilesShortcutMode.B
 //    val startPoint = 1
-    val startPoint = 12
+    val startPoint = 13
     init {
 //        TestGlobal.describeStateConfig = DescribeStateConfig(showBanners = true, autoResumeAfterMs = null)
 //        TestGlobal.describeStateConfig = DescribeStateConfig(showBanners = true, autoResumeAfterMs = 2000)
@@ -468,6 +469,25 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
         definePoint(12) {
             topNavItemSequence(pages.uaAdmin.users_testRef, "6044a3a2-8a71-4d99-8c36-a8195a863281")
             lipsTitleClick(2L, "f7a3e4d0-899d-458d-8774-37d6ca051976")
+
+            run { // Writer gogol signs up
+                bootFreshWriter_signUp_checkEmail_signIn("gogol", sessionIndex.gogol1, firstName = "Николай", lastName = "Гоголь", aid = "4bfc98cb-6f61-4efa-b380-75ed628f814c")
+            }
+
+            run { // Gogol fills profile
+                inputSetValue(fields.profilePhone_testRef, "+38 (095) 683-11-42")
+                inputSetValue(fields.aboutMe_testRef, "Я ебаный гоголь-моголь. Что тут еще сказать...")
+                submitFormSequence("fc05361d-5c20-4081-8bae-aaf4c00ed8be")
+            }
+
+            run { // Admin accepts gogol
+                bootAdmin_openWriterToApprove(sessionIndex.dasja6, writerID = 4L, aid = "a03dbdde-9367-4074-b970-fe11c2e4d778")
+                acceptanceSequence("628fd3c1-223d-4b94-bd5a-808482882a8e")
+            }
+        }
+
+        definePoint (13) {
+
         }
     }
 
