@@ -108,7 +108,7 @@ fun renderTopNavbar(clientKind: ClientKind,
                         }
                         UserKind.ADMIN -> {
                             val q = pages.uaAdmin
-                            listOf(q.orders)
+                            listOf(q.orders, q.users)
                         }
                         UserKind.CUSTOMER -> wtf("Customer on writer's site")
                     }

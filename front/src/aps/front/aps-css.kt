@@ -612,6 +612,8 @@ object css {
 
     val lipsItemContainer by Style("")
     val lipsItem by Style("margin-bottom: 1.5rem;")
+    val pageHeaderRightIcon by Style("margin-left: 0.5rem; color: $GRAY_500;")
+    val pageHeaderLeftIcon by Style("margin-right: 0.5rem; color: $GRAY_500;")
 
     init {touchObjectGraph(this)}
 }

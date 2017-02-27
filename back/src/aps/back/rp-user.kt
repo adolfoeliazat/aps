@@ -50,6 +50,8 @@ fun serveReginaLoadUser(p: ReginaLoadUser): SimpleEntityResponse<UserRTO> {
                     table = "users",
                     itemClass = User::class.java,
                     addToWhere = {s, params ->
+                        s += " and id >= 0"
+
                         fun filterByState(state: UserState) {
                             s += " and user_state = :state"
                             params += MeganQueryParam("state", state.name)

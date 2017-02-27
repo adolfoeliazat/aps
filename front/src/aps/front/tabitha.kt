@@ -21,6 +21,8 @@ class Tabitha<EntityRTO>(
     val renderBelowHeader: () -> ToReactElementable,
     val makeTabs: () -> List<TabithaTab>,
     val pageHeaderTitle: () -> String,
+    val pageHeaderTitleLeftIcon: () -> IconClass? = {null},
+    val pageHeaderTitleRightIcon: () -> IconClass? = {null},
     val subtitle: () -> String?,
     val renderBelowSubtitle: () -> ToReactElementable,
     val page: PageSpec
@@ -51,7 +53,13 @@ class Tabitha<EntityRTO>(
 
         Globus.world.setPage(Page(
             header = pageHeader3(kdiv{o->
+                pageHeaderTitleLeftIcon()?.let {
+                    o- ki(className = "$it ${css.pageHeaderLeftIcon}")
+                }
                 o- pageHeaderTitle()
+                pageHeaderTitleRightIcon()?.let {
+                    o- ki(className = "$it ${css.pageHeaderRightIcon}")
+                }
             }),
 
             body = kdiv{o->

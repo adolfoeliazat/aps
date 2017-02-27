@@ -70,11 +70,10 @@ fun renderProfile(user: UserRTO, opts: UserRTORenderingOptions = UserRTORenderin
     return kdiv{o->
         o- m.row {o->
             o- m.createdAtCol(3, user.createdAt)
-            user.profileUpdatedAt?.let {
-                o- m.col(3, t("Profile updated", "Профайл изменен")){o->
-                    o- formatUnixTime(it)
-                }
+            o- m.col(3, t("Profile updated", "Профайл изменен")){o->
+                o- (user.profileUpdatedAt?.let {formatUnixTime(it)} ?: t("TOTE", "Ни разу"))
             }
+
             o- m.col(3, t("TOTE", "Статус"), user.state.title, textClassName = css.user.stateLabel(user.state), icon = user.state.icon, contentClassName = opts.outlineState.then{css.redOutline})
         }
         o- m.row{o->

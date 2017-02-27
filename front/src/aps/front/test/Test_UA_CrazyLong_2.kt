@@ -33,7 +33,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
     val filesShortcutMode1 = FilesShortcutMode.B
 //    val startPoint = 1
-    val startPoint = 11
+    val startPoint = 12
     init {
 //        TestGlobal.describeStateConfig = DescribeStateConfig(showBanners = true, autoResumeAfterMs = null)
 //        TestGlobal.describeStateConfig = DescribeStateConfig(showBanners = true, autoResumeAfterMs = 2000)
@@ -300,7 +300,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
             run { // Admin rejects order
                 twoStepSequence({linkClick(links.adminDashboard.ordersToApprove_testRef)}, "e1cdd9ea-7ad0-467e-9add-c9d67c19b883")
-                twoStepSequence({linkClick(links.lipsTitle_testRef, subscript = 1L)}, "4d382cc9-c529-47bc-9026-0ceec0716a5c")
+                lipsTitleClick(1L, "4d382cc9-c529-47bc-9026-0ceec0716a5c")
                 step({buttonClick(buttons.reject_testRef)}, TestGlobal.modalShownLock, "0417ea80-b99b-498e-9e51-c4f829d08499")
                 formSubmissionAttemptsThenPageLoad(
                     testShit, aid = "e07d4eab-e003-4149-bfc9-9b3557aacfb5",
@@ -355,7 +355,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
             }
 
             run { // Admin makes minor changes to files
-                twoStepSequence({linkClick(links.lipsTitle_testRef, subscript = 1L)}, "394199d1-73da-4a7d-b462-13d5e8e0a789")
+                lipsTitleClick(1L, "394199d1-73da-4a7d-b462-13d5e8e0a789")
                 tabSequence(tabs.order.files_testRef, "d3461e3e-4a41-42f5-8cec-451b70e4bfbb", "63b49f23-604a-4184-8ac8-28c73027473b")
 
                 describeState("Admin can edit files")
@@ -455,11 +455,24 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 twoStepSequence({buttonClick(buttons.back_testRef)}, "fa9cb012-92d4-4f28-a451-af5faf5a2fd7")
                 halfwayThenModalSequence(
                     action = {buttonClick(buttons.compare_testRef)},
-                    modalAction = {clog("fuck you")},
+                    modalAction = {
+                        describeState("Phone was changed")
+                        modalCloseWaiting()
+                    },
                     aid = "af4df80e-761e-4e53-b217-0abfa783d26b"
                 )
+                acceptanceSequence("7f321945-ae54-419a-915d-368b216d09b5")
             }
         }
+
+        definePoint(12) {
+            topNavItemSequence(pages.uaAdmin.users_testRef, "6044a3a2-8a71-4d99-8c36-a8195a863281")
+            lipsTitleClick(2L, "f7a3e4d0-899d-458d-8774-37d6ca051976")
+        }
+    }
+
+    private suspend fun lipsTitleClick(subscript: Long, aid: String) {
+        twoStepSequence({linkClick(links.lipsTitle_testRef, subscript = subscript)}, aid)
     }
 
     private suspend fun testCompareBelow(subscript: Long, stateDescr: String, scrollTop: Int? = null, aid: String) {
@@ -504,7 +517,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
     private suspend fun bootAdmin_openWriterToApprove(sessionNumber: Int, writerID: Long, aid: String) {
         bootAdminWithTokenToDashboard(sessionNumber, "$aid--1")
         twoStepSequence({linkClick(links.adminDashboard.writerProfilesToApprove_testRef)}, "$aid--2")
-        twoStepSequence({linkClick(links.lipsTitle_testRef, subscript = writerID)}, "$aid--3")
+        lipsTitleClick(writerID, "$aid--3")
     }
 
     private suspend fun bootWriterWithTokenToProfilePage(nick: String, sessionNumber: Int, aid: String) {

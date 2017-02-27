@@ -72,6 +72,7 @@ class SingleUserPage {
                 )
             )},
             pageHeaderTitle = {t("TOTE", "Засранец ${const.text.numberSign}${user.id}: ${user.firstName} ${user.lastName}")},
+            pageHeaderTitleLeftIcon = {userKindIcon(user.kind)},
             subtitle = {null},
             renderBelowSubtitle = fun(): ToReactElementable {
                 return NOTRE
