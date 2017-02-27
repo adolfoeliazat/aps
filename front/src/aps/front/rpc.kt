@@ -12,6 +12,7 @@ import aps.*
 import into.kommon.*
 import kotlin.browser.window
 import kotlin.js.json
+import kotlin.reflect.KClass
 
 fun fetchURL(url: String, method: String, data: String?): Promisoid<String> {
     val stackBeforeXHR: String = CaptureStackException().stack
@@ -252,6 +253,10 @@ fun jsonizeToObject2(shit: Any?): Any? {
         }
         is Long -> {
             return shit.toString()
+        }
+        is KClass<*> -> {
+            return json("\$\$\$class" to "kotlin.reflect.KClass",
+                        "simpleName" to shit.simpleName)
         }
         else -> {
             val out = json()

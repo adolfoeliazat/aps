@@ -2,6 +2,7 @@ package aps.front
 
 import aps.*
 import into.kommon.*
+import kotlin.reflect.KClass
 
 object TabithaURLQuery : URLQueryParamsMarker {
     val id by LongURLParam()
@@ -95,7 +96,7 @@ class Tabitha<EntityRTO>(
 }
 
 class UsualParamsTab<ItemRTO, HistoryItemRTO, HistoryFilter, Req : RequestMatumba, Res : CommonResponseFields>(
-    tabitha: Tabitha<*>,
+    val tabitha: Tabitha<*>,
     tabKey: TabKey,
     renderBody: () -> ToReactElementable,
     hasEditButton: Boolean,
@@ -119,20 +120,6 @@ where
         if (mode == Mode.HISTORY) {
             historyParams!!
 
-            fun makeFuckingLips(viewRootID: String? = null, thisItem: HistoryItemRTO, thatItem: HistoryItemRTO? = null, burgerMenu: () -> Menu? = {null}) = makeUsualMelindaLips(
-                viewRootID, historyBoobs,
-                icon = {fa.calendarCheckO},
-                initialLipsState = Unit,
-                renderContent = {o ->
-                    o- historyParams.renderItem(thisItem, thatItem)
-                },
-                titleLinkURL = null,
-                drawID = {true},
-                secondTitle = {formatUnixTime(thisItem.createdAt, includeTZ = false)},
-                getItem = {thisItem},
-                burgerMenu = burgerMenu
-            )
-
             val boobs = MelindaBoobs<HistoryItemRTO, HistoryFilter, /*CreateRequest=*/ Nothing, /*CreateResponse=*/ Nothing, /*UpdateItemRequest=*/ Nothing, /*UpdateItemResponse=*/ Nothing>(
                 createParams = null,
                 makeURLForReload = {boobsParams->
@@ -143,8 +130,15 @@ where
                 filterValues = historyParams.historyFilterValues,
                 defaultFilterValue = historyParams.defaultHistoryFilterValue,
                 filterSelectKey = historyParams.historyFilterSelectKey,
+                renderStripStuff = {o->
+                    o- Button(icon = fa.arrowLeft, key = buttons.back) {
+                        twoStepBlinkingSut(it.jqel) {
+                            tabitha.reloadPage(listOf(URLParamValue(urlQuery.paramsMode, Mode.CURRENT)))
+                        }
+                    }
+                },
                 vaginalInterface = MelindaVagina<HistoryItemRTO, HistoryFilter, /*UpdateItemRequest=*/ Nothing, /*UpdateItemResponse=*/ Nothing>(
-                    sendItemsRequest = historyParams.sendItemsRequest,
+                    sendItemsRequest = historyParams.sendHistoryItemsRequest,
                     shouldShowFilter = {true},
                     getParentEntityID = {TabithaURLQuery.id.get()},
                     humanItemTypeName = t("TOTE", "imf db47abf8-ae10-4450-8328-7eeace10c476"),
@@ -152,6 +146,7 @@ where
                     updateParams = null,
                     makeLipsInterface = {viewRootID, tongue -> makeFuckingLips(
                         viewRootID,
+                        searchString = historyBoobs.getSearchString(),
                         thisItem = tongue.item,
                         burgerMenu = {
                             Menu(mutableListOf<MenuItem>()-{o->
@@ -160,23 +155,13 @@ where
                                     val itemBelow = tongue.items[tongue.itemIndex + 1]
 
                                     o += MenuItem(t("TOTE", "Сравнить вниз"), linkKey = SubscriptLinkKey(links.compareBelow, tongue.item.id)) {
-                                        clog("Comparing", "this", formatUnixTime(tongue.item.createdAt), "other", formatUnixTime(itemBelow.createdAt))
-                                        // TODO:vgrechka Generalize
-                                        val specificItem = itemAbove as UserParamsHistoryItemRTO
-                                        val specificBelowItem = itemBelow as UserParamsHistoryItemRTO
-                                        openModal(OpenModalParams(
-                                            title = t("TOTE", "Сравнение"),
-                                            width = "90rem",
-                                            body = kdiv{o->
-                                                val c = css.history.diff
-                                                o- makeFuckingLips(thisItem = itemAbove, thatItem = itemBelow).renderItem()
-                                                o- makeFuckingLips(thisItem = itemBelow, thatItem = itemAbove).renderItem()
-                                            }
-                                        ))
+                                        // clog("Comparing", "this", formatUnixTime(tongue.item.createdAt), "other", formatUnixTime(itemBelow.createdAt))
+                                        openComparisonModal(itemAbove, itemBelow)
                                     }
                                 }
                             })
-                        })}
+                        }
+                    )}
                 )
             )
             historyBoobs = boobs.boobsInterface
@@ -184,6 +169,34 @@ where
         }
 
         return null
+    }
+
+    fun makeFuckingLips(viewRootID: String? = null, thisItem: HistoryItemRTO, thatItem: HistoryItemRTO? = null, burgerMenu: () -> Menu? = {null}, searchString: String) =
+        makeUsualMelindaLips(
+            viewRootID,
+            searchString = searchString,
+            icon = {fa.calendarCheckO},
+            initialLipsState = Unit,
+            renderContent = {o->
+                o- bang(historyParams).renderItem(thisItem, thatItem)
+            },
+            titleLinkURL = null,
+            drawID = {true},
+            secondTitle = {formatUnixTime(thisItem.createdAt, includeTZ = false)},
+            getItem = {thisItem},
+            burgerMenu = burgerMenu
+        )
+
+
+    fun openComparisonModal(itemAbove: HistoryItemRTO, itemBelow: HistoryItemRTO) {
+        openModal(OpenModalParams(
+            title = t("TOTE", "Сравнение"),
+            width = "90rem",
+            body = kdiv{o->
+                o- makeFuckingLips(thisItem = itemAbove, thatItem = itemBelow, searchString = "").renderItem()
+                o- makeFuckingLips(thisItem = itemBelow, thatItem = itemAbove, searchString = "").renderItem()
+            }
+        ))
     }
 
     object urlQuery : URLQueryParamsMarker {
@@ -204,9 +217,25 @@ where
             o- when (mode) {
                 Mode.CURRENT -> hor2{o->
                     if (historyParams != null) {
+                        o- Button(icon = fa.adjust, level = Button.Level.DEFAULT, key = buttons.compare) {
+                            val res = askRegina(ReginaGetPairOfLastHistoryItems(
+                                type = historyParams.historyItemClass,
+                                entityID = tabitha.entityID))
+                            exhaustive/when (res) {
+                                is FormResponse2.Shitty -> openErrorModal(res.error)
+                                is FormResponse2.Hunky -> {
+                                    if (res.meat.prelastItem != null) {
+                                        openComparisonModal(res.meat.lastItem, res.meat.prelastItem)
+                                    } else {
+                                        openInfoModal(t("TOTE", "В истории только одна запись -- не с чем сравнивать"))
+                                    }
+                                }
+                            }
+                        }
                         o- Button(icon = fa.calendar, level = Button.Level.DEFAULT, key = buttons.history) {
-                            effects2.blinkOn(it.jqel)
-                            tabitha.reloadPage(listOf(URLParamValue(urlQuery.paramsMode, Mode.HISTORY)))
+                            twoStepBlinkingSut(it.jqel) {
+                                tabitha.reloadPage(listOf(URLParamValue(urlQuery.paramsMode, Mode.HISTORY)))
+                            }
                         }
                     }
 
@@ -231,14 +260,15 @@ where
 }
 
 class HistoryParams<HistoryItemRTO, Filter>(
+    val historyItemClass: KClass<HistoryItemRTO>,
     val renderItem: (thisItem: HistoryItemRTO, thatItem: HistoryItemRTO?) -> ToReactElementable,
-    val sendItemsRequest: suspend (req: ItemsRequest<Filter>) -> FormResponse2<ItemsResponse<HistoryItemRTO>>,
+    val sendHistoryItemsRequest: suspend (req: ItemsRequest<Filter>) -> FormResponse2<ItemsResponse<HistoryItemRTO>>,
     val historyFilterValues: Array<Filter>,
     val defaultHistoryFilterValue: Filter,
     val historyFilterSelectKey: SelectKey<Filter>
 ) where
-    Filter : Enum<Filter>,
-    Filter : Titled
+    Filter : Enum<Filter>, Filter : Titled,
+    HistoryItemRTO : HistoryItemRTOFields
 
 
 

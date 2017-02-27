@@ -1,6 +1,7 @@
 package aps.back
 
 import aps.*
+import into.kommon.*
 import org.springframework.data.repository.findOrDie
 
 @Servant class ServeMiranda : BitchyProcedure() {
@@ -25,9 +26,7 @@ import org.springframework.data.repository.findOrDie
             bpc = bpc,
             makeRequest = {ReginaRequest()},
             runShit = fun(ctx, req: ReginaRequest): CommonResponseFields {
-                fun <Params : ReginaParams<Res>, Res>
-                    tie(p: Params, f: (Params) -> Res): Res =
-                        f(p)
+                fun <Params : ReginaParams<Res>, Res> tie(p: Params, f: (Params) -> Res): Res = f(p)
 
                 val p = req.params.value
                 return when (p) {
@@ -35,6 +34,7 @@ import org.springframework.data.repository.findOrDie
                     is ReginaAdminSendOrderToStore -> tie(p, ::serveReginaAdminSendOrderToStore)
                     is ReginaLoadUser -> tie(p, ::serveReginaLoadUser)
                     is ReginaAcceptProfile -> tie(p, ::serveReginaAcceptProfile)
+                    is ReginaGetPairOfLastHistoryItems<*> -> serveReginaGetPairOfLastHistoryItems(p)
                 }
             }
         ))

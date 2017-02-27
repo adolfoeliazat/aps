@@ -3,6 +3,7 @@ package aps
 import com.fasterxml.jackson.annotation.JsonTypeInfo
 import com.fasterxml.jackson.annotation.JsonTypeInfoAlias
 import kotlin.properties.Delegates.notNull
+import kotlin.reflect.KClass
 
 class BrowserShot {
     var dataURL by notNull<String>()
@@ -243,6 +244,18 @@ class ReginaRequest : RequestMatumba() {
 @Ser class ReginaAdminSendOrderToStore(val orderID: Long) : ReginaParams<GenericResponse>()
 @Ser class ReginaLoadUser(val userID: Long) : ReginaParams<SimpleEntityResponse<UserRTO>>()
 @Ser class ReginaAcceptProfile(val userID: Long) : ReginaParams<GenericResponse>()
+
+@Ser class ReginaGetPairOfLastHistoryItems<HistoryItemRTO : HistoryItemRTOFields>(
+    val type: KClass<HistoryItemRTO>,
+    val entityID: Long
+)
+    : ReginaParams<ReginaGetPairOfLastHistoryItems.Response<HistoryItemRTO>>()
+{
+    class Response<out HistoryItemRTO : HistoryItemRTOFields>(
+        val lastItem: HistoryItemRTO,
+        val prelastItem: HistoryItemRTO?
+    ) : CommonResponseFieldsImpl()
+}
 
 
 

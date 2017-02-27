@@ -8,6 +8,8 @@ import org.w3c.dom.events.KeyboardEvent
 import org.w3c.files.File
 import kotlin.browser.window
 
+private val skipLengthyStuff = true
+
 // TODO:vgrechka Use paths from pageSpecs in URLs
 // TODO:vgrechka Test case: File download error
 // TODO:vgrechka Test case: Unexpected backend error when sending order for approval
@@ -442,12 +444,16 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 step({buttonClick(buttons.history_testRef)}, TestGlobal.pageLoadedLock, "84837274-ff9a-4ae8-81ae-566685fe87fc")
                 // ___showStateDescriptions()
                 testCompareBelow(subscript = 9L, stateDescr = "Diff: states, phones", aid = "ed3da430-f954-4c31-b923-0a60c6276b54")
-                testCompareBelow(scrollTop = 381, subscript = 8L, stateDescr = "Diff: states", aid = "95099fb6-44bd-4991-b869-32b276790fdf")
-                testCompareBelow(scrollTop = 670, subscript = 7L, stateDescr = "Diff: admin notes", aid = "bf86d1cc-44ba-46a1-b1aa-60d30074a71c")
-                testCompareBelow(scrollTop = 955, subscript = 6L, stateDescr = "Diff: state, first and last name, about me", aid = "0bcbcdb9-6755-4e9a-9e6b-3a24d0ca4ce3")
-                testCompareBelow(scrollTop = 1240, subscript = 5L, stateDescr = "Diff: state", aid = "6e39db54-bb04-4d46-a8d3-4ead49c87e37")
-                testCompareBelow(scrollTop = 1540, subscript = 4L, stateDescr = "Diff: first and last name", aid = "a0da8f07-14c2-4062-ad61-4018cec2a336")
-                testCompareBelow(scrollTop = 1740, subscript = 3L, stateDescr = "Diff: state, phone, about me", aid = "ecc07cbe-e6b0-437c-b54e-21e326680072")
+                if (!skipLengthyStuff) {
+                    testCompareBelow(scrollTop = 381, subscript = 8L, stateDescr = "Diff: states", aid = "95099fb6-44bd-4991-b869-32b276790fdf")
+                    testCompareBelow(scrollTop = 670, subscript = 7L, stateDescr = "Diff: admin notes", aid = "bf86d1cc-44ba-46a1-b1aa-60d30074a71c")
+                    testCompareBelow(scrollTop = 955, subscript = 6L, stateDescr = "Diff: state, first and last name, about me", aid = "0bcbcdb9-6755-4e9a-9e6b-3a24d0ca4ce3")
+                    testCompareBelow(scrollTop = 1240, subscript = 5L, stateDescr = "Diff: state", aid = "6e39db54-bb04-4d46-a8d3-4ead49c87e37")
+                    testCompareBelow(scrollTop = 1540, subscript = 4L, stateDescr = "Diff: first and last name", aid = "a0da8f07-14c2-4062-ad61-4018cec2a336")
+                    testCompareBelow(scrollTop = 1740, subscript = 3L, stateDescr = "Diff: state, phone, about me", aid = "ecc07cbe-e6b0-437c-b54e-21e326680072")
+                }
+                twoStepSequence({buttonClick(buttons.back_testRef)}, "fa9cb012-92d4-4f28-a451-af5faf5a2fd7")
+                step({buttonClick(buttons.compare_testRef)}, TestGlobal.modalShownLock, "af4df80e-761e-4e53-b217-0abfa783d26b")
             }
         }
     }

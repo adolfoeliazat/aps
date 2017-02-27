@@ -220,6 +220,26 @@ fun openErrorModal(msg: String): ModalOperations {
     return modal
 }
 
+fun openInfoModal(msg: String, title: String? = null): ModalOperations {
+    var modal by notNullOnce<ModalOperations>()
+
+    modal = openModal(OpenModalParams(
+        width = "60rem",
+        leftMarginColor = Color.BLUE_GRAY_300,
+        title = title ?: t("TOTE", "Привет :)"),
+        body = kdiv{o->
+            o- msg
+        },
+        footer = kdiv{o->
+            o- Button(title = t("Cool", "Круто"), level = Button.Level.DEFAULT, key = buttons.primary, onClicka = {
+                modal.close()
+            })
+        }
+    ))
+
+    return modal
+}
+
 suspend fun modalCloseWaiting() {
     bang(currentModalOperations).close()
 }

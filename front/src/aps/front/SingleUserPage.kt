@@ -50,6 +50,7 @@ class SingleUserPage {
                         }
                     ),
                     historyParams = HistoryParams<UserParamsHistoryItemRTO, UserParamsHistoryFilter>(
+                        historyItemClass = UserParamsHistoryItemRTO::class,
                         renderItem = {thisItem, thatItem ->
                             renderUserParamsHistoryItem(thisItem, when {
                                 thatItem == null -> UserRTORenderingOptions()
@@ -63,7 +64,7 @@ class SingleUserPage {
                                 )}
                             )
                         },
-                        sendItemsRequest = {req-> sendGetUserParamsHistoryItems(req)},
+                        sendHistoryItemsRequest = {req-> sendGetUserParamsHistoryItems(req)},
                         historyFilterValues = UserParamsHistoryFilter.values(),
                         defaultHistoryFilterValue = UserParamsHistoryFilter.ALL,
                         historyFilterSelectKey = selects.userParamsHistoryFilter

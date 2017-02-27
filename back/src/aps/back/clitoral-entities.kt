@@ -19,6 +19,7 @@ val userParamsHistoryItemRepo get() = springctx.getBean(UserParamsHistoryItemRep
 val uaOrderRepo get() = springctx.getBean(UAOrderRepository::class.java)!!
 val uaOrderFileRepo get() = springctx.getBean(UAOrderFileRepository::class.java)!!
 
+
 private fun currentTimestampForEntity(): Timestamp {
     return when {
         isRequestThread() -> RequestGlobus.stamp
@@ -185,6 +186,7 @@ class UserParamsHistoryItem(
 }
 
 interface UserParamsHistoryItemRepository : CrudRepository<UserParamsHistoryItem, Long> {
+    fun findTop2ByHistory_EntityIDOrderByIdDesc(x: Long): List<UserParamsHistoryItem>
 }
 
 fun saveUserToRepo(entity: User): User {

@@ -122,7 +122,7 @@ fun <T> culprit(culprit: Culprit, f: () -> T): T {
         val json = input[name] as String
         // dwarnStriking("ObjectHiddenField input json", json)
         @Suppress("UNCHECKED_CAST")
-        _value = mirandaInputObjectMapper.readValue(json, Object::class.java) as T
+        _value = objectFieldObjectMapper.readValue(json, Object::class.java) as T
     }
 }
 

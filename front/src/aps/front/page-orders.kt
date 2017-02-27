@@ -45,7 +45,10 @@ class UAAdminOrdersPage {
                 updateParams = null,
 
                 makeLipsInterface = {viewRootID, tongue -> makeUsualMelindaLips(
-                    viewRootID, bint, icon = {fa.folderOpen}, initialLipsState = Unit,
+                    viewRootID,
+                    searchString = bint.getSearchString(),
+                    icon = {fa.folderOpen},
+                    initialLipsState = Unit,
                     renderContent = {o ->
                         o- renderOrderParams(tongue.item)
                     },

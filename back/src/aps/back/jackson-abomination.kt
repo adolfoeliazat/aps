@@ -11,19 +11,30 @@ import com.fasterxml.jackson.databind.ser.*
 import com.fasterxml.jackson.databind.type.TypeFactory
 import com.fasterxml.jackson.databind.util.*
 import com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping.*
+import com.fasterxml.jackson.databind.module.SimpleModule
 import into.kommon.*
 import java.io.IOException
+import kotlin.reflect.KClass
 
 val objectMapper = ObjectMapper()-{o->
     o.enableDefaultTyping(NON_FINAL, JsonTypeInfo.As.PROPERTY)
 }
 
-val mirandaInputObjectMapper = ObjectMapper()-{o->
+val objectFieldObjectMapper = ObjectMapper()-{mapper->
     val typer = ObjectMapper.DefaultTypeResolverBuilder(NON_FINAL)
         .init(JsonTypeInfo.Id.CLASS, null)
         .inclusion(JsonTypeInfo.As.PROPERTY)
         .typeProperty("\$\$\$class")
-    o.setDefaultTyping(typer)
+    mapper.setDefaultTyping(typer)
+    mapper.registerModule(SimpleModule()-{module->
+        module.addDeserializer(KClass::class.java, object:StdDeserializer<KClass<*>>(null as Class<*>?) {
+            override fun deserialize(jp: JsonParser, ctx: DeserializationContext): KClass<*> {
+                val node = jp.codec.readTree<JsonNode>(jp)
+                val simpleName = node.get("simpleName").asText()
+                return Class.forName("aps.$simpleName").kotlin
+            }
+        })
+    })
 }
 
 val shittyObjectMapper = object:ObjectMapper() {

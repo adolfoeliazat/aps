@@ -126,9 +126,13 @@ fun userKindIcon(userKind: UserKind): IconClass {
     }
 }
 
-
-
-
+suspend fun twoStepBlinkingSut(blinkElement: jquery.JQuery, act: suspend () -> Unit) {
+    val blinker = effects2.blinkOn(blinkElement)
+    TestGlobal.shitHalfwayLock.resumeTestAndPauseSutFromSut()
+    act()
+    blinker.unblink()
+    TestGlobal.shitDoneLock.resumeTestFromSut()
+}
 
 
 

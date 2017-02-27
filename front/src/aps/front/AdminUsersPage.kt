@@ -53,7 +53,8 @@ class AdminUsersPage {
                 makeDeleteItemRequest = {DeleteUserRequest()},
                 updateParams = null,
                 makeLipsInterface = {viewRootID, tongue -> makeUsualMelindaLips(
-                    viewRootID, bint,
+                    viewRootID,
+                    searchString = bint.getSearchString(),
                     icon = {userKindIcon(it.kind)},
                     initialLipsState = Unit,
                     renderContent = {o->

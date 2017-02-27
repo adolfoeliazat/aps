@@ -121,7 +121,8 @@ class UACustomerSingleOrderPageFilesTab(val order: UAOrderRTO) : TabithaTab {
         makeLipsInterface = {viewRootID, tongue ->
             val cloudIconID = puid()
             makeUsualMelindaLips(
-                viewRootID, boobsInterface,
+                viewRootID,
+                searchString = boobsInterface.getSearchString(),
                 icon = {fa.file},
                 initialLipsState = FileLipsState(downloadActive = false),
                 controlsDisabled = {state-> state.downloadActive},

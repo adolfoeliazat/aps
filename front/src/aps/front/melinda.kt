@@ -77,18 +77,17 @@ class MelindaBoobs<
     val filterValues: Array<Filter>,
     val defaultFilterValue: Filter,
     val filterSelectKey: SelectKey<Filter>,
+    val hasRefreshButton: Boolean = false,
+    val renderStripStuff: (ElementBuilder) -> Unit = {},
     val vaginalInterface: MelindaVagina<
         Item,
         Filter,
         UpdateItemRequest, UpdateItemResponse>
 ) where
-    Filter: Enum<Filter>,
-    Filter: Titled,
+    Filter: Enum<Filter>, Filter: Titled,
     Item : MelindaItemRTO,
-    CreateRequest : RequestMatumba,
-    CreateResponse : CommonResponseFields,
-    UpdateItemRequest : RequestMatumba,
-    UpdateItemResponse : CommonResponseFields
+    CreateRequest : RequestMatumba, CreateResponse : CommonResponseFields,
+    UpdateItemRequest : RequestMatumba, UpdateItemResponse : CommonResponseFields
 {
     val urlQuery = _URLQuery()
     inner class _URLQuery : URLQueryParamsMarker {
@@ -116,9 +115,11 @@ class MelindaBoobs<
                     }
                     o- orderingSelect
 
-                    val refreshButtonID = puid()
-                    o- Button(id = refreshButtonID, icon = fa.refresh, volatileDisabled = {headerControlsDisabled}, key = buttons.refreshPage) {
-                        asu {reload(refreshButtonID)}
+                    if (hasRefreshButton) {
+                        val refreshButtonID = puid()
+                        o- Button(id = refreshButtonID, icon = fa.refresh, volatileDisabled = {headerControlsDisabled}, key = buttons.refreshPage) {
+                            asu {reload(refreshButtonID)}
+                        }
                     }
 
                     if (createParams != null) {
@@ -136,6 +137,8 @@ class MelindaBoobs<
                             )
                         }
                     }
+
+                    renderStripStuff(o)
                 }
             }
         }
@@ -405,7 +408,7 @@ fun <T> MelindaTongueInterface<T>.toMakeUsualMelindaLipsCallbacks() = MakeUsualM
 
 fun <ItemRTO : MelindaItemRTO, LipsState> makeUsualMelindaLips(
     viewRootID: String? = null,
-    boobsInterface: MelindaBoobsInterface,
+    searchString: String,
     smallOverlayIcon: () -> IconClass? = {null},
     secondTitle: () -> String? = {null},
     drawID: () -> Boolean = {true},
@@ -463,7 +466,7 @@ fun <ItemRTO : MelindaItemRTO, LipsState> makeUsualMelindaLips(
                                     if (drawID()) {
                                         val idColor: Color?
                                         val idBackground: Color?
-                                        if (boobsInterface.getSearchString().split(Regex("\\s+")).contains(item.id.toString())) {
+                                        if (searchString.split(Regex("\\s+")).contains(item.id.toString())) {
                                             idColor = Color.GRAY_800
                                             idBackground = Color.AMBER_200
                                         } else {
