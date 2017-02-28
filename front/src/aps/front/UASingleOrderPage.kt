@@ -121,7 +121,7 @@ class UASingleOrderPage {
 fun renderOrderParams(order: UAOrderRTO): ToReactElementable {
     val m = MelindaTools
     return kdiv{o->
-        o- m.row {o->
+        o- m.row{o->
             if (order.state != UAOrderState.CUSTOMER_DRAFT) {
                 o- m.createdAtCol(3, order.createdAt)
             }
@@ -143,6 +143,21 @@ fun renderOrderParams(order: UAOrderRTO): ToReactElementable {
 
         o- m.detailsRow(order.details, order.detailsHighlightRanges, title = fields.orderDetails.title)
         o- renderAdminNotesIfNeeded(order)
+
+        o- anotherHeader(t("TOTE", "Стор"),
+                         renderControlsTo = {o->
+                             o- Button(icon =  fa.pencil, key = buttons.editStoreParams) {
+                                 clog("ffffffffffuuuuuuuuckkkkkkkkkkk")
+                             }
+                         })
+        o- m.row{o->
+            o- m.col(3, fields.minAllowedPriceOffer.title, order.minAllowedPriceOffer.toString())
+            o- m.col(3, fields.maxAllowedPriceOffer.title, order.maxAllowedPriceOffer.toString())
+            o- m.col(3, fields.minAllowedDurationOffer.title, order.minAllowedDurationOffer.toString())
+            o- m.col(3, fields.maxAllowedDurationOffer.title, order.maxAllowedDurationOffer.toString())
+        }
+
+        o- kdiv(height = "3rem")
     }
 }
 

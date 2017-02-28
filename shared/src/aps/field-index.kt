@@ -38,6 +38,11 @@ object fields                                              : Fuckers<FieldSpec>(
     val fileDetails                                        by namedFucker {TextFieldSpec(it, t("TOTE", "Детали"), TextFieldType.TEXTAREA, 3, 2000)}; val fileDetails_testRef = TestRef(fileDetails)
     val uaDocumentType                                     by namedFucker {SelectFieldSpec(it, t("TOTE", "Тип документа"), UADocumentType.values())}; val uaDocumentType_testRef = TestRef(uaDocumentType)
     val rejectionReason                                    by namedFucker {genericRejectionReason.copy(name = it)}; val rejectionReason_testRef = TestRef(rejectionReason)
+
+    val minAllowedPriceOffer                               by namedFucker {IntFieldSpec(it, t("TOTE", "Нижний предел стоимости"), min = 0, max = 50000)}; val minAllowedPriceOffer_testRef = TestRef(minAllowedPriceOffer)
+    val maxAllowedPriceOffer                               by namedFucker {IntFieldSpec(it, t("TOTE", "Верхний предел стоимости"), min = 0, max = 50000)}; val maxAllowedPriceOffer_testRef = TestRef(maxAllowedPriceOffer)
+    val minAllowedDurationOffer                            by namedFucker {IntFieldSpec(it, t("TOTE", "Нижний предел срока"), min = 0, max = 50000)}; val minAllowedDurationOffer_testRef = TestRef(minAllowedDurationOffer)
+    val maxAllowedDurationOffer                            by namedFucker {IntFieldSpec(it, t("TOTE", "Верхний предел срока"), min = 0, max = 50000)}; val maxAllowedDurationOffer_testRef = TestRef(maxAllowedDurationOffer)
 }
 
 abstract class FieldSpec : Fucker() {

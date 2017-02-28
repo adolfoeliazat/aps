@@ -616,6 +616,27 @@ object css {
     val pageHeaderRightIcon by Style("margin-left: 0.5rem; color: $GRAY_500;")
     val pageHeaderLeftIcon by Style("margin-right: 0.5rem; color: $GRAY_500;")
 
+    object anotherHeader : Group(null) {
+        val container by Style("""
+            position: relative;
+            margin-top: 0;
+            margin-bottom: 1rem;
+        """)
+
+        val heading by Style("""
+            margin-top: 1rem;
+            margin-bottom: 0;
+        """)
+
+        val controlContainer by Style("""
+            position: absolute;
+            right: 0px;
+            top: 0px;
+            margin-top: -0.5rem;
+        """)
+    }
+
+
     init {touchObjectGraph(this)}
 }
 

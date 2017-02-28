@@ -60,7 +60,7 @@ object MakeStaticSites {
             val config = JSON.parse<dynamic>(fs.readFileSync("e:/work/aps-local/aps-local-config.json", "utf8"))
 
             run { // Backend URL
-                val useFromLocalConfig = true
+                val useFromLocalConfig = false
                 backendURL = when {
                     useFromLocalConfig -> config.backendURL
                     else -> "http://127.0.0.1:8080"

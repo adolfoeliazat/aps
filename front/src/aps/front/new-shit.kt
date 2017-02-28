@@ -777,6 +777,18 @@ fun pageHeader0(title: String, className: String = "") =
         }
     }
 
+fun anotherHeader(title: String, renderControlsTo: (ElementBuilder) -> Unit = {}) =
+    kdiv(className="page-header ${css.anotherHeader.container}"){o->
+        o- h3(className = css.anotherHeader.heading){o->
+            o- title
+        }
+        o- kdiv(className = css.anotherHeader.controlContainer){o->
+            o- hor2{o->
+                renderControlsTo(o)
+            }
+        }
+    }
+
 open class Placeholder(private var content: ToReactElementable = kspan_nolint()) : Control2(Attrs()) {
     lateinit var prevContent: ToReactElementable
 

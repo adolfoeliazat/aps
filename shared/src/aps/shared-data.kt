@@ -60,7 +60,12 @@ class UAOrderRTO(
     val customerFirstName: String,
     val customerLastName: String,
     val whatShouldBeFixedByCustomer: String?,
-    val customerEmail: String
+    val customerEmail: String,
+    var movedToStoreAt: Long?,
+    var minAllowedPriceOffer: Int,
+    var maxAllowedPriceOffer: Int,
+    var minAllowedDurationOffer: Int,
+    var maxAllowedDurationOffer: Int
 ) : MelindaItemRTO, RTOWithAdminNotes, TabithaEntityRTO
 
 data class IntRangeRTO(

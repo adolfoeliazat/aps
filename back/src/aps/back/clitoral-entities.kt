@@ -272,7 +272,12 @@ class UAOrder(@Embedded var order: UAOrderFields)
             customerFirstName = order.customerFirstName,
             customerLastName = order.customerLastName,
             customerEmail = order.customerEmail,
-            whatShouldBeFixedByCustomer = order.whatShouldBeFixedByCustomer
+            whatShouldBeFixedByCustomer = order.whatShouldBeFixedByCustomer,
+            movedToStoreAt = order.movedToStoreAt?.time,
+            minAllowedPriceOffer = order.minAllowedPriceOffer,
+            maxAllowedPriceOffer = order.maxAllowedPriceOffer,
+            minAllowedDurationOffer = order.minAllowedDurationOffer,
+            maxAllowedDurationOffer = order.maxAllowedDurationOffer
         )
     }
 }
