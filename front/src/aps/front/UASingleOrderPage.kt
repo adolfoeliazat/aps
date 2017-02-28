@@ -148,9 +148,20 @@ fun renderOrderParams(order: UAOrderRTO): ToReactElementable {
         o- anotherHeader(t("TOTE", "Стор"),
                          renderControlsTo = {o->
                              o- Button(icon =  fa.pencil, key = buttons.editStoreParams) {
-                                 clog("ffffffffffuuuuuuuuckkkkkkkkkkk")
+                                 openEditModal(
+                                     title = t("TOTE", "Стор"),
+                                     formSpec = FormSpec<UAOrderStoreParamsRequest, GenericResponse>(
+                                         UAOrderStoreParamsRequest()-{o->
+                                             o.orderID.value = order.id
+                                         }
+                                     ),
+                                     onSuccessa = {}
+                                 )
                              }
                          })
+        o- m.row{o->
+            o- m.col(6, fields.uaDocumentCategory.title, order.documentCategory.title)
+        }
         o- m.row{o->
             o- m.col(3, fields.minAllowedPriceOffer.title, renderMoney(order.minAllowedPriceOffer))
             o- m.col(3, fields.maxAllowedPriceOffer.title, renderMoney(order.maxAllowedPriceOffer))

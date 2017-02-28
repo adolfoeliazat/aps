@@ -43,6 +43,8 @@ object fields                                              : Fuckers<FieldSpec>(
     val maxAllowedPriceOffer                               by namedFucker {IntFieldSpec(it, t("TOTE", "Верхний предел стоимости"), min = 0, max = 50000)}; val maxAllowedPriceOffer_testRef = TestRef(maxAllowedPriceOffer)
     val minAllowedDurationOffer                            by namedFucker {IntFieldSpec(it, t("TOTE", "Нижний предел срока"), min = 0, max = 50000)}; val minAllowedDurationOffer_testRef = TestRef(minAllowedDurationOffer)
     val maxAllowedDurationOffer                            by namedFucker {IntFieldSpec(it, t("TOTE", "Верхний предел срока"), min = 0, max = 50000)}; val maxAllowedDurationOffer_testRef = TestRef(maxAllowedDurationOffer)
+
+    val uaDocumentCategory                                 by namedFucker {TextFieldSpec(it, t("TOTE", "Категория"), TextFieldType.TEXTAREA, 3, 2000)}; val uaDocumentCategory_testRef = TestRef(uaDocumentCategory)
 }
 
 abstract class FieldSpec : Fucker() {

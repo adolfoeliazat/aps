@@ -65,7 +65,8 @@ class UAOrderRTO(
     var minAllowedPriceOffer: Int,
     var maxAllowedPriceOffer: Int,
     var minAllowedDurationOffer: Int,
-    var maxAllowedDurationOffer: Int
+    var maxAllowedDurationOffer: Int,
+    val documentCategory: UADocumentCategoryRTO
 ) : MelindaItemRTO, RTOWithAdminNotes, TabithaEntityRTO
 
 data class IntRangeRTO(
@@ -152,8 +153,8 @@ class UserParamsHistoryItemRTO(
 
 class UADocumentCategoryRTO(
     val id: Long,
-    val title: String,
-    val children: List<UADocumentCategoryRTO>
+    val title: String/*,
+    val children: List<UADocumentCategoryRTO>*/
 )
 
 

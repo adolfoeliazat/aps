@@ -219,6 +219,16 @@ class ReturnOrderToCustomerForFixingRequest : RejectionRequest()
 class RejectProfileRequest : RejectionRequest()
 
 
+class UAOrderStoreParamsRequest : RequestMatumba() {
+    val orderID by longHiddenField()
+    val minAllowedPriceOffer = IntField(this, fields.minAllowedPriceOffer)
+    val maxAllowedPriceOffer = IntField(this, fields.maxAllowedPriceOffer)
+//    minAllowedDurationOffer
+//    maxAllowedDurationOffer
+}
+
+
+
 class MirandaRequest : RequestMatumba() {
     val params = ObjectHiddenField<MirandaParams>(this, "params")
     class Response : CommonResponseFieldsImpl()

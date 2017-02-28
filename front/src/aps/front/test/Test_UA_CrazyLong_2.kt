@@ -398,6 +398,11 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
         definePoint(9) {
             run { // Admin moves order to store
                 scrollBodyToBottomGradually()
+                halfwayThenModalSequence(
+                    action = {buttonClick(buttons.editStoreParams_testRef)},
+                    modalAction = {},
+                    aid = "f770dff2-b2df-4231-810b-7596b2c6ace2"
+                )
                 ___stopHereAndEverywhereAfter(verticalPosition = VerticalPosition.TOP, horizontalPosition = HorizontalPosition.RIGHT)
                 acceptanceSequence("3196309c-b789-436c-89a4-27128aa59a46")
                 // TODO:vgrechka Email should be sent to customer

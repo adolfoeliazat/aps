@@ -277,7 +277,8 @@ class UAOrder(@Embedded var order: UAOrderFields)
             minAllowedPriceOffer = order.minAllowedPriceOffer,
             maxAllowedPriceOffer = order.maxAllowedPriceOffer,
             minAllowedDurationOffer = order.minAllowedDurationOffer,
-            maxAllowedDurationOffer = order.maxAllowedDurationOffer
+            maxAllowedDurationOffer = order.maxAllowedDurationOffer,
+            documentCategory = order.category.toRTO()
         )
     }
 }
@@ -399,8 +400,8 @@ class UADocumentCategory(@Embedded var category: UADocumentCategoryFields)
     fun toRTO(): UADocumentCategoryRTO {
         return UADocumentCategoryRTO(
             id = id!!,
-            title = category.title,
-            children = category.children.map {it.toRTO()}
+            title = category.title/*,
+            children = category.children.map {it.toRTO()}*/
         )
     }
 }
