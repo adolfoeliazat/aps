@@ -33,8 +33,8 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
     }
 
     val filesShortcutMode1 = FilesShortcutMode.B
-    val startPoint = 1
-//    val startPoint = 13
+//    val startPoint = 1
+    val startPoint = 13
     init {
 //        TestGlobal.describeStateConfig = DescribeStateConfig(showBanners = true, autoResumeAfterMs = null)
 //        TestGlobal.describeStateConfig = DescribeStateConfig(showBanners = true, autoResumeAfterMs = 2000)
@@ -60,7 +60,6 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 describeState("Anonymous order creation form")
                 debugMailboxClear()
                 selectSetValue(fields.uaDocumentType_testRef, UADocumentType.PRACTICE)
-                ___stopHereAndEverywhereAfter()
                 imposeNextGeneratedConfirmationSecret("top-fucking-secret")
                 formSubmissionAttempts(
                     testShit, baseID = "c31b6b5e-aac1-4136-8bef-906cf5be8cdc-1",
@@ -99,12 +98,12 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 ivo3.coitizeAndBootAsserting(assertStatic = {assertScreenHTML("Static confirmOrder", "2acbad6a-e169-4c0d-9938-99fac621fef5")},
                                              assertDynamic = {assertScreenHTML("Dynamic confirmOrder", "a6a44d05-7c1d-4dbf-82a2-3b42e0ca98f3")})
                 // TODO:vgrechka Email with password should be sent to customer
-                // ___stopHereAndEverywhereLater()
             }
 
             run { // Edit params -- cancel
                 step({buttonClick(buttons.edit_testRef)}, TestGlobal.modalShownLock, "1_9b32c20b-bcdb-4024-b068-5c6a36231944")
                 inputSetValue(fields.documentTitle_testRef, "Хуй")
+                describeState("Will cancel")
                 step({buttonClick(buttons.cancel_testRef)}, TestGlobal.modalHiddenLock, "1_65da1c1a-7b2d-487e-a9cb-e99035eaa04b")
             }
 
@@ -443,7 +442,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
             run { // Admin looks at profile change history
                 bootAdmin_openWriterToApprove(sessionIndex.dasja5, 3L, "21af756c-20b0-48be-89a5-7b0c2e1654b8")
-                step({buttonClick(buttons.history_testRef)}, TestGlobal.pageLoadedLock, "84837274-ff9a-4ae8-81ae-566685fe87fc")
+                twoStepSequence({buttonClick(buttons.history_testRef)}, "84837274-ff9a-4ae8-81ae-566685fe87fc")
                 // ___showStateDescriptions()
                 testCompareBelow(subscript = 9L, stateDescr = "Diff: states, phones", aid = "ed3da430-f954-4c31-b923-0a60c6276b54")
                 if (!skipLengthyStuff) {

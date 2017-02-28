@@ -38,7 +38,7 @@ class SingleUserPage {
                     renderBody = {renderProfile(user)},
                     hasEditButton = true,
                     editModalTitle = t("TOTE", "Параметры засранца"),
-                    formSpec = FormSpec<UserParamsRequest, GenericResponse>(
+                    makeFormSpec = {FormSpec<UserParamsRequest, GenericResponse>(
                         procedureName = "UpdateUser",
                         req = UserParamsRequest(isUpdate = true).populateCheckingCompleteness{o->
                             o.userID.value = user.id
@@ -48,7 +48,7 @@ class SingleUserPage {
                             o.phone.value = user.profilePhone
                             populateWithAdminNotes(o, user)
                         }
-                    ),
+                    )},
                     historyParams = HistoryParams<UserParamsHistoryItemRTO, UserParamsHistoryFilter>(
                         historyItemClass = UserParamsHistoryItemRTO::class,
                         renderItem = {thisItem, thatItem ->

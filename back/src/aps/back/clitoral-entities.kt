@@ -239,12 +239,8 @@ data class UAOrderFields(
     var maxAllowedPriceOffer: Int,
     var minAllowedDurationOffer: Int,
     var maxAllowedDurationOffer: Int,
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    var customer: User?, // TODO:vgrechka Think about nullability of this shit. Order can be draft, before customer even confirmed herself
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    var category: UADocumentCategory
+    @ManyToOne(fetch = FetchType.EAGER) var customer: User?, // TODO:vgrechka Think about nullability of this shit. Order can be draft, before customer even confirmed herself
+    @ManyToOne(fetch = FetchType.LAZY) var category: UADocumentCategory
 ) : FieldsWithAdminNotes
 
 @Entity @Table(name = "ua_orders",

@@ -97,10 +97,9 @@ class MelindaBoobs<
     }
 
     private var headerControlsDisabled = false
-    private var chunksLoaded = 0
     private var controlsContent by notNullOnce<Control2>()
     private var mainContent by notNullOnce<ToReactElementable>()
-    private var liveItems by notNullOnce<MutableList<Item>>() // Items can change in here as result of user editing shit, without the need to reload everything
+    private var tongues = mutableListOf<MelindaTongue>()
 
     fun makeStripContent() {
         controlsContent = object:Control2(Attrs()) {
@@ -124,10 +123,9 @@ class MelindaBoobs<
 
                     if (createParams != null) {
                         o- Button(icon = fa.plus, level = Button.Level.PRIMARY, key = buttons.plus) {
-                            openEditModal( // TODO:vgrechka Replace `Edit` with something more general
+                            openEditModal(
                                 title = createParams.createModalTitle,
                                 formSpec = FormSpec<CreateRequest, CreateResponse>(
-                                    ui = Globus.world,
                                     procedureName = createParams.createProcedureNameIfNotDefault,
                                     req = createParams.makeCreateRequest()
                                 ),
@@ -216,7 +214,6 @@ class MelindaBoobs<
             o.searchString.value = urlQuery.search.get()
             o.fromID.value = fromID
         })
-        ++chunksLoaded
         return res
     }
 
@@ -226,13 +223,13 @@ class MelindaBoobs<
             is FormResponse2.Shitty -> res
             is FormResponse2.Hunky -> {
                 val meat = res.meat
-                liveItems = meat.items.toMutableList()
+                tongues.addAll(meat.items.map {MelindaTongue(it)})
 
                 makeStripContent()
 
-                val items = makeItemsControl(meat, noItemsMessage = true, chunkIndex = chunksLoaded - 1)
+                val itemsControl = makeItemsControl(startIndex = 0, moreFromID = meat.moreFromID)
                 mainContent = ToReactElementable.from {kdiv{o->
-                    o- items
+                    o- itemsControl
                 }}
 
                 null
@@ -240,20 +237,19 @@ class MelindaBoobs<
         }
     }
 
-    private fun makeItemsControl(meat: ItemsResponse<Item>, noItemsMessage: Boolean, chunkIndex: Int, containerID: String? = null): ToReactElementable {
-        if (liveItems.isEmpty()) {
-            return if (noItemsMessage) span(const.msg.noItems)
-            else NOTRE
+    private fun makeItemsControl(startIndex: Int, moreFromID: Long?, containerID: String? = null): ToReactElementable {
+        if (tongues.size <= startIndex) return when {
+            startIndex == 0 -> span(const.msg.noItems)
+            else -> NOTRE
         }
 
         return kdiv(id = containerID){o->
             o- kdiv(className = css.lipsItemContainer){o->
-                for (i in 0..liveItems.lastIndex)
-                    MelindaTongue(i, o)
+                for (i in startIndex..tongues.lastIndex)
+                    o- tongues[i].render()
             }
 
-            meat.moreFromID?.let {moreFromID ->
-                moreFromID
+            if (moreFromID != null) {
                 val placeholder = Placeholder()
                 placeholder.setContent(kdiv(width = "100%", margin = "1em auto 1em auto"){o->
                     val btn = Button(title = t("Show more", "Показать еще"), className = "btn btn-default", style = Style(width = "100%", backgroundColor = Color.BLUE_GRAY_50), key = buttons.showMore)
@@ -263,7 +259,7 @@ class MelindaBoobs<
                             TestGlobal.showMoreHalfwayLock.resumeTestAndPauseSutFromSut()
                             try {
                                 val res = try {
-                                    requestChunk(meat.moreFromID)
+                                    requestChunk(moreFromID)
                                 } catch(e: Exception) {
                                     openErrorModal(const.msg.serviceFuckedUp)
                                     null
@@ -273,11 +269,11 @@ class MelindaBoobs<
                                     exhaustive / when (res) {
                                         is FormResponse2.Shitty -> openErrorModal(res.error)
                                         is FormResponse2.Hunky -> {
+                                            tongues.addAll(res.meat.items.map {MelindaTongue(it)})
                                             val newChunkContainerID = puid()
                                             placeholder.setContent(
-                                                makeItemsControl(res.meat,
-                                                                 noItemsMessage = false,
-                                                                 chunkIndex = chunksLoaded - 1,
+                                                makeItemsControl(startIndex = tongues.lastIndex - res.meat.items.size + 1,
+                                                                 moreFromID = res.meat.moreFromID,
                                                                  containerID = newChunkContainerID))
                                             await(scrollBodyToShitGradually {byid(newChunkContainerID)})
                                         }
@@ -296,13 +292,13 @@ class MelindaBoobs<
         }
     }
 
-    inner class MelindaTongue(itemIndex: Int, o: ElementBuilder) {
-        var itemPlace = Placeholder()
+    inner class MelindaTongue(var _item: Item) {
+        val itemPlace by lazy {Placeholder(renderView())}
         val viewRootID = puid()
 
         val tongueInterface = object:MelindaTongueInterface<Item> {
-            override val items = liveItems
-            override val itemIndex = itemIndex
+            override val items get() = tongues.map {it._item}
+            override val itemIndex get() = tongues.indexOf(this@MelindaTongue)
 
             override suspend fun onDelete() {
                 val executed = modalConfirmAndDelete(
@@ -313,6 +309,7 @@ class MelindaBoobs<
                 )
 
                 if (executed) {
+                    tongues.remove(this@MelindaTongue)
                     await(effects).fadeOut(viewRootID)
                     itemPlace.setContent(NOTRE)
                     TestGlobal.shitVanished.resumeTestAndPauseSutFromSut()
@@ -329,25 +326,17 @@ class MelindaBoobs<
                         req = uparams.makeUpdateItemRequest(item)
                     ),
                     onSuccessa = {res->
-                        liveItems[itemIndex] = uparams.getItemFromUpdateItemResponse(res)
-                        enterViewMode()
+                        _item = uparams.getItemFromUpdateItemResponse(res)
+                        itemPlace.setContent(renderView())
                     }
                 )
             }
         }
 
-        val lipsInterface = vaginalInterface.makeLipsInterface(viewRootID, tongueInterface)
+        fun render() = itemPlace
 
-        init {
-            enterViewMode()
-            o- itemPlace
-        }
-
-        fun enterViewMode() {
-            itemPlace.setContent(renderView())
-        }
-
-        fun renderView(initiallyTransparent: Boolean = false): ToReactElementable {
+        private fun renderView(): ToReactElementable {
+            val lipsInterface = vaginalInterface.makeLipsInterface(viewRootID, tongueInterface)
             return lipsInterface.renderItem()
         }
 

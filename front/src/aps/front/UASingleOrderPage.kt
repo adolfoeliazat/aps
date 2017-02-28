@@ -91,7 +91,7 @@ class UASingleOrderPage {
                         UserKind.WRITER -> imf("7ab0701a-df7a-457f-9bca-a2bedc0e5225")
                     },
                     editModalTitle = t("TOTE", "Параметры заказа"),
-                    formSpec = FormSpec<UAOrderParamsRequest, GenericResponse>(
+                    makeFormSpec = {FormSpec<UAOrderParamsRequest, GenericResponse>(
                         procedureName = "UAUpdateOrder",
                         req = UAOrderParamsRequest(isAdmin = isAdmin(), isUpdate = true).populateCheckingCompleteness{o->
                             o.orderID.value = order.id
@@ -106,7 +106,7 @@ class UASingleOrderPage {
                             o.phone.value = order.customerPhone
                             populateWithAdminNotes(o, order)
                         }
-                    )),
+                    )}),
                 UACustomerSingleOrderPageFilesTab(order)
             )},
             pageHeaderTitle = {t("TOTE", "Заказ $numberSign${order.id}")},

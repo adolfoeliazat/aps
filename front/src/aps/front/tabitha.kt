@@ -109,7 +109,7 @@ class UsualParamsTab<ItemRTO, HistoryItemRTO, HistoryFilter, Req : RequestMatumb
     renderBody: () -> ToReactElementable,
     hasEditButton: Boolean,
     editModalTitle: String,
-    formSpec: FormSpec<Req, Res>,
+    makeFormSpec: () -> FormSpec<Req, Res>,
     val historyParams: HistoryParams<HistoryItemRTO, HistoryFilter>? = null
 )
     : TabithaTab
@@ -253,7 +253,7 @@ where
                         o- Button(icon = fa.pencil, level = Button.Level.DEFAULT, key = buttons.edit) {
                             openEditModal(
                                 title = editModalTitle,
-                                formSpec = formSpec,
+                                formSpec = makeFormSpec(),
                                 onSuccessa = {
                                     tabitha.reloadPage()
                                 }
