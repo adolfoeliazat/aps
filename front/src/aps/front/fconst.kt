@@ -11,6 +11,7 @@ object fconst {
         url
     }
     val testFilesDirAndSlash = "e:\\work\\aps\\back\\testfiles\\" // TODO:vgrechka @unhardcode
+    val showJokes = true
 
     object elementID {
         val topNavbarContainer = "topNavbarContainer"

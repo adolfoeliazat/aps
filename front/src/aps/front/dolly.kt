@@ -15,6 +15,7 @@ class DollyButton(
     val title: String,
     val level: Button.Level,
     val key: ButtonKey,
+    val buttonClass: String = "",
     val onClick: suspend (DollyInterface) -> Unit
 )
 
@@ -70,7 +71,7 @@ class Dolly(val p: DollyParams): ToReactElementable {
             o- hor2{o->
                 for (button in p.buttons) {
                     o- Button(
-                        title = button.title, disabled = p.busy, level = button.level, className = p.styles.button, key = button.key,
+                        title = button.title, disabled = p.busy, level = button.level, className = "${p.styles.button} ${button.buttonClass}", key = button.key,
                         onClicka = {
                             button.onClick(object:DollyInterface {
                                 override fun setBusy() {
@@ -93,13 +94,21 @@ fun <EntityRTO : TabithaEntityRTO> acceptOrRejectDolly(
     tabitha: Tabitha<EntityRTO>,
     acceptButtonTitle: String,
     makeAcceptanceRequestParams: KFunction1<Long, ReginaParams<*>>,
-    bottomGap: Boolean = false
+    bottomGap: Boolean = false,
+    jokeOptions: List<String> = listOf()
 ): Dolly {
     return Dolly(DollyParams(
         styles = css.dolly.normal,
         message = message,
         bottomGap = bottomGap,
         buttons = listOf(
+            (fconst.showJokes && jokeOptions.isNotEmpty()).then {
+                DollyButton(
+                    title = jokeOptions[randomInt(0, jokeOptions.size)],
+                    level = Button.Level.DEFAULT, buttonClass = css.jokeDollyButton, key = buttons.joke,
+                    onClick = {
+                        openErrorModal(t("TOTE", "Та не гони..."), buttonTitle = t("TOTE", "Я обламываюсь"))
+                    })},
             DollyButton(
                 title = t("TOTE", "Завернуть"), level = Button.Level.DANGER, key = buttons.reject,
                 onClick = {
@@ -123,7 +132,8 @@ fun <EntityRTO : TabithaEntityRTO> acceptOrRejectDolly(
                     },
                     onSuccess = {
                         tabitha.reloadPage()
-                    })))))
+                    })))
+            .filterNotNull()))
 }
 
 

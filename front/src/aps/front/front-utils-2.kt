@@ -2,6 +2,7 @@ package aps.front
 
 import aps.*
 import into.kommon.*
+import kotlin.js.Math
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
@@ -134,8 +135,23 @@ suspend fun twoStepBlinkingSut(blinkElement: jquery.JQuery, act: suspend () -> U
     TestGlobal.shitDoneLock.resumeTestFromSut()
 }
 
+fun renderMoney(cents: Int) = kspan{o->
+    o- when {
+        (cents == -1) -> const.text.na
+        else -> cents.toString()
+    }
+}
 
+fun renderDurationHours(hours: Int) = kspan{o->
+    o- when {
+        (hours == -1) -> const.text.na
+        else -> hours.toString()
+    }
+}
 
+fun randomInt(minInclusive: Int, maxExclusive: Int): Int {
+    return Math.floor(Math.random() * (maxExclusive - minInclusive)) + minInclusive
+}
 
 
 

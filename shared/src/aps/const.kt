@@ -8,6 +8,7 @@ object const {
 
     object text {
         val numberSign = t("#", "№")
+        val na = t("N/A", "ХЗ")
 
         object symbols {
             val rightDoubleAngleQuotation = "»"

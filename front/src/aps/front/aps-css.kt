@@ -636,6 +636,8 @@ object css {
         """)
     }
 
+    val jokeDollyButton by Style("opacity: 0.5; margin-right: ${3*8}px;")
+
 
     init {touchObjectGraph(this)}
 }

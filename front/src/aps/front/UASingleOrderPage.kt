@@ -51,6 +51,7 @@ class UASingleOrderPage {
                         }
                         UserKind.ADMIN -> acceptOrRejectDolly(
                             message = t("TOTE", "Что будем делать с заказом?"),
+                            jokeOptions = listOf("Заказать заказчика", "Купить молока"),
                             blankRejectionRequest = ReturnOrderToCustomerForFixingRequest(),
                             entityID = order.id,
                             tabitha = tabitha,
@@ -151,10 +152,10 @@ fun renderOrderParams(order: UAOrderRTO): ToReactElementable {
                              }
                          })
         o- m.row{o->
-            o- m.col(3, fields.minAllowedPriceOffer.title, order.minAllowedPriceOffer.toString())
-            o- m.col(3, fields.maxAllowedPriceOffer.title, order.maxAllowedPriceOffer.toString())
-            o- m.col(3, fields.minAllowedDurationOffer.title, order.minAllowedDurationOffer.toString())
-            o- m.col(3, fields.maxAllowedDurationOffer.title, order.maxAllowedDurationOffer.toString())
+            o- m.col(3, fields.minAllowedPriceOffer.title, renderMoney(order.minAllowedPriceOffer))
+            o- m.col(3, fields.maxAllowedPriceOffer.title, renderMoney(order.maxAllowedPriceOffer))
+            o- m.col(3, fields.minAllowedDurationOffer.title, renderDurationHours(order.minAllowedDurationOffer))
+            o- m.col(3, fields.maxAllowedDurationOffer.title, renderDurationHours(order.maxAllowedDurationOffer))
         }
 
         o- kdiv(height = "3rem")

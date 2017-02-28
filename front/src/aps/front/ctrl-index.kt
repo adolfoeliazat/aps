@@ -37,6 +37,7 @@ object buttons                           : Fuckers<ButtonKey>(null) {
     val back                             by namedFucker(::ButtonKey); val back_testRef = TestRef(back)
     val compare                          by namedFucker(::ButtonKey); val compare_testRef = TestRef(compare)
     val editStoreParams                  by namedFucker(::ButtonKey); val editStoreParams_testRef = TestRef(editStoreParams)
+    val joke                             by namedFucker(::ButtonKey); val joke_testRef = TestRef(joke)
 
     object modal                         : Fuckers<ButtonKey>(this) {
         val ok                           by namedFucker(::ButtonKey); val ok_testRef = TestRef(ok)

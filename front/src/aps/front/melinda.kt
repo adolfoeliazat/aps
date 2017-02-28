@@ -357,6 +357,11 @@ object MelindaTools {
             }
         }
 
+    fun col(size: Int, title: String, content: ToReactElementable) =
+        col(size, title){o->
+            o- content
+        }
+
     fun col(size: Int, title: String, value: String, contentClassName: String? = null, textClassName: String? = null, icon: XIcon? = null) =
         col(size, title, contentClassName = contentClassName){o->
             icon?.let {

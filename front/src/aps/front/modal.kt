@@ -200,7 +200,7 @@ suspend fun <Request : RequestMatumba> openDangerFormModalAndWaitExecution(
     return await(ret.promise)
 }
 
-fun openErrorModal(msg: String): ModalOperations {
+fun openErrorModal(msg: String, buttonTitle: String? = null): ModalOperations {
     var modal by notNullOnce<ModalOperations>()
 
     modal = openModal(OpenModalParams(
@@ -211,7 +211,7 @@ fun openErrorModal(msg: String): ModalOperations {
             o- msg
         },
         footer = kdiv{o->
-            o- Button(title = t("Cool", "Круто"), level = Button.Level.DEFAULT, key = buttons.primary, onClicka = {
+            o- Button(title = buttonTitle ?: t("Cool", "Круто"), level = Button.Level.DEFAULT, key = buttons.primary, onClicka = {
                 modal.close()
             })
         }
