@@ -34,7 +34,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
     val filesShortcutMode1 = FilesShortcutMode.B
 //    val startPoint = 1
-    val startPoint = 13
+    val startPoint = 9
     init {
 //        TestGlobal.describeStateConfig = DescribeStateConfig(showBanners = true, autoResumeAfterMs = null)
 //        TestGlobal.describeStateConfig = DescribeStateConfig(showBanners = true, autoResumeAfterMs = 2000)
@@ -393,13 +393,17 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 submitFormSequence(testShit, aid = "bd4cc26f-e6d2-4036-9617-9518acaf454a")
             }
 
+        }
+
+        definePoint(9) {
             run { // Admin moves order to store
+                ___stopHereAndEverywhereAfter(verticalPosition = VerticalPosition.TOP, horizontalPosition = HorizontalPosition.RIGHT)
                 acceptanceSequence("3196309c-b789-436c-89a4-27128aa59a46")
                 // TODO:vgrechka Email should be sent to customer
             }
         }
 
-        definePoint(9) {
+        definePoint(10) {
             bootCustomerWithTokenToOrderPage("ivo", sessionIndex.ivo5, orderID = 1L, aid = "cddb0684-949d-4e09-a77c-18edb59aef81")
             describeState("Customer sees that order was accepted")
 
@@ -414,7 +418,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
             }
         }
 
-        definePoint(10) {
+        definePoint(11) {
             run { // Admin rejects Kafka's profile
                 bootAdmin_openWriterToApprove_beginEditing(sessionIndex.dasja3, 3L, "9e3a8178-3f0d-4f5b-98a3-1bb306b4c8ca")
                 setProfileFields_submitForm(firstName = "Франсик", lastName = "Кафунчик", adminNotes = "Здесь был Вася...", aid = "f9e763e5-e9ad-45fe-bc34-d5332cc20602")
@@ -434,7 +438,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
             }
         }
 
-        definePoint(11) {
+        definePoint(12) {
             run { // Kafka changes phone in profile
                 bootWriterWithTokenToProfilePage("kafka", sessionIndex.kafka3, "c896ce76-1483-4da7-9ebf-2504a87e18d5")
                 setProfileFields_submitForm(profilePhone = "+38 (099) 432-54-75", aid = "195b4d45-8f7b-4579-9c7c-8ee385484ee4")
@@ -466,7 +470,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
             }
         }
 
-        definePoint(12) {
+        definePoint(13) {
             topNavItemSequence(pages.uaAdmin.users_testRef, "6044a3a2-8a71-4d99-8c36-a8195a863281")
             lipsTitleClick(2L, "f7a3e4d0-899d-458d-8774-37d6ca051976")
 
@@ -486,7 +490,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
             }
         }
 
-        definePoint (13) {
+        definePoint (14) {
             bootWriterWithToken("gogol", sessionIndex.gogol2, makeURL(pages.uaWriter.store, listOf()), aid = "8ce00463-19a8-4239-a113-7cd1d2255189")
         }
     }
@@ -780,9 +784,9 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
         submitFormSequence(testShit, aid = "${p.aid}--2")
     }
 
-    private suspend fun ___stopHereAndEverywhereAfter() {
+    private suspend fun ___stopHereAndEverywhereAfter(verticalPosition: VerticalPosition? = null, horizontalPosition: HorizontalPosition? = null) {
         stopEverywhere()
-        describeState("Doing stopHereAndEverywhereLater()...")
+        describeState("Doing stopHereAndEverywhereLater()...", verticalPosition = verticalPosition, horizontalPosition = horizontalPosition)
     }
 
     private fun stopEverywhere() {

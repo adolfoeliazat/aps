@@ -29,7 +29,6 @@ fun ignite() {
     global.DEBUG_SIMULATE_SLOW_NETWORK = true
     global.DEBUG_RPC_LAG_FOR_MANUAL_TESTS = 500
     global.BOOTSTRAP_VERSION = 3
-    global.BACKEND_URL = "http://localhost:3100"
 
     js("Error").stackTraceLimit = js("Infinity")
 

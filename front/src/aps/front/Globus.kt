@@ -22,6 +22,8 @@ external interface IExternalGlobus {
     var LANG: String
     var MODE: String
     var DB: String
+    val BACKEND_URL: String
+
     fun displayInitialShit()
     fun bsClearMenus()
     fun initStaticShit()

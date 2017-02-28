@@ -50,13 +50,13 @@ class DescribeStateConfig(
     val autoResumeAfterMs: Int? = null
 )
 
-suspend fun describeState(descr: String) {
+suspend fun describeState(descr: String, verticalPosition: VerticalPosition? = null, horizontalPosition: HorizontalPosition? = null) {
     val cfg = TestGlobal.describeStateConfig
     if (!cfg.showBanners) return
 
     val ctx = ShowTestBannerContext()-{o->
-        o.verticalPosition = VerticalPosition.BOTTOM
-        o.horizontalPosition = HorizontalPosition.RIGHT
+        o.verticalPosition = verticalPosition ?: VerticalPosition.BOTTOM
+        o.horizontalPosition = horizontalPosition ?: HorizontalPosition.RIGHT
     }
 
     val autoResumeAfterMs = cfg.autoResumeAfterMs

@@ -34,6 +34,8 @@ object MakeStaticSites {
     lateinit var out: String
     val DEPS_JS = "${const.file.APS_TEMP}/deps.js"
 
+    var backendURL by notNullOnce<String>()
+
     @JsName("runShit")
     fun runShit(argv: Array<String>) = async {
         try {
@@ -54,6 +56,17 @@ object MakeStaticSites {
             val outString: String? = margv.out
             out = outString ?: "${const.file.APS_HOME}/front/out/static"
             println("Out directory: $out")
+
+            val config = JSON.parse<dynamic>(fs.readFileSync("e:/work/aps-local/aps-local-config.json", "utf8"))
+
+            run { // Backend URL
+                val useFromLocalConfig = true
+                backendURL = when {
+                    useFromLocalConfig -> config.backendURL
+                    else -> "http://127.0.0.1:8080"
+                }
+                clog("Backend URL: $backendURL")
+            }
 
             await(browserifyShit())
             await(makeWriterSite(Language.UA))
@@ -1040,6 +1053,8 @@ object MakeStaticSites {
     <script>
     LANG = '${lang}'
     CLIENT_KIND = '${clientKind.name}'
+    BACKEND_URL = '$backendURL'
+
     setFavicon('${if (clientKind == ClientKind.UA_CUSTOMER) "favicon-customer.ico" else "favicon-writer.ico"}')
 
     function setFavicon(src) {
