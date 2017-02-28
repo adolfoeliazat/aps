@@ -145,7 +145,11 @@ class UserParamsHistoryItemRTO(
     override val titleHighlightRanges: List<IntRangeRTO>
 ) : MelindaItemRTO, HistoryItemRTOFields
 
-
+class UADocumentCategoryRTO(
+    val id: Long,
+    val title: String,
+    val children: List<UADocumentCategoryRTO>
+)
 
 
 

@@ -412,10 +412,6 @@ fun enhanceDB() {
                 before insert or update on ua_order_files
                 for each row execute procedure ua_order_files__tsv_trigger();
 
-            -- ======================== SYSTEM USERS =======================
-
-            -- insert into users(id, user_email, user_firstName, user_lastName, user_common_deleted, user_common_createdAt, user_common_updatedAt, user_passwordHash, user_profilePhone, user_kind, user_state, user_adminNotes, user_aboutMe)
-                        -- values (-10, 'TestScenario@system', 'TestScenario', 'System', false, now(), now(), 'boobs', 'boobs', '${UserKind.ADMIN.name}', '${UserState.COOL.name}', 'boobs', 'boobs');
         """)
         q.executeUpdate()
     } finally {

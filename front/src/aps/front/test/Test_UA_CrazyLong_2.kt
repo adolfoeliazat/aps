@@ -33,8 +33,8 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
     }
 
     val filesShortcutMode1 = FilesShortcutMode.B
-//    val startPoint = 1
-    val startPoint = 13
+    val startPoint = 1
+//    val startPoint = 13
     init {
 //        TestGlobal.describeStateConfig = DescribeStateConfig(showBanners = true, autoResumeAfterMs = null)
 //        TestGlobal.describeStateConfig = DescribeStateConfig(showBanners = true, autoResumeAfterMs = 2000)
@@ -60,6 +60,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 describeState("Anonymous order creation form")
                 debugMailboxClear()
                 selectSetValue(fields.uaDocumentType_testRef, UADocumentType.PRACTICE)
+                ___stopHereAndEverywhereAfter()
                 imposeNextGeneratedConfirmationSecret("top-fucking-secret")
                 formSubmissionAttempts(
                     testShit, baseID = "c31b6b5e-aac1-4136-8bef-906cf5be8cdc-1",

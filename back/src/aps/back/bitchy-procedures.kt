@@ -159,7 +159,7 @@ class FuckSomeoneParams<Req : RequestMatumba, out Res : CommonResponseFields>(
     val runShit: (ProcedureContext, Req) -> Res,
     val validate: (ProcedureContext, Req) -> Unit = { ctx, req -> },
     val wrapInFormResponse: Boolean,
-    val needsDB: Boolean,
+    @Deprecated("Kill me") val needsDB: Boolean,
     val needsDangerousToken: Boolean,
     val needsUser: NeedsUser,
     val userKinds: Set<UserKind>,

@@ -41,7 +41,12 @@ import java.util.*
                         customerFirstName = req.firstName.value,
                         customerLastName = req.lastName.value,
                         customerEmail = req.email.value,
-                        adminNotes = adminNotesForCreate(req)
+                        adminNotes = adminNotesForCreate(req),
+                        minAllowedPriceOffer = -1,
+                        maxAllowedPriceOffer = -1,
+                        minAllowedDurationOffer = -1,
+                        maxAllowedDurationOffer = -1,
+                        category = uaDocumentCategoryRepo.findOrDie(const.uaDocumentCategoryID.misc)
                     )
                 ))
 

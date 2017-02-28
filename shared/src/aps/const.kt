@@ -100,6 +100,11 @@ object const {
         val anonymousCustomer = -20L
         val anonymousWriter = -30L
     }
+
+    object uaDocumentCategoryID {
+        val root = -10L
+        val misc = -20L
+    }
 }
 
 

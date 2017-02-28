@@ -129,6 +129,10 @@
       <root url="jar://$USER_HOME$/.ideaLibSources/spring-beans-4.3.6.RELEASE-sources.jar!/" />
       <root url="jar://$USER_HOME$/.ideaLibSources/spring-core-4.3.6.RELEASE-sources.jar!/" />
       <root url="jar://$USER_HOME$/.ideaLibSources/HikariCP-2.5.1-sources.jar!/" />
+      <root url="jar://$USER_HOME$/.ideaLibSources/spring-tx-4.3.6.RELEASE-sources.jar!/" />
+      <root url="jar://$USER_HOME$/.ideaLibSources/spring-jdbc-4.3.6.RELEASE-sources.jar!/" />
+      <root url="jar://$USER_HOME$/.ideaLibSources/spring-data-jpa-1.10.7.RELEASE-sources.jar!/" />
+      <root url="jar://$USER_HOME$/.ideaLibSources/spring-aop-4.2.9.RELEASE-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

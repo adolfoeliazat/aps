@@ -119,21 +119,203 @@ testProcedure(
     }
 )
 
-@Servant class ServeRecreateTestDatabaseSchema(val userRepo: UserRepository, val historyRepo: UserParamsHistoryItemRepository) : BitchyProcedure() {
+@Servant class ServeRecreateTestDatabaseSchema : BitchyProcedure() {
     override fun serve() {
         fuckDangerously(FuckDangerouslyParams(
             bpc = bpc, makeRequest = {RecreateTestDatabaseSchemaRequest()},
             runShit = fun(ctx, req): GenericResponse {
                 springctx = AnnotationConfigApplicationContext(AppConfig::class.java) // New context -- new EMF
                 enhanceDB()
-                seedUsers()
+                seed()
                 return GenericResponse()
             }
         ))
     }
 
-    fun seedUsers() {
+    fun seed() {
         userRepo.save(User(user = UserFields(email = "dasja@test.shit.ua", firstName = "Дася", lastName = "Админовна", profilePhone = "911", kind = UserKind.ADMIN, state = UserState.COOL, passwordHash = BCrypt.hashpw("dasja-secret", BCrypt.gensalt()), adminNotes = "")))
+
+        fun makeCategory(title: String, children: List<UADocumentCategory> = listOf()) = UADocumentCategory(UADocumentCategoryFields(title = title, parent = null, children = children.toMutableList()))
+
+        val root = makeCategory("ROOT", listOf(
+            makeCategory(t("TOTE", "Разное"))-{it.imposedIDToGenerate = const.uaDocumentCategoryID.misc},
+            makeCategory(t("TOTE", "Экономические"), listOf(
+                makeCategory(t("TOTE", "Аудит")),
+                makeCategory(t("TOTE", "Банковское дело")),
+                makeCategory(t("TOTE", "Биржевое дело")),
+                makeCategory(t("TOTE", "Бухгалтерский учет")),
+                makeCategory(t("TOTE", "Бюджетная система")),
+                makeCategory(t("TOTE", "Валютное регулирование и контроль")),
+                makeCategory(t("TOTE", "Валютные отношения")),
+                makeCategory(t("TOTE", "Деньги и кредит")),
+                makeCategory(t("TOTE", "Государственная служба")),
+                makeCategory(t("TOTE", "Государственное управление")),
+                makeCategory(t("TOTE", "Государственные финансы")),
+                makeCategory(t("TOTE", "Делопроизводство, документоведение, документалистика")),
+                makeCategory(t("TOTE", "Эконометрика")),
+                makeCategory(t("TOTE", "Экономика")),
+                makeCategory(t("TOTE", "Экономика предприятий")),
+                makeCategory(t("TOTE", "Экономика труда и социально-трудовые отношения")),
+                makeCategory(t("TOTE", "Экономическая кибернетика")),
+                makeCategory(t("TOTE", "Экономический анализ")),
+                makeCategory(t("TOTE", "Электронная коммерция")),
+                makeCategory(t("TOTE", "Связи с общественностью, PR")),
+                makeCategory(t("TOTE", "Внешнеэкономическая деятельность, ВЭД")),
+                makeCategory(t("TOTE", "Инвестирование, инвестиционная деятельность")),
+                makeCategory(t("TOTE", "Инновационная деятельность")),
+                makeCategory(t("TOTE", "Инновационный менеджмент")),
+                makeCategory(t("TOTE", "Казначейское дело")),
+                makeCategory(t("TOTE", "Контроллинг")),
+                makeCategory(t("TOTE", "Лесное хозяйство")),
+                makeCategory(t("TOTE", "Логистика")),
+                makeCategory(t("TOTE", "Макроэкономика, государственное регулирование экономики")),
+                makeCategory(t("TOTE", "Маркетинг, рекламная деятельность")),
+                makeCategory(t("TOTE", "Менеджмент, управление персоналом")),
+                makeCategory(t("TOTE", "Таможенное дело")),
+                makeCategory(t("TOTE", "Международная экономика и международные экономические отношения")),
+                makeCategory(t("TOTE", "Микроэкономика")),
+                makeCategory(t("TOTE", "Моделирование экономики")),
+                makeCategory(t("TOTE", "Налогообложение, налоги, налоговая система")),
+                makeCategory(t("TOTE", "Предпринимательство")),
+                makeCategory(t("TOTE", "Политэкономия, экономическая теория, история экономических учений")),
+                makeCategory(t("TOTE", "Ресторанно- гостиничный бизнес, бытовое обслуживание")),
+                makeCategory(t("TOTE", "Рынок ценных бумаг")),
+                makeCategory(t("TOTE", "Размещение производительных сил, региональная экономика, экономическая география, РПС")),
+                makeCategory(t("TOTE", "Сельское хозяйство и агропромышленный комплекс")),
+                makeCategory(t("TOTE", "Стандартизация, управление качеством")),
+                makeCategory(t("TOTE", "Статистика")),
+                makeCategory(t("TOTE", "Стратегический менеджмент")),
+                makeCategory(t("TOTE", "Страхование, страховое дело")),
+                makeCategory(t("TOTE", "Товароведение и экспертиза")),
+                makeCategory(t("TOTE", "Торговля и коммерческая деятельность")),
+                makeCategory(t("TOTE", "Туризм")),
+                makeCategory(t("TOTE", "Управление проектами")),
+                makeCategory(t("TOTE", "Управленческий учет")),
+                makeCategory(t("TOTE", "Финансы")),
+                makeCategory(t("TOTE", "Финансы предприятий")),
+                makeCategory(t("TOTE", "Финансовый анализ")),
+                makeCategory(t("TOTE", "Финансовый менеджмент")),
+                makeCategory(t("TOTE", "Ценообразование"))
+            )),
+
+            makeCategory(t("TOTE", "Естественные"), listOf(
+                makeCategory(t("TOTE", "Астрономия")),
+                makeCategory(t("TOTE", "Биология")),
+                makeCategory(t("TOTE", "Военная подготовка")),
+                makeCategory(t("TOTE", "География")),
+                makeCategory(t("TOTE", "Геодезия")),
+                makeCategory(t("TOTE", "Геология")),
+                makeCategory(t("TOTE", "Экология")),
+                makeCategory(t("TOTE", "Математика")),
+                makeCategory(t("TOTE", "Медицина")),
+                makeCategory(t("TOTE", "Естествознание")),
+                makeCategory(t("TOTE", "Фармацевтика")),
+                makeCategory(t("TOTE", "Физика")),
+                makeCategory(t("TOTE", "Химия"))
+            )),
+
+            makeCategory(t("TOTE", "Технические"), listOf(
+                makeCategory(t("TOTE", "Авиация и космонавтика")),
+                makeCategory(t("TOTE", "Архитектура")),
+                makeCategory(t("TOTE", "Базы данных")),
+                makeCategory(t("TOTE", "Строительство")),
+                makeCategory(t("TOTE", "Электроника")),
+                makeCategory(t("TOTE", "Электротехника")),
+                makeCategory(t("TOTE", "Информатика и вычислительная техника")),
+                makeCategory(t("TOTE", "Информационная безопасность")),
+                makeCategory(t("TOTE", "Информационно-аналитическая деятельность")),
+                makeCategory(t("TOTE", "Кибернетика")),
+                makeCategory(t("TOTE", "Чертежи")),
+                makeCategory(t("TOTE", "Программирование")),
+                makeCategory(t("TOTE", "Проектирование")),
+                makeCategory(t("TOTE", "Радиоэлектроника, радиотехника")),
+                makeCategory(t("TOTE", "Теоретическая механика")),
+                makeCategory(t("TOTE", "Теория механизмов и машин (ТММ), детали машин (ДМ)")),
+                makeCategory(t("TOTE", "Теплотехника")),
+                makeCategory(t("TOTE", "Технологии, система технологий")),
+                makeCategory(t("TOTE", "Технология машиностроения")),
+                makeCategory(t("TOTE", "Технология приготовления пищи")),
+                makeCategory(t("TOTE", "Транспортное строительство"))
+            )),
+
+            makeCategory(t("TOTE", "Юридические"), listOf(
+                makeCategory(t("TOTE", "Адвокатура")),
+                makeCategory(t("TOTE", "Административное право")),
+                makeCategory(t("TOTE", "Арбитражный процесс")),
+                makeCategory(t("TOTE", "Хозяйственное право")),
+                makeCategory(t("TOTE", "Экологическое право")),
+                makeCategory(t("TOTE", "Жилищное право")),
+                makeCategory(t("TOTE", "Земельное право")),
+                makeCategory(t("TOTE", "История государства и права")),
+                makeCategory(t("TOTE", "Конституционное право")),
+                makeCategory(t("TOTE", "Корпоративное право")),
+                makeCategory(t("TOTE", "Криминалистика, экспертиза")),
+                makeCategory(t("TOTE", "Уголовное право, криминология")),
+                makeCategory(t("TOTE", "Уголовный процесс")),
+                makeCategory(t("TOTE", "Таможенное право")),
+                makeCategory(t("TOTE", "Международное право")),
+                makeCategory(t("TOTE", "Муниципальное право")),
+                makeCategory(t("TOTE", "Нотариат")),
+                makeCategory(t("TOTE", "Предпринимательское право")),
+                makeCategory(t("TOTE", "Налоговое право")),
+                makeCategory(t("TOTE", "Право")),
+                makeCategory(t("TOTE", "Право интеллектуальной собственности")),
+                makeCategory(t("TOTE", "Семейное право")),
+                makeCategory(t("TOTE", "Страховое право")),
+                makeCategory(t("TOTE", "Судебные и правоохранительные органы")),
+                makeCategory(t("TOTE", "Судебно-медицинская экспертиза")),
+                makeCategory(t("TOTE", "Теория государства и права")),
+                makeCategory(t("TOTE", "Трудовое право")),
+                makeCategory(t("TOTE", "Финансовое право")),
+                makeCategory(t("TOTE", "Гражданское право"))
+            )),
+
+            makeCategory(t("TOTE", "Гуманитарные"), listOf(
+                makeCategory(t("TOTE", "Анализ банковской деятельности")),
+                makeCategory(t("TOTE", "Английский язык")),
+                makeCategory(t("TOTE", "Безопасность жизнедеятельности (БЖД)")),
+                makeCategory(t("TOTE", "Дизайн")),
+                makeCategory(t("TOTE", "Дипломатия")),
+                makeCategory(t("TOTE", "Эстетика")),
+                makeCategory(t("TOTE", "Этика")),
+                makeCategory(t("TOTE", "Журналистика и издательское дело")),
+                makeCategory(t("TOTE", "История")),
+                makeCategory(t("TOTE", "Краеведение")),
+                makeCategory(t("TOTE", "Культурология")),
+                makeCategory(t("TOTE", "Лингвистика")),
+                makeCategory(t("TOTE", "Литература зарубежная")),
+                makeCategory(t("TOTE", "Литература русский")),
+                makeCategory(t("TOTE", "Литература украинский")),
+                makeCategory(t("TOTE", "Логика")),
+                makeCategory(t("TOTE", "Искусство и культура")),
+                makeCategory(t("TOTE", "Немецкий язык")),
+                makeCategory(t("TOTE", "Педагогика")),
+                makeCategory(t("TOTE", "Политология")),
+                makeCategory(t("TOTE", "Психология")),
+                makeCategory(t("TOTE", "Религиоведение, религия и мифология")),
+                makeCategory(t("TOTE", "Риторика")),
+                makeCategory(t("TOTE", "Русский язык")),
+                makeCategory(t("TOTE", "Социальная работа")),
+                makeCategory(t("TOTE", "Социология")),
+                makeCategory(t("TOTE", "Стилистика")),
+                makeCategory(t("TOTE", "Украинский язык")),
+                makeCategory(t("TOTE", "Физкультура и спорт")),
+                makeCategory(t("TOTE", "Филология")),
+                makeCategory(t("TOTE", "Философия")),
+                makeCategory(t("TOTE", "Фонетика")),
+                makeCategory(t("TOTE", "Французский язык"))
+            ))
+        ))
+        root.imposedIDToGenerate = const.uaDocumentCategoryID.root
+        saveCategoryTree(root)
+    }
+
+    private fun saveCategoryTree(root: UADocumentCategory) {
+        val savedRoot = uaDocumentCategoryRepo.save(root)
+        for (child in root.category.children) {
+            child.category.parent = savedRoot
+            saveCategoryTree(child)
+        }
     }
 }
 

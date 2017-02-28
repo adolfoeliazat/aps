@@ -1,4 +1,25 @@
-kics.order.file.delete
-kics.order.file.edit
+- documentCategory (math, literature...) -- hierarchical?
+- storeTags
+- movedToStoreAt
+- minAllowedPriceOffer
+- maxAllowedPriceOffer
+- currentMinPriceOffer
+- currentMaxPriceOffer
+- minAllowedDurationOffer (hours)
+- maxAllowedDurationOffer
+- currentMinDurationOffer
+- currentMaxDurationOffer
 
-kics.order.file.edit
+
+- Show min/max price offer along with corresponding duration offer (and other way round)
+
+
+
+
+
+
+
+
+
+--------------------------------------------------------------------
+

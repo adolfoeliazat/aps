@@ -6,7 +6,6 @@ import org.hibernate.annotations.GenericGenerator
 import org.hibernate.engine.spi.SharedSessionContractImplementor
 import org.hibernate.id.IdentityGenerator
 import org.springframework.data.repository.CrudRepository
-import org.springframework.data.repository.findOrDie
 import java.sql.Timestamp
 import javax.persistence.*
 
@@ -18,7 +17,7 @@ val userTokenRepo get() = springctx.getBean(UserTokenRepository::class.java)!!
 val userParamsHistoryItemRepo get() = springctx.getBean(UserParamsHistoryItemRepository::class.java)!!
 val uaOrderRepo get() = springctx.getBean(UAOrderRepository::class.java)!!
 val uaOrderFileRepo get() = springctx.getBean(UAOrderFileRepository::class.java)!!
-
+val uaDocumentCategoryRepo get() = springctx.getBean(UADocumentCategoryRepository::class.java)!!
 
 private fun currentTimestampForEntity(): Timestamp {
     return when {
@@ -34,6 +33,9 @@ abstract class ClitoralEntity0 {
     @GenericGenerator(name = "IdentityIfNotSetGenerator", strategy = "aps.back.IdentityIfNotSetGenerator")
     var id: Long? = null
 
+    @Transient
+    var imposedIDToGenerate: Long? = null
+
     @PreUpdate
     fun preFuckingUpdate() {
         if (!RequestGlobus.shitIsDangerous) {
@@ -47,9 +49,12 @@ abstract class ClitoralEntity0 {
 @Suppress("Unused")
 class IdentityIfNotSetGenerator : IdentityGenerator() {
     override fun generate(s: SharedSessionContractImplementor?, obj: Any?): java.io.Serializable {
-        val id = (obj as ClitoralEntity0).id
+        val entity = obj as ClitoralEntity0
+        val id = entity.id
+        val imposedIDToGenerate = entity.imposedIDToGenerate
         return when {
             id != null -> id
+            imposedIDToGenerate != null -> imposedIDToGenerate
             else -> super.generate(s, obj)
         }
     }
@@ -229,9 +234,17 @@ data class UAOrderFields(
     @Column(length = MAX_STRING) var customerEmail: String,
     @Column(length = MAX_STRING) var whatShouldBeFixedByCustomer : String? = null,
     override @Column(length = MAX_STRING) var adminNotes: String,
+    var movedToStoreAt: Timestamp? = null,
+    var minAllowedPriceOffer: Int,
+    var maxAllowedPriceOffer: Int,
+    var minAllowedDurationOffer: Int,
+    var maxAllowedDurationOffer: Int,
 
-    @ManyToOne(fetch = FetchType.EAGER) // @JoinColumn(name = "customerID", nullable = true)
-    var customer: User? // TODO:vgrechka Think about nullability of this shit. Order can be draft, before customer even confirmed herself
+    @ManyToOne(fetch = FetchType.EAGER)
+    var customer: User?, // TODO:vgrechka Think about nullability of this shit. Order can be draft, before customer even confirmed herself
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    var category: UADocumentCategory
 ) : FieldsWithAdminNotes
 
 @Entity @Table(name = "ua_orders",
@@ -301,10 +314,10 @@ data class UAOrderFileFields(
     @Enumerated(EnumType.STRING) var forCustomerSeenAsFrom: UserKind,
     @Enumerated(EnumType.STRING) var forWriterSeenAsFrom: UserKind,
 
-    @ManyToOne(fetch = FetchType.LAZY) // @JoinColumn(name = "creatorID", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
     var creator: User,
 
-    @ManyToOne(fetch = FetchType.LAZY) // @JoinColumn(name = "orderID", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
     var order: UAOrder
 ) : FieldsWithAdminNotes
 
@@ -376,6 +389,31 @@ private fun highlightRanges(text: String, searchWords: List<String>): List<IntRa
 
 
 
+@Entity @Table(name = "ua_document_categories",
+               indexes = arrayOf())
+class UADocumentCategory(@Embedded var category: UADocumentCategoryFields)
+    : ClitoralEntity0()
+{
+
+    fun toRTO(): UADocumentCategoryRTO {
+        return UADocumentCategoryRTO(
+            id = id!!,
+            title = category.title,
+            children = category.children.map {it.toRTO()}
+        )
+    }
+}
+
+@Embeddable
+data class UADocumentCategoryFields(
+    @Embedded var common: CommonFields = CommonFields(),
+    @Column(length = MAX_STRING) var title: String,
+    @ManyToOne(fetch = FetchType.LAZY) var parent: UADocumentCategory?,
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "category.parent") var children: MutableList<UADocumentCategory>
+)
+
+interface UADocumentCategoryRepository : CrudRepository<UADocumentCategory, Long> {
+}
 
 
 
