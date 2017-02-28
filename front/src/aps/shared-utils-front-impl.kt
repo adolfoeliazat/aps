@@ -10,6 +10,7 @@ package aps
 
 import aps.front.*
 import into.kommon.*
+import kotlin.coroutines.experimental.EmptyCoroutineContext.plus
 import kotlin.js.Json
 import kotlin.js.json
 import kotlin.properties.Delegates.notNull
@@ -121,6 +122,30 @@ interface FieldFront {
     val _fields = mutableListOf<FormFieldFront>()
     val _hiddenFields = mutableListOf<HiddenFormFieldFront>()
     var fieldInstanceKeySuffix: String? = null
+    val items = mutableListOf<FormItem>()
+    var horizontalItems: MutableList<FormFieldFront>? = null
+
+    fun beginHorizontal() {
+        check(horizontalItems == null){"bbf75cbb-a257-41ac-9699-dee7d76ae4ed"}
+        horizontalItems = mutableListOf()
+    }
+
+    fun endHorizontal() {
+        val hitems = horizontalItems ?: wtf("026978af-eead-4d8d-94bd-259722adfd35")
+        items += object:FormItem {
+            override fun render(matumba: FormMatumba<*, *>, o: ElementBuilder) {
+                o- hor3(cellStyle = Style(width = "100%")){o->
+                    for (item in hitems)
+                        o- item.render()
+                }
+            }
+        }
+        horizontalItems = null
+    }
+}
+
+interface FormItem {
+    fun render(matumba: FormMatumba<*, *>, o: ElementBuilder)
 }
 
 abstract class HiddenFormFieldFront(val container: RequestMatumba, override val name: String, override val include: Boolean = true) : FieldFront {
@@ -139,7 +164,20 @@ abstract class FormFieldFront(val container: RequestMatumba, override val name: 
     init {
         if (include) {
             @Suppress("LeakingThis")
-            container._fields.add(this)
+            container._fields += this
+
+            val hitems = container.horizontalItems
+            if (hitems == null) {
+                container.items += object:FormItem {
+                    override fun render(matumba: FormMatumba<*, *>, o: ElementBuilder) {
+                        if (matumba.actualVisibleFieldNames.contains(name)) {
+                            o- this@FormFieldFront.render()
+                        }
+                    }
+                }
+            } else {
+                hitems += this
+            }
         }
     }
 

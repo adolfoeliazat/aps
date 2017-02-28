@@ -751,24 +751,24 @@ fun spancTitle(title: String): ReactElement =
     Shitus.spancTitle(json("title" to title))
 
 @GenerateSignatureMixes
-fun hor(spacing: Int, @Mix attrs: Attrs, @Mix style: Style, block: ((ElementBuilder) -> Unit)? = null) =
+fun hor(spacing: Int, @Mix attrs: Attrs, @Mix style: Style, cellStyle: Style = Style(), block: ((ElementBuilder) -> Unit)? = null) =
     object:ElementBuilder("div", attrs, style.copy(display="flex"), block) {
         override fun wrapChild(index: Int, child: ToReactElementable) =
-            kdiv(marginLeft = if (index > 0) spacing else 0){o->
+            kdiv(cellStyle.copy(marginLeft = if (index > 0) spacing else 0)){o->
                 o- child
             }
     }
 
 @GenerateSignatureMixes
-fun hor1(@Mix attrs: Attrs, @Mix style: Style, block: ((ElementBuilder) -> Unit)? = null) =
-    hor(4, attrs, style.copy(display="flex"), block)
+fun hor1(@Mix attrs: Attrs, @Mix style: Style, cellStyle: Style = Style(), block: ((ElementBuilder) -> Unit)? = null) =
+    hor(4, attrs, style.copy(display="flex"), cellStyle, block)
 
 @GenerateSignatureMixes
-fun hor2(@Mix attrs: Attrs, @Mix style: Style, block: ((ElementBuilder) -> Unit)? = null) =
-    hor(8, attrs, style.copy(display="flex"), block)
+fun hor2(@Mix attrs: Attrs, @Mix style: Style, cellStyle: Style = Style(), block: ((ElementBuilder) -> Unit)? = null) =
+    hor(8, attrs, style.copy(display="flex"), cellStyle, block)
 
-fun hor3(attrs: Attrs = Attrs(), style: Style = Style(), block: ((ElementBuilder) -> Unit)? = null) =
-    hor(12, attrs, style.copy(display="flex"), block)
+fun hor3(attrs: Attrs = Attrs(), style: Style = Style(), cellStyle: Style = Style(), block: ((ElementBuilder) -> Unit)? = null) =
+    hor(12, attrs, style.copy(display="flex"), cellStyle, block)
 
 fun pageHeader0(title: String, className: String = "") =
     kdiv(className="page-header $className", marginTop=0, marginBottom=15){o->

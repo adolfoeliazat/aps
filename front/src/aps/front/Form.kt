@@ -66,10 +66,8 @@ class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>) : ToRe
                     val shit: ReactElement = Shitus.errorBanner(json("content" to error, "style" to spec.errorBannerStyle))
                     o- shit
                 }
-                for (f in spec.req._fields) {
-                    if (actualVisibleFieldNames.contains(f.name)) {
-                        o- f.render()
-                    }
+                for (item in spec.req.items) {
+                    item.render(this@FormMatumba, o)
                 }
             }
         }

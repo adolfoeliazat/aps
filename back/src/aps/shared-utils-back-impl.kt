@@ -41,6 +41,8 @@ annotation class Back
 
 @Back open class RequestMatumba {
     val _fields = mutableListOf<FormFieldBack>()
+    @Dummy fun beginHorizontal() {}
+    @Dummy fun endHorizontal() {}
 }
 
 //abstract class HiddenFormFieldBack<T>(val container: RequestMatumba, val name: String) {

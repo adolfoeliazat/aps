@@ -221,10 +221,18 @@ class RejectProfileRequest : RejectionRequest()
 
 class UAOrderStoreParamsRequest : RequestMatumba() {
     val orderID by longHiddenField()
+
+    init {beginHorizontal()}
     val minAllowedPriceOffer = IntField(this, fields.minAllowedPriceOffer)
     val maxAllowedPriceOffer = IntField(this, fields.maxAllowedPriceOffer)
-//    minAllowedDurationOffer
-//    maxAllowedDurationOffer
+    init {endHorizontal()}
+
+    init {beginHorizontal()}
+    val minAllowedDurationOffer = IntField(this, fields.minAllowedDurationOffer)
+    val maxAllowedDurationOffer = IntField(this, fields.maxAllowedDurationOffer)
+    init {endHorizontal()}
+
+    val uaDocumentCategory = TextField(this, fields.uaDocumentCategory)
 }
 
 
