@@ -87,7 +87,8 @@ class Input(
         tabIndex: Int? = null,
         volatileDisabled: () -> Boolean = {false},
         onKeyDown: (KeyboardEvent) -> Unit = {},
-        onKeyDowna: suspend (KeyboardEvent) -> Unit = {}
+        onKeyDowna: suspend (KeyboardEvent) -> Unit = {},
+        onKeyUp: (KeyboardEvent) -> Unit = {}
     ) : this(json(
         "style" to style.toReactStyle(),
         "placeholder" to placeholder,
@@ -102,17 +103,23 @@ class Input(
         this.onKeyDowna = onKeyDowna
         this.autoFocus = autoFocus
         this.tabIndex = tabIndex
+        this.onKeyUp = onKeyUp
     }
 
     lateinit var elementID: String
     lateinit var onKeyDown: (KeyboardEvent) -> Unit
     lateinit var onKeyDowna: suspend (KeyboardEvent) -> Unit
+    lateinit var onKeyUp: (KeyboardEvent) -> Unit
     var autoFocus = false
     var tabIndex: Int? = null
 
     suspend fun keyDown(e: KeyboardEvent) {
         onKeyDown(e)
         onKeyDowna(e)
+    }
+
+    suspend fun keyUp(e: KeyboardEvent) {
+        onKeyUp(e)
     }
 
     fun LegacyCtor(): dynamic {
@@ -185,6 +192,10 @@ class Input(
 
                         "onKeyDown" to {e: dynamic ->
                             asu {keyDown(e)}
+                        },
+
+                        "onKeyUp" to {e: dynamic ->
+                            asu {keyUp(e)}
                         }
                     ))
                 },
