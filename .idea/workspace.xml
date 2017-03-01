@@ -27,7 +27,7 @@
     <bookmark url="file://$PROJECT_DIR$/back/src/aps/back/rp-user.kt" line="79" />
     <bookmark url="file://$PROJECT_DIR$/back/src/aps/back/rp-history.kt" line="5" />
     <bookmark url="file://$PROJECT_DIR$/back/src/aps/back/clitoral-entities.kt" line="192" />
-    <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/test/Test_UA_CrazyLong_2.kt" line="503" />
+    <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/test/Test_UA_CrazyLong_2.kt" line="505" />
     <bookmark url="file://$PROJECT_DIR$/back/src/aps/back/clitoral-entities.kt" line="411" />
     <bookmark url="file://$PROJECT_DIR$/back/src/aps/back/clitoral-entities.kt" line="55" />
     <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/fconst.kt" line="7" />
@@ -47,10 +47,8 @@
     <list default="true" id="623d9374-21ec-4085-99fa-3e54b1e3521c" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/IntField.kt" afterPath="$PROJECT_DIR$/back/src/aps/IntField.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/rp-order.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/rp-order.kt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/version.txt" afterPath="$PROJECT_DIR$/back/src/aps/version.txt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/IntField.kt" afterPath="$PROJECT_DIR$/front/src/aps/IntField.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/UASingleOrderPage.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/UASingleOrderPage.kt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/test/Test_UA_CrazyLong_2.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/test/Test_UA_CrazyLong_2.kt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shared/src/aps/field-index.kt" afterPath="$PROJECT_DIR$/shared/src/aps/field-index.kt" />
     </list>
@@ -128,8 +126,8 @@
       <file leaf-file-name="shared-rpc.kt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/shared-front-junction/src/aps/shared-rpc.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="168">
-              <caret line="225" column="53" lean-forward="false" selection-start-line="225" selection-start-column="53" selection-end-line="225" selection-end-column="53" />
+            <state relative-caret-position="288">
+              <caret line="230" column="74" lean-forward="false" selection-start-line="230" selection-start-column="74" selection-end-line="230" selection-end-column="74" />
               <folding>
                 <element signature="e#13#195#0" expanded="true" />
               </folding>
@@ -140,8 +138,8 @@
       <file leaf-file-name="IntField.kt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/front/src/aps/IntField.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="480">
-              <caret line="60" column="24" lean-forward="false" selection-start-line="60" selection-start-column="24" selection-end-line="60" selection-end-column="24" />
+            <state relative-caret-position="360">
+              <caret line="78" column="4" lean-forward="false" selection-start-line="78" selection-start-column="4" selection-end-line="78" selection-end-column="4" />
               <folding />
             </state>
           </provider>
@@ -190,8 +188,8 @@
       <file leaf-file-name="field-index.kt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/shared-front-junction/src/aps/field-index.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="234">
-              <caret line="41" column="158" lean-forward="false" selection-start-line="41" selection-start-column="158" selection-end-line="41" selection-end-column="158" />
+            <state relative-caret-position="282">
+              <caret line="43" column="164" lean-forward="false" selection-start-line="43" selection-start-column="164" selection-end-line="43" selection-end-column="164" />
               <folding />
             </state>
           </provider>
@@ -200,10 +198,10 @@
       <file leaf-file-name="Test_UA_CrazyLong_2.kt" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/front/src/aps/front/test/Test_UA_CrazyLong_2.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="474">
-              <caret line="406" column="91" lean-forward="false" selection-start-line="406" selection-start-column="91" selection-end-line="406" selection-end-column="91" />
+            <state relative-caret-position="498">
+              <caret line="408" column="24" lean-forward="false" selection-start-line="408" selection-start-column="24" selection-end-line="408" selection-end-column="24" />
               <folding>
-                <marker date="1488364905218" expanded="true" signature="26:179" ph="..." />
+                <marker date="1488368291403" expanded="true" signature="26:179" ph="..." />
               </folding>
             </state>
           </provider>
@@ -215,10 +213,8 @@
             <state relative-caret-position="341">
               <caret line="81" column="4" lean-forward="false" selection-start-line="81" selection-start-column="4" selection-end-line="81" selection-end-column="4" />
               <folding>
-                <marker date="1488364743415" expanded="true" signature="99:7553" ph="{...}" />
-                <marker date="1488364743415" expanded="true" signature="7591:7624" ph="{...}" />
-                <marker date="1488364743415" expanded="true" signature="7886:7934" ph="{...}" />
-                <marker date="1488364743415" expanded="true" signature="8714:8747" ph="{...}" />
+                <marker date="1488365942466" expanded="true" signature="99:7021" ph="{...}" />
+                <marker date="1488365942466" expanded="true" signature="8830:8863" ph="{...}" />
               </folding>
             </state>
           </provider>
@@ -227,8 +223,8 @@
       <file leaf-file-name="IntField.kt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/back/src/aps/IntField.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="408">
-              <caret line="31" column="4" lean-forward="false" selection-start-line="31" selection-start-column="4" selection-end-line="31" selection-end-column="4" />
+            <state relative-caret-position="744">
+              <caret line="55" column="8" lean-forward="false" selection-start-line="55" selection-start-column="8" selection-end-line="55" selection-end-column="8" />
               <folding />
             </state>
           </provider>
@@ -382,9 +378,9 @@
         <option value="$PROJECT_DIR$/front/src/aps/front/UASingleOrderPage.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/front-shebang.kt" />
         <option value="$PROJECT_DIR$/shared-back-junction/src/aps/field-index.kt" />
+        <option value="$PROJECT_DIR$/shared-front-junction/src/aps/field-index.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/IntField.kt" />
         <option value="$PROJECT_DIR$/back/src/aps/IntField.kt" />
-        <option value="$PROJECT_DIR$/shared-front-junction/src/aps/field-index.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/test/Test_UA_CrazyLong_2.kt" />
       </list>
     </option>
@@ -988,13 +984,6 @@
       <option name="presentableId" value="Default" />
       <updated>1473062986795</updated>
     </task>
-    <task id="LOCAL-00440" summary="A piece of... code">
-      <created>1487684315948</created>
-      <option name="number" value="00440" />
-      <option name="presentableId" value="LOCAL-00440" />
-      <option name="project" value="LOCAL" />
-      <updated>1487684315948</updated>
-    </task>
     <task id="LOCAL-00441" summary="A piece of... code">
       <created>1487691916028</created>
       <option name="number" value="00441" />
@@ -1331,7 +1320,14 @@
       <option name="project" value="LOCAL" />
       <updated>1488354437122</updated>
     </task>
-    <option name="localTasksCounter" value="489" />
+    <task id="LOCAL-00489" summary="A piece of... code">
+      <created>1488364962348</created>
+      <option name="number" value="00489" />
+      <option name="presentableId" value="LOCAL-00489" />
+      <option name="project" value="LOCAL" />
+      <updated>1488364962348</updated>
+    </task>
+    <option name="localTasksCounter" value="490" />
     <servers />
   </component>
   <component name="TodoView">
@@ -1885,9 +1881,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="378">
           <caret line="153" column="0" lean-forward="false" selection-start-line="153" selection-start-column="0" selection-end-line="153" selection-end-column="0" />
-          <folding>
-            <element signature="e#60#167#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1968,54 +1962,52 @@
         <state relative-caret-position="341">
           <caret line="81" column="4" lean-forward="false" selection-start-line="81" selection-start-column="4" selection-end-line="81" selection-end-column="4" />
           <folding>
-            <marker date="1488364743415" expanded="true" signature="99:7553" ph="{...}" />
-            <marker date="1488364743415" expanded="true" signature="7591:7624" ph="{...}" />
-            <marker date="1488364743415" expanded="true" signature="7886:7934" ph="{...}" />
-            <marker date="1488364743415" expanded="true" signature="8714:8747" ph="{...}" />
+            <marker date="1488365942466" expanded="true" signature="99:7021" ph="{...}" />
+            <marker date="1488365942466" expanded="true" signature="8830:8863" ph="{...}" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/front/src/aps/IntField.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="480">
-          <caret line="60" column="24" lean-forward="false" selection-start-line="60" selection-start-column="24" selection-end-line="60" selection-end-column="24" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/shared-front-junction/src/aps/shared-rpc.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="225" column="53" lean-forward="false" selection-start-line="225" selection-start-column="53" selection-end-line="225" selection-end-column="53" />
-          <folding>
-            <element signature="e#13#195#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/back/src/aps/IntField.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="31" column="4" lean-forward="false" selection-start-line="31" selection-start-column="4" selection-end-line="31" selection-end-column="4" />
+        <state relative-caret-position="360">
+          <caret line="78" column="4" lean-forward="false" selection-start-line="78" selection-start-column="4" selection-end-line="78" selection-end-column="4" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/shared-front-junction/src/aps/field-index.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="234">
-          <caret line="41" column="158" lean-forward="false" selection-start-line="41" selection-start-column="158" selection-end-line="41" selection-end-column="158" />
+        <state relative-caret-position="282">
+          <caret line="43" column="164" lean-forward="false" selection-start-line="43" selection-start-column="164" selection-end-line="43" selection-end-column="164" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/back/src/aps/IntField.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="744">
+          <caret line="55" column="8" lean-forward="false" selection-start-line="55" selection-start-column="8" selection-end-line="55" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/shared-front-junction/src/aps/shared-rpc.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="230" column="74" lean-forward="false" selection-start-line="230" selection-start-column="74" selection-end-line="230" selection-end-column="74" />
+          <folding>
+            <element signature="e#13#195#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/front/src/aps/front/test/Test_UA_CrazyLong_2.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="474">
-          <caret line="406" column="91" lean-forward="false" selection-start-line="406" selection-start-column="91" selection-end-line="406" selection-end-column="91" />
+        <state relative-caret-position="498">
+          <caret line="408" column="24" lean-forward="false" selection-start-line="408" selection-start-column="24" selection-end-line="408" selection-end-column="24" />
           <folding>
-            <marker date="1488364905218" expanded="true" signature="26:179" ph="..." />
+            <marker date="1488368291403" expanded="true" signature="26:179" ph="..." />
           </folding>
         </state>
       </provider>

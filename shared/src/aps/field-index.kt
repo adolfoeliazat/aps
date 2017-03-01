@@ -41,8 +41,8 @@ object fields                                              : Fuckers<FieldSpec>(
 
     val minAllowedPriceOffer                               by namedFucker {IntFieldSpec(it, t("TOTE", "Нижний предел стоимости"), type = IntFieldType.Money(), min = 100_00, max = 50000_00)}; val minAllowedPriceOffer_testRef = TestRef(minAllowedPriceOffer)
     val maxAllowedPriceOffer                               by namedFucker {IntFieldSpec(it, t("TOTE", "Верхний предел стоимости"), type = IntFieldType.Money(), min = 100_00, max = 50000_00)}; val maxAllowedPriceOffer_testRef = TestRef(maxAllowedPriceOffer)
-    val minAllowedDurationOffer                            by namedFucker {IntFieldSpec(it, t("TOTE", "Нижний предел срока"), min = 0, max = 50000)}; val minAllowedDurationOffer_testRef = TestRef(minAllowedDurationOffer)
-    val maxAllowedDurationOffer                            by namedFucker {IntFieldSpec(it, t("TOTE", "Верхний предел срока"), min = 0, max = 50000)}; val maxAllowedDurationOffer_testRef = TestRef(maxAllowedDurationOffer)
+    val minAllowedDurationOffer                            by namedFucker {IntFieldSpec(it, t("TOTE", "Нижний предел срока"), type = IntFieldType.Duration(), min = 1 * 24, max = 365 * 24)}; val minAllowedDurationOffer_testRef = TestRef(minAllowedDurationOffer)
+    val maxAllowedDurationOffer                            by namedFucker {IntFieldSpec(it, t("TOTE", "Верхний предел срока"), type = IntFieldType.Duration(), min = 1 * 24, max = 365 * 24)}; val maxAllowedDurationOffer_testRef = TestRef(maxAllowedDurationOffer)
 
     val uaDocumentCategory                                 by namedFucker {TextFieldSpec(it, t("TOTE", "Категория"), TextFieldType.TEXTAREA, 3, 2000)}; val uaDocumentCategory_testRef = TestRef(uaDocumentCategory)
 }
@@ -80,6 +80,7 @@ class SelectFieldSpec<T>(
 sealed class IntFieldType {
     class Generic : IntFieldType()
     class Money(val fractions: Boolean = false) : IntFieldType()
+    class Duration : IntFieldType()
 }
 
 class IntFieldSpec(

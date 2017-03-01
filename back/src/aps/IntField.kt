@@ -39,19 +39,21 @@ import kotlin.properties.Delegates.notNull
     }
 
     private fun toInternal(x: Int): Int = when (spec.type) {
+        is IntFieldType.Generic -> x
         is IntFieldType.Money -> {
             check(!spec.type.fractions){"758d27c0-b19d-4816-9bc6-165e3c17a081"}
             x * 100
         }
-        else -> x
+        is IntFieldType.Duration -> x * 24
     }
 
     private fun fromInternal(x: Int): Int = when (spec.type) {
+        is IntFieldType.Generic -> x
         is IntFieldType.Money -> {
             check(!spec.type.fractions){"f1ef17e2-5b1e-4ea3-868f-3160588d23e2"}
             x / 100
         }
-        else -> x
+        is IntFieldType.Duration -> x / 24
     }
 
 }

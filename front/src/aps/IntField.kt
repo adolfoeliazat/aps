@@ -56,14 +56,14 @@ import kotlin.js.json
                 o- when (spec.type) {
                     is IntFieldType.Generic -> input
 
-                    is IntFieldType.Money -> kdiv(className = "input-group"){o->
+                    is IntFieldType.Money -> {
                         check(Globus.lang == Language.UA){"0385b8e7-5ae1-4d5e-8f13-23270532064b"}
                         check(!spec.type.fractions){"b3a66650-57dc-4cef-be34-6f62aa4ad762"}
-                        o- input
-                        o- kspan(className = "input-group-addon",
-                                 paddingRight = isError().then {"28px"}){o->
-                            o- ",00 грн."
-                        }
+                        renderInputGroup(input, ",00 грн.")
+                    }
+
+                    is IntFieldType.Duration -> {
+                        renderInputGroup(input, "дн.")
                     }
                 }
                 if (isError()) {
@@ -78,13 +78,27 @@ import kotlin.js.json
         }.toReactElement()
     }
 
+    private fun renderInputGroup(input: ToReactElementable, addonText: String): ToReactElementable {
+        return kdiv(className = "input-group"){o->
+            o- input
+            o- kspan(className = "input-group-addon",
+                      paddingRight = isError().then {"28px"}){o->
+                o- addonText
+            }
+        }
+    }
+
     override fun populateRemote(json: Json): Promisoid<Unit> = async {
         json[name] = input.getValue()
     }
 
     private fun isError() = error != null
 
-    private fun hasInputGroupAddon() = spec.type is IntFieldType.Money
+    private fun hasInputGroupAddon() = when (spec.type) {
+        is IntFieldType.Money,
+        is IntFieldType.Duration -> true
+        else -> false
+    }
 }
 
 

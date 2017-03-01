@@ -404,7 +404,9 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                     testShit, aid = "617e1649-938c-448c-a105-86f3e4e4c62b",
                     attempts = eachOrCombinationOfLasts(listOf(
                         badIntFieldValuesThenValid(fields.minAllowedPriceOffer_testRef, 300),
-                        badIntFieldValuesThenValid(fields.maxAllowedPriceOffer_testRef, 1500)
+                        badIntFieldValuesThenValid(fields.maxAllowedPriceOffer_testRef, 1500),
+                        badIntFieldValuesThenValid(fields.minAllowedDurationOffer_testRef, 7),
+                        badIntFieldValuesThenValid(fields.maxAllowedDurationOffer_testRef, 14)
                     ))
                 )
 
