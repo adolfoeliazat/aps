@@ -84,6 +84,7 @@ class Input(
         placeholder: String = "",
         initialValue: String = "",
         autoFocus: Boolean = false,
+        tabIndex: Int? = null,
         volatileDisabled: () -> Boolean = {false},
         onKeyDown: (KeyboardEvent) -> Unit = {},
         onKeyDowna: suspend (KeyboardEvent) -> Unit = {}
@@ -100,12 +101,14 @@ class Input(
         this.onKeyDown = onKeyDown
         this.onKeyDowna = onKeyDowna
         this.autoFocus = autoFocus
+        this.tabIndex = tabIndex
     }
 
     lateinit var elementID: String
     lateinit var onKeyDown: (KeyboardEvent) -> Unit
     lateinit var onKeyDowna: suspend (KeyboardEvent) -> Unit
     var autoFocus = false
+    var tabIndex: Int? = null
 
     suspend fun keyDown(e: KeyboardEvent) {
         onKeyDown(e)
@@ -163,6 +166,7 @@ class Input(
                         "disabled" to isRenderingDisabled,
                         "onClick" to me.onPhysicalClick,
                         "autoFocus" to autoFocus,
+                        "tabIndex" to tabIndex,
                         "style" to aps.global.Object.assign(json(),
                                                             shittyFov(volatileStyle),
                                                             style,

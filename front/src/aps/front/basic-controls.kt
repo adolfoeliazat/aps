@@ -55,7 +55,7 @@ fun label(title: String) = klabel {it-title}
 fun span(s: String? = null, style: Style = Style()) = kspan(style = style) {it-s}
 fun span(s: String? = null, className: String?) = kspan(className = className) {it-s}
 fun div(s: String? = null) = kdiv {it-s}
-fun div(s: String? = null, className: String?) = kdiv(className = className) {it-s}
+fun div(s: String? = null, className: String?, style: Style = Style()) = kdiv(Attrs(className = className), style) {it-s}
 
 
 

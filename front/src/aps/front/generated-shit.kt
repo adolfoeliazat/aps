@@ -603,6 +603,7 @@ fun hor (
         onMouseLeave = onMouseLeave ?: baseAttrs?.onMouseLeave,
         onMouseLeava = onMouseLeava ?: baseAttrs?.onMouseLeava
     ),
+
     style = Style(
         top = top ?: baseStyle?.top,
         right = right ?: baseStyle?.right,

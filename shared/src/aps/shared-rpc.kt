@@ -232,7 +232,7 @@ class UAOrderStoreParamsRequest : RequestMatumba() {
     val maxAllowedDurationOffer = IntField(this, fields.maxAllowedDurationOffer)
     init {endHorizontal()}
 
-    val uaDocumentCategory = TextField(this, fields.uaDocumentCategory)
+    val uaDocumentCategory = DocumentCategoryField(this, fields.uaDocumentCategory)
 }
 
 
@@ -263,6 +263,7 @@ class ReginaRequest : RequestMatumba() {
 @Ser class ReginaLoadUser(val userID: Long) : ReginaParams<SimpleEntityResponse<UserRTO>>()
 @Ser class ReginaAcceptProfile(val userID: Long) : ReginaParams<GenericResponse>()
 
+
 @Ser class ReginaGetPairOfLastHistoryItems<HistoryItemRTO : HistoryItemRTOFields>(
     val type: KClass<HistoryItemRTO>,
     val entityID: Long
@@ -274,6 +275,14 @@ class ReginaRequest : RequestMatumba() {
         val prelastItem: HistoryItemRTO?
     ) : CommonResponseFieldsImpl()
 }
+
+@Ser class ReginaGetDocumentCategories : ReginaParams<ReginaGetDocumentCategories.Response>() {
+    class Response(val root: UADocumentCategoryRTO) : CommonResponseFieldsImpl()
+}
+
+
+
+
 
 
 

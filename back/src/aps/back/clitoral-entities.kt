@@ -397,11 +397,21 @@ class UADocumentCategory(@Embedded var category: UADocumentCategoryFields)
     : ClitoralEntity0()
 {
 
-    fun toRTO(): UADocumentCategoryRTO {
+    fun toRTO(loadChildren: Boolean = false): UADocumentCategoryRTO {
+        var pathTitle = category.title
+        var parent = category.parent
+        while (parent != null && parent.id != const.uaDocumentCategoryID.root) {
+            pathTitle = parent.category.title + const.text.symbols.rightDoubleAngleQuotationSpaced + pathTitle
+            parent = parent.category.parent
+        }
         return UADocumentCategoryRTO(
             id = id!!,
-            title = category.title/*,
-            children = category.children.map {it.toRTO()}*/
+            title = category.title,
+            pathTitle = pathTitle,
+            children = when {
+                loadChildren -> category.children.map {it.toRTO(loadChildren = true)}
+                else -> listOf()
+            }
         )
     }
 }

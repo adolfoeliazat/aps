@@ -369,9 +369,9 @@ abstract class Control2(val attrs: Attrs = Attrs()) : ToReactElementable, WithEl
     companion object
 }
 
-fun Control2.Companion.from(render: () -> ToReactElementable): Control2 =
+fun Control2.Companion.from(render: (me: Control2) -> ToReactElementable): Control2 =
     object:Control2(Attrs()) {
-        override fun render(): ToReactElementable = render()
+        override fun render(): ToReactElementable = render(this)
     }
 
 

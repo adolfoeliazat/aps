@@ -134,7 +134,7 @@ interface FieldFront {
         val hitems = horizontalItems ?: wtf("026978af-eead-4d8d-94bd-259722adfd35")
         items += object:FormItem {
             override fun render(matumba: FormMatumba<*, *>, o: ElementBuilder) {
-                o- hor3(cellStyle = Style(width = "calc(100% - ${fconst.hor3Width.toDouble() / hitems.size}px)")){o->
+                o- hor3(cellStyle = {Style(width = "calc(100% - ${fconst.hor3Width.toDouble() / hitems.size}px)")}){o->
                     for (item in hitems)
                         o- item.render()
                 }

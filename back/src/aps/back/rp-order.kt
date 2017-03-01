@@ -290,6 +290,11 @@ fun serveReginaAdminSendOrderToStore(p: ReginaAdminSendOrderToStore): GenericRes
     return GenericResponse()
 }
 
+fun serveReginaGetDocumentCategories(p: ReginaGetDocumentCategories): ReginaGetDocumentCategories.Response {
+    // TODO:vgrechka Security
+    val cat = uaDocumentCategoryRepo.findOrDie(const.uaDocumentCategoryID.root).toRTO(loadChildren = true)
+    return ReginaGetDocumentCategories.Response(cat)
+}
 
 
 

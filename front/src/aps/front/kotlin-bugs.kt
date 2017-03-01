@@ -2,8 +2,6 @@
 
 package aps.front
 
-
-
 //fun qwe() {
 //    class X(val f: (() -> Unit)?)
 //    val x = X({})

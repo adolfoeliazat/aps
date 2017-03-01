@@ -638,6 +638,17 @@ object css {
 
     val jokeDollyButton by Style("opacity: 0.5; margin-right: ${3*8}px;")
 
+    object DocumentCategoryField : Group(null) {
+        val item by Style(
+            style = """
+                cursor: pointer;
+            """,
+            hover = """
+                background-color: $GRAY_300;
+            """)
+    }
+
+
 
     init {touchObjectGraph(this)}
 }

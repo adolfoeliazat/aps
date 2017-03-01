@@ -126,6 +126,8 @@ data class Style(
     var left: Any? = null,
     var width: Any? = null,
     var height: Any? = null,
+    var maxWidth: Any? = null,
+    var maxHeight: Any? = null,
     var position: String? = null,
     var margin: Any? = null,
     var marginTop: Any? = null,
@@ -181,6 +183,8 @@ data class Style(
             left?.let {o.left = it}
             width?.let {o.width = it}
             height?.let {o.height = it}
+            maxWidth?.let {o.maxWidth = it}
+            maxHeight?.let {o.maxHeight = it}
             position?.let {o.position = it}
             margin?.let {o.margin = it}
             marginTop?.let {o.marginTop = it}
@@ -751,23 +755,23 @@ fun spancTitle(title: String): ReactElement =
     Shitus.spancTitle(json("title" to title))
 
 @GenerateSignatureMixes
-fun hor(spacing: Int, @Mix attrs: Attrs, @Mix style: Style, cellStyle: Style = Style(), block: ((ElementBuilder) -> Unit)? = null) =
+fun hor(spacing: Int, @Mix attrs: Attrs, @Mix style: Style, cellStyle: (Int) -> Style = {Style()}, block: ((ElementBuilder) -> Unit)? = null) =
     object:ElementBuilder("div", attrs, style.copy(display="flex"), block) {
         override fun wrapChild(index: Int, child: ToReactElementable) =
-            kdiv(cellStyle.copy(marginLeft = if (index > 0) spacing else 0)){o->
+            kdiv(cellStyle(index).copy(marginLeft = if (index > 0) spacing else 0)){o->
                 o- child
             }
     }
 
 @GenerateSignatureMixes
-fun hor1(@Mix attrs: Attrs, @Mix style: Style, cellStyle: Style = Style(), block: ((ElementBuilder) -> Unit)? = null) =
+fun hor1(@Mix attrs: Attrs, @Mix style: Style, cellStyle: (Int) -> Style = {Style()}, block: ((ElementBuilder) -> Unit)? = null) =
     hor(fconst.hor1Width, attrs, style.copy(display="flex"), cellStyle, block)
 
 @GenerateSignatureMixes
-fun hor2(@Mix attrs: Attrs, @Mix style: Style, cellStyle: Style = Style(), block: ((ElementBuilder) -> Unit)? = null) =
+fun hor2(@Mix attrs: Attrs = Attrs(), @Mix style: Style = Style(), cellStyle: (Int) -> Style = {Style()}, block: ((ElementBuilder) -> Unit)? = null) =
     hor(fconst.hor2Width, attrs, style.copy(display="flex"), cellStyle, block)
 
-fun hor3(attrs: Attrs = Attrs(), style: Style = Style(), cellStyle: Style = Style(), block: ((ElementBuilder) -> Unit)? = null) =
+fun hor3(attrs: Attrs = Attrs(), style: Style = Style(), cellStyle: (Int) -> Style = {Style()}, block: ((ElementBuilder) -> Unit)? = null) =
     hor(fconst.hor3Width, attrs, style.copy(display="flex"), cellStyle, block)
 
 fun pageHeader0(title: String, className: String = "") =

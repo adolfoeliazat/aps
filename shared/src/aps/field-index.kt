@@ -44,7 +44,7 @@ object fields                                              : Fuckers<FieldSpec>(
     val minAllowedDurationOffer                            by namedFucker {IntFieldSpec(it, t("TOTE", "Нижний предел срока"), type = IntFieldType.Duration(), min = 1 * 24, max = 365 * 24)}; val minAllowedDurationOffer_testRef = TestRef(minAllowedDurationOffer)
     val maxAllowedDurationOffer                            by namedFucker {IntFieldSpec(it, t("TOTE", "Верхний предел срока"), type = IntFieldType.Duration(), min = 1 * 24, max = 365 * 24)}; val maxAllowedDurationOffer_testRef = TestRef(maxAllowedDurationOffer)
 
-    val uaDocumentCategory                                 by namedFucker {TextFieldSpec(it, t("TOTE", "Категория"), TextFieldType.TEXTAREA, 3, 2000)}; val uaDocumentCategory_testRef = TestRef(uaDocumentCategory)
+    val uaDocumentCategory                                 by namedFucker {DocumentCategoryFieldSpec(it, t("TOTE", "Категория"))}; val uaDocumentCategory_testRef = TestRef(uaDocumentCategory)
 }
 
 abstract class FieldSpec : Fucker() {
@@ -100,6 +100,17 @@ data class FileFieldSpec(
 enum class FileFieldValueKind {
     NONE, UNCHANGED, PROVIDED
 }
+
+class DocumentCategoryFieldSpec(
+    override val name: String,
+    val title: String
+) : FieldSpec()
+
+
+
+
+
+
 
 
 

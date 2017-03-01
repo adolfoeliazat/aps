@@ -153,8 +153,9 @@ class UserParamsHistoryItemRTO(
 
 class UADocumentCategoryRTO(
     val id: Long,
-    val title: String/*,
-    val children: List<UADocumentCategoryRTO>*/
+    val title: String,
+    val pathTitle: String,
+    val children: List<UADocumentCategoryRTO>
 )
 
 

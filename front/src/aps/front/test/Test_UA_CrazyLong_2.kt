@@ -399,7 +399,11 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
             run { // Admin moves order to store
                 scrollBodyToBottomGradually()
                 buttonThenModal(buttons.editStoreParams_testRef, "f770dff2-b2df-4231-810b-7596b2c6ace2")
+
+                buttonClick(buttons.chooseDocumentCategory_testRef)
                 ___stopHereAndEverywhereAfter()
+                assertScreenHTML(aid = "e3e1682e-8f2c-4981-aef2-cb5424a0c711")
+
                 formSubmissionAttemptsThenPageLoad(
                     testShit, aid = "617e1649-938c-448c-a105-86f3e4e4c62b",
                     attempts = eachOrCombinationOfLasts(listOf(
@@ -802,11 +806,11 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
     }
 
     private suspend fun ___stopHereAndEverywhereAfter(verticalPosition: VerticalPosition? = null, horizontalPosition: HorizontalPosition? = null) {
-        stopEverywhere()
+        ___stopEverywhere()
         describeState("Doing stopHereAndEverywhereLater()...", verticalPosition = verticalPosition, horizontalPosition = horizontalPosition)
     }
 
-    private fun stopEverywhere() {
+    private fun ___stopEverywhere() {
         TestGlobal.skipAllFreakingAssertions = false
         TestGlobal.forcedTestOpts = testOpts().copy(
             stopOnAssertions = true,

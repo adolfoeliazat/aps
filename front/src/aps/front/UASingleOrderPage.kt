@@ -154,6 +154,11 @@ fun renderOrderParams(order: UAOrderRTO): ToReactElementable {
                                          procedureName = "UAUpdateOrderStoreParams",
                                          req = UAOrderStoreParamsRequest()-{o->
                                              o.orderID.value = order.id
+                                             o.uaDocumentCategory.setValue(order.documentCategory)
+                                             order.minAllowedPriceOffer.let {if (it != -1) o.minAllowedPriceOffer.setValue(it)}
+                                             order.maxAllowedPriceOffer.let {if (it != -1) o.maxAllowedPriceOffer.setValue(it)}
+                                             order.minAllowedDurationOffer.let {if (it != -1) o.minAllowedDurationOffer.setValue(it)}
+                                             order.maxAllowedDurationOffer.let {if (it != -1) o.maxAllowedDurationOffer.setValue(it)}
                                          }
                                      ),
                                      onSuccessa = {}

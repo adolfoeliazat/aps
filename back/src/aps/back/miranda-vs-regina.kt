@@ -35,6 +35,7 @@ import org.springframework.data.repository.findOrDie
                     is ReginaLoadUser -> tie(p, ::serveReginaLoadUser)
                     is ReginaAcceptProfile -> tie(p, ::serveReginaAcceptProfile)
                     is ReginaGetPairOfLastHistoryItems<*> -> serveReginaGetPairOfLastHistoryItems(p)
+                    is ReginaGetDocumentCategories -> tie(p, ::serveReginaGetDocumentCategories)
                 }
             }
         ))
