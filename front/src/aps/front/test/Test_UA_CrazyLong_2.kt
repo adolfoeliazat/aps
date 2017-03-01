@@ -400,9 +400,9 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 scrollBodyToBottomGradually()
                 buttonThenModal(buttons.editStoreParams_testRef, "f770dff2-b2df-4231-810b-7596b2c6ace2")
 
-                buttonClick(buttons.chooseDocumentCategory_testRef)
+                twoStepSequence({buttonClick(buttons.chooseDocumentCategory_testRef)}, "cddd403d-bc9c-4848-b9cc-995c9d86b95c")
+                selenaSetInputValue(fields.uaDocumentCategory_testRef, "про")
                 ___stopHereAndEverywhereAfter()
-                assertScreenHTML(aid = "e3e1682e-8f2c-4981-aef2-cb5424a0c711")
 
                 formSubmissionAttemptsThenPageLoad(
                     testShit, aid = "617e1649-938c-448c-a105-86f3e4e4c62b",
