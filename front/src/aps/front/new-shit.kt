@@ -761,14 +761,14 @@ fun hor(spacing: Int, @Mix attrs: Attrs, @Mix style: Style, cellStyle: Style = S
 
 @GenerateSignatureMixes
 fun hor1(@Mix attrs: Attrs, @Mix style: Style, cellStyle: Style = Style(), block: ((ElementBuilder) -> Unit)? = null) =
-    hor(4, attrs, style.copy(display="flex"), cellStyle, block)
+    hor(fconst.hor1Width, attrs, style.copy(display="flex"), cellStyle, block)
 
 @GenerateSignatureMixes
 fun hor2(@Mix attrs: Attrs, @Mix style: Style, cellStyle: Style = Style(), block: ((ElementBuilder) -> Unit)? = null) =
-    hor(8, attrs, style.copy(display="flex"), cellStyle, block)
+    hor(fconst.hor2Width, attrs, style.copy(display="flex"), cellStyle, block)
 
 fun hor3(attrs: Attrs = Attrs(), style: Style = Style(), cellStyle: Style = Style(), block: ((ElementBuilder) -> Unit)? = null) =
-    hor(12, attrs, style.copy(display="flex"), cellStyle, block)
+    hor(fconst.hor3Width, attrs, style.copy(display="flex"), cellStyle, block)
 
 fun pageHeader0(title: String, className: String = "") =
     kdiv(className="page-header $className", marginTop=0, marginBottom=15){o->

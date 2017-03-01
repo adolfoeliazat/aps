@@ -11,6 +11,7 @@ package aps.front
 import aps.*
 import aps.Color.*
 import aps.const.text.symbols.nbsp
+import aps.front.testutils.*
 import into.kommon.*
 import org.w3c.dom.events.KeyboardEvent
 import kotlin.js.json
@@ -71,6 +72,7 @@ object TestGlobal {
     val pageLoadedLock by notNullNamed(TestLock())
     var describeStateConfig = DescribeStateConfig(showBanners = true)
     var deleteWithoutConfirmation = false
+    var currentTestShit by notNullOnce<TestShit>()
 }
 
 fun requestAnimationFrame(block: () -> Unit) {

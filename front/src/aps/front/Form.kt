@@ -155,7 +155,14 @@ class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>) : ToRe
         TestGlobal.formTickingLock.resumeTestAndPauseSutFromSut()
 
         val theProcedureName = spec.procedureName ?: remoteProcedureNameForRequest(req)
-        val res: FormResponse = await(callMatumba(theProcedureName, spec.req, spec.ui.tokenMaybe, populateFields = spec.populateFields))
+        val res: FormResponse = try {
+            await(callMatumba(theProcedureName, spec.req, spec.ui.tokenMaybe, populateFields = spec.populateFields))
+        } catch (e: dynamic) {
+            if (isTest())
+                throw e // Don't hide shit
+            else
+                FormResponse.Shitty(error = const.msg.serviceFuckedUp, fieldErrors = listOf())
+        }
 
         when (res) {
             is FormResponse.Shitty -> {
@@ -274,7 +281,7 @@ class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>) : ToRe
 //}
 
 suspend fun submitFormSequence(
-    shit: TestShit,
+    shit: TestShit? = null,
     descr: String = "Describe me",
     action: (suspend () -> Unit)? = null,
     aid: String,
@@ -283,15 +290,16 @@ suspend fun submitFormSequence(
     aopts: AssertScreenOpts? = null,
     useFormDoneLock: Boolean = true
 ) {
+    val theShit = shit ?: TestGlobal.currentTestShit
     sequence(
         action = {async{
             if (imposeTimestamp) {
-                shit.imposeNextRequestTimestamp()
+                theShit.imposeNextRequestTimestamp()
             }
-            val shit = action ?: {
+            val theAction = action ?: {
                 buttonClick(buttonKey ?: buttons.primary_testRef)
             }
-            shit()
+            theAction()
         }},
         descr = descr,
         steps = listOf(
@@ -303,7 +311,7 @@ suspend fun submitFormSequence(
 }
 
 suspend fun formSubmissionAttempts(
-    testShit: TestShit,
+    testShit: TestShit? = null,
     descr: String = "Describe me",
     baseID: String,
     buttonKey: TestRef<ButtonKey>? = null,
@@ -328,7 +336,7 @@ suspend fun formSubmissionAttempts(
 }
 
 suspend fun formSubmissionAttemptsThenPageLoad(
-    testShit: TestShit,
+    testShit: TestShit? = null,
     descr: String = "Describe me",
     aid: String,
     buttonKey: TestRef<ButtonKey>? = null,

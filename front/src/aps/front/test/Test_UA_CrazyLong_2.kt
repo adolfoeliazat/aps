@@ -101,14 +101,14 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
             }
 
             run { // Edit params -- cancel
-                step({buttonClick(buttons.edit_testRef)}, TestGlobal.modalShownLock, "1_9b32c20b-bcdb-4024-b068-5c6a36231944")
+                editButtonThenModal("1_9b32c20b-bcdb-4024-b068-5c6a36231944")
                 inputSetValue(fields.documentTitle_testRef, "Хуй")
                 describeState("Will cancel")
                 step({buttonClick(buttons.cancel_testRef)}, TestGlobal.modalHiddenLock, "1_65da1c1a-7b2d-487e-a9cb-e99035eaa04b")
             }
 
             run { // Edit params -- save
-                step({buttonClick(buttons.edit_testRef)}, TestGlobal.modalShownLock, "f0386438-99f7-417a-83a6-b29d804a1b1c")
+                editButtonThenModal("f0386438-99f7-417a-83a6-b29d804a1b1c")
                 selectSetValue(fields.uaDocumentType_testRef, UADocumentType.LAB)
                 formSubmissionAttempts(
                     testShit, baseID = "3_beaa5793-9590-415e-8bc9-ca6fec7ead52",
@@ -125,7 +125,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
             }
 
             run { // Edit params -- save 2
-                step({buttonClick(buttons.edit_testRef)}, TestGlobal.modalShownLock, "b556cf5e-0184-4ce0-8560-f083861116e7")
+                editButtonThenModal("b556cf5e-0184-4ce0-8560-f083861116e7")
                 selectSetValue(fields.uaDocumentType_testRef, UADocumentType.PRACTICE)
                 submitFormSequence(testShit, aid = "6ea13411-892b-4e96-a1b8-c77b23e29567")
             }
@@ -294,15 +294,15 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
             run { // Error loading orders to approve
                 imposeNextRequestGenericError()
-                halfwayThenModalSequence(action = {linkClick(links.adminDashboard.ordersToApprove_testRef)},
-                                         modalAction = {buttonClick(buttons.primary_testRef)},
-                                         aid = "fccbd4aa-bdf9-49b2-9589-ddc93c769e3e")
+                halfwayThenModalThenClosedSequence(action = {linkClick(links.adminDashboard.ordersToApprove_testRef)},
+                                                   modalAction = {buttonClick(buttons.primary_testRef)},
+                                                   aid = "fccbd4aa-bdf9-49b2-9589-ddc93c769e3e")
             }
 
             run { // Admin rejects order
                 twoStepSequence({linkClick(links.adminDashboard.ordersToApprove_testRef)}, "e1cdd9ea-7ad0-467e-9add-c9d67c19b883")
                 lipsTitleClick(1L, "4d382cc9-c529-47bc-9026-0ceec0716a5c")
-                step({buttonClick(buttons.reject_testRef)}, TestGlobal.modalShownLock, "0417ea80-b99b-498e-9e51-c4f829d08499")
+                buttonThenModal(buttons.reject_testRef, "0417ea80-b99b-498e-9e51-c4f829d08499")
                 formSubmissionAttemptsThenPageLoad(
                     testShit, aid = "e07d4eab-e003-4149-bfc9-9b3557aacfb5",
                     attempts = eachOrCombinationOfLasts(listOf(
@@ -382,13 +382,13 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
             run { // Admin makes minor changes to params
                 tabSequence(tabs.order.params_testRef, "3b9c64a7-8fc4-49eb-bd2a-0694eaac63e0", "2fff0364-e77d-4b3a-b6f0-cd9cc0077acb")
                 describeState("Admin can edit params")
-                step({buttonClick(buttons.edit_testRef)}, TestGlobal.modalShownLock, "da55889e-1ce2-4789-a957-1238bf809924")
+                editButtonThenModal("da55889e-1ce2-4789-a957-1238bf809924")
                 inputDeleteFromBeginning(fields.orderDetails_testRef, "Это чисто на почитать... ")
                 inputSetValue(fields.numPages_testRef, "25")
                 inputSetValue(fields.adminNotes_testRef, "Заказчик -- мудила. Надо его наебать на бабки.")
                 submitFormSequence(testShit, aid = "f04afc41-cc1c-476c-9dfe-0a68f83776da")
 
-                step({buttonClick(buttons.edit_testRef)}, TestGlobal.modalShownLock, "7acb877e-1702-4376-b534-daa875fb9844")
+                buttonThenModal(buttons.edit_testRef, "7acb877e-1702-4376-b534-daa875fb9844")
                 inputAppendValue(fields.adminNotes_testRef, " Жестко.")
                 submitFormSequence(testShit, aid = "bd4cc26f-e6d2-4036-9617-9518acaf454a")
             }
@@ -398,11 +398,14 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
         definePoint(9) {
             run { // Admin moves order to store
                 scrollBodyToBottomGradually()
-                halfwayThenModalSequence(
-                    action = {buttonClick(buttons.editStoreParams_testRef)},
-                    modalAction = {},
-                    aid = "f770dff2-b2df-4231-810b-7596b2c6ace2"
+                buttonThenModal(buttons.editStoreParams_testRef, "f770dff2-b2df-4231-810b-7596b2c6ace2")
+                formSubmissionAttemptsThenPageLoad(
+                    testShit, aid = "617e1649-938c-448c-a105-86f3e4e4c62b",
+                    attempts = eachOrCombinationOfLasts(listOf(
+                        badIntFieldValuesThenValid(fields.minAllowedPriceOffer_testRef, 15000)
+                    ))
                 )
+
                 ___stopHereAndEverywhereAfter(verticalPosition = VerticalPosition.TOP, horizontalPosition = HorizontalPosition.RIGHT)
                 acceptanceSequence("3196309c-b789-436c-89a4-27128aa59a46")
                 // TODO:vgrechka Email should be sent to customer
@@ -464,7 +467,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                     testCompareBelow(scrollTop = 1740, subscript = 3L, stateDescr = "Diff: state, phone, about me", aid = "ecc07cbe-e6b0-437c-b54e-21e326680072")
                 }
                 twoStepSequence({buttonClick(buttons.back_testRef)}, "fa9cb012-92d4-4f28-a451-af5faf5a2fd7")
-                halfwayThenModalSequence(
+                halfwayThenModalThenClosedSequence(
                     action = {buttonClick(buttons.compare_testRef)},
                     modalAction = {
                         describeState("Phone was changed")
@@ -501,6 +504,14 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
         }
     }
 
+    suspend fun editButtonThenModal(aid: String) {
+        buttonThenModal(buttons.edit_testRef, aid)
+    }
+
+    suspend fun buttonThenModal(key: TestRef<ButtonKey>, aid: String) {
+        step({buttonClick(key)}, TestGlobal.modalShownLock, aid)
+    }
+
     private suspend fun lipsTitleClick(subscript: Long, aid: String) {
         twoStepSequence({linkClick(links.lipsTitle_testRef, subscript = subscript)}, aid)
     }
@@ -520,7 +531,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
     }
 
     private suspend fun rejectionSequence(reason: String, aid: String) {
-        step({buttonClick(buttons.reject_testRef)}, TestGlobal.modalShownLock, "$aid--1")
+        buttonThenModal(buttons.reject_testRef, "$aid--1")
         inputSetValue(fields.rejectionReason_testRef, reason)
         step(action = {submitFormSequence(testShit, useFormDoneLock = false, aid = "$aid--2")},
              lock = TestGlobal.pageLoadedLock, aid = "$aid--3")
@@ -536,12 +547,8 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
     }
 
     private suspend fun bootAdmin_openWriterToApprove_beginEditing(sessionNumber: Int, writerID: Long, aid: String) {
-        bootAdmin_openWriterToApprove(sessionNumber, writerID, aid)
-        openEditingModal(aid)
-    }
-
-    private suspend fun openEditingModal(aid: String) {
-        step({buttonClick(buttons.edit_testRef)}, TestGlobal.modalShownLock, "$aid--4")
+        bootAdmin_openWriterToApprove(sessionNumber, writerID, "$aid--1")
+        editButtonThenModal("$aid--2")
     }
 
     private suspend fun bootAdmin_openWriterToApprove(sessionNumber: Int, writerID: Long, aid: String) {
@@ -783,7 +790,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
     }
 
     private suspend fun addFile(p: AddFileParams) {
-        seq({buttonClick(buttons.plus_testRef)}, TestGlobal.modalShownLock, "emptyAddFileModal--d7249410-e04b-421b-90db-2e4b538fab90")
+        buttonThenModal(buttons.plus_testRef, "emptyAddFileModal--d7249410-e04b-421b-90db-2e4b538fab90")
         fileFieldChoose(p.fileName, "${p.aid}--1")
         inputSetValue(fields.fileTitle_testRef, p.title)
         inputSetValue(fields.fileDetails_testRef, p.details)

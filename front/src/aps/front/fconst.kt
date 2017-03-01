@@ -12,6 +12,9 @@ object fconst {
     }
     val testFilesDirAndSlash = "e:\\work\\aps\\back\\testfiles\\" // TODO:vgrechka @unhardcode
     val showJokes = true
+    val hor1Width = 4
+    val hor2Width = 8
+    val hor3Width = 12
 
     object elementID {
         val topNavbarContainer = "topNavbarContainer"

@@ -21,10 +21,23 @@ suspend fun twoStepSequence(action: suspend () -> Unit, aid: String) {
                  PauseAssertResumeStep(TestGlobal.shitDoneLock, "$aid--done")))
 }
 
-suspend fun halfwayThenModalSequence(action: suspend () -> Unit, modalAction: suspend () -> Unit, aid: String) {
+suspend fun halfwayThenModalThenClosedSequence(action: suspend () -> Unit, modalAction: suspend () -> Unit, aid: String) {
+    TestGlobal.modalHiddenLock.reset()
+
+    halfwayThenModalSequence(action, "$aid--1")
+
+    modalAction()
+
+    TestGlobal.modalHiddenLock.let {
+        it.pauseTestFromTest()
+        assertScreenHTML("Done", aid = "$aid--2")
+        it.resumeSutFromTest()
+    }
+}
+
+suspend fun halfwayThenModalSequence(action: suspend () -> Unit, aid: String) {
     TestGlobal.shitHalfwayLock.reset()
     TestGlobal.modalShownLock.reset()
-    TestGlobal.modalHiddenLock.reset()
 
     action()
 
@@ -37,14 +50,6 @@ suspend fun halfwayThenModalSequence(action: suspend () -> Unit, modalAction: su
     TestGlobal.modalShownLock.let {
         it.pauseTestFromTest()
         assertScreenHTML("Modal", aid = "$aid-modal")
-        it.resumeSutFromTest()
-    }
-
-    modalAction()
-
-    TestGlobal.modalHiddenLock.let {
-        it.pauseTestFromTest()
-        assertScreenHTML("Done", aid = "$aid-done")
         it.resumeSutFromTest()
     }
 }

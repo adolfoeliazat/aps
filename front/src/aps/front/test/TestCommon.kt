@@ -54,6 +54,7 @@ abstract class TestScenario {
 //        measureAndReportToDocumentElement("Preparing shit") {
 //            __await(prepareShit())
 //        }
+        TestGlobal.currentTestShit = testShit
         await(run0(showTestPassedPane))
     }
 
