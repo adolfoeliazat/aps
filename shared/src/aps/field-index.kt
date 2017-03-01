@@ -39,8 +39,8 @@ object fields                                              : Fuckers<FieldSpec>(
     val uaDocumentType                                     by namedFucker {SelectFieldSpec(it, t("TOTE", "Тип документа"), UADocumentType.values())}; val uaDocumentType_testRef = TestRef(uaDocumentType)
     val rejectionReason                                    by namedFucker {genericRejectionReason.copy(name = it)}; val rejectionReason_testRef = TestRef(rejectionReason)
 
-    val minAllowedPriceOffer                               by namedFucker {IntFieldSpec(it, t("TOTE", "Нижний предел стоимости"), min = 0, max = 50000)}; val minAllowedPriceOffer_testRef = TestRef(minAllowedPriceOffer)
-    val maxAllowedPriceOffer                               by namedFucker {IntFieldSpec(it, t("TOTE", "Верхний предел стоимости"), min = 0, max = 50000)}; val maxAllowedPriceOffer_testRef = TestRef(maxAllowedPriceOffer)
+    val minAllowedPriceOffer                               by namedFucker {IntFieldSpec(it, t("TOTE", "Нижний предел стоимости"), type = IntFieldType.Money(), min = 100_00, max = 50000_00)}; val minAllowedPriceOffer_testRef = TestRef(minAllowedPriceOffer)
+    val maxAllowedPriceOffer                               by namedFucker {IntFieldSpec(it, t("TOTE", "Верхний предел стоимости"), type = IntFieldType.Money(), min = 100_00, max = 50000_00)}; val maxAllowedPriceOffer_testRef = TestRef(maxAllowedPriceOffer)
     val minAllowedDurationOffer                            by namedFucker {IntFieldSpec(it, t("TOTE", "Нижний предел срока"), min = 0, max = 50000)}; val minAllowedDurationOffer_testRef = TestRef(minAllowedDurationOffer)
     val maxAllowedDurationOffer                            by namedFucker {IntFieldSpec(it, t("TOTE", "Верхний предел срока"), min = 0, max = 50000)}; val maxAllowedDurationOffer_testRef = TestRef(maxAllowedDurationOffer)
 
@@ -77,9 +77,15 @@ class SelectFieldSpec<T>(
     val values: Array<T>
 ) : FieldSpec() where T : Enum<T>, T : Titled
 
+sealed class IntFieldType {
+    class Generic : IntFieldType()
+    class Money(val fractions: Boolean = false) : IntFieldType()
+}
+
 class IntFieldSpec(
     override val name: String,
     val title: String,
+    val type: IntFieldType = IntFieldType.Generic(),
     val min: Int,
     val max: Int
 ) : FieldSpec()

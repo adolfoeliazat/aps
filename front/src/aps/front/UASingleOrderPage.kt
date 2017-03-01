@@ -151,7 +151,8 @@ fun renderOrderParams(order: UAOrderRTO): ToReactElementable {
                                  openEditModal(
                                      title = t("TOTE", "Стор"),
                                      formSpec = FormSpec<UAOrderStoreParamsRequest, GenericResponse>(
-                                         UAOrderStoreParamsRequest()-{o->
+                                         procedureName = "UAUpdateOrderStoreParams",
+                                         req = UAOrderStoreParamsRequest()-{o->
                                              o.orderID.value = order.id
                                          }
                                      ),

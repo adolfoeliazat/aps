@@ -3,28 +3,37 @@
 package aps
 
 import aps.front.*
+import kotlin.browser.window
 import kotlin.js.Json
 import kotlin.js.json
 
-@Front class IntField(
-    container: RequestMatumba,
-    val spec: IntFieldSpec
-): FormFieldFront(container, spec.name) {
+@Front class IntField(container: RequestMatumba, val spec: IntFieldSpec): FormFieldFront(container, spec.name) {
 
     override var error: String? = null
 
     val input: IKillMeInput = Shitus.Input(
         json(
-            "tamy" to true,
             "type" to "text",
             "kind" to "input",
             "volatileStyle" to {
-                if (error != null) json("paddingRight" to 30)
-                else undefined
+                json(
+                    "paddingRight" to isError().then {30},
+                    "height" to inputHeightHackyShittyMicroAdjustment()
+                )
             }
         ),
         key = FieldSpecToCtrlKey[spec]
     )
+
+    private fun inputHeightHackyShittyMicroAdjustment(): String? {
+        if (hasInputGroupAddon()) {
+            return when (window.devicePixelRatio) {
+                1.25 -> "34.5px"
+                else -> null
+            }
+        }
+        return null
+    }
 
     fun setValue(value: Int) {
         check(include){"Attempt to write front IntField $name, which is not included    cbd9518d-041b-42d5-8475-3cfe879be75c"}
@@ -39,20 +48,43 @@ import kotlin.js.json
     override fun focus() = input.focus()
 
     override fun render(): ReactElement {
-        return Shitus.diva(json("controlTypeName" to "IntField", "tamy" to name, "className" to "form-group",
-                                "style" to json(
-                                    "marginBottom" to if (error != null) 0 else null
-                                )),
-                           if (spec.title != null) Shitus.labela(json(), Shitus.spanc(json("tame" to "label", "content" to spec.title))) else undefined,
-                           Shitus.diva(json("style" to json("position" to "relative")),
-                                       input,
-                                       if (error != null) errorLabelOld(json("name" to name, "title" to error, "style" to json("marginTop" to 5, "marginRight" to 9, "textAlign" to "right"))) else undefined,
-                                       if (error != null) Shitus.diva(json("style" to json("width" to 15, "height" to 15, "backgroundColor" to Color.RED_300, "borderRadius" to 10, "position" to "absolute", "right" to 8, "top" to 10))) else undefined))
+        return kdiv(className = "form-group",
+                    marginBottom = isError().then {0}){o->
+            o- label(spec.title)
+            o- kdiv(position = "relative"){o->
+                val input = oldShitAsToReactElementable(input.asDynamic().element)
+                o- when (spec.type) {
+                    is IntFieldType.Generic -> input
+
+                    is IntFieldType.Money -> kdiv(className = "input-group"){o->
+                        check(Globus.lang == Language.UA){"0385b8e7-5ae1-4d5e-8f13-23270532064b"}
+                        check(!spec.type.fractions){"b3a66650-57dc-4cef-be34-6f62aa4ad762"}
+                        o- input
+                        o- kspan(className = "input-group-addon",
+                                 paddingRight = isError().then {"28px"}){o->
+                            o- ",00 грн."
+                        }
+                    }
+                }
+                if (isError()) {
+                    o- kdiv(marginTop = 5, marginRight = 9, textAlign = "right", color = Color.RED_300){o->
+                        o- error
+                    }
+                    o- kdiv(position = "absolute", backgroundColor = Color.RED_300,
+                            width = 15, height = 15, borderRadius = 10,
+                            right = 8, top = 10)
+                }
+            }
+        }.toReactElement()
     }
 
     override fun populateRemote(json: Json): Promisoid<Unit> = async {
         json[name] = input.getValue()
     }
+
+    private fun isError() = error != null
+
+    private fun hasInputGroupAddon() = spec.type is IntFieldType.Money
 }
 
 

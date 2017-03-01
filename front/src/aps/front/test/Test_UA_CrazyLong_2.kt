@@ -399,14 +399,16 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
             run { // Admin moves order to store
                 scrollBodyToBottomGradually()
                 buttonThenModal(buttons.editStoreParams_testRef, "f770dff2-b2df-4231-810b-7596b2c6ace2")
+                ___stopHereAndEverywhereAfter()
                 formSubmissionAttemptsThenPageLoad(
                     testShit, aid = "617e1649-938c-448c-a105-86f3e4e4c62b",
                     attempts = eachOrCombinationOfLasts(listOf(
-                        badIntFieldValuesThenValid(fields.minAllowedPriceOffer_testRef, 15000)
+                        badIntFieldValuesThenValid(fields.minAllowedPriceOffer_testRef, 300),
+                        badIntFieldValuesThenValid(fields.maxAllowedPriceOffer_testRef, 1500)
                     ))
                 )
 
-                ___stopHereAndEverywhereAfter(verticalPosition = VerticalPosition.TOP, horizontalPosition = HorizontalPosition.RIGHT)
+//                ___stopHereAndEverywhereAfter(verticalPosition = VerticalPosition.TOP, horizontalPosition = HorizontalPosition.RIGHT)
                 acceptanceSequence("3196309c-b789-436c-89a4-27128aa59a46")
                 // TODO:vgrechka Email should be sent to customer
             }

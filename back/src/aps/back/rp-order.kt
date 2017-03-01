@@ -99,9 +99,7 @@ import java.util.*
     }
 }
 
-@Servant class ServeUAUpdateOrder(
-    val repo: UAOrderRepository
-) : BitchyProcedure() {
+@Servant class ServeUAUpdateOrder() : BitchyProcedure() {
     override fun serve() {
         fuckAnyUser(FuckAnyUserParams(
             bpc = bpc,
@@ -110,7 +108,7 @@ import java.util.*
             runShit = fun(ctx, req: UAOrderParamsRequest): UAUpdateOrderResponse {
                 // TODO:vgrechka Security
                 checkingAllFieldsRetrieved(req) {
-                    repo.findOrDie(req.orderID.value)-{o->
+                    uaOrderRepo.findOrDie(req.orderID.value)-{o->
                         o.order.documentType = req.documentType.value
                         o.order.title = req.documentTitle.value
                         o.order.numPages = req.numPages.value
@@ -124,6 +122,25 @@ import java.util.*
                     }
                 }
                 return UAUpdateOrderResponse()
+            }
+        ))
+    }
+}
+
+@Servant class ServeUAUpdateOrderStoreParams : BitchyProcedure() {
+    override fun serve() {
+        fuckAnyUser(FuckAnyUserParams(
+            bpc = bpc,
+            makeRequest = {UAOrderStoreParamsRequest()},
+            runShit = fun(ctx, req: UAOrderStoreParamsRequest): GenericResponse {
+                // TODO:vgrechka Security
+                imf("d9ef73c0-18a2-4a25-b969-42959a03e50f")
+                checkingAllFieldsRetrieved(req) {
+                    uaOrderRepo.findOrDie(req.orderID.value)-{o->
+
+                    }
+                }
+                return GenericResponse()
             }
         ))
     }
