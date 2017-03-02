@@ -2,6 +2,13 @@
 
 package aps.front
 
+fun main(args: Array<String>) {
+    val a = object {
+        lateinit var b: String
+    }
+    console.log("a.b is", a.b)
+}
+
 //fun qwe() {
 //    class X(val f: (() -> Unit)?)
 //    val x = X({})

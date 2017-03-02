@@ -16,6 +16,12 @@ import into.kommon.*
 import jquery.jq
 import kotlin.js.json
 
+class LoadPageForURLParams(
+    val scroll: Scroll = LoadPageForURLParams.Scroll.TOP
+) {
+    enum class Scroll { TOP, PRESERVE }
+}
+
 class World(val name: String) {
     lateinit var rootContent: ReactElement
     lateinit var currentPage: Page
@@ -94,9 +100,9 @@ class World(val name: String) {
         loadPageForURL()
     }
 
-    suspend fun replaceNavigate(url: String) {
+    suspend fun replaceNavigate(url: String, p: LoadPageForURLParams = LoadPageForURLParams()) {
         loc.replaceState(null, "", url)
-        loadPageForURL()
+        loadPageForURL(p)
     }
 
     suspend fun bootKillme() {
@@ -172,7 +178,7 @@ class World(val name: String) {
         currentPage = def
     }
 
-    suspend fun loadPageForURL() {
+    suspend fun loadPageForURL(p: LoadPageForURLParams = LoadPageForURLParams()) {
         val user = userMaybe
         dwarnStriking("loadPageForURL", loc.href)
         urlQuery = parseQueryString(loc.href) // TODO:vgrechka @kill
@@ -243,11 +249,17 @@ class World(val name: String) {
         if (!skipBodyRendering) {
             ExternalGlobus.disposeStaticShit()
             footer.setBurgerMenu(null)
-            page.load(this)?.let {error->
+            val oldScrollTop = jqbody.scrollTop()
+            val error = page.load(this)
+            if (error != null) {
                 openErrorModal(error.msg)
+            } else {
+                jqbody.scrollTop(when (p.scroll) {
+                                     LoadPageForURLParams.Scroll.TOP -> 0.0
+                                     LoadPageForURLParams.Scroll.PRESERVE -> oldScrollTop
+                                 })
+                ExternalGlobus.initStaticShit()
             }
-            jqbody.scrollTop(0)
-            ExternalGlobus.initStaticShit()
         }
 
         navbarHighlight = page

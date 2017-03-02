@@ -82,10 +82,9 @@ class Tabitha<EntityRTO>(
         return pageLoadedFineResult
     }
 
-    suspend fun reloadPage(paramValues: List<URLParamValue<*>> = listOf()) {
-        Globus.world.replaceNavigate(makeURL(page, listOf(
-            URLParamValue(TabithaURLQuery.id, entityID)
-        ) + paramValues))
+    suspend fun reloadPage(paramValues: List<URLParamValue<*>> = listOf(), p: LoadPageForURLParams = LoadPageForURLParams()) {
+        val url = makeURL(page, listOf(URLParamValue(TabithaURLQuery.id, entityID)) + paramValues)
+        Globus.world.replaceNavigate(url, p)
     }
 
     suspend fun clickOnTab(key: TabKey) {

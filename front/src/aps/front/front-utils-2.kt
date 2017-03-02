@@ -138,7 +138,11 @@ suspend fun twoStepBlinkingSut(blinkElement: jquery.JQuery, act: suspend () -> U
 fun renderMoney(cents: Int) = kspan{o->
     o- when {
         (cents == -1) -> const.text.na
-        else -> cents.toString()
+        else -> {
+            check(cents % 100 == 0){"34c8b8ef-33b4-4689-8857-d38f1709551b"}
+            check(Globus.lang == Language.UA){"ae44a9b2-fd8b-4081-9132-6a2ca0d96c88"}
+            (cents / 100).toString() + ",00 грн."
+        }
     }
 }
 

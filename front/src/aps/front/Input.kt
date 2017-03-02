@@ -14,6 +14,7 @@ import org.w3c.dom.events.KeyboardEvent
 import kotlin.browser.document
 import kotlin.js.Json
 import kotlin.js.json
+import kotlin.properties.Delegates.notNull
 
 class InputKey(override val fqn: String) : Fucker(), FQNed
 
@@ -61,7 +62,12 @@ val inputReactClass by lazy {React.createClass(json(
 
 
 class Input(
-    val legacySpec: Json, val key: InputKey? = null, val onValueChanged: () -> Unit = {}) : ToReactElementable, Blinkable {
+    val legacySpec: Json,
+    val key: InputKey? = null,
+    val onValueChanged: () -> Unit = {}
+)
+    : ToReactElementable, Blinkable
+{
     enum class Kind {INPUT, TEXTAREA}
 
     companion object {
@@ -111,12 +117,12 @@ class Input(
         this.onKeyUp = onKeyUp
     }
 
-    lateinit var elementID: String
-    lateinit var onKeyDown: (KeyboardEvent) -> Unit
-    lateinit var onKeyDowna: suspend (KeyboardEvent) -> Unit
-    lateinit var onKeyUp: (KeyboardEvent) -> Unit
-    lateinit var onFocus: (ReactEvent) -> Unit
-    lateinit var onBlur: (ReactEvent) -> Unit
+    var elementID by notNull<String>()
+    var onKeyDown: (KeyboardEvent) -> Unit = {}
+    var onKeyDowna: suspend (KeyboardEvent) -> Unit = {}
+    var onKeyUp: (KeyboardEvent) -> Unit = {}
+    var onFocus: (ReactEvent) -> Unit = {}
+    var onBlur: (ReactEvent) -> Unit = {}
     var autoFocus = false
     var tabIndex: Int? = null
 

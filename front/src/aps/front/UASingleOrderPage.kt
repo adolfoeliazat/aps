@@ -85,7 +85,7 @@ class UASingleOrderPage {
                 UsualParamsTab<UAOrderRTO, /*HistoryItemRTO=*/ Nothing, /*HistoryFilter=*/ Nothing, UAOrderParamsRequest, GenericResponse>(
                     tabitha,
                     tabKey = tabs.order.params,
-                    renderBody = {renderOrderParams(order)},
+                    renderBody = {renderOrderParams(order, RenderOrderParamsStoreEditingParams(tabitha))},
                     hasEditButton = when (Globus.world.user.kind) {
                         UserKind.CUSTOMER -> order.state == UAOrderState.CUSTOMER_DRAFT
                         UserKind.ADMIN -> true
@@ -119,7 +119,9 @@ class UASingleOrderPage {
 
 }
 
-fun renderOrderParams(order: UAOrderRTO): ToReactElementable {
+class RenderOrderParamsStoreEditingParams(val tabitha: Tabitha<UAOrderRTO>)
+
+fun renderOrderParams(order: UAOrderRTO, storeEditingParams: RenderOrderParamsStoreEditingParams? = null): ToReactElementable {
     val m = MelindaTools
     return kdiv{o->
         o- m.row{o->
@@ -145,34 +147,42 @@ fun renderOrderParams(order: UAOrderRTO): ToReactElementable {
         o- m.detailsRow(order.details, order.detailsHighlightRanges, title = fields.orderDetails.title)
         o- renderAdminNotesIfNeeded(order)
 
-        o- anotherHeader(t("TOTE", "Стор"),
-                         renderControlsTo = {o->
-                             o- Button(icon =  fa.pencil, key = buttons.editStoreParams) {
-                                 openEditModal(
-                                     title = t("TOTE", "Стор"),
-                                     formSpec = FormSpec<UAOrderStoreParamsRequest, GenericResponse>(
-                                         procedureName = "UAUpdateOrderStoreParams",
-                                         req = UAOrderStoreParamsRequest()-{o->
-                                             o.orderID.value = order.id
-                                             o.uaDocumentCategory.setValue(order.documentCategory)
-                                             order.minAllowedPriceOffer.let {if (it != -1) o.minAllowedPriceOffer.setValue(it)}
-                                             order.maxAllowedPriceOffer.let {if (it != -1) o.maxAllowedPriceOffer.setValue(it)}
-                                             order.minAllowedDurationOffer.let {if (it != -1) o.minAllowedDurationOffer.setValue(it)}
-                                             order.maxAllowedDurationOffer.let {if (it != -1) o.maxAllowedDurationOffer.setValue(it)}
-                                         }
-                                     ),
-                                     onSuccessa = {}
-                                 )
-                             }
-                         })
-        o- m.row{o->
-            o- m.col(6, fields.uaDocumentCategory.title, order.documentCategory.title)
-        }
-        o- m.row{o->
-            o- m.col(3, fields.minAllowedPriceOffer.title, renderMoney(order.minAllowedPriceOffer))
-            o- m.col(3, fields.maxAllowedPriceOffer.title, renderMoney(order.maxAllowedPriceOffer))
-            o- m.col(3, fields.minAllowedDurationOffer.title, renderDurationHours(order.minAllowedDurationOffer))
-            o- m.col(3, fields.maxAllowedDurationOffer.title, renderDurationHours(order.maxAllowedDurationOffer))
+        if (isAdmin() && storeEditingParams != null) {
+            o- anotherHeader(
+                t("TOTE", "Стор"),
+                renderControlsTo = {o->
+                    o- Button(icon =  fa.pencil, key = buttons.editStoreParams) {
+                        openEditModal(
+                            title = t("TOTE", "Стор"),
+                            formSpec = FormSpec<UAOrderStoreParamsRequest, GenericResponse>(
+                                procedureName = "UAUpdateOrderStoreParams",
+                                req = UAOrderStoreParamsRequest()-{o->
+                                    o.orderID.value = order.id
+                                    o.uaDocumentCategory.setValue(order.documentCategory)
+                                    order.minAllowedPriceOffer.let {if (it != -1) o.minAllowedPriceOffer.setValue(it)}
+                                    order.maxAllowedPriceOffer.let {if (it != -1) o.maxAllowedPriceOffer.setValue(it)}
+                                    order.minAllowedDurationOffer.let {if (it != -1) o.minAllowedDurationOffer.setValue(it)}
+                                    order.maxAllowedDurationOffer.let {if (it != -1) o.maxAllowedDurationOffer.setValue(it)}
+                                }
+                            ),
+                            onSuccessa = {
+                                storeEditingParams.tabitha.reloadPage(p = LoadPageForURLParams(
+                                    scroll = LoadPageForURLParams.Scroll.PRESERVE))
+                            }
+                        )
+                    }
+                })
+
+            o- m.row{o->
+                o- m.col(6, fields.uaDocumentCategory.title, order.documentCategory.pathTitle)
+            }
+
+            o- m.row{o->
+                o- m.col(3, fields.minAllowedPriceOffer.title, renderMoney(order.minAllowedPriceOffer))
+                o- m.col(3, fields.maxAllowedPriceOffer.title, renderMoney(order.maxAllowedPriceOffer))
+                o- m.col(3, fields.minAllowedDurationOffer.title, renderDurationHours(order.minAllowedDurationOffer))
+                o- m.col(3, fields.maxAllowedDurationOffer.title, renderDurationHours(order.maxAllowedDurationOffer))
+            }
         }
 
         o- kdiv(height = "3rem")

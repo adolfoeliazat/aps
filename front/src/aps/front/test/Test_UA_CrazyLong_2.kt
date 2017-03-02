@@ -423,7 +423,6 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                     selenaSetInputValue(fields.uaDocumentCategory_testRef, "про"); assert()
                     jerkKey(fconst.keyCode.up, 4)
                     selenaSendSpecialKey(fields.uaDocumentCategory_testRef, fconst.keyCode.enter)
-                    ___stopHereAndEverywhereAfter()
                 }
 
                 formSubmissionAttemptsThenPageLoad(
@@ -436,7 +435,9 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                     ))
                 )
 
-//                ___stopHereAndEverywhereAfter(verticalPosition = VerticalPosition.TOP, horizontalPosition = HorizontalPosition.RIGHT)
+                // TODO:vgrechka Neeeeeeeeeeeeext: 1) render duration properly; 2) open store params again -- shit units are not converted
+
+                ___stopHereAndEverywhereAfter(verticalPosition = VerticalPosition.TOP, horizontalPosition = HorizontalPosition.RIGHT)
                 acceptanceSequence("3196309c-b789-436c-89a4-27128aa59a46")
                 // TODO:vgrechka Email should be sent to customer
             }

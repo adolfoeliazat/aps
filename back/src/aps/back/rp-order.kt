@@ -134,10 +134,13 @@ import java.util.*
             makeRequest = {UAOrderStoreParamsRequest()},
             runShit = fun(ctx, req: UAOrderStoreParamsRequest): GenericResponse {
                 // TODO:vgrechka Security
-                imf("d9ef73c0-18a2-4a25-b969-42959a03e50f")
                 checkingAllFieldsRetrieved(req) {
                     uaOrderRepo.findOrDie(req.orderID.value)-{o->
-
+                        o.order.minAllowedPriceOffer = req.minAllowedPriceOffer.value
+                        o.order.maxAllowedPriceOffer = req.maxAllowedPriceOffer.value
+                        o.order.minAllowedDurationOffer = req.minAllowedDurationOffer.value
+                        o.order.maxAllowedDurationOffer = req.maxAllowedDurationOffer.value
+                        o.order.category = req.uaDocumentCategory.value
                     }
                 }
                 return GenericResponse()
