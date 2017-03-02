@@ -10,6 +10,7 @@ package aps.front
 
 import aps.*
 import org.w3c.dom.events.Event
+import org.w3c.dom.events.KeyboardEvent
 import kotlin.js.json
 
 val __hack = run {js("""
@@ -518,6 +519,12 @@ fun preventAndStop(e: Event) {
     e.preventDefault()
     e.stopPropagation()
 }
+
+fun fakeKeyboardEvent(keyCode: Int): KeyboardEvent = json(
+    "keyCode" to keyCode,
+    "preventDefault" to {},
+    "stopPropagation" to {}
+).asDynamic()
 
 fun <R> runni(f: () -> R): R {
     return f()

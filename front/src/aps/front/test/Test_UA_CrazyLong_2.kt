@@ -400,9 +400,31 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 scrollBodyToBottomGradually()
                 buttonThenModal(buttons.editStoreParams_testRef, "f770dff2-b2df-4231-810b-7596b2c6ace2")
 
-                twoStepSequence({buttonClick(buttons.chooseDocumentCategory_testRef)}, "cddd403d-bc9c-4848-b9cc-995c9d86b95c")
-                selenaSetInputValue(fields.uaDocumentCategory_testRef, "пр")
-                ___stopHereAndEverywhereAfter()
+                run { // Choose document category
+                    val aid = "13359364-450b-4f47-b2fb-b0a4d1993a8a"
+                    var aidx = 1
+                    fun nextAID() = "$aid--${aidx++}"
+                    val assert: suspend () -> Unit = {assertScreenHTML(aid = nextAID())}
+                    val jerkKey: suspend (keyCode: Int, times: Int) -> Unit = {keyCode, times ->
+                        for (i in 1..times) {
+                            selenaSendSpecialKey(fields.uaDocumentCategory_testRef, keyCode)
+                            sleep(50)
+                            assert()
+                        }
+                    }
+
+                    twoStepSequence({buttonClick(buttons.chooseDocumentCategory_testRef)}, nextAID())
+                    selenaSetInputValue(fields.uaDocumentCategory_testRef, "пр"); assert()
+                    selenaSetInputValue(fields.uaDocumentCategory_testRef, "пр0"); assert()
+                    selenaSetInputValue(fields.uaDocumentCategory_testRef, "при"); assert()
+                    selenaSetInputValue(fields.uaDocumentCategory_testRef, "пр"); assert()
+                    jerkKey(fconst.keyCode.down, 10)
+                    step({selenaSendSpecialKey(fields.uaDocumentCategory_testRef, fconst.keyCode.enter)}, TestGlobal.animationDoneLock, nextAID())
+                    selenaSetInputValue(fields.uaDocumentCategory_testRef, "про"); assert()
+                    jerkKey(fconst.keyCode.up, 4)
+                    selenaSendSpecialKey(fields.uaDocumentCategory_testRef, fconst.keyCode.enter)
+                    ___stopHereAndEverywhereAfter()
+                }
 
                 formSubmissionAttemptsThenPageLoad(
                     testShit, aid = "617e1649-938c-448c-a105-86f3e4e4c62b",

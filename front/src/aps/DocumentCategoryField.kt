@@ -4,10 +4,7 @@ package aps
 
 import aps.front.*
 import into.kommon.*
-import org.w3c.dom.TrackEvent
 import org.w3c.dom.events.KeyboardEvent
-import kotlin.browser.document
-import kotlin.browser.window
 import kotlin.js.Json
 import kotlin.properties.Delegates.notNull
 
@@ -23,6 +20,11 @@ class Selena(initialValue: UADocumentCategoryRTO, val key: SelenaKey) : Control2
     private val focusables = mutableListOf<Focusable>()
     private var currentFocusable: Focusable? = null
     private val itemContainerID = puid()
+    private var prevInputValueSeenInKeyUpHandler: String? = null
+
+    init {
+        enterViewMode()
+    }
 
     companion object {
         val instances = mutableMapOf<SelenaKey, Selena>()
@@ -30,6 +32,11 @@ class Selena(initialValue: UADocumentCategoryRTO, val key: SelenaKey) : Control2
         fun instance(key: SelenaKey): Selena {
             return instances[key] ?: bitch("No Selena keyed `${key.fqn}`")
         }
+
+        fun instance(field: TestRef<DocumentCategoryFieldSpec>): Selena {
+            return instance(FieldSpecToCtrlKey[field.it])
+        }
+
     }
 
     abstract class Focusable : Control2() {
@@ -43,15 +50,28 @@ class Selena(initialValue: UADocumentCategoryRTO, val key: SelenaKey) : Control2
         }
     }
 
-    init {
-        enterViewMode()
-    }
-
     fun getValue() = value
 
     suspend fun testSetInputValue(s: String) {
+        prevInputValueSeenInKeyUpHandler = s
         input.testSetValue(s)
         syncTreeWithInput()
+    }
+
+    suspend fun testSendSpecialKey(keyCode: Int) {
+        onInputKeyDown(fakeKeyboardEvent(keyCode = keyCode))
+    }
+
+    override fun render(): ToReactElementable {
+        return place
+    }
+
+    override fun componentDidMount() {
+        instances[key] = this
+    }
+
+    override fun componentWillUnmount() {
+        instances.remove(key)
     }
 
     private fun onInputKeyDown(e: KeyboardEvent) {
@@ -120,8 +140,11 @@ class Selena(initialValue: UADocumentCategoryRTO, val key: SelenaKey) : Control2
     }
 
     private fun onInputKeyUp(e: KeyboardEvent) {
-        if (e.keyCode !in setOf(38, 40, 13)) {
-            syncTreeWithInput()
+        if (input.value != prevInputValueSeenInKeyUpHandler) {
+            prevInputValueSeenInKeyUpHandler = input.value
+            if (e.keyCode !in setOf(38, 40, 13)) {
+                syncTreeWithInput()
+            }
         }
     }
 
@@ -134,28 +157,14 @@ class Selena(initialValue: UADocumentCategoryRTO, val key: SelenaKey) : Control2
         currentFocusable?.setFocused(false)
     }
 
-    var pattern by notNull<String>()
-
     private fun syncTreeWithInput() {
-        pattern = input.value.trim().toLowerCase()
+        val pattern = input.value.trim().toLowerCase()
         // dlog("pattern = [$pattern]")
         if (pattern.isBlank()) {
             selectorPlace.setContent(treeControl)
         } else {
             selectorPlace.setContent(makeListControl(pattern))
         }
-    }
-
-    override fun render(): ToReactElementable {
-        return place
-    }
-
-    override fun componentDidMount() {
-        instances[key] = this
-    }
-
-    override fun componentWillUnmount() {
-        instances.remove(key)
     }
 
     private fun enterViewMode() {
@@ -278,6 +287,7 @@ class Selena(initialValue: UADocumentCategoryRTO, val key: SelenaKey) : Control2
 
                             async {
                                 scrollElementToBottomGradually(byid(itemContainerID))
+                                TestGlobal.animationDoneLock.resumeTestFromSut()
                             }
                         }
 
@@ -321,11 +331,11 @@ class Selena(initialValue: UADocumentCategoryRTO, val key: SelenaKey) : Control2
         return kdiv(id = itemContainerID, className = css.DocumentCategoryField.itemContainer) {build(it)}
     }
 
-    fun renderItemTitle(cat: UADocumentCategoryRTO, title: String, underline: Boolean): ElementBuilder {
+    private fun renderItemTitle(cat: UADocumentCategoryRTO, title: String, underline: Boolean): ElementBuilder {
         return renderItemTitle(cat, span(title), underline, css.DocumentCategoryField.item)
     }
 
-    fun renderItemTitle(cat: UADocumentCategoryRTO, title: ToReactElementable, underline: Boolean, className: String, id: String? = null): ElementBuilder {
+    private fun renderItemTitle(cat: UADocumentCategoryRTO, title: ToReactElementable, underline: Boolean, className: String, id: String? = null): ElementBuilder {
         return kdiv(
             Attrs(id = id,
                   className = className,
@@ -346,7 +356,7 @@ class Selena(initialValue: UADocumentCategoryRTO, val key: SelenaKey) : Control2
         enterViewMode()
     }
 
-    fun makeTreeItemControl(cat: UADocumentCategoryRTO): ToReactElementable {
+    private fun makeTreeItemControl(cat: UADocumentCategoryRTO): ToReactElementable {
         return when {
             cat.children.isEmpty() -> kdiv{o->
                 o- renderItemTitle(cat, title = cat.title, underline = false)
@@ -407,10 +417,12 @@ class Selena(initialValue: UADocumentCategoryRTO, val key: SelenaKey) : Control2
 }
 
 suspend fun selenaSetInputValue(field: TestRef<DocumentCategoryFieldSpec>, value: String) {
-    val key = FieldSpecToCtrlKey[field.it]
-    Selena.instance(key).testSetInputValue(value)
+    Selena.instance(field).testSetInputValue(value)
 }
 
+suspend fun selenaSendSpecialKey(field: TestRef<DocumentCategoryFieldSpec>, keyCode: Int) {
+    Selena.instance(field).testSendSpecialKey(keyCode)
+}
 
 
 

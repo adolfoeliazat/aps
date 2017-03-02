@@ -44,6 +44,7 @@ object TestGlobal {
     var browser by notNull<Browser>()
     val shitHalfwayLock by notNullNamed(TestLock())
     val shitDoneLock by notNullNamed(TestLock())
+    val animationDoneLock by notNullNamed(TestLock())
     var overriddenClientKind: ClientKind? = null
     val topNavItemTickingLock by notNullNamed(TestLock())
     val topNavItemDoneLock by notNullNamed(TestLock())
