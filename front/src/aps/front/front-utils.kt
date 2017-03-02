@@ -276,13 +276,17 @@ fun scrollBodyToShitGradually(
     await(scrollBodyGraduallyPromise(targetTop, bursts))
 }
 
-fun scrollBodyGraduallyPromise(targetTop: Double, bursts: Int = fconst.defaultScrollBursts): Promisoid<Unit> = async {
-    val startTop = jqbody.scrollTop()
+fun scrollBodyGraduallyPromise(targetTop: Double, bursts: Int = fconst.defaultScrollBursts) = async {
+    scrollElementGradually(jqbody, targetTop, bursts)
+}
+
+private suspend fun scrollElementGradually(jqel: JQuery, targetTop: Double, bursts: Int = fconst.defaultScrollBursts) {
+    val startTop = jqel.scrollTop()
     for (i in 1..bursts) {
         await(tillAnimationFrame())
-        jqbody.scrollTop(startTop + (targetTop - startTop) / bursts * i)
+        jqel.scrollTop(startTop + (targetTop - startTop) / bursts * i)
     }
-    jqbody.scrollTop(targetTop)
+    jqel.scrollTop(targetTop)
 }
 
 suspend fun scrollBodyGradually(targetTop: Double, bursts: Int = fconst.defaultScrollBursts) {
@@ -301,6 +305,20 @@ suspend fun scrollBodyToBottomGradually() {
 suspend fun scrollBodyToTopGradually() {
     sleep(0)
     scrollBodyGradually(0.0)
+}
+
+suspend fun scrollElementToBottomGradually(jqel: JQuery) {
+    sleep(0)
+    val el = bang(jqel[0])
+    val targetTop = el.scrollHeight - el.offsetHeight
+    scrollElementGradually(jqel, targetTop.toDouble())
+}
+
+suspend fun scrollElementToTopGradually(jqel: JQuery) {
+    sleep(0)
+    val el = bang(jqel[0])
+    val targetTop = 0
+    scrollElementGradually(jqel, targetTop.toDouble())
 }
 
 fun EventTarget.addEventLis(type: String, callback: ((Event) -> Unit)?) {

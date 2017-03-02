@@ -6,6 +6,7 @@ import aps.front.*
 import into.kommon.*
 import org.w3c.dom.TrackEvent
 import org.w3c.dom.events.KeyboardEvent
+import kotlin.browser.document
 import kotlin.browser.window
 import kotlin.js.Json
 import kotlin.properties.Delegates.notNull
@@ -19,8 +20,9 @@ class Selena(initialValue: UADocumentCategoryRTO, val key: SelenaKey) : Control2
     private var input by notNull<Input>()
     private var selectorPlace by notNull<Placeholder>()
     private var treeControl by notNull<ToReactElementable>()
-    private val selectables = mutableListOf<Focusable>()
-    private var currentSelectable: Focusable? = null
+    private val focusables = mutableListOf<Focusable>()
+    private var currentFocusable: Focusable? = null
+    private val itemContainerID = puid()
 
     companion object {
         val instances = mutableMapOf<SelenaKey, Selena>()
@@ -31,11 +33,17 @@ class Selena(initialValue: UADocumentCategoryRTO, val key: SelenaKey) : Control2
     }
 
     abstract class Focusable : Control2() {
+        abstract fun select()
+
         protected var selected = false
 
-        fun setSelected(b: Boolean) {
+        fun setFocused(b: Boolean) {
             selected = b
             update()
+        }
+
+        fun offsetTop(): Int {
+            return bang(byid0(elementID)).offsetTop
         }
     }
 
@@ -52,26 +60,47 @@ class Selena(initialValue: UADocumentCategoryRTO, val key: SelenaKey) : Control2
 
     private fun onInputKeyDown(e: KeyboardEvent) {
         when (e.keyCode) {
+            13 -> { // Enter
+                preventAndStop(e)
+                currentFocusable?.select()
+            }
+
             38 -> { // Up
+                preventAndStop(e)
 
             }
 
             40 -> { // Down
-                if (selectables.isNotEmpty()) {
-                    currentSelectable?.setSelected(false)
-                    if (currentSelectable == null) {
-                        currentSelectable = selectables.first()
+                preventAndStop(e)
+                if (focusables.isNotEmpty()) {
+                    currentFocusable?.setFocused(false)
+                    if (currentFocusable == null) {
+                        currentFocusable = focusables.first()
                     } else {
-                        val index = selectables.indexOf(bang(currentSelectable))
+                        val index = focusables.indexOf(bang(currentFocusable))
                         check(index > -1){"0f5b0d2e-ca8e-4507-b9e6-65ce997b4505"}
                         val newIndex = when {
-                            index + 1 <= selectables.lastIndex -> index + 1
+                            index + 1 <= focusables.lastIndex -> index + 1
                             else -> 0
                         }
-                        check(newIndex >= 0 && newIndex <= selectables.lastIndex){"9d9b8c3a-45a8-43ea-a9f9-99f8035c895a"}
-                        currentSelectable = selectables[newIndex]
+                        check(newIndex >= 0 && newIndex <= focusables.lastIndex){"9d9b8c3a-45a8-43ea-a9f9-99f8035c895a"}
+                        currentFocusable = focusables[newIndex]
+                        val container = bang(byid0(itemContainerID))
+                        if (newIndex == 0) {
+                            container.scrollTop = 0.0
+                        } else {
+                            val el = bang(currentFocusable)
+                            val elOffsetTop = el.offsetTop()
+                            val containerScrollTop = container.scrollTop
+                            val containerOffsetHeight = container.offsetHeight
+                            dlog("elOffsetTop=$elOffsetTop; containerScrollTop=$containerScrollTop; containerOffsetHeight=$containerOffsetHeight")
+                            val dy = elOffsetTop.toDouble() - containerScrollTop
+                            if (dy >= containerOffsetHeight.toDouble()) {
+                                container.scrollTop += bang(byid0(el.elementID)).offsetHeight
+                            }
+                        }
                     }
-                    bang(currentSelectable).setSelected(true)
+                    bang(currentFocusable).setFocused(true)
                 }
             }
         }
@@ -83,17 +112,25 @@ class Selena(initialValue: UADocumentCategoryRTO, val key: SelenaKey) : Control2
         }
     }
 
+    private fun onInputFocus(e: ReactEvent) {
+        currentFocusable?.setFocused(true)
+    }
+
+    private fun onInputBlur(e: ReactEvent) {
+        dlog("onInputBlur")
+        currentFocusable?.setFocused(false)
+    }
+
     var pattern by notNull<String>()
 
     private fun syncTreeWithInput() {
         pattern = input.value.trim().toLowerCase()
-        dlog("pattern = [$pattern]")
+        // dlog("pattern = [$pattern]")
         if (pattern.isBlank()) {
             selectorPlace.setContent(treeControl)
         } else {
             selectorPlace.setContent(makeListControl(pattern))
         }
-        dlog("Done")
     }
 
     override fun render(): ToReactElementable {
@@ -141,7 +178,9 @@ class Selena(initialValue: UADocumentCategoryRTO, val key: SelenaKey) : Control2
                 input = Input(autoFocus = true,
                               tabIndex = 0, // Needed for autoFocus to have effect
                               onKeyDown = this::onInputKeyDown,
-                              onKeyUp = this::onInputKeyUp)
+                              onKeyUp = this::onInputKeyUp,
+                              onFocus = this::onInputFocus,
+                              onBlur = this::onInputBlur)
                 o- input
                 o- selectorPlace
             })
@@ -167,10 +206,15 @@ class Selena(initialValue: UADocumentCategoryRTO, val key: SelenaKey) : Control2
                         potentialRangeStart = rangeStart + pattern.length
                     }
 
-                    filteredItems += object: Focusable() {
+                    filteredItems += object:Focusable() {
+                        override fun select() {
+                            selectCategory(cat)
+                        }
+
                         override fun render(): ToReactElementable {
                             return renderItemTitle(
                                 cat,
+                                id = elementID,
                                 title = highlightedShit(cat.pathTitle, ranges, tag = "span"),
                                 underline = false,
                                 className = when {
@@ -188,8 +232,8 @@ class Selena(initialValue: UADocumentCategoryRTO, val key: SelenaKey) : Control2
         }
         descend(bang(rootCategory))
 
-        selectables.clear()
-        currentSelectable = null
+        focusables.clear()
+        currentFocusable = null
 
         if (filteredItems.isEmpty())
             return div(t("Fucking nothing", "Нихера не найдено"), className = css.DocumentCategoryField.nothing)
@@ -203,26 +247,37 @@ class Selena(initialValue: UADocumentCategoryRTO, val key: SelenaKey) : Control2
                     if (indexInItems > filteredItems.lastIndex) break
                     val item = filteredItems[indexInItems]
                     o- item
-                    selectables += item
+                    focusables += item
                 }
                 if (indexInItems + 1 <= filteredItems.lastIndex) {
                     var showMorePlace by notNullOnce<Placeholder>()
 
-                    val showMoreItem = object: Focusable() {
+                    val showMoreItem = object:Focusable() {
+                        override fun select() {
+                            currentFocusable?.setFocused(false)
+                            val newSelectableIdx = focusables.lastIndex
+                            focusables.remove(focusables.last())
+                            showMorePlace.setContent(renderChunk(from = indexInItems + 1))
+                            currentFocusable = focusables[newSelectableIdx]
+                            if (input.isFocused()) {
+                                bang(currentFocusable).setFocused(true)
+                            }
+
+                            async {
+                                scrollElementToBottomGradually(byid(itemContainerID))
+                            }
+                        }
+
                         override fun render(): ToReactElementable {
                             return kdiv(
                                 Attrs(
+                                    id = elementID,
                                     className = when {
                                         selected -> css.DocumentCategoryField.showMoreFocused
                                         else -> css.DocumentCategoryField.showMore
                                     },
                                     onClick = {
-                                        currentSelectable?.setSelected(false)
-                                        val newSelectableIdx = selectables.lastIndex
-                                        selectables.remove(selectables.last())
-                                        showMorePlace.setContent(renderChunk(from = indexInItems + 1))
-                                        currentSelectable = selectables[newSelectableIdx]
-                                        bang(currentSelectable).setSelected(true)
+                                        select()
                                     })){o->
                                 o- t("Show more...", "Показать еще...")
                             }
@@ -231,7 +286,7 @@ class Selena(initialValue: UADocumentCategoryRTO, val key: SelenaKey) : Control2
 
                     showMorePlace = Placeholder(showMoreItem)
                     o- showMorePlace
-                    selectables += showMoreItem
+                    focusables += showMoreItem
                 }
             }
         }
@@ -250,19 +305,19 @@ class Selena(initialValue: UADocumentCategoryRTO, val key: SelenaKey) : Control2
     }
 
     private fun shit(build: (ElementBuilder) -> Unit): ToReactElementable {
-        return kdiv(className = css.DocumentCategoryField.itemContainer) {build(it)}
+        return kdiv(id = itemContainerID, className = css.DocumentCategoryField.itemContainer) {build(it)}
     }
 
     fun renderItemTitle(cat: UADocumentCategoryRTO, title: String, underline: Boolean): ElementBuilder {
         return renderItemTitle(cat, span(title), underline, css.DocumentCategoryField.item)
     }
 
-    fun renderItemTitle(cat: UADocumentCategoryRTO, title: ToReactElementable, underline: Boolean, className: String): ElementBuilder {
+    fun renderItemTitle(cat: UADocumentCategoryRTO, title: ToReactElementable, underline: Boolean, className: String, id: String? = null): ElementBuilder {
         return kdiv(
-            Attrs(className = className,
+            Attrs(id = id,
+                  className = className,
                   onClick = {
-                      value = cat
-                      enterViewMode()
+                      selectCategory(cat)
                   }),
             style = when {
                 underline -> Style(borderBottom = "1px solid ${Color.GRAY_500}")
@@ -271,6 +326,11 @@ class Selena(initialValue: UADocumentCategoryRTO, val key: SelenaKey) : Control2
         ){o->
             o- title
         }
+    }
+
+    private fun selectCategory(cat: UADocumentCategoryRTO) {
+        value = cat
+        enterViewMode()
     }
 
     fun makeTreeItemControl(cat: UADocumentCategoryRTO): ToReactElementable {

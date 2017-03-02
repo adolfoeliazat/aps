@@ -11,6 +11,7 @@ package aps.front
 import aps.*
 import into.kommon.*
 import org.w3c.dom.events.KeyboardEvent
+import kotlin.browser.document
 import kotlin.js.Json
 import kotlin.js.json
 
@@ -88,7 +89,9 @@ class Input(
         volatileDisabled: () -> Boolean = {false},
         onKeyDown: (KeyboardEvent) -> Unit = {},
         onKeyDowna: suspend (KeyboardEvent) -> Unit = {},
-        onKeyUp: (KeyboardEvent) -> Unit = {}
+        onKeyUp: (KeyboardEvent) -> Unit = {},
+        onFocus: (ReactEvent) -> Unit = {},
+        onBlur: (ReactEvent) -> Unit = {}
     ) : this(json(
         "style" to style.toReactStyle(),
         "placeholder" to placeholder,
@@ -101,6 +104,8 @@ class Input(
     {
         this.onKeyDown = onKeyDown
         this.onKeyDowna = onKeyDowna
+        this.onFocus = onFocus
+        this.onBlur = onBlur
         this.autoFocus = autoFocus
         this.tabIndex = tabIndex
         this.onKeyUp = onKeyUp
@@ -110,6 +115,8 @@ class Input(
     lateinit var onKeyDown: (KeyboardEvent) -> Unit
     lateinit var onKeyDowna: suspend (KeyboardEvent) -> Unit
     lateinit var onKeyUp: (KeyboardEvent) -> Unit
+    lateinit var onFocus: (ReactEvent) -> Unit
+    lateinit var onBlur: (ReactEvent) -> Unit
     var autoFocus = false
     var tabIndex: Int? = null
 
@@ -196,7 +203,10 @@ class Input(
 
                         "onKeyUp" to {e: dynamic ->
                             asu {keyUp(e)}
-                        }
+                        },
+
+                        "onFocus" to onFocus,
+                        "onBlur" to onBlur
                     ))
                 },
 
@@ -387,6 +397,8 @@ class Input(
     fun focus() {
         legacyShit.focus()
     }
+
+    fun isFocused() = document.getElementById(elementID) == document.activeElement
 
     val value: String get() = getValue()
 

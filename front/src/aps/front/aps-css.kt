@@ -643,7 +643,13 @@ object css {
         val hoverBack = GRAY_300
         val lightTextFore = GRAY_600
 
-        val itemContainer by Style("max-height: 20rem; margin-top: 0.5rem; overflow: auto;")
+        val itemContainer by Style("""
+            position: relative; /* So children offsetTop is counted from here */
+            max-height: 20rem;
+            margin-top: 0.5rem;
+            overflow: auto;
+        """)
+
         val item by Style(style = "cursor: pointer;",
                           hover = "background-color: $hoverBack;")
         val itemFocused by Style(style = "cursor: pointer; background-color: $focusBack;",
