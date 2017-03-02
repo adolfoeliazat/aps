@@ -41,10 +41,6 @@ class Selena(initialValue: UADocumentCategoryRTO, val key: SelenaKey) : Control2
             selected = b
             update()
         }
-
-        fun offsetTop(): Int {
-            return bang(byid0(elementID)).offsetTop
-        }
     }
 
     init {
@@ -60,49 +56,66 @@ class Selena(initialValue: UADocumentCategoryRTO, val key: SelenaKey) : Control2
 
     private fun onInputKeyDown(e: KeyboardEvent) {
         when (e.keyCode) {
-            13 -> { // Enter
+            fconst.keyCode.enter -> {
                 preventAndStop(e)
                 currentFocusable?.select()
             }
 
-            38 -> { // Up
-                preventAndStop(e)
-
+            fconst.keyCode.up -> {
+                handleVerticalArrowKey(
+                    e = e,
+                    initialItemIfNothingFocused = {focusables.last()},
+                    computeNewIndex = {when{
+                        it - 1 >= 0 -> it - 1
+                        else -> focusables.lastIndex
+                    }})
             }
 
-            40 -> { // Down
-                preventAndStop(e)
-                if (focusables.isNotEmpty()) {
-                    currentFocusable?.setFocused(false)
-                    if (currentFocusable == null) {
-                        currentFocusable = focusables.first()
-                    } else {
-                        val index = focusables.indexOf(bang(currentFocusable))
-                        check(index > -1){"0f5b0d2e-ca8e-4507-b9e6-65ce997b4505"}
-                        val newIndex = when {
-                            index + 1 <= focusables.lastIndex -> index + 1
-                            else -> 0
-                        }
-                        check(newIndex >= 0 && newIndex <= focusables.lastIndex){"9d9b8c3a-45a8-43ea-a9f9-99f8035c895a"}
-                        currentFocusable = focusables[newIndex]
-                        val container = bang(byid0(itemContainerID))
-                        if (newIndex == 0) {
-                            container.scrollTop = 0.0
-                        } else {
-                            val el = bang(currentFocusable)
-                            val elOffsetTop = el.offsetTop()
-                            val containerScrollTop = container.scrollTop
-                            val containerOffsetHeight = container.offsetHeight
-                            dlog("elOffsetTop=$elOffsetTop; containerScrollTop=$containerScrollTop; containerOffsetHeight=$containerOffsetHeight")
-                            val dy = elOffsetTop.toDouble() - containerScrollTop
-                            if (dy >= containerOffsetHeight.toDouble()) {
-                                container.scrollTop += bang(byid0(el.elementID)).offsetHeight
-                            }
-                        }
-                    }
-                    bang(currentFocusable).setFocused(true)
-                }
+            fconst.keyCode.down -> {
+                handleVerticalArrowKey(
+                    e = e,
+                    initialItemIfNothingFocused = {focusables.first()},
+                    computeNewIndex = {when{
+                        it + 1 <= focusables.lastIndex -> it + 1
+                        else -> 0
+                    }})
             }
+        }
+    }
+
+    private fun handleVerticalArrowKey(e: KeyboardEvent,
+                                       initialItemIfNothingFocused: () -> Focusable,
+                                       computeNewIndex: (index: Int) -> Int) {
+        preventAndStop(e)
+        if (!focusables.isNotEmpty()) return
+
+        currentFocusable?.setFocused(false)
+
+        if (currentFocusable == null) {
+            currentFocusable = initialItemIfNothingFocused()
+        } else {
+            val index = focusables.indexOf(bang(currentFocusable))
+            check(index > -1) {"0f5b0d2e-ca8e-4507-b9e6-65ce997b4505"}
+            val newIndex = computeNewIndex(index)
+            check(newIndex >= 0 && newIndex <= focusables.lastIndex) {"9d9b8c3a-45a8-43ea-a9f9-99f8035c895a"}
+            currentFocusable = focusables[newIndex]
+        }
+
+        bang(currentFocusable).setFocused(true)
+
+        run { // Adjust scroll
+            val container = bang(byid0(itemContainerID))
+            val el = bang(currentFocusable)
+            val elOffsetTop = bang(byid0(el.elementID)).offsetTop
+            val elOffsetHeight = bang(byid0(el.elementID)).offsetHeight
+            val containerScrollTop = container.scrollTop
+            val containerOffsetHeight = container.offsetHeight
+            // dlog("elOffsetTop=$elOffsetTop; elOffsetHeight=$elOffsetHeight; containerScrollTop=$containerScrollTop; containerOffsetHeight=$containerOffsetHeight")
+            val dy = elOffsetTop.toDouble() - containerScrollTop
+            if (dy >= containerOffsetHeight.toDouble())
+                container.scrollTop = elOffsetTop.toDouble() - containerOffsetHeight + elOffsetHeight
+            else if (dy < 0)
+                container.scrollTop = bang(byid0(el.elementID)).offsetTop.toDouble()
         }
     }
 

@@ -62,6 +62,11 @@ object fconst {
         val clientStateSnapshotPrefix = "clientStateSnapshot-"
     }
 
+    object keyCode {
+        val enter = 13
+        val up = 38
+        val down = 40
+    }
 }
 
 
