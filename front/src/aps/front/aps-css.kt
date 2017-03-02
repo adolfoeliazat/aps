@@ -639,16 +639,13 @@ object css {
     val jokeDollyButton by Style("opacity: 0.5; margin-right: ${3*8}px;")
 
     object DocumentCategoryField : Group(null) {
-        val item by Style(
-            style = """
-                cursor: pointer;
-            """,
-            hover = """
-                background-color: $GRAY_300;
-            """)
+        val itemContainer by Style("max-height: 20rem; margin-top: 0.5rem; overflow: auto;")
+        val item by Style(style = "cursor: pointer;",
+                          hover = "background-color: $GRAY_300;")
+        val showMore by Style(style = "cursor: pointer; background-color: $BLUE_GRAY_50; font-style: italic;",
+                              hover = "background-color: $BLUE_GRAY_200;")
+        val nothing by Style("color: $GRAY_500; font-style: italic; margin-top: 1rem;")
     }
-
-
 
     init {touchObjectGraph(this)}
 }

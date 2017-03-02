@@ -44,16 +44,14 @@
     <bookmark url="file://$PROJECT_DIR$/back/src/aps/IntField.kt" line="7" />
     <bookmark url="file://$PROJECT_DIR$/back/src/aps/DocumentCategoryField.kt" line="7" />
     <bookmark url="file://$PROJECT_DIR$/front/src/aps/DocumentCategoryField.kt" line="102" />
-    <bookmark url="file://$PROJECT_DIR$/front/src/aps/DocumentCategoryField.kt" line="155" />
+    <bookmark url="file://$PROJECT_DIR$/front/src/aps/DocumentCategoryField.kt" line="174" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="623d9374-21ec-4085-99fa-3e54b1e3521c" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/version.txt" afterPath="$PROJECT_DIR$/back/src/aps/version.txt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/DocumentCategoryField.kt" afterPath="$PROJECT_DIR$/front/src/aps/DocumentCategoryField.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/Control2.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/Control2.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/new-shit.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/new-shit.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/test/Test_UA_CrazyLong_2.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/test/Test_UA_CrazyLong_2.kt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/aps-css.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/aps-css.kt" />
     </list>
     <ignored path="aps.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -81,6 +79,7 @@
       <file url="file://$PROJECT_DIR$/back/src/aps/back/clitoral-entities.kt" />
       <file url="file://$PROJECT_DIR$/back/src/aps/back/rp-customerGetUAOrderFiles.kt" />
       <file url="file://$PROJECT_DIR$/back/src/aps/back/rp-test.kt" />
+      <file url="file://$PROJECT_DIR$/front/src/aps/DocumentCategoryField.kt" />
       <file url="file://$PROJECT_DIR$/front/src/aps/front/Buttonius.kt" />
       <file url="file://$PROJECT_DIR$/front/src/aps/front/DebugPage.kt" />
       <file url="file://$PROJECT_DIR$/front/src/aps/front/ProfilePage.kt" />
@@ -138,14 +137,66 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DocumentCategoryField.kt" pinned="false" current-in-tab="true">
+      <file leaf-file-name="DocumentCategoryField.kt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/front/src/aps/DocumentCategoryField.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="216">
-              <caret line="123" column="20" lean-forward="false" selection-start-line="123" selection-start-column="20" selection-end-line="123" selection-end-column="20" />
+            <state relative-caret-position="360">
+              <caret line="157" column="8" lean-forward="false" selection-start-line="157" selection-start-column="8" selection-end-line="157" selection-end-column="8" />
               <folding>
                 <element signature="e#54#227#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="new-shit.kt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/front/src/aps/front/new-shit.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="144">
+              <caret line="14" column="11" lean-forward="false" selection-start-line="14" selection-start-column="11" selection-end-line="14" selection-end-column="11" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ElementBuilderFactory.kt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/front/src/aps/front/ElementBuilderFactory.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="384">
+              <caret line="23" column="33" lean-forward="false" selection-start-line="23" selection-start-column="33" selection-end-line="23" selection-end-column="33" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Annotations.kt" pinned="false" current-in-tab="false">
+        <entry file="jar://$PROJECT_DIR$/lib/kotlin-runtime-sources.jar!/kotlin/Annotations.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="293">
+              <caret line="79" column="37" lean-forward="false" selection-start-line="79" selection-start-column="37" selection-end-line="79" selection-end-column="37" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="aps-css.kt" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/front/src/aps/front/aps-css.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="384">
+              <caret line="640" column="4" lean-forward="false" selection-start-line="640" selection-start-column="4" selection-end-line="640" selection-end-column="4" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ctrl-index.kt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/front/src/aps/front/ctrl-index.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="546">
+              <caret line="34" column="8" lean-forward="false" selection-start-line="34" selection-start-column="8" selection-end-line="34" selection-end-column="8" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -178,56 +229,6 @@
               <folding>
                 <marker date="1488432556920" expanded="true" signature="26:179" ph="..." />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="_RangesJs.kt" pinned="false" current-in-tab="false">
-        <entry file="jar://$PROJECT_DIR$/lib/kotlin-stdlib-js-sources.jar!/core/generated/_RangesJs.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="293">
-              <caret line="550" column="21" lean-forward="false" selection-start-line="550" selection-start-column="21" selection-end-line="550" selection-end-column="21" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="shared-utils-front-impl.kt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/front/src/aps/shared-utils-front-impl.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="149">
-              <caret line="136" column="112" lean-forward="false" selection-start-line="136" selection-start-column="112" selection-end-line="136" selection-end-column="112" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Shitus.kt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/front/src/aps/front/Shitus.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="293">
-              <caret line="295" column="4" lean-forward="false" selection-start-line="295" selection-start-column="4" selection-end-line="295" selection-end-column="4" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Control2.kt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/front/src/aps/front/Control2.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="480">
-              <caret line="28" column="8" lean-forward="false" selection-start-line="28" selection-start-column="8" selection-end-line="28" selection-end-column="8" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="new-shit.kt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/front/src/aps/front/new-shit.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="99" column="16" lean-forward="false" selection-start-line="99" selection-start-column="16" selection-end-line="99" selection-end-column="16" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -329,11 +330,11 @@
     <setting file="file://$PROJECT_DIR$/front/src/aps/front/melinda.kt" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/front/src/aps/front/test/TestWriter_Boot_Cool.kt" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/back/src/aps/back/redisLog.kt" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/front/src/aps/DocumentCategoryField.kt" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/back/src/aps/back/rp-store.kt" />
         <option value="$PROJECT_DIR$/back/src/aps/back/bitchy-procedures.kt" />
         <option value="$PROJECT_DIR$/back/src/aps/back/db.kt" />
         <option value="$PROJECT_DIR$/back/src/aps/back/GodServlet.kt" />
@@ -371,7 +372,6 @@
         <option value="$PROJECT_DIR$/front/src/aps/front/kotlin-bugs.kt" />
         <option value="$PROJECT_DIR$/back/src/kjvm-bugs.kt" />
         <option value="$PROJECT_DIR$/back/src/aps/back/rp-order.kt" />
-        <option value="$PROJECT_DIR$/front/src/aps/front/aps-css.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/basic-controls.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/generated-shit.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/shared-utils-front-impl.kt" />
@@ -383,7 +383,9 @@
         <option value="$PROJECT_DIR$/front/src/aps/front/Control2.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/new-shit.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/test/Test_UA_CrazyLong_2.kt" />
+        <option value="$PROJECT_DIR$/front/src/aps/front/ElementBuilderFactory.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/DocumentCategoryField.kt" />
+        <option value="$PROJECT_DIR$/front/src/aps/front/aps-css.kt" />
       </list>
     </option>
   </component>
@@ -590,7 +592,7 @@
     <property name="project.structure.side.proportion" value="0.29066667" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/back/lib/postgresql-9.4.1211.jar!/" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$2/Languages" value="TEXT&#10;kotlin" />
-    <property name="SearchEverywhereHistoryKey" value="highli&#9;null&#9;null&#10;ant-mss&#9;RUN_CONFIGURATION&#9;ant-MakeStaticSites&#10;notre&#9;null&#9;null&#10;textfield&#9;FILE&#9;file://E:/work/aps/front/src/aps/TextField.kt&#10;inputsetva&#9;null&#9;null&#10;symbols&#9;null&#9;null&#10;uacatrto&#9;null&#9;null&#10;hor2&#9;null&#9;null&#10;servereginacat&#9;null&#9;null&#10;kotlinbu&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/kotlin-bugs.kt&#10;rp-order&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/rp-order.kt&#10;serveregi&#9;null&#9;null&#10;input&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/Input.kt&#10;filefiel&#9;null&#9;null&#10;longhidde&#9;null&#9;null&#10;longhiddenfield&#9;null&#9;null&#10;intfieldty&#9;null&#9;null&#10;intfield&#9;FILE&#9;file://E:/work/aps/back/src/aps/IntField.kt&#10;externalg&#9;null&#9;null&#10;jsfacing_inp&#9;null&#9;null&#10;serveuaupdate&#9;null&#9;null&#10;uaorderparams&#9;null&#9;null&#10;istest&#9;null&#9;null&#10;glue&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/front-rpc-glue.kt&#10;hor3&#9;null&#9;null&#10;formma&#9;null&#9;null&#10;fields&#9;null&#9;null&#10;actualvisi&#9;null&#9;null&#10;form&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/Form.kt&#10;uaorderparamsreq&#9;null&#9;null&#10;uaorderrto&#9;null&#9;null&#10;UADCRTO&#9;null&#9;null&#10;uadocumentcategoryrto&#9;null&#9;null&#10;uadocumentcategory&#9;null&#9;null&#10;fu2&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/front-utils-2.kt&#10;fconst&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/fconst.kt&#10;front-util&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/front-utils-2.kt&#10;tabit&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/tabitha.kt&#10;renderorder&#9;null&#9;null&#10;usualhea&#9;null&#9;null&#10;orderrto&#9;null&#9;null&#10;uaorderfields&#9;null&#9;null&#10;renderor&#9;null&#9;null&#10;mss&#9;null&#9;null&#10;backendurl&#9;null&#9;null&#10;externalglo&#9;null&#9;null&#10;backendu&#9;null&#9;null&#10;paramstab&#9;null&#9;null&#10;openeditmo&#9;null&#9;null&#10;aps-css&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/aps-css.kt" />
+    <property name="SearchEverywhereHistoryKey" value="buttons&#9;null&#9;null&#10;highli&#9;null&#9;null&#10;ant-mss&#9;RUN_CONFIGURATION&#9;ant-MakeStaticSites&#10;notre&#9;null&#9;null&#10;textfield&#9;FILE&#9;file://E:/work/aps/front/src/aps/TextField.kt&#10;inputsetva&#9;null&#9;null&#10;symbols&#9;null&#9;null&#10;uacatrto&#9;null&#9;null&#10;hor2&#9;null&#9;null&#10;servereginacat&#9;null&#9;null&#10;kotlinbu&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/kotlin-bugs.kt&#10;rp-order&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/rp-order.kt&#10;serveregi&#9;null&#9;null&#10;input&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/Input.kt&#10;filefiel&#9;null&#9;null&#10;longhidde&#9;null&#9;null&#10;longhiddenfield&#9;null&#9;null&#10;intfieldty&#9;null&#9;null&#10;intfield&#9;FILE&#9;file://E:/work/aps/back/src/aps/IntField.kt&#10;externalg&#9;null&#9;null&#10;jsfacing_inp&#9;null&#9;null&#10;serveuaupdate&#9;null&#9;null&#10;uaorderparams&#9;null&#9;null&#10;istest&#9;null&#9;null&#10;glue&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/front-rpc-glue.kt&#10;hor3&#9;null&#9;null&#10;formma&#9;null&#9;null&#10;fields&#9;null&#9;null&#10;actualvisi&#9;null&#9;null&#10;form&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/Form.kt&#10;uaorderparamsreq&#9;null&#9;null&#10;uaorderrto&#9;null&#9;null&#10;UADCRTO&#9;null&#9;null&#10;uadocumentcategoryrto&#9;null&#9;null&#10;uadocumentcategory&#9;null&#9;null&#10;fu2&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/front-utils-2.kt&#10;fconst&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/fconst.kt&#10;front-util&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/front-utils-2.kt&#10;tabit&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/tabitha.kt&#10;renderorder&#9;null&#9;null&#10;usualhea&#9;null&#9;null&#10;orderrto&#9;null&#9;null&#10;uaorderfields&#9;null&#9;null&#10;renderor&#9;null&#9;null&#10;mss&#9;null&#9;null&#10;backendurl&#9;null&#9;null&#10;externalglo&#9;null&#9;null&#10;backendu&#9;null&#9;null&#10;paramstab&#9;null&#9;null&#10;openeditmo&#9;null&#9;null" />
     <property name="two.files.diff.last.used.file" value="C:/opt/Redis/redis.windows-service.conf" />
     <property name="last.edited.regexp" value="" />
   </component>
@@ -1018,13 +1020,6 @@
       <option name="presentableId" value="Default" />
       <updated>1473062986795</updated>
     </task>
-    <task id="LOCAL-00445" summary="A piece of... code">
-      <created>1487745457518</created>
-      <option name="number" value="00445" />
-      <option name="presentableId" value="LOCAL-00445" />
-      <option name="project" value="LOCAL" />
-      <updated>1487745457518</updated>
-    </task>
     <task id="LOCAL-00446" summary="A piece of... code">
       <created>1487747373182</created>
       <option name="number" value="00446" />
@@ -1361,7 +1356,14 @@
       <option name="project" value="LOCAL" />
       <updated>1488402497370</updated>
     </task>
-    <option name="localTasksCounter" value="494" />
+    <task id="LOCAL-00494" summary="A piece of... code">
+      <created>1488437309330</created>
+      <option name="number" value="00494" />
+      <option name="presentableId" value="LOCAL-00494" />
+      <option name="project" value="LOCAL" />
+      <updated>1488437309330</updated>
+    </task>
+    <option name="localTasksCounter" value="495" />
     <servers />
   </component>
   <component name="TodoView">
@@ -1624,22 +1626,6 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/front/src/aps/front/test/TestCommon.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="282">
-          <caret line="56" column="20" lean-forward="false" selection-start-line="56" selection-start-column="20" selection-end-line="56" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/front/src/aps/front/test/FuckingScenario.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="7" column="17" lean-forward="false" selection-start-line="7" selection-start-column="17" selection-end-line="7" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/front/src/aps/front/modal.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="282">
@@ -1757,14 +1743,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/front/src/aps/front/ctrl-index.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="690">
-          <caret line="40" column="4" lean-forward="false" selection-start-line="40" selection-start-column="4" selection-end-line="40" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/shared-front-junction/src/aps/shared-data.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="431">
@@ -1828,16 +1806,6 @@
         <state relative-caret-position="264">
           <caret line="294" column="83" lean-forward="false" selection-start-line="294" selection-start-column="83" selection-end-line="294" selection-end-column="83" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/front/src/aps/front/aps-css.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="641" column="12" lean-forward="false" selection-start-line="641" selection-start-column="12" selection-end-line="641" selection-end-column="12" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1961,14 +1929,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/front/src/aps/front/new-shit.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="99" column="16" lean-forward="false" selection-start-line="99" selection-start-column="16" selection-end-line="99" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/front/src/aps/front/Control2.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="480">
@@ -2037,12 +1997,54 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/ctrl-index.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="546">
+          <caret line="34" column="8" lean-forward="false" selection-start-line="34" selection-start-column="8" selection-end-line="34" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/lib/kotlin-runtime-sources.jar!/kotlin/Annotations.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="293">
+          <caret line="79" column="37" lean-forward="false" selection-start-line="79" selection-start-column="37" selection-end-line="79" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/new-shit.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="144">
+          <caret line="14" column="11" lean-forward="false" selection-start-line="14" selection-start-column="11" selection-end-line="14" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/ElementBuilderFactory.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="384">
+          <caret line="23" column="33" lean-forward="false" selection-start-line="23" selection-start-column="33" selection-end-line="23" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/front/src/aps/DocumentCategoryField.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="123" column="20" lean-forward="false" selection-start-line="123" selection-start-column="20" selection-end-line="123" selection-end-column="20" />
+        <state relative-caret-position="360">
+          <caret line="157" column="8" lean-forward="false" selection-start-line="157" selection-start-column="8" selection-end-line="157" selection-end-column="8" />
           <folding>
             <element signature="e#54#227#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/aps-css.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="384">
+          <caret line="640" column="4" lean-forward="false" selection-start-line="640" selection-start-column="4" selection-end-line="640" selection-end-column="4" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
           </folding>
         </state>
       </provider>

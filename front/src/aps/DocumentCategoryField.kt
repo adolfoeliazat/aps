@@ -125,7 +125,6 @@ class Selena(initialValue: UADocumentCategoryRTO, val key: SelenaKey) : Control2
                         lastSeparator == -1 -> 0
                         else -> lastSeparator + separator.length
                     }
-                    check(potentialRangeStart >= 0){"4002cc0b-54a1-421d-8c0a-774bd2339684"}
                     while (potentialRangeStart < cat.pathTitle.length) {
                         val rangeStart = cat.pathTitle.toLowerCase().indexOf(pattern, potentialRangeStart)
                         if (rangeStart == -1) break
@@ -142,14 +141,34 @@ class Selena(initialValue: UADocumentCategoryRTO, val key: SelenaKey) : Control2
         }
         descend(bang(rootCategory))
 
-        val chunkSize = 10
-        val chunkStartIndex = 0
-        return shit{o->
-            for (indexInChunk in 0 until chunkSize) {
-                val indexInItems = chunkStartIndex + indexInChunk
-                if (indexInItems > filteredItems.lastIndex) break
-                o- filteredItems[indexInItems]
+        if (filteredItems.isEmpty())
+            return div(t("Fucking nothing", "Нихера не найдено"), className = css.DocumentCategoryField.nothing)
+
+        val chunkSize = 9
+        fun renderChunk(from: Int): ToReactElementable {
+            return kdiv{o->
+                var indexInItems by notNull<Int>()
+                for (indexInChunk in 0 until chunkSize) {
+                    indexInItems = from + indexInChunk
+                    if (indexInItems > filteredItems.lastIndex) break
+                    o- filteredItems[indexInItems]
+                }
+                if (indexInItems + 1 <= filteredItems.lastIndex) {
+                    var showMorePlace by notNullOnce<Placeholder>()
+                    showMorePlace = Placeholder(kdiv(
+                        Attrs(className = css.DocumentCategoryField.showMore,
+                              onClick = {
+                                  showMorePlace.setContent(renderChunk(from = indexInItems + 1))
+                              })){o->
+                        o- t("Show more...", "Показать еще...")
+                    })
+                    o- showMorePlace
+                }
             }
+        }
+
+        return shit{o->
+            o- renderChunk(from = 0)
         }
     }
 
@@ -162,7 +181,7 @@ class Selena(initialValue: UADocumentCategoryRTO, val key: SelenaKey) : Control2
     }
 
     private fun shit(build: (ElementBuilder) -> Unit): ToReactElementable {
-        return kdiv(Style(maxHeight = "20rem", marginTop = "0.5rem", overflow = "auto"), build)
+        return kdiv(className = css.DocumentCategoryField.itemContainer) {build(it)}
     }
 
     fun renderItemTitle(cat: UADocumentCategoryRTO, title: String, underline: Boolean): ElementBuilder {
@@ -172,7 +191,6 @@ class Selena(initialValue: UADocumentCategoryRTO, val key: SelenaKey) : Control2
     fun renderItemTitle(cat: UADocumentCategoryRTO, title: ToReactElementable, underline: Boolean): ElementBuilder {
         return kdiv(
             Attrs(className = css.DocumentCategoryField.item,
-                  dataID = cat.id.toString(),
                   onClick = {
                       value = cat
                       enterViewMode()
