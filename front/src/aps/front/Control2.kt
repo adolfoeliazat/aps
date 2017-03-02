@@ -27,6 +27,7 @@ data class Attrs(
     val href: String? = null,
     val tabIndex: Int? = null,
     val dataToggle: String? = null,
+    val dataID: String? = null,
     val onClick: ((MouseEvent) -> Unit)? = null,
     val onClicka: (suspend (MouseEvent) -> Unit)? = null,
     val onMouseEnter: ((MouseEvent) -> Unit)? = null,

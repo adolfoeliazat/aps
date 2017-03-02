@@ -401,7 +401,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 buttonThenModal(buttons.editStoreParams_testRef, "f770dff2-b2df-4231-810b-7596b2c6ace2")
 
                 twoStepSequence({buttonClick(buttons.chooseDocumentCategory_testRef)}, "cddd403d-bc9c-4848-b9cc-995c9d86b95c")
-                selenaSetInputValue(fields.uaDocumentCategory_testRef, "про")
+                selenaSetInputValue(fields.uaDocumentCategory_testRef, "пр")
                 ___stopHereAndEverywhereAfter()
 
                 formSubmissionAttemptsThenPageLoad(

@@ -5,6 +5,7 @@ package aps
 import aps.front.*
 import into.kommon.*
 import org.w3c.dom.events.KeyboardEvent
+import kotlin.browser.window
 import kotlin.js.Json
 import kotlin.properties.Delegates.notNull
 
@@ -15,10 +16,8 @@ class Selena(initialValue: UADocumentCategoryRTO, val key: SelenaKey) : Control2
     private val place = Placeholder()
     private var rootCategory: UADocumentCategoryRTO? = null
     private var input by notNull<Input>()
-    private var updateTreeControl by notNull<() -> Unit>()
-    private var treeControlPlace by notNull<Placeholder>()
-    private var unfilteredTreeControl by notNull<Control2>()
-    private var filteredTreeControl by notNull<Control2>()
+    private var selectorPlace by notNull<Placeholder>()
+    private var treeControl by notNull<ToReactElementable>()
 
     companion object {
         val instances = mutableMapOf<SelenaKey, Selena>()
@@ -36,44 +35,31 @@ class Selena(initialValue: UADocumentCategoryRTO, val key: SelenaKey) : Control2
 
     suspend fun testSetInputValue(s: String) {
         input.testSetValue(s)
-        onInputEditingKeyDown()
+        syncTreeWithInput()
     }
 
     private fun onInputKeyDown(e: KeyboardEvent) {
         if (e.keyCode == 13) {
-            onInputEnterKeyDown()
+            onEnterKey()
         } else {
-            onInputEditingKeyDown()
+            syncTreeWithInput()
         }
     }
 
-    private fun onInputEditingKeyDown() {
-//        async {
-//            var unfiltered = true
-//            while (true) {
-//                clog("unfiltered = $unfiltered")
-//                treeControlPlace.setContent(
-//                    when {
-//                        unfiltered -> unfilteredTreeControl
-//                        else -> filteredTreeControl
-//                    }
-//                )
-//                sleep(250)
-//                unfiltered = !unfiltered
-//            }
-//        }
+    var pattern by notNull<String>()
 
-        val pattern = bang(byid(input.elementID).`val`()).trim().toLowerCase()
-        dlog("Updating: pattern = [$pattern]")
+    private fun syncTreeWithInput() {
+        pattern = input.value.trim().toLowerCase()
+        dlog("pattern = [$pattern]")
         if (pattern.isBlank()) {
-            treeControlPlace.setContent(unfilteredTreeControl)
+            selectorPlace.setContent(treeControl)
         } else {
-            treeControlPlace.setContent(filteredTreeControl)
+            selectorPlace.setContent(makeListControl(pattern))
         }
         dlog("Done")
     }
 
-    private fun onInputEnterKeyDown() {
+    private fun onEnterKey() {
     }
 
     override fun render(): ToReactElementable {
@@ -114,88 +100,127 @@ class Selena(initialValue: UADocumentCategoryRTO, val key: SelenaKey) : Control2
             })
             TestGlobal.shitDoneLock.resumeTestFromSut()
         } else {
-            unfilteredTreeControl = makeTreeControl(everythingExpanded = false)
-            filteredTreeControl = makeTreeControl(everythingExpanded = true)
-            treeControlPlace = Placeholder(unfilteredTreeControl)
+            treeControl = makeTreeControl()
+            selectorPlace = Placeholder(treeControl)
 
             place.setContent(kdiv{o->
                 input = Input(autoFocus = true,
                               tabIndex = 0, // Needed for autoFocus to have effect
                               onKeyUp = this::onInputKeyDown)
                 o- input
-                o- treeControlPlace
+                o- selectorPlace
             })
         }
     }
 
-    private fun makeTreeControl(everythingExpanded: Boolean): Control2 {
-        val shit = kdiv(Style(maxHeight = "20rem", marginTop = "0.5rem", overflow = "auto")){o->
-            fun makeItemControl(cat: UADocumentCategoryRTO): ToReactElementable {
-                fun renderItemTitle(underline: Boolean) = kdiv(
-                    Attrs(className = css.DocumentCategoryField.item,
-                          onClick = {
-                              value = cat
-                              enterViewMode()
-                          }),
-                    style = when {
-                        underline -> Style(borderBottom = "1px solid ${Color.GRAY_500}")
-                        else -> Style()
+    private fun makeListControl(pattern: String): ToReactElementable {
+        val filteredItems = mutableListOf<ToReactElementable>()
+        fun descend(cat: UADocumentCategoryRTO) {
+            if (cat.children.isEmpty()) {
+                if (cat.title.toLowerCase().contains(pattern)) {
+                    val ranges = mutableListOf<IntRange>()
+                    val separator = const.text.symbols.rightDoubleAngleQuotationSpaced
+                    val lastSeparator = cat.pathTitle.lastIndexOf(separator)
+                    var potentialRangeStart = when {
+                        lastSeparator == -1 -> 0
+                        else -> lastSeparator + separator.length
                     }
-                ){o->
-                    o- cat.title
+                    check(potentialRangeStart >= 0){"4002cc0b-54a1-421d-8c0a-774bd2339684"}
+                    while (potentialRangeStart < cat.pathTitle.length) {
+                        val rangeStart = cat.pathTitle.toLowerCase().indexOf(pattern, potentialRangeStart)
+                        if (rangeStart == -1) break
+                        ranges += IntRange(rangeStart, rangeStart + pattern.length - 1)
+                        potentialRangeStart = rangeStart + pattern.length
+                    }
+                    filteredItems += renderItemTitle(cat, title = highlightedShit(cat.pathTitle, ranges, tag = "span"), underline = false)
                 }
+            } else {
+                for (child in cat.children) {
+                    descend(child)
+                }
+            }
+        }
+        descend(bang(rootCategory))
 
-                return when {
-                    cat.children.isEmpty() -> {
-                        kdiv{o->
-                            o- renderItemTitle(underline = false)
+        val chunkSize = 10
+        val chunkStartIndex = 0
+        return shit{o->
+            for (indexInChunk in 0 until chunkSize) {
+                val indexInItems = chunkStartIndex + indexInChunk
+                if (indexInItems > filteredItems.lastIndex) break
+                o- filteredItems[indexInItems]
+            }
+        }
+    }
+
+    private fun makeTreeControl(): ToReactElementable {
+        return shit{o->
+            for (cat in bang(this@Selena.rootCategory).children) {
+                o- this@Selena.makeTreeItemControl(cat)
+            }
+        }
+    }
+
+    private fun shit(build: (ElementBuilder) -> Unit): ToReactElementable {
+        return kdiv(Style(maxHeight = "20rem", marginTop = "0.5rem", overflow = "auto"), build)
+    }
+
+    fun renderItemTitle(cat: UADocumentCategoryRTO, title: String, underline: Boolean): ElementBuilder {
+        return renderItemTitle(cat, span(title), underline)
+    }
+
+    fun renderItemTitle(cat: UADocumentCategoryRTO, title: ToReactElementable, underline: Boolean): ElementBuilder {
+        return kdiv(
+            Attrs(className = css.DocumentCategoryField.item,
+                  dataID = cat.id.toString(),
+                  onClick = {
+                      value = cat
+                      enterViewMode()
+                  }),
+            style = when {
+                underline -> Style(borderBottom = "1px solid ${Color.GRAY_500}")
+                else -> Style()
+            }
+        ){o->
+            o- title
+        }
+    }
+
+    fun makeTreeItemControl(cat: UADocumentCategoryRTO): ToReactElementable {
+
+        return when {
+            cat.children.isEmpty() -> kdiv{o->
+                o- renderItemTitle(cat, title = cat.title, underline = false)
+            }
+            else -> {
+                var collapsed = true
+                Control2.from {me->
+                    when {
+                        collapsed -> hor2(cellStyle = {if (it == 1) Style(flexGrow = 1) else Style()}){o->
+                            o- ki(className = fa.plusSquare.className, onClick = {
+                                collapsed = false
+                                me.update()
+                            })
+                            o- renderItemTitle(cat, title = cat.title, underline = false)
                         }
-                    }
-                    else -> {
-                        var collapsed = !everythingExpanded
-                        Control2.from {me->
-                            when {
-                                collapsed -> hor2(cellStyle = {if (it == 1) Style(flexGrow = 1) else Style()}){o->
-                                    o- ki(className = fa.plusSquare.className, onClick = {
-                                        collapsed = false
-                                        me.update()
-                                    })
-                                    o- renderItemTitle(underline = false)
-                                }
-                                else -> kdiv{o->
-                                    o- hor2(cellStyle = {if (it == 1) Style(flexGrow = 1) else Style()}){o->
-                                        o- ki(className = if (everythingExpanded) fa.square.className else fa.minusSquare.className,
-                                              onClick = {
-                                                  if (!everythingExpanded) {
-                                                      collapsed = true
-                                                      me.update()
-                                                  }
-                                              })
-                                        o- renderItemTitle(underline = true)
-                                    }
-                                    o- kdiv(marginLeft = "2rem"){o->
-                                        for (child in cat.children) {
-                                            o- makeItemControl(child)
-                                        }
-                                    }
+                        else -> kdiv{o->
+                            o- hor2(cellStyle = {if (it == 1) Style(flexGrow = 1) else Style()}){o->
+                                o- ki(className = fa.minusSquare.className,
+                                      onClick = {
+                                          collapsed = true
+                                          me.update()
+                                      })
+                                o- renderItemTitle(cat, title = cat.title, underline = true)
+                            }
+                            o- kdiv(marginLeft = "2rem"){o->
+                                for (child in cat.children) {
+                                    o- makeTreeItemControl(child)
                                 }
                             }
                         }
                     }
                 }
             }
-
-            for (cat in bang(rootCategory).children) {
-                o- makeItemControl(cat)
-            }
-        }
-
-        val html = ReactDOMServer.renderToStaticMarkup(shit.toReactElement())
-
-        return Control2.from {me->
-            updateTreeControl = {me.update()}
-            rawHTML(html).toToReactElementable()
-//            shit
         }
     }
 }

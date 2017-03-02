@@ -97,6 +97,7 @@ open class ElementBuilder(val tag: String, val attrs: Attrs, var style: Style, b
                 attrs.href?.let {jsAttrs["href"] = it}
                 attrs.onClick?.let {jsAttrs["onClick"] = it}
                 attrs.dataToggle?.let {jsAttrs["data-toggle"] = it}
+                attrs.dataID?.let {jsAttrs["data-id"] = it}
 
                 return React.createElement(
                     tag,
