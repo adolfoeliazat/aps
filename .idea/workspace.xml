@@ -43,11 +43,12 @@
     <bookmark url="file://$PROJECT_DIR$/front/src/aps/IntField.kt" line="9" />
     <bookmark url="file://$PROJECT_DIR$/back/src/aps/IntField.kt" line="7" />
     <bookmark url="file://$PROJECT_DIR$/back/src/aps/DocumentCategoryField.kt" line="7" />
-    <bookmark url="file://$PROJECT_DIR$/front/src/aps/DocumentCategoryField.kt" line="102" />
-    <bookmark url="file://$PROJECT_DIR$/front/src/aps/DocumentCategoryField.kt" line="174" />
+    <bookmark url="file://$PROJECT_DIR$/front/src/aps/DocumentCategoryField.kt" line="136" />
+    <bookmark url="file://$PROJECT_DIR$/front/src/aps/DocumentCategoryField.kt" line="243" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="623d9374-21ec-4085-99fa-3e54b1e3521c" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dictionaries/Vladimir.xml" afterPath="$PROJECT_DIR$/.idea/dictionaries/Vladimir.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/version.txt" afterPath="$PROJECT_DIR$/back/src/aps/version.txt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/DocumentCategoryField.kt" afterPath="$PROJECT_DIR$/front/src/aps/DocumentCategoryField.kt" />
@@ -137,13 +138,13 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DocumentCategoryField.kt" pinned="false" current-in-tab="false">
+      <file leaf-file-name="DocumentCategoryField.kt" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/front/src/aps/DocumentCategoryField.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="360">
-              <caret line="157" column="8" lean-forward="false" selection-start-line="157" selection-start-column="8" selection-end-line="157" selection-end-column="8" />
+            <state relative-caret-position="-2904">
+              <caret line="32" column="4" lean-forward="false" selection-start-line="32" selection-start-column="4" selection-end-line="32" selection-end-column="4" />
               <folding>
-                <element signature="e#54#227#0" expanded="true" />
+                <element signature="e#54#257#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -179,11 +180,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="aps-css.kt" pinned="false" current-in-tab="true">
+      <file leaf-file-name="aps-css.kt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/front/src/aps/front/aps-css.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="384">
-              <caret line="640" column="4" lean-forward="false" selection-start-line="640" selection-start-column="4" selection-end-line="640" selection-end-column="4" />
+            <state relative-caret-position="546">
+              <caret line="653" column="73" lean-forward="false" selection-start-line="653" selection-start-column="73" selection-end-line="653" selection-end-column="73" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
@@ -384,8 +385,8 @@
         <option value="$PROJECT_DIR$/front/src/aps/front/new-shit.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/test/Test_UA_CrazyLong_2.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/ElementBuilderFactory.kt" />
-        <option value="$PROJECT_DIR$/front/src/aps/DocumentCategoryField.kt" />
         <option value="$PROJECT_DIR$/front/src/aps/front/aps-css.kt" />
+        <option value="$PROJECT_DIR$/front/src/aps/DocumentCategoryField.kt" />
       </list>
     </option>
   </component>
@@ -1020,13 +1021,6 @@
       <option name="presentableId" value="Default" />
       <updated>1473062986795</updated>
     </task>
-    <task id="LOCAL-00446" summary="A piece of... code">
-      <created>1487747373182</created>
-      <option name="number" value="00446" />
-      <option name="presentableId" value="LOCAL-00446" />
-      <option name="project" value="LOCAL" />
-      <updated>1487747373182</updated>
-    </task>
     <task id="LOCAL-00447" summary="A piece of... code">
       <created>1487752052521</created>
       <option name="number" value="00447" />
@@ -1363,7 +1357,14 @@
       <option name="project" value="LOCAL" />
       <updated>1488437309330</updated>
     </task>
-    <option name="localTasksCounter" value="495" />
+    <task id="LOCAL-00495" summary="A piece of... code">
+      <created>1488444011247</created>
+      <option name="number" value="00495" />
+      <option name="presentableId" value="LOCAL-00495" />
+      <option name="project" value="LOCAL" />
+      <updated>1488444011247</updated>
+    </task>
+    <option name="localTasksCounter" value="496" />
     <servers />
   </component>
   <component name="TodoView">
@@ -2029,22 +2030,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/front/src/aps/DocumentCategoryField.kt">
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/aps-css.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="157" column="8" lean-forward="false" selection-start-line="157" selection-start-column="8" selection-end-line="157" selection-end-column="8" />
+        <state relative-caret-position="546">
+          <caret line="653" column="73" lean-forward="false" selection-start-line="653" selection-start-column="73" selection-end-line="653" selection-end-column="73" />
           <folding>
-            <element signature="e#54#227#0" expanded="true" />
+            <element signature="n#!!doc" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/front/src/aps/front/aps-css.kt">
+    <entry file="file://$PROJECT_DIR$/front/src/aps/DocumentCategoryField.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="384">
-          <caret line="640" column="4" lean-forward="false" selection-start-line="640" selection-start-column="4" selection-end-line="640" selection-end-column="4" />
+        <state relative-caret-position="-2904">
+          <caret line="32" column="4" lean-forward="false" selection-start-line="32" selection-start-column="4" selection-end-line="32" selection-end-column="4" />
           <folding>
-            <element signature="n#!!doc" expanded="true" />
+            <element signature="e#54#257#0" expanded="true" />
           </folding>
         </state>
       </provider>

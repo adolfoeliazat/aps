@@ -4,6 +4,7 @@ package aps
 
 import aps.front.*
 import into.kommon.*
+import org.w3c.dom.TrackEvent
 import org.w3c.dom.events.KeyboardEvent
 import kotlin.browser.window
 import kotlin.js.Json
@@ -18,12 +19,23 @@ class Selena(initialValue: UADocumentCategoryRTO, val key: SelenaKey) : Control2
     private var input by notNull<Input>()
     private var selectorPlace by notNull<Placeholder>()
     private var treeControl by notNull<ToReactElementable>()
+    private val selectables = mutableListOf<Focusable>()
+    private var currentSelectable: Focusable? = null
 
     companion object {
         val instances = mutableMapOf<SelenaKey, Selena>()
 
         fun instance(key: SelenaKey): Selena {
             return instances[key] ?: bitch("No Selena keyed `${key.fqn}`")
+        }
+    }
+
+    abstract class Focusable : Control2() {
+        protected var selected = false
+
+        fun setSelected(b: Boolean) {
+            selected = b
+            update()
         }
     }
 
@@ -39,9 +51,34 @@ class Selena(initialValue: UADocumentCategoryRTO, val key: SelenaKey) : Control2
     }
 
     private fun onInputKeyDown(e: KeyboardEvent) {
-        if (e.keyCode == 13) {
-            onEnterKey()
-        } else {
+        when (e.keyCode) {
+            38 -> { // Up
+
+            }
+
+            40 -> { // Down
+                if (selectables.isNotEmpty()) {
+                    currentSelectable?.setSelected(false)
+                    if (currentSelectable == null) {
+                        currentSelectable = selectables.first()
+                    } else {
+                        val index = selectables.indexOf(bang(currentSelectable))
+                        check(index > -1){"0f5b0d2e-ca8e-4507-b9e6-65ce997b4505"}
+                        val newIndex = when {
+                            index + 1 <= selectables.lastIndex -> index + 1
+                            else -> 0
+                        }
+                        check(newIndex >= 0 && newIndex <= selectables.lastIndex){"9d9b8c3a-45a8-43ea-a9f9-99f8035c895a"}
+                        currentSelectable = selectables[newIndex]
+                    }
+                    bang(currentSelectable).setSelected(true)
+                }
+            }
+        }
+    }
+
+    private fun onInputKeyUp(e: KeyboardEvent) {
+        if (e.keyCode !in setOf(38, 40, 13)) {
             syncTreeWithInput()
         }
     }
@@ -57,9 +94,6 @@ class Selena(initialValue: UADocumentCategoryRTO, val key: SelenaKey) : Control2
             selectorPlace.setContent(makeListControl(pattern))
         }
         dlog("Done")
-    }
-
-    private fun onEnterKey() {
     }
 
     override fun render(): ToReactElementable {
@@ -106,7 +140,8 @@ class Selena(initialValue: UADocumentCategoryRTO, val key: SelenaKey) : Control2
             place.setContent(kdiv{o->
                 input = Input(autoFocus = true,
                               tabIndex = 0, // Needed for autoFocus to have effect
-                              onKeyUp = this::onInputKeyDown)
+                              onKeyDown = this::onInputKeyDown,
+                              onKeyUp = this::onInputKeyUp)
                 o- input
                 o- selectorPlace
             })
@@ -114,7 +149,7 @@ class Selena(initialValue: UADocumentCategoryRTO, val key: SelenaKey) : Control2
     }
 
     private fun makeListControl(pattern: String): ToReactElementable {
-        val filteredItems = mutableListOf<ToReactElementable>()
+        val filteredItems = mutableListOf<Focusable>()
         fun descend(cat: UADocumentCategoryRTO) {
             if (cat.children.isEmpty()) {
                 if (cat.title.toLowerCase().contains(pattern)) {
@@ -131,7 +166,19 @@ class Selena(initialValue: UADocumentCategoryRTO, val key: SelenaKey) : Control2
                         ranges += IntRange(rangeStart, rangeStart + pattern.length - 1)
                         potentialRangeStart = rangeStart + pattern.length
                     }
-                    filteredItems += renderItemTitle(cat, title = highlightedShit(cat.pathTitle, ranges, tag = "span"), underline = false)
+
+                    filteredItems += object: Focusable() {
+                        override fun render(): ToReactElementable {
+                            return renderItemTitle(
+                                cat,
+                                title = highlightedShit(cat.pathTitle, ranges, tag = "span"),
+                                underline = false,
+                                className = when {
+                                    selected -> css.DocumentCategoryField.itemFocused
+                                    else -> css.DocumentCategoryField.item
+                                })
+                        }
+                    }
                 }
             } else {
                 for (child in cat.children) {
@@ -140,6 +187,9 @@ class Selena(initialValue: UADocumentCategoryRTO, val key: SelenaKey) : Control2
             }
         }
         descend(bang(rootCategory))
+
+        selectables.clear()
+        currentSelectable = null
 
         if (filteredItems.isEmpty())
             return div(t("Fucking nothing", "Нихера не найдено"), className = css.DocumentCategoryField.nothing)
@@ -151,18 +201,37 @@ class Selena(initialValue: UADocumentCategoryRTO, val key: SelenaKey) : Control2
                 for (indexInChunk in 0 until chunkSize) {
                     indexInItems = from + indexInChunk
                     if (indexInItems > filteredItems.lastIndex) break
-                    o- filteredItems[indexInItems]
+                    val item = filteredItems[indexInItems]
+                    o- item
+                    selectables += item
                 }
                 if (indexInItems + 1 <= filteredItems.lastIndex) {
                     var showMorePlace by notNullOnce<Placeholder>()
-                    showMorePlace = Placeholder(kdiv(
-                        Attrs(className = css.DocumentCategoryField.showMore,
-                              onClick = {
-                                  showMorePlace.setContent(renderChunk(from = indexInItems + 1))
-                              })){o->
-                        o- t("Show more...", "Показать еще...")
-                    })
+
+                    val showMoreItem = object: Focusable() {
+                        override fun render(): ToReactElementable {
+                            return kdiv(
+                                Attrs(
+                                    className = when {
+                                        selected -> css.DocumentCategoryField.showMoreFocused
+                                        else -> css.DocumentCategoryField.showMore
+                                    },
+                                    onClick = {
+                                        currentSelectable?.setSelected(false)
+                                        val newSelectableIdx = selectables.lastIndex
+                                        selectables.remove(selectables.last())
+                                        showMorePlace.setContent(renderChunk(from = indexInItems + 1))
+                                        currentSelectable = selectables[newSelectableIdx]
+                                        bang(currentSelectable).setSelected(true)
+                                    })){o->
+                                o- t("Show more...", "Показать еще...")
+                            }
+                        }
+                    }
+
+                    showMorePlace = Placeholder(showMoreItem)
                     o- showMorePlace
+                    selectables += showMoreItem
                 }
             }
         }
@@ -185,12 +254,12 @@ class Selena(initialValue: UADocumentCategoryRTO, val key: SelenaKey) : Control2
     }
 
     fun renderItemTitle(cat: UADocumentCategoryRTO, title: String, underline: Boolean): ElementBuilder {
-        return renderItemTitle(cat, span(title), underline)
+        return renderItemTitle(cat, span(title), underline, css.DocumentCategoryField.item)
     }
 
-    fun renderItemTitle(cat: UADocumentCategoryRTO, title: ToReactElementable, underline: Boolean): ElementBuilder {
+    fun renderItemTitle(cat: UADocumentCategoryRTO, title: ToReactElementable, underline: Boolean, className: String): ElementBuilder {
         return kdiv(
-            Attrs(className = css.DocumentCategoryField.item,
+            Attrs(className = className,
                   onClick = {
                       value = cat
                       enterViewMode()
@@ -205,7 +274,6 @@ class Selena(initialValue: UADocumentCategoryRTO, val key: SelenaKey) : Control2
     }
 
     fun makeTreeItemControl(cat: UADocumentCategoryRTO): ToReactElementable {
-
         return when {
             cat.children.isEmpty() -> kdiv{o->
                 o- renderItemTitle(cat, title = cat.title, underline = false)

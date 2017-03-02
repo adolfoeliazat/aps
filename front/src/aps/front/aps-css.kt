@@ -639,12 +639,20 @@ object css {
     val jokeDollyButton by Style("opacity: 0.5; margin-right: ${3*8}px;")
 
     object DocumentCategoryField : Group(null) {
+        val focusBack = BLUE_GRAY_50
+        val hoverBack = GRAY_300
+        val lightTextFore = GRAY_600
+
         val itemContainer by Style("max-height: 20rem; margin-top: 0.5rem; overflow: auto;")
         val item by Style(style = "cursor: pointer;",
-                          hover = "background-color: $GRAY_300;")
-        val showMore by Style(style = "cursor: pointer; background-color: $BLUE_GRAY_50; font-style: italic;",
-                              hover = "background-color: $BLUE_GRAY_200;")
-        val nothing by Style("color: $GRAY_500; font-style: italic; margin-top: 1rem;")
+                          hover = "background-color: $hoverBack;")
+        val itemFocused by Style(style = "cursor: pointer; background-color: $focusBack;",
+                                 hover = "background-color: $focusBack;")
+        val showMore by Style(style = "color: $lightTextFore; cursor: pointer; font-style: italic; text-decoration: underline;",
+                              hover = "background-color: $hoverBack;")
+        val showMoreFocused by Style(style = "color: $lightTextFore; background-color: $focusBack; cursor: pointer; font-style: italic; text-decoration: underline;",
+                                     hover = "background-color: $focusBack;")
+        val nothing by Style("color: $lightTextFore; font-style: italic; margin-top: 1rem;")
     }
 
     init {touchObjectGraph(this)}
