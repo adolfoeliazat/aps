@@ -411,6 +411,15 @@ suspend fun <Res> callDangerousMatumba2(req: RequestMatumba): Res {
         descr = req::class.simpleName))
 }
 
+suspend fun <Res> callDangerousMatumba2(procedureName: String, req: RequestMatumba): Res {
+    return await(callMatumba(
+        req = req,
+        procedureName = procedureName,
+        token = js("typeof DANGEROUS_TOKEN === 'undefined' ? null : DANGEROUS_TOKEN") ?: bitch("This fucking client is built without DANGEROUS_TOKEN"),
+        wideClientKind = WideClientKind.Test(),
+        descr = req::class.simpleName))
+}
+
 fun printStack() {
     console.log(global.Error("Gimme the stack").stack)
 }

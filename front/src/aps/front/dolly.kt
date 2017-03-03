@@ -94,7 +94,7 @@ fun <EntityRTO : TabithaEntityRTO> acceptOrRejectDolly(
     entityID: Long,
     tabitha: Tabitha<EntityRTO>,
     acceptButtonTitle: String,
-    makeAcceptanceRequestParams: KFunction1<Long, ReginaParams<*>>,
+    makeAcceptanceRequestParams: KFunction1<Long, Any>,
     bottomGap: Boolean = false,
     jokeOptions: List<String> = listOf()
 ): Dolly {

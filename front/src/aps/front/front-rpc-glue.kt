@@ -50,15 +50,28 @@ suspend fun send(req: UADownloadOrderFileRequest): FormResponse2<DownloadFileRes
 suspend fun send(req: UACustomerSendOrderDraftForApprovalRequest): FormResponse2<UACustomerSendOrderDraftForApprovalRequest.Response> = _send3(req)
 suspend fun send(req: UAAdminGetStuffToDoRequest): FormResponse2<UAAdminGetStuffToDoRequest.Response> = _send3(req)
 
-suspend fun <Res : CommonResponseFields> askMiranda(params: MirandaParams<Res>): Res =
-    callDangerousMatumba2(MirandaRequest()-{o->
-        o.params.value = params
+suspend fun askMiranda(p: MirandaImposeNextGeneratedUserToken): MirandaImposeNextGeneratedUserToken.Response = _askMiranda(p)
+suspend fun askMiranda(p: MirandaImposeNextGeneratedPassword): MirandaImposeNextGeneratedPassword.Response = _askMiranda(p)
+suspend fun askMiranda(p: MirandaGetGeneratedTestTimestamps): MirandaGetGeneratedTestTimestamps.Response = _askMiranda(p)
+
+suspend fun askRegina(p: Any): FormResponse2<*> = _askRegina<Any>(p)
+suspend fun askRegina(p: ReginaAdminSendOrderToStore): FormResponse2<ReginaAdminSendOrderToStore.Response> = _askRegina(p)
+suspend fun askRegina(p: ReginaLoadUser): FormResponse2<ReginaLoadUser.Response> = _askRegina(p)
+suspend fun askRegina(p: ReginaAcceptProfile): FormResponse2<ReginaAcceptProfile.Response> = _askRegina(p)
+suspend fun askRegina(p: ReginaCustomerSendOrderForApprovalAfterFixing): FormResponse2<ReginaCustomerSendOrderForApprovalAfterFixing.Response> = _askRegina(p)
+suspend fun <T : HistoryItemRTOFields> askRegina(p: ReginaGetPairOfLastHistoryItems<T>): FormResponse2<ReginaGetPairOfLastHistoryItems<T>.Response> = _askRegina(p)
+suspend fun askRegina(p: ReginaGetDocumentCategories): FormResponse2<ReginaGetDocumentCategories.Response> = _askRegina(p)
+
+
+private suspend fun <Res> _askMiranda(p: Any): Res =
+    callDangerousMatumba2("Miranda", ObjectRequest()-{o->
+        o.params.value = p
     })
 
-suspend fun <Res : CommonResponseFields> askRegina(params: ReginaParams<Res>): FormResponse2<Res> =
-    _send3SofteningShit(ReginaRequest()-{o->
-        o.params.value = params
-    })
+private suspend fun <Res> _askRegina(p: Any): FormResponse2<Res> =
+    _send3SofteningShit(ObjectRequest()-{o->
+        o.params.value = p
+    }, procName = "Regina")
 
 private fun <T, R> sendDangerousJSONProcedure(req: T): Promisoid<R> = async {
     val jpreq = JsonProcedureRequest()-{o->

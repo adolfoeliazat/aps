@@ -239,52 +239,53 @@ annotation class NoArgCtor
 annotation class AllOpen
 annotation class Ser
 
-
-class MirandaRequest : RequestMatumba() {
-    val params = ObjectHiddenField<MirandaParams<*>>(this, "params")
+class ObjectRequest : RequestMatumba() {
+    val params = ObjectHiddenField<Any>(this, "params")
 }
 
-// XXX `hack` param is necessary to actually generate no-arg constructor here
-@Ser sealed class MirandaParams<Res: CommonResponseFields>(hack: Unit = Unit)
-@Ser class MirandaTestImposeNextGeneratedUserToken(val token: String) : MirandaParams<GenericResponse>()
-@Ser class MirandaTestImposeNextGeneratedPassword(val password: String) : MirandaParams<GenericResponse>()
 
-@Ser class MirandaGetGeneratedTestTimestamps : MirandaParams<MirandaGetGeneratedTestTimestamps.Response>() {
+
+@Ser class MirandaImposeNextGeneratedUserToken(val token: String) {
+    class Response : CommonResponseFieldsImpl()
+}
+
+@Ser class MirandaImposeNextGeneratedPassword(val password: String) {
+    class Response : CommonResponseFieldsImpl()
+}
+
+@Ser class MirandaGetGeneratedTestTimestamps {
     class Response(val list: List<String>) : CommonResponseFieldsImpl()
 }
 
 
-class ReginaRequest : RequestMatumba() {
-    val params = ObjectHiddenField<ReginaParams<*>>(this, "params")
+
+@Ser class ReginaAdminSendOrderToStore(val orderID: Long) {
+    class Response : CommonResponseFieldsImpl()
 }
 
-// XXX `hack` param is necessary to actually generate no-arg constructor here
-@Ser sealed class ReginaParams<Res: CommonResponseFields>(hack: Unit = Unit)
-@Ser class ReginaCustomerSendOrderForApprovalAfterFixing(val orderID: Long) : ReginaParams<GenericResponse>()
-@Ser class ReginaAdminSendOrderToStore(val orderID: Long) : ReginaParams<GenericResponse>()
-@Ser class ReginaLoadUser(val userID: Long) : ReginaParams<SimpleEntityResponse<UserRTO>>()
-@Ser class ReginaAcceptProfile(val userID: Long) : ReginaParams<GenericResponse>()
+@Ser class ReginaLoadUser(val userID: Long) {
+    class Response(override val entity: UserRTO) : CommonResponseFieldsImpl(), EntityResponse<UserRTO>
+}
 
+@Ser class ReginaAcceptProfile(val userID: Long) {
+    class Response : CommonResponseFieldsImpl()
+}
+
+@Ser class ReginaCustomerSendOrderForApprovalAfterFixing(val orderID: Long) {
+    class Response : CommonResponseFieldsImpl()
+}
 
 @Ser class ReginaGetPairOfLastHistoryItems<HistoryItemRTO : HistoryItemRTOFields>(
     val type: KClass<HistoryItemRTO>,
     val entityID: Long
-)
-    : ReginaParams<ReginaGetPairOfLastHistoryItems.Response<HistoryItemRTO>>()
-{
-    class Response<out HistoryItemRTO : HistoryItemRTOFields>(
+) {
+    inner class Response/*<out HistoryItemRTO : HistoryItemRTOFields>*/(
         val lastItem: HistoryItemRTO,
         val prelastItem: HistoryItemRTO?
-    )
-        : CommonResponseFieldsImpl()
-//    {
-//        fun selfSanityCheck(req: ReginaGetPairOfLastHistoryItems<*>) {
-//            check(res.type.isSubclassOf(p.type)){"ecc76402-0199-4115-be07-82694c6fe02d"}
-//        }
-//    }
+    ) : CommonResponseFieldsImpl()
 }
 
-@Ser class ReginaGetDocumentCategories : ReginaParams<ReginaGetDocumentCategories.Response>() {
+@Ser class ReginaGetDocumentCategories {
     class Response(val root: UADocumentCategoryRTO) : CommonResponseFieldsImpl()
 }
 

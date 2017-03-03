@@ -4,9 +4,9 @@ import aps.*
 import into.kommon.*
 import org.springframework.data.repository.findOrDie
 
-fun serveReginaLoadUser(p: ReginaLoadUser): SimpleEntityResponse<UserRTO> {
+fun ReginaLoadUser.serve(): ReginaLoadUser.Response {
     check(isAdmin()){"14b9cd37-57e6-4c82-a16d-ef37a2e38a4d"}
-    return SimpleEntityResponse(userRepo.findOrDie(p.userID).toRTO(searchWords = listOf()))
+    return ReginaLoadUser.Response(userRepo.findOrDie(this.userID).toRTO(searchWords = listOf()))
 }
 
 @Servant class ServeUpdateProfile : BitchyProcedure() {
@@ -131,15 +131,15 @@ fun serveReginaLoadUser(p: ReginaLoadUser): SimpleEntityResponse<UserRTO> {
     }
 }
 
-fun serveReginaAcceptProfile(p: ReginaAcceptProfile): GenericResponse {
+fun ReginaAcceptProfile.serve(): ReginaAcceptProfile.Response {
     check(requestUser.user.kind == UserKind.ADMIN){"0efef8d0-8598-4056-ba55-cd8bb1910cb8"}
     // TODO:vgrechka Security
-    userRepo.findOrDie(p.userID)-{o->
+    userRepo.findOrDie(this.userID)-{o->
         check(o.user.state in setOf(UserState.PROFILE_APPROVAL_PENDING)){"7af262c7-2a28-43f8-910a-ccf3569142e9"}
         o.user.profileRejectionReason = null
         o.user.state = UserState.COOL
     }
-    return GenericResponse()
+    return ReginaAcceptProfile.Response()
 }
 
 

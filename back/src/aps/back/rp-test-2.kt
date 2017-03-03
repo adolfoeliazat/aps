@@ -181,17 +181,17 @@ private fun snapshotFileNameBase(snapshotName: String) =
     }
 }
 
-fun serveMirandaTestImposeNextGeneratedUserToken(p: MirandaTestImposeNextGeneratedUserToken): GenericResponse {
-    TestServerFiddling.nextGeneratedUserToken.set(p.token)
-    return GenericResponse()
+fun MirandaImposeNextGeneratedUserToken.serve(): MirandaImposeNextGeneratedUserToken.Response {
+    TestServerFiddling.nextGeneratedUserToken.set(this.token)
+    return MirandaImposeNextGeneratedUserToken.Response()
 }
 
-fun serveMirandaTestImposeNextGeneratedPassword(p: MirandaTestImposeNextGeneratedPassword): GenericResponse {
-    TestServerFiddling.nextGeneratedPassword.set(p.password)
-    return GenericResponse()
+fun MirandaImposeNextGeneratedPassword.serve(): MirandaImposeNextGeneratedPassword.Response {
+    TestServerFiddling.nextGeneratedPassword.set(this.password)
+    return MirandaImposeNextGeneratedPassword.Response()
 }
 
-fun serveMirandaGetGeneratedTestTimestamps(p: MirandaGetGeneratedTestTimestamps): MirandaGetGeneratedTestTimestamps.Response {
+fun MirandaGetGeneratedTestTimestamps.serve(): MirandaGetGeneratedTestTimestamps.Response {
     return MirandaGetGeneratedTestTimestamps.Response(generateTestTimestamps())
 }
 

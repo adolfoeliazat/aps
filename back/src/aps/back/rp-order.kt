@@ -274,20 +274,20 @@ import java.util.*
     }
 }
 
-fun serveReginaCustomerSendOrderForApprovalAfterFixing(p: ReginaCustomerSendOrderForApprovalAfterFixing): GenericResponse {
+fun ReginaCustomerSendOrderForApprovalAfterFixing.serve(): ReginaCustomerSendOrderForApprovalAfterFixing.Response {
     check(requestUser.user.kind == UserKind.CUSTOMER){"70630d2d-6796-4af8-8ac6-16e09a8b37e1"}
     // TODO:vgrechka Security
-    val order = uaOrderRepo.findOrDie(p.orderID)
+    val order = uaOrderRepo.findOrDie(this.orderID)
     check(order.order.state == UAOrderState.RETURNED_TO_CUSTOMER_FOR_FIXING){"698dd409-f382-45df-9e65-fff590302dd0"}
     order.order.state = UAOrderState.WAITING_ADMIN_APPROVAL
-    return GenericResponse()
+    return ReginaCustomerSendOrderForApprovalAfterFixing.Response()
 }
 
-fun serveReginaAdminSendOrderToStore(p: ReginaAdminSendOrderToStore): GenericResponse {
+fun ReginaAdminSendOrderToStore.serve(): ReginaAdminSendOrderToStore.Response {
     check(requestUser.user.kind == UserKind.ADMIN){"0af9f1b0-b5fb-4fb2-b3a9-198a0185ee15"}
     // TODO:vgrechka Security
 
-    val order = uaOrderRepo.findOrDie(p.orderID)
+    val order = uaOrderRepo.findOrDie(this.orderID)
     val ord = order.order
     check(ord.state in setOf(UAOrderState.WAITING_ADMIN_APPROVAL)){"7af262c7-2a28-43f8-910a-ccf3569142e9"}
     if (-1 in setOf(ord.minAllowedDurationOffer, ord.maxAllowedDurationOffer,
@@ -298,10 +298,10 @@ fun serveReginaAdminSendOrderToStore(p: ReginaAdminSendOrderToStore): GenericRes
     ord.whatShouldBeFixedByCustomer = null
     ord.movedToStoreAt = RequestGlobus.stamp
     ord.state = UAOrderState.IN_STORE
-    return GenericResponse()
+    return ReginaAdminSendOrderToStore.Response()
 }
 
-fun serveReginaGetDocumentCategories(p: ReginaGetDocumentCategories): ReginaGetDocumentCategories.Response {
+fun ReginaGetDocumentCategories.serve(): ReginaGetDocumentCategories.Response {
     // TODO:vgrechka Security
     val cat = uaDocumentCategoryRepo.findOrDie(const.uaDocumentCategoryID.root).toRTO(loadChildren = true)
     return ReginaGetDocumentCategories.Response(cat)

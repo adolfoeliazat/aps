@@ -2,25 +2,18 @@ package aps.back
 
 import aps.*
 import into.kommon.*
-import org.springframework.data.repository.findOrDie
-import kotlin.reflect.full.cast
-import kotlin.reflect.full.isSubclassOf
-import kotlin.reflect.full.safeCast
+import java.lang.reflect.Method
+import java.util.concurrent.ConcurrentHashMap
+
+private val paramClassToServeMethod = ConcurrentHashMap<Class<*>, Method>()
 
 @Servant class ServeMiranda : BitchyProcedure() {
     override fun serve() {
         fuckDangerously(FuckDangerouslyParams(
             bpc = bpc,
-            makeRequest = {MirandaRequest()},
-            runShit = fun(ctx, req: MirandaRequest): CommonResponseFields {
-                fun <Params : MirandaParams<Res>, Res> tie(p: Params, f: (Params) -> Res): Res = f(p)
-
-                val p = req.params.value
-                return when (p) {
-                    is MirandaTestImposeNextGeneratedUserToken -> tie(p, ::serveMirandaTestImposeNextGeneratedUserToken)
-                    is MirandaTestImposeNextGeneratedPassword -> tie(p, ::serveMirandaTestImposeNextGeneratedPassword)
-                    is MirandaGetGeneratedTestTimestamps -> tie(p, ::serveMirandaGetGeneratedTestTimestamps)
-                }
+            makeRequest = {ObjectRequest()},
+            runShit = fun(ctx, req: ObjectRequest): CommonResponseFields {
+                return serveObjectRequest(req)
             }
         ))
     }
@@ -30,29 +23,28 @@ import kotlin.reflect.full.safeCast
     override fun serve() {
         fuckAnyUser(FuckAnyUserParams(
             bpc = bpc,
-            makeRequest = {ReginaRequest()},
-            runShit = fun(ctx, req: ReginaRequest): CommonResponseFields {
-                fun <Params : ReginaParams<Res>, Res> tie(p: Params, f: (Params) -> Res): Res = f(p)
-
-                val p = req.params.value
-                return when (p) {
-                    is ReginaCustomerSendOrderForApprovalAfterFixing -> tie(p, ::serveReginaCustomerSendOrderForApprovalAfterFixing)
-                    is ReginaAdminSendOrderToStore -> tie(p, ::serveReginaAdminSendOrderToStore)
-                    is ReginaLoadUser -> tie(p, ::serveReginaLoadUser)
-                    is ReginaAcceptProfile -> tie(p, ::serveReginaAcceptProfile)
-                    is ReginaGetPairOfLastHistoryItems<*> -> {
-                        val res = serveReginaGetPairOfLastHistoryItems(p)
-//                        check(res.type.isSubclassOf(p.type)){"ecc76402-0199-4115-be07-82694c6fe02d"}
-                        res
-                    }
-                    is ReginaGetDocumentCategories -> tie(p, ::serveReginaGetDocumentCategories)
-                }
+            makeRequest = {ObjectRequest()},
+            runShit = fun(ctx, req: ObjectRequest): CommonResponseFields {
+                return serveObjectRequest(req)
             }
         ))
     }
 }
 
-
+private fun serveObjectRequest(req: ObjectRequest): CommonResponseFields {
+    val p = req.params.value
+    val method = paramClassToServeMethod.computeIfAbsent(p::class.java) {
+        for (cname in listOf("Rp_orderKt", "Rp_userKt", "Rp_historyKt", "Rp_testKt", "Rp_test_2Kt")) {
+            val clazz = Class.forName("aps.back.$cname")
+            try {
+                return@computeIfAbsent clazz.getDeclaredMethod("serve", p::class.java)
+            } catch (e: Throwable) {
+            }
+        }
+        wtf("p::class = ${p::class}    a322c2b4-25af-45e1-a7ae-a5484a941ec3")
+    }
+    return method.invoke(null, p) as CommonResponseFields
+}
 
 
 

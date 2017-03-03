@@ -34,7 +34,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
     val filesShortcutMode1 = FilesShortcutMode.B
     val startPoint = 1
-//    val startPoint = 9 // 14
+//    val startPoint = 12 // 9 // 14
     init {
 //        TestGlobal.describeStateConfig = DescribeStateConfig(showBanners = true, autoResumeAfterMs = null)
 //        TestGlobal.describeStateConfig = DescribeStateConfig(showBanners = true, autoResumeAfterMs = 2000)
@@ -93,7 +93,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                                  url = makeConfirmationURL("top-fucking-secret"),
                                  fillTypedStorageLocal = {},
                                  fillRawStorageLocal = {})
-                askMiranda(MirandaTestImposeNextGeneratedUserToken("ivo-fucking-token"))
+                askMiranda(MirandaImposeNextGeneratedUserToken("ivo-fucking-token"))
                 // TODO:vgrechka Impose customer password
                 ivo3.coitizeAndBootAsserting(assertStatic = {assertScreenHTML("Static confirmOrder", "2acbad6a-e169-4c0d-9938-99fac621fef5")},
                                              assertDynamic = {assertScreenHTML("Dynamic confirmOrder", "a6a44d05-7c1d-4dbf-82a2-3b42e0ca98f3")})
@@ -504,6 +504,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                     testCompareBelow(scrollTop = 1740, subscript = 3L, stateDescr = "Diff: state, phone, about me", aid = "ecc07cbe-e6b0-437c-b54e-21e326680072")
                 }
                 seq.halfway_done({buttonClick(buttons.back_testRef)}, "fa9cb012-92d4-4f28-a451-af5faf5a2fd7")
+                // ___stopHereAndEverywhereAfter()
                 seq.halfway_modal_closed(action = {buttonClick(buttons.compare_testRef)},
                                          modalAction = {
                                              describeState("Phone was changed")
@@ -587,13 +588,13 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
         inputSetValue(fields.signUpLastName_testRef, lastName)
         inputSetValue(fields.signUpEmail_testRef, "$nick@test.shit.ua")
         checkboxSetValue(fields.agreeTerms_testRef, true)
-        askMiranda(MirandaTestImposeNextGeneratedPassword("$nick-secret"))
+        askMiranda(MirandaImposeNextGeneratedPassword("$nick-secret"))
         debugMailboxClear()
         seq.submitForm("$aid--4")
         debugMailboxCheck("$aid--5")
 
         inputSetValue(fields.signInPassword_testRef, "$nick-secret")
-        askMiranda(MirandaTestImposeNextGeneratedUserToken("$nick-fucking-token"))
+        askMiranda(MirandaImposeNextGeneratedUserToken("$nick-fucking-token"))
         seq.submitForm("$aid--6")
     }
 
@@ -636,7 +637,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
         topNavItemSequence(page = pages.uaWriter.signIn_testRef, aid = "aea03aff-9c1a-4aaa-9786-ce4be57018fd")
         inputSetValue(fields.signInEmail_testRef, "dasja@test.shit.ua")
         inputSetValue(fields.signInPassword_testRef, "dasja-secret")
-        askMiranda(MirandaTestImposeNextGeneratedUserToken("dasja-fucking-token"))
+        askMiranda(MirandaImposeNextGeneratedUserToken("dasja-fucking-token"))
         seq.submitForm("0132de44-85ca-41a5-b926-859e2bd07461")
     }
 
