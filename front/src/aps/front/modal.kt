@@ -118,8 +118,8 @@ fun <Req : RequestMatumba, Res : CommonResponseFields>
         primaryButtonTitle = t("TOTE", "Сохранить"),
         cancelButtonTitle = t("TOTE", "Не стоит"),
         onSuccessa = {res->
-            onSuccessa(res)
             modal.close()
+            onSuccessa(res)
         },
         onCancela = {
             modal.close()

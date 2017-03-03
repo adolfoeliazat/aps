@@ -24,36 +24,18 @@ import kotlin.properties.Delegates.notNull
             if (stringValue == "") return@error t("TOTE", "Поле обязательно")
 
             try {
-                _value = toInternal(stringValue.toInt())
+                _value = IntFieldUtils.toInternal(spec, stringValue.toInt())
             } catch(e: NumberFormatException) {
                 return@error t("TOTE", "Я такие числа не понимаю")
             }
 
-            if (_value < spec.min) return@error t("TOTE", "Не менее ${fromInternal(spec.min)}")
-            if (_value > spec.max) return@error t("TOTE", "Не более ${fromInternal(spec.max)}")
+            if (_value < spec.min) return@error t("TOTE", "Не менее ${IntFieldUtils.fromInternal(spec, spec.min)}")
+            if (_value > spec.max) return@error t("TOTE", "Не более ${IntFieldUtils.fromInternal(spec, spec.max)}")
 
             null
         }?.let {error ->
             fieldErrors.add(FieldError(name, error))
         }
-    }
-
-    private fun toInternal(x: Int): Int = when (spec.type) {
-        is IntFieldType.Generic -> x
-        is IntFieldType.Money -> {
-            check(!spec.type.fractions){"758d27c0-b19d-4816-9bc6-165e3c17a081"}
-            x * 100
-        }
-        is IntFieldType.Duration -> x * 24
-    }
-
-    private fun fromInternal(x: Int): Int = when (spec.type) {
-        is IntFieldType.Generic -> x
-        is IntFieldType.Money -> {
-            check(!spec.type.fractions){"f1ef17e2-5b1e-4ea3-868f-3160588d23e2"}
-            x / 100
-        }
-        is IntFieldType.Duration -> x / 24
     }
 
 }

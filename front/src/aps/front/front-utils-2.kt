@@ -149,7 +149,11 @@ fun renderMoney(cents: Int) = kspan{o->
 fun renderDurationHours(hours: Int) = kspan{o->
     o- when {
         (hours == -1) -> const.text.na
-        else -> hours.toString()
+        else -> {
+            check(hours % 24 == 0){"7f12dba3-33bf-402c-b35c-d51a8cda10df"}
+            check(Globus.lang == Language.UA){"0de29a21-b061-4e98-8367-9f203b92e7f3"}
+            (hours / 24).toString() + " дн."
+        }
     }
 }
 

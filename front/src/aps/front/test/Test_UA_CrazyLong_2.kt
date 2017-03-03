@@ -33,8 +33,8 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
     }
 
     val filesShortcutMode1 = FilesShortcutMode.B
-//    val startPoint = 1
-    val startPoint = 9
+    val startPoint = 1
+//    val startPoint = 9
     init {
 //        TestGlobal.describeStateConfig = DescribeStateConfig(showBanners = true, autoResumeAfterMs = null)
 //        TestGlobal.describeStateConfig = DescribeStateConfig(showBanners = true, autoResumeAfterMs = 2000)
@@ -61,8 +61,8 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 debugMailboxClear()
                 selectSetValue(fields.uaDocumentType_testRef, UADocumentType.PRACTICE)
                 imposeNextGeneratedConfirmationSecret("top-fucking-secret")
-                formSubmissionAttempts(
-                    testShit, baseID = "c31b6b5e-aac1-4136-8bef-906cf5be8cdc-1",
+                seq.formSubmissionAttempts(
+                    aid = "c31b6b5e-aac1-4136-8bef-906cf5be8cdc-1",
                     attempts = eachOrCombinationOfLasts(listOf(
                         badTextFieldValuesThenValid(fields.documentTitle_testRef, "Как я пинал хуи на практике"),
                         badIntFieldValuesThenValid(fields.numPages_testRef, 13),
@@ -101,17 +101,17 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
             }
 
             run { // Edit params -- cancel
-                editButtonThenModal("1_9b32c20b-bcdb-4024-b068-5c6a36231944")
+                seq.editButton_modal("1_9b32c20b-bcdb-4024-b068-5c6a36231944")
                 inputSetValue(fields.documentTitle_testRef, "Хуй")
                 describeState("Will cancel")
                 step({buttonClick(buttons.cancel_testRef)}, TestGlobal.modalHiddenLock, "1_65da1c1a-7b2d-487e-a9cb-e99035eaa04b")
             }
 
             run { // Edit params -- save
-                editButtonThenModal("f0386438-99f7-417a-83a6-b29d804a1b1c")
+                seq.editButton_modal("f0386438-99f7-417a-83a6-b29d804a1b1c")
                 selectSetValue(fields.uaDocumentType_testRef, UADocumentType.LAB)
-                formSubmissionAttempts(
-                    testShit, baseID = "3_beaa5793-9590-415e-8bc9-ca6fec7ead52",
+                seq.formSubmissionAttempts(
+                    aid = "3_beaa5793-9590-415e-8bc9-ca6fec7ead52",
                     attempts = eachOrCombinationOfLasts(listOf(
                         badTextFieldValuesThenValid(fields.documentTitle_testRef, "Как я пинал большие хуи на практике"),
                         badIntFieldValuesThenValid(fields.numPages_testRef, 23),
@@ -125,9 +125,9 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
             }
 
             run { // Edit params -- save 2
-                editButtonThenModal("b556cf5e-0184-4ce0-8560-f083861116e7")
+                seq.editButton_modal("b556cf5e-0184-4ce0-8560-f083861116e7")
                 selectSetValue(fields.uaDocumentType_testRef, UADocumentType.PRACTICE)
-                submitFormSequence(testShit, aid = "6ea13411-892b-4e96-a1b8-c77b23e29567")
+                seq.submitForm("6ea13411-892b-4e96-a1b8-c77b23e29567")
             }
         }
 
@@ -228,8 +228,8 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
             }
             run { // Edit file -- save, file not changed
                 step({kicClick(kics.edit_testRef, subscript = 27L)}, TestGlobal.modalShownLock, "e0795fd9-64ad-417d-bcb7-1f4dcd2a2f05")
-                formSubmissionAttempts(
-                    testShit, baseID = "2639505f-4b8c-44fd-b0b7-99b252062a72",
+                seq.formSubmissionAttempts(
+                    aid = "2639505f-4b8c-44fd-b0b7-99b252062a72",
                     attempts = eachOrCombinationOfLasts(listOf(
                         badTextFieldValuesThenValid(fields.fileTitle_testRef, "Рапунцель-распиздунцель"),
                         badTextFieldValuesThenValid(fields.fileDetails_testRef, "Реальная история... " + testdata.rapunzelDetails)
@@ -282,7 +282,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
         definePoint(5) {
             assertScreenHTML(aid = "9459385d-4fe1-49b8-a403-6f265c758e8c")
-            twoStepSequence({buttonClick(buttons.sendForApproval_testRef)}, "7293affa-0102-4cca-935c-b5a2adc66692")
+            seq.halfway_done({buttonClick(buttons.sendForApproval_testRef)}, "7293affa-0102-4cca-935c-b5a2adc66692")
             tabSequence(tabs.order.files_testRef, "e5515942-f102-4f21-85a3-1d3b71f3c715", "754ffb00-fad3-4d66-97a4-db82485599f1")
             describeState("No controls to edit files")
         }
@@ -294,17 +294,17 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
             run { // Error loading orders to approve
                 imposeNextRequestGenericError()
-                halfwayThenModalThenClosedSequence(action = {linkClick(links.adminDashboard.ordersToApprove_testRef)},
-                                                   modalAction = {buttonClick(buttons.primary_testRef)},
-                                                   aid = "fccbd4aa-bdf9-49b2-9589-ddc93c769e3e")
+                seq.halfway_modal_closed(action = {linkClick(links.adminDashboard.ordersToApprove_testRef)},
+                                         modalAction = {buttonClick(buttons.primary_testRef)},
+                                         aid = "fccbd4aa-bdf9-49b2-9589-ddc93c769e3e")
             }
 
             run { // Admin rejects order
-                twoStepSequence({linkClick(links.adminDashboard.ordersToApprove_testRef)}, "e1cdd9ea-7ad0-467e-9add-c9d67c19b883")
+                seq.halfway_done({linkClick(links.adminDashboard.ordersToApprove_testRef)}, "e1cdd9ea-7ad0-467e-9add-c9d67c19b883")
                 lipsTitleClick(1L, "4d382cc9-c529-47bc-9026-0ceec0716a5c")
-                buttonThenModal(buttons.reject_testRef, "0417ea80-b99b-498e-9e51-c4f829d08499")
-                formSubmissionAttemptsThenPageLoad(
-                    testShit, aid = "e07d4eab-e003-4149-bfc9-9b3557aacfb5",
+                seq.button_modal(buttons.reject_testRef, "0417ea80-b99b-498e-9e51-c4f829d08499")
+                seq.formSubmissionAttempts_pageLoaded(
+                    aid = "e07d4eab-e003-4149-bfc9-9b3557aacfb5",
                     attempts = eachOrCombinationOfLasts(listOf(
                         badTextFieldValuesThenValid(fields.rejectionReason_testRef, "А не дохуя ты файлов позаливал? Оставь пару штук где-то...")
                     ))
@@ -345,7 +345,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
             }
 
             run { // Submit shit for review
-                twoStepSequence({buttonClick(buttons.sendForApprovalAfterFixing_testRef)}, "dd154f35-efcc-4510-acd0-0e49d8029fd1")
+                seq.halfway_done({buttonClick(buttons.sendForApprovalAfterFixing_testRef)}, "dd154f35-efcc-4510-acd0-0e49d8029fd1")
             }
         }
 
@@ -365,11 +365,11 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 step({kicClick(kics.edit_testRef, subscript = 3L)}, TestGlobal.modalShownLock, "98165d17-6cbd-4034-b5f5-1c7424336bde")
                 inputPrependValue(fields.fileDetails_testRef, "Следовать тупо этой инструкции. ")
                 inputPrependValue(fields.adminNotes_testRef, "Добавил немного порожняка к деталям.")
-                submitFormSequence(testShit, aid = "5c5f9391-b835-4be2-9402-d9c140d8e781")
+                seq.submitForm("5c5f9391-b835-4be2-9402-d9c140d8e781")
                 //
                 step({kicClick(kics.edit_testRef, subscript = 3L)}, TestGlobal.modalShownLock, "9c2d9386-ce07-4d88-ada3-773062477f98")
                 inputAppendValue(fields.adminNotes_testRef, " Ля-ля-ля...")
-                submitFormSequence(testShit, aid = "19b4abbe-9f88-4ec8-9cb6-5aa636122933")
+                seq.submitForm("19b4abbe-9f88-4ec8-9cb6-5aa636122933")
                 //
                 scrollBodyToTopGradually()
                 addFile(AddFileParams(fileName = "idiot.rtf",
@@ -382,15 +382,15 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
             run { // Admin makes minor changes to params
                 tabSequence(tabs.order.params_testRef, "3b9c64a7-8fc4-49eb-bd2a-0694eaac63e0", "2fff0364-e77d-4b3a-b6f0-cd9cc0077acb")
                 describeState("Admin can edit params")
-                editButtonThenModal("da55889e-1ce2-4789-a957-1238bf809924")
+                seq.editButton_modal("da55889e-1ce2-4789-a957-1238bf809924")
                 inputDeleteFromBeginning(fields.orderDetails_testRef, "Это чисто на почитать... ")
                 inputSetValue(fields.numPages_testRef, "25")
                 inputSetValue(fields.adminNotes_testRef, "Заказчик -- мудила. Надо его наебать на бабки.")
-                submitFormSequence(testShit, aid = "f04afc41-cc1c-476c-9dfe-0a68f83776da")
+                seq.submitForm("f04afc41-cc1c-476c-9dfe-0a68f83776da")
 
-                buttonThenModal(buttons.edit_testRef, "7acb877e-1702-4376-b534-daa875fb9844")
+                seq.editButton_modal("7acb877e-1702-4376-b534-daa875fb9844")
                 inputAppendValue(fields.adminNotes_testRef, " Жестко.")
-                submitFormSequence(testShit, aid = "bd4cc26f-e6d2-4036-9617-9518acaf454a")
+                seq.submitForm("bd4cc26f-e6d2-4036-9617-9518acaf454a")
             }
 
         }
@@ -398,7 +398,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
         definePoint(9) {
             run { // Admin moves order to store
                 scrollBodyToBottomGradually()
-                buttonThenModal(buttons.editStoreParams_testRef, "f770dff2-b2df-4231-810b-7596b2c6ace2")
+                seq.button_modal(buttons.editStoreParams_testRef, "f770dff2-b2df-4231-810b-7596b2c6ace2")
 
                 run { // Choose document category
                     val aid = "13359364-450b-4f47-b2fb-b0a4d1993a8a"
@@ -413,7 +413,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                         }
                     }
 
-                    twoStepSequence({buttonClick(buttons.chooseDocumentCategory_testRef)}, nextAID())
+                    seq.halfway_done({buttonClick(buttons.chooseDocumentCategory_testRef)}, nextAID())
                     selenaSetInputValue(fields.uaDocumentCategory_testRef, "пр"); assert()
                     selenaSetInputValue(fields.uaDocumentCategory_testRef, "пр0"); assert()
                     selenaSetInputValue(fields.uaDocumentCategory_testRef, "при"); assert()
@@ -425,20 +425,24 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                     selenaSendSpecialKey(fields.uaDocumentCategory_testRef, fconst.keyCode.enter)
                 }
 
-                formSubmissionAttemptsThenPageLoad(
-                    testShit, aid = "617e1649-938c-448c-a105-86f3e4e4c62b",
+                seq.formSubmissionAttempts_pageLoaded(
+                    aid = "617e1649-938c-448c-a105-86f3e4e4c62b",
                     attempts = eachOrCombinationOfLasts(listOf(
-                        badIntFieldValuesThenValid(fields.minAllowedPriceOffer_testRef, 300),
+                        badIntFieldValuesThenValid(fields.minAllowedPriceOffer_testRef, 200),
                         badIntFieldValuesThenValid(fields.maxAllowedPriceOffer_testRef, 1500),
                         badIntFieldValuesThenValid(fields.minAllowedDurationOffer_testRef, 7),
                         badIntFieldValuesThenValid(fields.maxAllowedDurationOffer_testRef, 14)
                     ))
                 )
 
-                // TODO:vgrechka Neeeeeeeeeeeeext: 1) render duration properly; 2) open store params again -- shit units are not converted
+                seq.button_modal(buttons.editStoreParams_testRef, "f4cbc73f-330d-4be2-b69e-b0b39e3a15a5")
+//                ___stopEverywhere()
+                describeState("Changes are reflected in store params dialog")
+                inputSetValue(fields.minAllowedPriceOffer_testRef, "300")
+                seq.submitForm("600c87d9-fd23-468d-8d05-12b493d3e14c")
 
-                ___stopHereAndEverywhereAfter(verticalPosition = VerticalPosition.TOP, horizontalPosition = HorizontalPosition.RIGHT)
-                acceptanceSequence("3196309c-b789-436c-89a4-27128aa59a46")
+//                ___stopHereAndEverywhereAfter(verticalPosition = VerticalPosition.TOP, horizontalPosition = HorizontalPosition.RIGHT)
+                seq.acceptShit("3196309c-b789-436c-89a4-27128aa59a46")
                 // TODO:vgrechka Email should be sent to customer
             }
         }
@@ -454,7 +458,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
             run { // Kafka fills profile
                 inputSetValue(fields.profilePhone_testRef, "+38 (099) 432-54-55")
                 inputSetValue(fields.aboutMe_testRef, "О себе? Вы че, охренели там? Я Кафка. Кафка я, ебаный Франц, бля! Уроды...")
-                submitFormSequence("0747ffeb-2906-4a94-8e45-8d24d92b9abf")
+                seq.submitForm("0747ffeb-2906-4a94-8e45-8d24d92b9abf")
             }
         }
 
@@ -462,7 +466,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
             run { // Admin rejects Kafka's profile
                 bootAdmin_openWriterToApprove_beginEditing(sessionIndex.dasja3, 3L, "9e3a8178-3f0d-4f5b-98a3-1bb306b4c8ca")
                 setProfileFields_submitForm(firstName = "Франсик", lastName = "Кафунчик", adminNotes = "Здесь был Вася...", aid = "f9e763e5-e9ad-45fe-bc34-d5332cc20602")
-                rejectionSequence("Попустись, Франсик. Напиши что-то нормальное в \"эбаут ми\".", "2ebb1be5-a472-4972-b417-1a44a325a044")
+                seq.rejectShit("Попустись, Франсик. Напиши что-то нормальное в \"эбаут ми\".", "2ebb1be5-a472-4972-b417-1a44a325a044")
             }
 
             run { // Kafka fixes his shit
@@ -473,7 +477,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
             run { // Admin finally accepts motherfucker
                 bootAdmin_openWriterToApprove_beginEditing(sessionIndex.dasja4, 3L, "95028cf3-051e-412b-8042-9005e13edc10")
                 setProfileFields_submitForm(adminNotes = "Отлично. Нам рабы нужны.", aid = "f7a8b9ac-dbb4-4cd5-8640-a40f2da8e604")
-                acceptanceSequence("eb74a065-0f4e-4b5c-9110-eb9a7d2ed78c")
+                seq.acceptShit("eb74a065-0f4e-4b5c-9110-eb9a7d2ed78c")
                 // TODO:vgrechka Send email about accepting writer's profile
             }
         }
@@ -486,7 +490,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
             run { // Admin looks at profile change history
                 bootAdmin_openWriterToApprove(sessionIndex.dasja5, 3L, "21af756c-20b0-48be-89a5-7b0c2e1654b8")
-                twoStepSequence({buttonClick(buttons.history_testRef)}, "84837274-ff9a-4ae8-81ae-566685fe87fc")
+                seq.halfway_done({buttonClick(buttons.history_testRef)}, "84837274-ff9a-4ae8-81ae-566685fe87fc")
                 // ___showStateDescriptions()
                 testCompareBelow(subscript = 9L, stateDescr = "Diff: states, phones", aid = "ed3da430-f954-4c31-b923-0a60c6276b54")
                 if (!skipLengthyStuff) {
@@ -497,16 +501,14 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                     testCompareBelow(scrollTop = 1540, subscript = 4L, stateDescr = "Diff: first and last name", aid = "a0da8f07-14c2-4062-ad61-4018cec2a336")
                     testCompareBelow(scrollTop = 1740, subscript = 3L, stateDescr = "Diff: state, phone, about me", aid = "ecc07cbe-e6b0-437c-b54e-21e326680072")
                 }
-                twoStepSequence({buttonClick(buttons.back_testRef)}, "fa9cb012-92d4-4f28-a451-af5faf5a2fd7")
-                halfwayThenModalThenClosedSequence(
-                    action = {buttonClick(buttons.compare_testRef)},
-                    modalAction = {
-                        describeState("Phone was changed")
-                        modalCloseWaiting()
-                    },
-                    aid = "af4df80e-761e-4e53-b217-0abfa783d26b"
-                )
-                acceptanceSequence("7f321945-ae54-419a-915d-368b216d09b5")
+                seq.halfway_done({buttonClick(buttons.back_testRef)}, "fa9cb012-92d4-4f28-a451-af5faf5a2fd7")
+                seq.halfway_modal_closed(action = {buttonClick(buttons.compare_testRef)},
+                                         modalAction = {
+                                             describeState("Phone was changed")
+                                             modalCloseWaiting()
+                                         },
+                                         aid = "af4df80e-761e-4e53-b217-0abfa783d26b")
+                seq.acceptShit("7f321945-ae54-419a-915d-368b216d09b5")
             }
         }
 
@@ -521,12 +523,12 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
             run { // Gogol fills profile
                 inputSetValue(fields.profilePhone_testRef, "+38 (095) 683-11-42")
                 inputSetValue(fields.aboutMe_testRef, "Я ебаный гоголь-моголь. Что тут еще сказать...")
-                submitFormSequence("fc05361d-5c20-4081-8bae-aaf4c00ed8be")
+                seq.submitForm("fc05361d-5c20-4081-8bae-aaf4c00ed8be")
             }
 
             run { // Admin accepts gogol
                 bootAdmin_openWriterToApprove(sessionIndex.dasja6, writerID = 4L, aid = "a03dbdde-9367-4074-b970-fe11c2e4d778")
-                acceptanceSequence("628fd3c1-223d-4b94-bd5a-808482882a8e")
+                seq.acceptShit("628fd3c1-223d-4b94-bd5a-808482882a8e")
             }
         }
 
@@ -535,16 +537,8 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
         }
     }
 
-    suspend fun editButtonThenModal(aid: String) {
-        buttonThenModal(buttons.edit_testRef, aid)
-    }
-
-    suspend fun buttonThenModal(key: TestRef<ButtonKey>, aid: String) {
-        step({buttonClick(key)}, TestGlobal.modalShownLock, aid)
-    }
-
     private suspend fun lipsTitleClick(subscript: Long, aid: String) {
-        twoStepSequence({linkClick(links.lipsTitle_testRef, subscript = subscript)}, aid)
+        seq.halfway_done({linkClick(links.lipsTitle_testRef, subscript = subscript)}, aid)
     }
 
     private suspend fun testCompareBelow(subscript: Long, stateDescr: String, scrollTop: Int? = null, aid: String) {
@@ -557,34 +551,23 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
         modalCloseWaiting()
     }
 
-    private suspend fun acceptanceSequence(aid: String) {
-        twoStepSequence({buttonClick(buttons.accept_testRef)}, aid)
-    }
-
-    private suspend fun rejectionSequence(reason: String, aid: String) {
-        buttonThenModal(buttons.reject_testRef, "$aid--1")
-        inputSetValue(fields.rejectionReason_testRef, reason)
-        step(action = {submitFormSequence(testShit, useFormDoneLock = false, aid = "$aid--2")},
-             lock = TestGlobal.pageLoadedLock, aid = "$aid--3")
-    }
-
     suspend fun setProfileFields_submitForm(firstName: String? = null, lastName: String? = null, aboutMe: String? = null, adminNotes: String? = null, profilePhone: String? = null, aid: String) {
         firstName?.let {inputSetValue(fields.signUpFirstName_testRef, it)}
         lastName?.let {inputSetValue(fields.signUpLastName_testRef, it)}
         aboutMe?.let {inputSetValue(fields.aboutMe_testRef, it)}
         adminNotes?.let {inputSetValue(fields.adminNotes_testRef, it)}
         profilePhone?.let {inputSetValue(fields.profilePhone_testRef, it)}
-        submitFormSequence(aid)
+        seq.submitForm(aid)
     }
 
     private suspend fun bootAdmin_openWriterToApprove_beginEditing(sessionNumber: Int, writerID: Long, aid: String) {
         bootAdmin_openWriterToApprove(sessionNumber, writerID, "$aid--1")
-        editButtonThenModal("$aid--2")
+        seq.editButton_modal("$aid--2")
     }
 
     private suspend fun bootAdmin_openWriterToApprove(sessionNumber: Int, writerID: Long, aid: String) {
         bootAdminWithTokenToDashboard(sessionNumber, "$aid--1")
-        twoStepSequence({linkClick(links.adminDashboard.writerProfilesToApprove_testRef)}, "$aid--2")
+        seq.halfway_done({linkClick(links.adminDashboard.writerProfilesToApprove_testRef)}, "$aid--2")
         lipsTitleClick(writerID, "$aid--3")
     }
 
@@ -596,7 +579,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
         bootFreshWriter(nick, sessionNumber, aid = "$aid--1")
 
         topNavItemSequence(pages.uaWriter.signIn_testRef, "$aid--2")
-        twoStepSequence({linkClick(links.createAccount_testRef)}, "$aid--3")
+        seq.halfway_done({linkClick(links.createAccount_testRef)}, "$aid--3")
 
         inputSetValue(fields.signUpFirstName_testRef, firstName)
         inputSetValue(fields.signUpLastName_testRef, lastName)
@@ -604,12 +587,12 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
         checkboxSetValue(fields.agreeTerms_testRef, true)
         askMiranda(MirandaTestImposeNextGeneratedPassword("$nick-secret"))
         debugMailboxClear()
-        submitFormSequence("$aid--4")
+        seq.submitForm("$aid--4")
         debugMailboxCheck("$aid--5")
 
         inputSetValue(fields.signInPassword_testRef, "$nick-secret")
         askMiranda(MirandaTestImposeNextGeneratedUserToken("$nick-fucking-token"))
-        submitFormSequence("$aid--6")
+        seq.submitForm("$aid--6")
     }
 
     private suspend fun bootCustomerWithTokenToOrderPage(nick: String, sessionNumber: Int, orderID: Long, aid: String) {
@@ -652,7 +635,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
         inputSetValue(fields.signInEmail_testRef, "dasja@test.shit.ua")
         inputSetValue(fields.signInPassword_testRef, "dasja-secret")
         askMiranda(MirandaTestImposeNextGeneratedUserToken("dasja-fucking-token"))
-        submitFormSequence(testShit, aid = "0132de44-85ca-41a5-b926-859e2bd07461")
+        seq.submitForm("0132de44-85ca-41a5-b926-859e2bd07461")
     }
 
     private suspend fun bootAdminWithTokenToDashboard(sessionNumber: Int, aid: String) {
@@ -673,10 +656,6 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
             fillRawStorageLocal = {})
         morda.coitizeAndBootAsserting(assertStatic = {assertScreenHTML(aid = "$aid--1")},
                                       assertDynamic = {assertScreenHTML(aid = "$aid--2")})
-    }
-
-    private suspend fun submitFormSequence(aid: String) {
-        submitFormSequence(testShit, aid = aid)
     }
 
     private suspend fun bootFreshWriter(nick: String, sessionNumber: Int, aid: String) {
@@ -704,7 +683,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 vanishSequence({kicClick(kics.delete_testRef, subscript = subscript)}, aid3)
             } else {
                 step({kicClick(kics.delete_testRef, subscript = subscript)}, TestGlobal.modalShownLock, aid1)
-                vanishSequence({submitFormSequence(testShit, useFormDoneLock = false, aid = aid2)}, aid3)
+                vanishSequence({seq.submitForm(useFormDoneLock = false, aid = aid2)}, aid3)
             }
         } finally {
             TestGlobal.deleteWithoutConfirmation = orig_deleteWithoutConfirmation
@@ -731,12 +710,12 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
     }
 
     private suspend fun testOrdering(ordering: Ordering, aid: String) {
-        twoStepSequence({selectSetValue(selects.ordering_testRef, ordering)}, aid)
+        seq.halfway_done({selectSetValue(selects.ordering_testRef, ordering)}, aid)
     }
 
     private suspend fun testSearch(query: String, aid: String) {
         inputSetValue(inputs.search_testRef, query)
-        twoStepSequence({inputPressEnter(inputs.search_testRef)}, aid)
+        seq.halfway_done({inputPressEnter(inputs.search_testRef)}, aid)
     }
 
     private suspend fun testShowMore(aid: String) {
@@ -821,40 +800,13 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
     }
 
     private suspend fun addFile(p: AddFileParams) {
-        buttonThenModal(buttons.plus_testRef, "emptyAddFileModal--d7249410-e04b-421b-90db-2e4b538fab90")
+        seq.button_modal(buttons.plus_testRef, "emptyAddFileModal--d7249410-e04b-421b-90db-2e4b538fab90")
         fileFieldChoose(p.fileName, "${p.aid}--1")
         inputSetValue(fields.fileTitle_testRef, p.title)
         inputSetValue(fields.fileDetails_testRef, p.details)
-        submitFormSequence(testShit, aid = "${p.aid}--2")
+        seq.submitForm("${p.aid}--2")
     }
 
-    private suspend fun ___stopHereAndEverywhereAfter(verticalPosition: VerticalPosition? = null, horizontalPosition: HorizontalPosition? = null) {
-        ___stopEverywhere()
-        describeState("Doing stopHereAndEverywhereLater()...", verticalPosition = verticalPosition, horizontalPosition = horizontalPosition)
-    }
-
-    private fun ___stopEverywhere() {
-        TestGlobal.skipAllFreakingAssertions = false
-        TestGlobal.forcedTestOpts = testOpts().copy(
-            stopOnAssertions = true,
-            dontStopOnCorrectAssertions = false
-        )
-        TestGlobal.describeStateConfig = DescribeStateConfig(showBanners = true, autoResumeAfterMs = null)
-    }
-
-    fun ___slowAssertionsEverywhereAfter() {
-        TestGlobal.forcedTestOpts = testOpts().copy(
-            sleepAfterEachAssertionMs = 2000
-        )
-    }
-
-    fun ___showStateDescriptions() {
-        TestGlobal.describeStateConfig = DescribeStateConfig(showBanners = true, autoResumeAfterMs = null)
-    }
-
-    fun ___showStateDescriptionsButAutoResume() {
-        TestGlobal.describeStateConfig = DescribeStateConfig(showBanners = true, autoResumeAfterMs = 5000)
-    }
 }
 
 

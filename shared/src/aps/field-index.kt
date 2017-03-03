@@ -47,64 +47,6 @@ object fields                                              : Fuckers<FieldSpec>(
     val uaDocumentCategory                                 by namedFucker {DocumentCategoryFieldSpec(it, t("TOTE", "Категория"))}; val uaDocumentCategory_testRef = TestRef(uaDocumentCategory)
 }
 
-abstract class FieldSpec : Fucker() {
-    abstract val name: String
-}
-
-data class TextFieldSpec(
-    override val name: String,
-    val title: String,
-    val type: TextFieldType,
-    val minLen: Int,
-    val maxLen: Int,
-    val minDigits: Int = -1,
-    val optionalHint: Boolean = false
-) : FieldSpec()
-
-enum class TextFieldType {
-    STRING, TEXTAREA, PASSWORD, PHONE, EMAIL
-}
-
-class CheckboxFieldSpec(
-    override val name: String,
-    val title: String,
-    val mandatoryYesError: String? = null
-) : FieldSpec()
-
-class SelectFieldSpec<T>(
-    override val name: String,
-    val title: String,
-    val values: Array<T>
-) : FieldSpec() where T : Enum<T>, T : Titled
-
-sealed class IntFieldType {
-    class Generic : IntFieldType()
-    class Money(val fractions: Boolean = false) : IntFieldType()
-    class Duration : IntFieldType()
-}
-
-class IntFieldSpec(
-    override val name: String,
-    val title: String,
-    val type: IntFieldType = IntFieldType.Generic(),
-    val min: Int,
-    val max: Int
-) : FieldSpec()
-
-data class FileFieldSpec(
-    override val name: String,
-    val title: String,
-    val allowedValueKinds: Set<FileFieldValueKind>
-) : FieldSpec()
-
-enum class FileFieldValueKind {
-    NONE, UNCHANGED, PROVIDED
-}
-
-class DocumentCategoryFieldSpec(
-    override val name: String,
-    val title: String
-) : FieldSpec()
 
 
 

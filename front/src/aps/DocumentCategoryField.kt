@@ -153,7 +153,7 @@ class Selena(initialValue: UADocumentCategoryRTO, val key: SelenaKey) : Control2
     }
 
     private fun onInputBlur(e: ReactEvent) {
-        dlog("onInputBlur")
+        // dlog("onInputBlur")
         currentFocusable?.setFocused(false)
     }
 

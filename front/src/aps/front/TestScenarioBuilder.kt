@@ -454,28 +454,8 @@ class PauseResumeStep(val lock: TestLock) : SequenceStep {
     }
 }
 
-suspend fun step(action: suspend () -> Unit, lock: TestLock, aid: String) {
-    sequence(action = action, steps = listOf(PauseAssertResumeStep(lock, aid)))
-}
-
 suspend fun seq(action: suspend () -> Unit, lock: TestLock, aid: String) {
     sequence(action = action, steps = listOf(PauseAssertResumeStep(lock, aid)))
-}
-
-suspend fun sequence(
-    action: suspend () -> Unit,
-    descr: String = "Describe me",
-    steps: List<SequenceStep>,
-    aopts: AssertScreenOpts? = null
-) {
-    steps.forEach {it.beforeAnySteps()}
-
-    action()
-
-    for ((i, step) in steps.withIndex()) {
-        val stepDescr = step.descr ?: "${i + 1}"
-        step.act("$descr [$stepDescr]", aopts)
-    }
 }
 
 fun TestScenarioBuilder.snapshot(snapshot: Snapshot) {
