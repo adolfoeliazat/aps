@@ -114,6 +114,17 @@ suspend fun seq.submitForm(
     )
 }
 
+suspend fun seq.submitForm_pageLoaded(aid: String) {
+    step(
+        action = {
+            submitForm(aid = aid,
+                       useFormDoneLock = false)
+        },
+        lock = TestGlobal.pageLoadedLock,
+        aid = "$aid--pageLoaded"
+    )
+}
+
 suspend fun seq.formSubmissionAttempts(
     aid: String,
     descr: String = "Describe me",
@@ -164,6 +175,15 @@ suspend fun seq.editButton_modal(aid: String) {
 
 suspend fun seq.acceptShit(aid: String) {
     seq.halfway_done({buttonClick(buttons.accept_testRef)}, aid)
+}
+
+suspend fun seq.acceptShit_errorModal(aid: String, errorStateDescr: String = "We are hosed") {
+    halfway_modal_closed(action = {buttonClick(buttons.accept_testRef)},
+                         modalAction = {
+                             describeState(errorStateDescr)
+                             tmodal.close()
+                         },
+                         aid = aid)
 }
 
 suspend fun seq.rejectShit(reason: String, aid: String) {

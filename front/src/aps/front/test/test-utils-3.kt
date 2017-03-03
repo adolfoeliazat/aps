@@ -50,25 +50,6 @@ class DescribeStateConfig(
     val autoResumeAfterMs: Int? = null
 )
 
-suspend fun describeState(descr: String, verticalPosition: VerticalPosition? = null, horizontalPosition: HorizontalPosition? = null) {
-    val cfg = TestGlobal.describeStateConfig
-    if (!cfg.showBanners) return
-
-    val ctx = ShowTestBannerContext()-{o->
-        o.verticalPosition = verticalPosition ?: VerticalPosition.BOTTOM
-        o.horizontalPosition = horizontalPosition ?: HorizontalPosition.RIGHT
-    }
-
-    val autoResumeAfterMs = cfg.autoResumeAfterMs
-    if (autoResumeAfterMs != null) {
-        async {
-            sleep(autoResumeAfterMs)
-            resumeTestBannerPause()
-        }
-    }
-
-    showTestBanner(ctx, title = descr, subtitle = "", kind = TestBannerKind.PAUSE)
-}
 
 suspend fun burgerKicClick(subscript: Any? = null, aid: String) {
     kicClick(kics.burger_testRef, subscript)

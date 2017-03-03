@@ -1,8 +1,14 @@
 package aps.front
 
+import aps.*
+
 suspend fun ___stopHereAndEverywhereAfter(verticalPosition: VerticalPosition? = null, horizontalPosition: HorizontalPosition? = null) {
     ___stopEverywhere()
     describeState("Doing stopHereAndEverywhereLater()...", verticalPosition = verticalPosition, horizontalPosition = horizontalPosition)
+}
+
+suspend fun ___stopHereAndEverywhereAfter_rightTop() {
+    ___stopHereAndEverywhereAfter(verticalPosition = VerticalPosition.TOP, horizontalPosition = HorizontalPosition.RIGHT)
 }
 
 fun ___stopEverywhere() {
@@ -27,3 +33,37 @@ fun ___showStateDescriptions() {
 fun ___showStateDescriptionsButAutoResume() {
     TestGlobal.describeStateConfig = DescribeStateConfig(showBanners = true, autoResumeAfterMs = 5000)
 }
+
+suspend fun describeState(descr: String, verticalPosition: VerticalPosition? = null, horizontalPosition: HorizontalPosition? = null) {
+    val cfg = TestGlobal.describeStateConfig
+    if (!cfg.showBanners) return
+
+    val ctx = ShowTestBannerContext()-{o->
+        o.verticalPosition = verticalPosition ?: VerticalPosition.BOTTOM
+        o.horizontalPosition = horizontalPosition ?: HorizontalPosition.RIGHT
+    }
+
+    val autoResumeAfterMs = cfg.autoResumeAfterMs
+    if (autoResumeAfterMs != null) {
+        async {
+            sleep(autoResumeAfterMs)
+            resumeTestBannerPause()
+        }
+    }
+
+    showTestBanner(ctx, title = descr, subtitle = "", kind = TestBannerKind.PAUSE)
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

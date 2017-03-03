@@ -33,8 +33,8 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
     }
 
     val filesShortcutMode1 = FilesShortcutMode.B
-    val startPoint = 1
-//    val startPoint = 9
+//    val startPoint = 1
+    val startPoint = 14
     init {
 //        TestGlobal.describeStateConfig = DescribeStateConfig(showBanners = true, autoResumeAfterMs = null)
 //        TestGlobal.describeStateConfig = DescribeStateConfig(showBanners = true, autoResumeAfterMs = 2000)
@@ -397,6 +397,9 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
         definePoint(9) {
             run { // Admin moves order to store
+                seq.acceptShit_errorModal(aid = "a192eb93-ed65-4ded-9c19-51c0f001cf4d",
+                                          errorStateDescr = "Store params should be entered first")
+
                 scrollBodyToBottomGradually()
                 seq.button_modal(buttons.editStoreParams_testRef, "f770dff2-b2df-4231-810b-7596b2c6ace2")
 
@@ -436,12 +439,11 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 )
 
                 seq.button_modal(buttons.editStoreParams_testRef, "f4cbc73f-330d-4be2-b69e-b0b39e3a15a5")
-//                ___stopEverywhere()
                 describeState("Changes are reflected in store params dialog")
                 inputSetValue(fields.minAllowedPriceOffer_testRef, "300")
-                seq.submitForm("600c87d9-fd23-468d-8d05-12b493d3e14c")
+                seq.submitForm_pageLoaded("600c87d9-fd23-468d-8d05-12b493d3e14c")
 
-//                ___stopHereAndEverywhereAfter(verticalPosition = VerticalPosition.TOP, horizontalPosition = HorizontalPosition.RIGHT)
+                scrollBodyToTopGradually()
                 seq.acceptShit("3196309c-b789-436c-89a4-27128aa59a46")
                 // TODO:vgrechka Email should be sent to customer
             }
@@ -505,7 +507,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 seq.halfway_modal_closed(action = {buttonClick(buttons.compare_testRef)},
                                          modalAction = {
                                              describeState("Phone was changed")
-                                             modalCloseWaiting()
+                                             tmodal.close()
                                          },
                                          aid = "af4df80e-761e-4e53-b217-0abfa783d26b")
                 seq.acceptShit("7f321945-ae54-419a-915d-368b216d09b5")
@@ -548,7 +550,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
         sleep(100)
         step({linkClick(links.compareBelow_testRef, subscript = subscript)}, TestGlobal.modalShownLock, "$aid--2")
         describeState(stateDescr)
-        modalCloseWaiting()
+        tmodal.closeWaiting()
     }
 
     suspend fun setProfileFields_submitForm(firstName: String? = null, lastName: String? = null, aboutMe: String? = null, adminNotes: String? = null, profilePhone: String? = null, aid: String) {

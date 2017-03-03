@@ -240,8 +240,14 @@ fun openInfoModal(msg: String, title: String? = null): ModalOperations {
     return modal
 }
 
-suspend fun modalCloseWaiting() {
-    bang(currentModalOperations).close()
+object tmodal {
+    fun close() {
+        async {bang(currentModalOperations).close()}
+    }
+
+    suspend fun closeWaiting() {
+        bang(currentModalOperations).close()
+    }
 }
 
 

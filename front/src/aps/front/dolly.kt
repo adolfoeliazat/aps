@@ -20,7 +20,7 @@ class DollyButton(
 )
 
 interface DollyInterface {
-    fun setBusy()
+    fun setBusy(b: Boolean)
 }
 
 fun sendingDollyButtonHandler(
@@ -29,14 +29,15 @@ fun sendingDollyButtonHandler(
 )
     : suspend (DollyInterface) -> Unit =
 {di->
-    di.setBusy()
+    di.setBusy(true)
     TestGlobal.shitHalfwayLock.resumeTestAndPauseSutFromSut()
 
     val res = sendRequest()
-    exhaustive / when (res) {
+    di.setBusy(false)
+    exhaustive/when (res) {
         is FormResponse2.Shitty -> {
-            console.error("SHITTY RESPONSE", res.error)
-            imf("Handle shitty response in lalala")
+            TestGlobal.shitDoneLock.resumeTestFromSut()
+            openErrorModal(res.error)
         }
         is FormResponse2.Hunky -> {
             onSuccess()
@@ -74,8 +75,8 @@ class Dolly(val p: DollyParams): ToReactElementable {
                         title = button.title, disabled = p.busy, level = button.level, className = "${p.styles.button} ${button.buttonClass}", key = button.key,
                         onClicka = {
                             button.onClick(object:DollyInterface {
-                                override fun setBusy() {
-                                    place.setContent(renderDolly(p.copy(busy = true)))
+                                override fun setBusy(b: Boolean) {
+                                    place.setContent(renderDolly(p.copy(busy = b)))
                                 }
                             })
                         }

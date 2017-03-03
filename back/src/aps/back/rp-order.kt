@@ -286,10 +286,17 @@ fun serveReginaCustomerSendOrderForApprovalAfterFixing(p: ReginaCustomerSendOrde
 fun serveReginaAdminSendOrderToStore(p: ReginaAdminSendOrderToStore): GenericResponse {
     check(requestUser.user.kind == UserKind.ADMIN){"0af9f1b0-b5fb-4fb2-b3a9-198a0185ee15"}
     // TODO:vgrechka Security
+
     val order = uaOrderRepo.findOrDie(p.orderID)
-    check(order.order.state in setOf(UAOrderState.WAITING_ADMIN_APPROVAL)){"7af262c7-2a28-43f8-910a-ccf3569142e9"}
-    order.order.whatShouldBeFixedByCustomer = null
-    order.order.state = UAOrderState.IN_STORE
+    val ord = order.order
+    check(ord.state in setOf(UAOrderState.WAITING_ADMIN_APPROVAL)){"7af262c7-2a28-43f8-910a-ccf3569142e9"}
+    if (-1 in setOf(ord.minAllowedDurationOffer, ord.maxAllowedDurationOffer,
+                    ord.minAllowedPriceOffer, ord.maxAllowedPriceOffer)) {
+        bitchExpectedly(t("TOTE", "Сперва заполни параметры для стора"))
+    }
+
+    ord.whatShouldBeFixedByCustomer = null
+    ord.state = UAOrderState.IN_STORE
     return GenericResponse()
 }
 
