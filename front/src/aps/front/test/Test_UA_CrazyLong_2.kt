@@ -33,8 +33,8 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
     }
 
     val filesShortcutMode1 = FilesShortcutMode.B
-//    val startPoint = 1
-    val startPoint = 14
+    val startPoint = 1
+//    val startPoint = 9 // 14
     init {
 //        TestGlobal.describeStateConfig = DescribeStateConfig(showBanners = true, autoResumeAfterMs = null)
 //        TestGlobal.describeStateConfig = DescribeStateConfig(showBanners = true, autoResumeAfterMs = 2000)
@@ -241,7 +241,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 step({kicClick(kics.edit_testRef, subscript = 27L)}, TestGlobal.modalShownLock, "422ae986-3f93-419c-8dd6-26ae8dedee19")
                 inputSetValue(fields.fileTitle_testRef, "Рапунцель -- девица-распиздунцель")
                 fileFieldChoose("fuck you.rtf", "aec4c792-dd9c-4a98-9279-4cd29453ee1d")
-                testShit.imposeNextRequestTimestamp()
+                testShit.imposeNextRequestTimestamp_killme()
                 step({buttonClick(buttons.primary_testRef)}, TestGlobal.modalHiddenLock, "5d4f5e63-95f7-4ec8-b5cd-7e767edd484c")
                 testDownloads("5a0fe187-166f-4db3-b249-b318d4818fa9", mapOf(27L to "fuck you.rtf"))
             }
@@ -786,7 +786,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
     class AddFileParams(val fileName: String, val title: String, val details: String, val aid: String)
 
     private suspend fun addFileBackendOnly(p: AddFileParams, orderID: Long) {
-        testShit.imposeNextRequestTimestamp()
+        testShit.imposeNextRequestTimestamp_killme()
         sendUACreateOrderFile(UAOrderFileParamsRequest(isAdmin = isAdmin(), isUpdate = false)-{o->
             o.orderID.value = orderID
             o.file.content = FileField.Content.Provided(run {

@@ -296,6 +296,7 @@ fun serveReginaAdminSendOrderToStore(p: ReginaAdminSendOrderToStore): GenericRes
     }
 
     ord.whatShouldBeFixedByCustomer = null
+    ord.movedToStoreAt = RequestGlobus.stamp
     ord.state = UAOrderState.IN_STORE
     return GenericResponse()
 }

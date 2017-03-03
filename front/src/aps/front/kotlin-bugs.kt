@@ -2,12 +2,10 @@
 
 package aps.front
 
-fun main(args: Array<String>) {
-    val a = object {
-        lateinit var b: String
-    }
-    console.log("a.b is", a.b)
-}
+import kotlin.reflect.KClass
+
+//fun main(args: Array<String>) {
+//}
 
 //fun qwe() {
 //    class X(val f: (() -> Unit)?)

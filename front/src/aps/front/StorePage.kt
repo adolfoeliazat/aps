@@ -53,18 +53,13 @@ class StorePage {
 fun renderStoreItem(order: UAOrderRTO): ToReactElementable {
     val m = MelindaTools
     return kdiv{o->
-        o- m.row {o->
-            if (order.state != UAOrderState.CUSTOMER_DRAFT) {
-                o- m.createdAtCol(3, order.createdAt)
-            }
-            o- m.col(3, t("TOTE", "Статус"), order.state.title, contentClassName = css.order.stateLabel(order.state))
-        }
         o- m.row{o->
-            o- m.col(3, fields.orderCustomerFirstName.title, order.customerFirstName)
-            if (order.customerLastName.isNotBlank()) {
-                o- m.col(3, fields.orderCustomerLastName.title, order.customerLastName)
+            o- m.col(3, t("TOTE", "Попал в стор")){o->
+                o- formatUnixTime(bang(order.movedToStoreAt))
             }
-            o- m.col(3, fields.orderCustomerPhone.title, order.customerPhone)
+            o- m.col(9, t("TOTE", "Категория")){o->
+                o- order.documentCategory.pathTitle
+            }
         }
 
         o- m.row{o->
@@ -73,6 +68,7 @@ fun renderStoreItem(order: UAOrderRTO): ToReactElementable {
             o- m.col(3, fields.numSources.title, order.numSources.toString())
         }
 
+        o- renderOrderStoreBoundaries(order)
         o- m.detailsRow(order.details, order.detailsHighlightRanges, title = fields.orderDetails.title)
         o- renderAdminNotesIfNeeded(order)
     }

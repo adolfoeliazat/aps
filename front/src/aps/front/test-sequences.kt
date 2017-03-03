@@ -98,7 +98,7 @@ suspend fun seq.submitForm(
     sequence(
         action = {async{
             if (imposeTimestamp) {
-                theShit.imposeNextRequestTimestamp()
+                theShit.imposeNextRequestTimestamp_killme()
             }
             val theAction = action ?: {
                 buttonClick(buttonKey ?: buttons.primary_testRef)

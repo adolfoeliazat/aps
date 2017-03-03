@@ -50,7 +50,7 @@ suspend fun send(req: UADownloadOrderFileRequest): FormResponse2<DownloadFileRes
 suspend fun send(req: UACustomerSendOrderDraftForApprovalRequest): FormResponse2<UACustomerSendOrderDraftForApprovalRequest.Response> = _send3(req)
 suspend fun send(req: UAAdminGetStuffToDoRequest): FormResponse2<UAAdminGetStuffToDoRequest.Response> = _send3(req)
 
-suspend fun askMiranda(params: MirandaParams): MirandaRequest.Response =
+suspend fun <Res : CommonResponseFields> askMiranda(params: MirandaParams<Res>): Res =
     callDangerousMatumba2(MirandaRequest()-{o->
         o.params.value = params
     })
@@ -86,7 +86,14 @@ private suspend fun <Req: RequestMatumba, Meat> _send3SofteningShit(req: Req, pr
     }
 }
 
+suspend fun imposeNextRequestTimestampIfInTest() {
+    if (isTest()) {
+        TestGlobal.currentTestShit.imposeNextRequestTimestamp()
+    }
+}
+
 private fun <Req: RequestMatumba, Meat> _send(token: String?, req: Req, procName: String? = null) = async<FormResponse2<Meat>> {
+    imposeNextRequestTimestampIfInTest()
     Globus.lastAttemptedRPCName = ctorName(req)
     val res: FormResponse = await(callMatumba(procName ?: remoteProcedureNameForRequest(req), req, token))
     when (res) {

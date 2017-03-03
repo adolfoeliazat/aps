@@ -177,15 +177,20 @@ fun renderOrderParams(order: UAOrderRTO, storeEditingParams: RenderOrderParamsSt
                 o- m.col(6, fields.uaDocumentCategory.title, order.documentCategory.pathTitle)
             }
 
-            o- m.row{o->
-                o- m.col(3, fields.minAllowedPriceOffer.title, renderMoney(order.minAllowedPriceOffer))
-                o- m.col(3, fields.maxAllowedPriceOffer.title, renderMoney(order.maxAllowedPriceOffer))
-                o- m.col(3, fields.minAllowedDurationOffer.title, renderDurationHours(order.minAllowedDurationOffer))
-                o- m.col(3, fields.maxAllowedDurationOffer.title, renderDurationHours(order.maxAllowedDurationOffer))
-            }
+            o- renderOrderStoreBoundaries(order)
         }
 
         o- kdiv(height = "3rem")
+    }
+}
+
+fun renderOrderStoreBoundaries(order: UAOrderRTO): ToReactElementable {
+    val m = MelindaTools
+    return m.row{o->
+        o- m.col(3, fields.minAllowedPriceOffer.title, renderMoney(order.minAllowedPriceOffer))
+        o- m.col(3, fields.maxAllowedPriceOffer.title, renderMoney(order.maxAllowedPriceOffer))
+        o- m.col(3, fields.minAllowedDurationOffer.title, renderDurationHours(order.minAllowedDurationOffer))
+        o- m.col(3, fields.maxAllowedDurationOffer.title, renderDurationHours(order.maxAllowedDurationOffer))
     }
 }
 

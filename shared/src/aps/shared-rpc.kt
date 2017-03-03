@@ -235,21 +235,23 @@ class UAOrderStoreParamsRequest : RequestMatumba() {
     val uaDocumentCategory = DocumentCategoryField(this, fields.uaDocumentCategory)
 }
 
-
-
-class MirandaRequest : RequestMatumba() {
-    val params = ObjectHiddenField<MirandaParams>(this, "params")
-    class Response : CommonResponseFieldsImpl()
-}
-
 annotation class NoArgCtor
 annotation class AllOpen
 annotation class Ser
 
+
+class MirandaRequest : RequestMatumba() {
+    val params = ObjectHiddenField<MirandaParams<*>>(this, "params")
+}
+
 // XXX `hack` param is necessary to actually generate no-arg constructor here
-@Ser sealed class MirandaParams(hack: Unit = Unit)
-@Ser class MirandaTestImposeNextGeneratedUserToken(val token: String) : MirandaParams()
-@Ser class MirandaTestImposeNextGeneratedPassword(val password: String) : MirandaParams()
+@Ser sealed class MirandaParams<Res: CommonResponseFields>(hack: Unit = Unit)
+@Ser class MirandaTestImposeNextGeneratedUserToken(val token: String) : MirandaParams<GenericResponse>()
+@Ser class MirandaTestImposeNextGeneratedPassword(val password: String) : MirandaParams<GenericResponse>()
+
+@Ser class MirandaGetGeneratedTestTimestamps : MirandaParams<MirandaGetGeneratedTestTimestamps.Response>() {
+    class Response(val list: List<String>) : CommonResponseFieldsImpl()
+}
 
 
 class ReginaRequest : RequestMatumba() {
@@ -273,7 +275,13 @@ class ReginaRequest : RequestMatumba() {
     class Response<out HistoryItemRTO : HistoryItemRTOFields>(
         val lastItem: HistoryItemRTO,
         val prelastItem: HistoryItemRTO?
-    ) : CommonResponseFieldsImpl()
+    )
+        : CommonResponseFieldsImpl()
+//    {
+//        fun selfSanityCheck(req: ReginaGetPairOfLastHistoryItems<*>) {
+//            check(res.type.isSubclassOf(p.type)){"ecc76402-0199-4115-be07-82694c6fe02d"}
+//        }
+//    }
 }
 
 @Ser class ReginaGetDocumentCategories : ReginaParams<ReginaGetDocumentCategories.Response>() {

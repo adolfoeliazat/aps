@@ -154,6 +154,7 @@ class FormMatumba<Req: RequestMatumba, Res>(val spec: FormSpec<Req, Res>) : ToRe
 
         TestGlobal.formTickingLock.resumeTestAndPauseSutFromSut()
 
+        imposeNextRequestTimestampIfInTest()
         val theProcedureName = spec.procedureName ?: remoteProcedureNameForRequest(req)
         val res: FormResponse = try {
             await(callMatumba(theProcedureName, spec.req, spec.ui.tokenMaybe, populateFields = spec.populateFields))

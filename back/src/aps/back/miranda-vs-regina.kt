@@ -3,17 +3,23 @@ package aps.back
 import aps.*
 import into.kommon.*
 import org.springframework.data.repository.findOrDie
+import kotlin.reflect.full.cast
+import kotlin.reflect.full.isSubclassOf
+import kotlin.reflect.full.safeCast
 
 @Servant class ServeMiranda : BitchyProcedure() {
     override fun serve() {
         fuckDangerously(FuckDangerouslyParams(
             bpc = bpc,
             makeRequest = {MirandaRequest()},
-            runShit = fun(ctx, req: MirandaRequest): MirandaRequest.Response {
+            runShit = fun(ctx, req: MirandaRequest): CommonResponseFields {
+                fun <Params : MirandaParams<Res>, Res> tie(p: Params, f: (Params) -> Res): Res = f(p)
+
                 val p = req.params.value
                 return when (p) {
-                    is MirandaTestImposeNextGeneratedUserToken -> serveMirandaTestImposeNextGeneratedUserToken(p)
-                    is MirandaTestImposeNextGeneratedPassword -> serveMirandaTestImposeNextGeneratedPassword(p)
+                    is MirandaTestImposeNextGeneratedUserToken -> tie(p, ::serveMirandaTestImposeNextGeneratedUserToken)
+                    is MirandaTestImposeNextGeneratedPassword -> tie(p, ::serveMirandaTestImposeNextGeneratedPassword)
+                    is MirandaGetGeneratedTestTimestamps -> tie(p, ::serveMirandaGetGeneratedTestTimestamps)
                 }
             }
         ))
@@ -34,7 +40,11 @@ import org.springframework.data.repository.findOrDie
                     is ReginaAdminSendOrderToStore -> tie(p, ::serveReginaAdminSendOrderToStore)
                     is ReginaLoadUser -> tie(p, ::serveReginaLoadUser)
                     is ReginaAcceptProfile -> tie(p, ::serveReginaAcceptProfile)
-                    is ReginaGetPairOfLastHistoryItems<*> -> serveReginaGetPairOfLastHistoryItems(p)
+                    is ReginaGetPairOfLastHistoryItems<*> -> {
+                        val res = serveReginaGetPairOfLastHistoryItems(p)
+//                        check(res.type.isSubclassOf(p.type)){"ecc76402-0199-4115-be07-82694c6fe02d"}
+                        res
+                    }
                     is ReginaGetDocumentCategories -> tie(p, ::serveReginaGetDocumentCategories)
                 }
             }
