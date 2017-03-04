@@ -18,6 +18,9 @@ val userParamsHistoryItemRepo get() = springctx.getBean(UserParamsHistoryItemRep
 val uaOrderRepo get() = springctx.getBean(UAOrderRepository::class.java)!!
 val uaOrderFileRepo get() = springctx.getBean(UAOrderFileRepository::class.java)!!
 val uaDocumentCategoryRepo get() = springctx.getBean(UADocumentCategoryRepository::class.java)!!
+val userTimesDocumentCategoryRepo get() = springctx.getBean(UserTimesDocumentCategoryRepository::class.java)!!
+val userParamsHistoryItemTimesDocumentCategoryRepo get() = springctx.getBean(UserParamsHistoryItemTimesDocumentCategoryRepository::class.java)!!
+
 
 private fun currentTimestampForEntity(): Timestamp {
     return when {
@@ -38,7 +41,7 @@ abstract class ClitoralEntity0 {
 
     @PreUpdate
     fun preFuckingUpdate() {
-        if (!RequestGlobus.shitIsDangerous) {
+        if (isRequestThread() && !RequestGlobus.shitIsDangerous) {
             if (this is User) {
                 saveUserParamsHistory(this)
             }
@@ -82,6 +85,25 @@ data class CommonFields(
     }
 }
 
+
+//============================== User ==============================
+
+
+@Entity @Table(name = "users",
+               indexes = arrayOf(Index(columnList = "user_email")))
+class User(
+    @Embedded var user: UserFields,
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user") var documentCategorySubscriptions: MutableList<UserTimesDocumentCategory> = mutableListOf()
+)
+    : MeganItem<UserRTO>, ClitoralEntity0()
+{
+    override val idBang get() = id!!
+
+    override fun toRTO(searchWords: List<String>): UserRTO {
+        return userLikeToRTO(idBang, user, documentCategorySubscriptions.map {it.category}, searchWords)
+    }
+}
+
 @Embeddable
 data class UserFields(
     @Embedded var common: CommonFields = CommonFields(),
@@ -96,49 +118,40 @@ data class UserFields(
     var profileUpdatedAt: Timestamp? = null,
     @Column(length = MAX_STRING) var aboutMe: String = "",
     @Column(length = MAX_STRING) var profileRejectionReason: String? = null,
-    @Column(length = MAX_STRING) var banReason: String? = null
+    @Column(length = MAX_STRING) var banReason: String? = null,
+    var subscribedToAllCategories: Boolean
 )
     : FieldsWithAdminNotes
 {
-    fun toRTO(id: Long, searchWords: List<String>): UserRTO {
-        val title = "$firstName $lastName"
-        return UserRTO(
-            id = id,
-            createdAt = common.createdAt.time,
-            updatedAt = common.updatedAt.time,
-            profileUpdatedAt = profileUpdatedAt?.time,
-            kind = kind,
-            lang = Language.UA,
-            email = email,
-            state = state,
-            profileRejectionReason = profileRejectionReason,
-            banReason = banReason,
-            adminNotes = adminNotes,
-            adminNotesHighlightRanges = highlightRanges(adminNotes, searchWords),
-            firstName = firstName,
-            lastName = lastName,
-            aboutMe = aboutMe,
-            aboutMeHighlightRanges = highlightRanges(aboutMe, searchWords),
-            roles = setOf(),
-            profilePhone = profilePhone,
-            editable = false,
-            title = title,
-            titleHighlightRanges = highlightRanges(title, searchWords)
-        )
-    }
 }
 
-
-@Entity @Table(name = "users",
-               indexes = arrayOf(Index(columnList = "user_email")))
-class User(@Embedded var user: UserFields)
-    : MeganItem<UserRTO>, ClitoralEntity0()
-{
-    override val idBang get() = id!!
-
-    override fun toRTO(searchWords: List<String>): UserRTO {
-        return user.toRTO(idBang, searchWords)
-    }
+fun userLikeToRTO(id: Long, uf: UserFields, documentCategories: List<UADocumentCategory>, searchWords: List<String>): UserRTO {
+    val title = "${uf.firstName} ${uf.lastName}"
+    return UserRTO(
+        id = id,
+        createdAt = uf.common.createdAt.time,
+        updatedAt = uf.common.updatedAt.time,
+        profileUpdatedAt = uf.profileUpdatedAt?.time,
+        kind = uf.kind,
+        lang = Language.UA,
+        email = uf.email,
+        state = uf.state,
+        profileRejectionReason = uf.profileRejectionReason,
+        banReason = uf.banReason,
+        adminNotes = uf.adminNotes,
+        adminNotesHighlightRanges = highlightRanges(uf.adminNotes, searchWords),
+        firstName = uf.firstName,
+        lastName = uf.lastName,
+        aboutMe = uf.aboutMe,
+        aboutMeHighlightRanges = highlightRanges(uf.aboutMe, searchWords),
+        roles = setOf(),
+        profilePhone = uf.profilePhone,
+        editable = false,
+        title = title,
+        titleHighlightRanges = highlightRanges(title, searchWords),
+        allDocumentCategories = uf.subscribedToAllCategories,
+        documentCategories = documentCategories.map {it.toRTO()}
+    )
 }
 
 interface UserRepository : CrudRepository<User, Long> {
@@ -146,22 +159,63 @@ interface UserRepository : CrudRepository<User, Long> {
     fun countByUser_KindAndUser_State(kind: UserKind, state: UserState): Long
 }
 
+
+//============================== UserDocumentCategorySubscription ==============================
+
+
+@Entity @Table(name = "users__times__document_categories",
+               indexes = arrayOf(Index(columnList = "user__id"),
+                                 Index(columnList = "category__id")))
+class UserTimesDocumentCategory(
+    @Embedded var common: CommonFields = CommonFields(),
+    @ManyToOne(fetch = FetchType.LAZY) var user: User,
+    @ManyToOne(fetch = FetchType.LAZY) var category: UADocumentCategory
+) : ClitoralEntity0()
+
+interface UserTimesDocumentCategoryRepository : CrudRepository<UserTimesDocumentCategory, Long> {
+}
+
+
+//============================== UserParamsHistoryItemTimesDocumentCategory ==============================
+
+
+@Entity @Table(name = "user_params_history_items__times__document_categories",
+               indexes = arrayOf(Index(columnList = "historyItem__id"),
+                                 Index(columnList = "category__id")))
+class UserParamsHistoryItemTimesDocumentCategory(
+    @Embedded var common: CommonFields = CommonFields(),
+    @ManyToOne(fetch = FetchType.LAZY) var historyItem: UserParamsHistoryItem,
+    @ManyToOne(fetch = FetchType.LAZY) var category: UADocumentCategory
+) : ClitoralEntity0()
+
+interface UserParamsHistoryItemTimesDocumentCategoryRepository : CrudRepository<UserParamsHistoryItemTimesDocumentCategory, Long> {
+}
+
+
+
+
+
+
+
+
 @Embeddable class HistoryFields(
     val entityID: Long,
     @Column(length = MAX_STRING) var descr: String,
     var createdAt: Timestamp = currentTimestampForEntity(),
-
-    @ManyToOne(fetch = FetchType.LAZY) // @JoinColumn(name = "historyItem_changerID", nullable = false)
-    var requester: User,
-
+    @ManyToOne(fetch = FetchType.LAZY) var requester: User,
     @Embedded var thenRequester: UserFields
 )
 
+
+//============================== UserParamsHistoryItem ==============================
+
+
 @Entity @Table(name = "user_params_history_items",
-               indexes = arrayOf())
+               indexes = arrayOf(Index(columnList = "history_requester__id")))
 class UserParamsHistoryItem(
     @Embedded var history: HistoryFields,
-    @Embedded var entity: UserFields
+    @Embedded var entity: UserFields,
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "historyItem") var documentCategorySubscriptions: MutableList<UserParamsHistoryItemTimesDocumentCategory>
 )
     : ClitoralEntity0(), MeganItem<UserParamsHistoryItemRTO>
 {
@@ -174,12 +228,14 @@ class UserParamsHistoryItem(
         val changer = history.requester
         return UserParamsHistoryItemRTO(
             descr = history.descr,
-            entity = entity.toRTO(entityID, searchWords),
+            entity = userLikeToRTO(entityID, entity, documentCategorySubscriptions.map {it.category}, searchWords),
 
             // HistoryItemRTOFields
             createdAt = history.createdAt.time,
             requester = changer.toRTO(searchWords = listOf()),
-            thenRequester = history.thenRequester.toRTO(changer.id!!, searchWords = listOf()),
+            thenRequester = userLikeToRTO(changer.id!!, history.thenRequester,
+                                          documentCategories = listOf(), // TODO:vgrechka Need "then document categories" of "then requester"?
+                                          searchWords = listOf()),
 
             // MelindaItemRTO
             id = idBang,
@@ -189,6 +245,7 @@ class UserParamsHistoryItem(
         )
     }
 }
+
 
 interface UserParamsHistoryItemRepository : CrudRepository<UserParamsHistoryItem, Long> {
     fun findTop2ByHistory_EntityIDOrderByIdDesc(x: Long): List<UserParamsHistoryItem>
@@ -201,7 +258,7 @@ fun saveUserToRepo(entity: User): User {
 }
 
 fun saveUserParamsHistory(entity: User, descr: String = "Updated shit") {
-    userParamsHistoryItemRepo.save(
+    val historyItem = userParamsHistoryItemRepo.save(
         UserParamsHistoryItem(
             history = HistoryFields(
                 entityID = entity.idBang,
@@ -209,9 +266,19 @@ fun saveUserParamsHistory(entity: User, descr: String = "Updated shit") {
                 requester = RequestGlobus.requesterOrAnonymous,
                 thenRequester = RequestGlobus.requesterOrAnonymousInitialFields
             ),
-            entity = entity.user.copy()
+            entity = entity.user.copy(),
+            documentCategorySubscriptions = mutableListOf()
         )
     )
+
+    for (entityCategorySubscription in entity.documentCategorySubscriptions) {
+        historyItem.documentCategorySubscriptions.add(
+            userParamsHistoryItemTimesDocumentCategoryRepo.save(
+                UserParamsHistoryItemTimesDocumentCategory(
+                    historyItem = historyItem,
+                    category = entityCategorySubscription.category
+                )))
+    }
 }
 
 interface FieldsWithAdminNotes {
@@ -244,7 +311,9 @@ data class UAOrderFields(
 ) : FieldsWithAdminNotes
 
 @Entity @Table(name = "ua_orders",
-               indexes = arrayOf(Index(columnList = "order_confirmationSecret")))
+               indexes = arrayOf(Index(columnList = "order_confirmationSecret"),
+                                 Index(columnList = "order_category__id"),
+                                 Index(columnList = "order_customer__id")))
 class UAOrder(@Embedded var order: UAOrderFields)
     : ClitoralEntity0(), MeganItem<UAOrderRTO>
 {
@@ -289,12 +358,11 @@ interface UAOrderRepository : CrudRepository<UAOrder, Long> {
 }
 
 @Entity @Table(name = "user_tokens",
-               indexes = arrayOf(Index(columnList = "token")))
+               indexes = arrayOf(Index(columnList = "user__id"),
+                                 Index(columnList = "token")))
 class UserToken(
     @Column(length = MAX_STRING) var token: String,
-
-    @ManyToOne(fetch = FetchType.LAZY) // @JoinColumn(name = "userID", nullable = false)
-    var user: User?
+    @ManyToOne(fetch = FetchType.LAZY) var user: User?
 ) : ClitoralEntity()
 
 interface UserTokenRepository : CrudRepository<UserToken, Long> {
@@ -315,17 +383,14 @@ data class UAOrderFileFields(
     @Suppress("ArrayInDataClass") @Column(length = MAX_BLOB) var content: ByteArray,
     @Enumerated(EnumType.STRING) var forCustomerSeenAsFrom: UserKind,
     @Enumerated(EnumType.STRING) var forWriterSeenAsFrom: UserKind,
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    var creator: User,
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    var order: UAOrder
+    @ManyToOne(fetch = FetchType.LAZY) var creator: User,
+    @ManyToOne(fetch = FetchType.LAZY) var order: UAOrder
 ) : FieldsWithAdminNotes
 
 
 @Entity @Table(name = "ua_order_files",
-               indexes = arrayOf())
+               indexes = arrayOf(Index(columnList = "orderfile_creator__id"),
+                                 Index(columnList = "orderfile_order__id")))
 class UAOrderFile(@Embedded var orderFile: UAOrderFileFields)
     : ClitoralEntity0(), MeganItem<UAOrderFileRTO>
 {
@@ -390,9 +455,12 @@ private fun highlightRanges(text: String, searchWords: List<String>): List<IntRa
 }
 
 
+//============================== UADocumentCategory ==============================
+
+// TODO:vgrechka Ditch UADocumentCategoryFields?
 
 @Entity @Table(name = "ua_document_categories",
-               indexes = arrayOf())
+               indexes = arrayOf(Index(columnList = "category_parent__id")))
 class UADocumentCategory(@Embedded var category: UADocumentCategoryFields)
     : ClitoralEntity0()
 {

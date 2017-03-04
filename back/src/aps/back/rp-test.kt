@@ -133,7 +133,7 @@ testProcedure(
     }
 
     fun seed() {
-        userRepo.save(User(user = UserFields(email = "dasja@test.shit.ua", firstName = "Дася", lastName = "Админовна", profilePhone = "911", kind = UserKind.ADMIN, state = UserState.COOL, passwordHash = BCrypt.hashpw("dasja-secret", BCrypt.gensalt()), adminNotes = "")))
+        userRepo.save(User(user = UserFields(email = "dasja@test.shit.ua", firstName = "Дася", lastName = "Админовна", profilePhone = "911", kind = UserKind.ADMIN, state = UserState.COOL, passwordHash = BCrypt.hashpw("dasja-secret", BCrypt.gensalt()), adminNotes = "", subscribedToAllCategories = false)))
 
         fun makeCategory(title: String, children: List<UADocumentCategory> = listOf()) = UADocumentCategory(UADocumentCategoryFields(title = title, parent = null, children = children.toMutableList()))
 

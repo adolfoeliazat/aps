@@ -156,7 +156,7 @@ fun renderOrderParams(order: UAOrderRTO, storeEditingParams: RenderOrderParamsSt
                             title = t("TOTE", "Стор"),
                             formSpec = FormSpec<UAOrderStoreParamsRequest, GenericResponse>(
                                 procedureName = "UAUpdateOrderStoreParams",
-                                req = UAOrderStoreParamsRequest()-{o->
+                                req = UAOrderStoreParamsRequest().populateCheckingCompleteness{o->
                                     o.orderID.value = order.id
                                     o.uaDocumentCategory.setValue(order.documentCategory)
                                     order.minAllowedPriceOffer.let {if (it != -1) o.minAllowedPriceOffer.setValue(it)}

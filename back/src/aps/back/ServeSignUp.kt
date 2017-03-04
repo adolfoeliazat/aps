@@ -19,6 +19,10 @@ import into.kommon.*
             bpc = bpc, makeRequest = {SignUpRequest()},
             runShit = fun(ctx, req: SignUpRequest): SignUpRequest.Response {
                 val password = generatePassword()
+                val kind = when (ctx.clientKind) {
+                    ClientKind.UA_CUSTOMER -> UserKind.CUSTOMER
+                    ClientKind.UA_WRITER -> UserKind.WRITER
+                }
                 val user = saveUserToRepo(User(
                     user = UserFields(
                         firstName = req.firstName.value,
@@ -26,15 +30,17 @@ import into.kommon.*
                         lastName = req.lastName.value,
                         passwordHash = hashPassword(password),
                         profilePhone = "",
-                        kind = when (ctx.clientKind) {
-                            ClientKind.UA_CUSTOMER -> UserKind.CUSTOMER
-                            ClientKind.UA_WRITER -> UserKind.WRITER
-                        },
+                        kind = kind,
                         state = when (ctx.clientKind) {
                             ClientKind.UA_CUSTOMER -> imf("477250b3-8fde-4881-8794-888d76674fef")
                             ClientKind.UA_WRITER -> UserState.PROFILE_PENDING
                         },
-                        adminNotes = ""
+                        adminNotes = "",
+                        subscribedToAllCategories = when (kind) {
+                            UserKind.CUSTOMER -> false // Dummy
+                            UserKind.WRITER -> true
+                            UserKind.ADMIN -> wtf("c876fcc0-5c37-4ef4-bb11-3c8da75e616c")
+                        }
                     )
                 ))
 

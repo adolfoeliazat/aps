@@ -402,7 +402,9 @@ class Selena(initialValue: UADocumentCategoryRTO, val key: SelenaKey) : Control2
     private var selena by notNullOnce<Selena>()
 
     fun setValue(value: UADocumentCategoryRTO) {
+        check(include){"Attempt to write front DocumentCategoryField $name, which is not included    85452dad-ad55-4d63-b7ae-3811ddcc276a"}
         selena = Selena(initialValue = value, key = FieldSpecToCtrlKey[spec])
+        Globus.populatedFields += this
     }
 
     override fun render() =

@@ -59,6 +59,15 @@ class DocumentCategoryFieldSpec(
     val title: String
 ) : FieldSpec()
 
+class DocumentCategorySetFieldSpec(
+    override val name: String,
+    val title: String
+) : FieldSpec()
+
+sealed class DocumentCategorySetFieldValue {
+    class All : DocumentCategorySetFieldValue()
+    class Specific(val categories: List<UADocumentCategoryRTO>) : DocumentCategorySetFieldValue()
+}
 
 
 object IntFieldUtils {

@@ -11,33 +11,42 @@ Import Gradle dependencies
 PostgreSQL
 ==========
 
-imdisk -a -t vm -s 100M -m r:
+Stuff
 
-Click "Format"
+    imdisk -a -t vm -s 100M -m r:
 
-cd /d E:\work\aps\back\bin\dev\win
-title pg-test & pg-test-start.cmd
-    | It will output following shit, which is OK: FATAL:  role "Vladimir" does not exist
-    | In the end it should say, "server started"
+    Click "Format"
 
-%pg_home%\bin\psql.exe -h 127.0.0.1 -p 5433 postgres postgres
-create database "aps-test" encoding 'UTF8';
-\l
-\q
+    cd /d E:\work\aps\back\bin\dev\win
+    title pg-test & pg-test-start.cmd
+        | It will output following shit, which is OK: FATAL:  role "Vladimir" does not exist
+        | In the end it should say, "server started"
 
-cd /d E:\work\aps\back\bin\dev\win
-title pg-dev & pg-dev-start.cmd
-    | It will output following shit, which is OK: FATAL:  role "Vladimir" does not exist
-    | In the end it should say, "server started"
 
-// cd /d e:\work\aps
-// ant java -Dclass=aps.back.GenerateJOOQKt
+    cd /d E:\work\aps\back\bin\dev\win
+    title pg-dev & pg-dev-start.cmd
+        | It will output following shit, which is OK: FATAL:  role "Vladimir" does not exist
+        | In the end it should say, "server started"
 
-cd /d e:\work\aps
-(Don't forget to compile code before this, as schema.sql should end up in resources)
-_run aps.back.GenerateJOOQKt
+    // cd /d e:\work\aps
+    // ant java -Dclass=aps.back.GenerateJOOQKt
 
-ant java -Dclass=aps.back.Fiddle -Dhow=RecreateSchema_bmix_fuckingAround_apsdevua
+    cd /d e:\work\aps
+    (Don't forget to compile code before this, as schema.sql should end up in resources)
+    _run aps.back.GenerateJOOQKt
+
+    ant java -Dclass=aps.back.Fiddle -Dhow=RecreateSchema_bmix_fuckingAround_apsdevua
+
+PSQL to aps-test
+    psql -h 127.0.0.1 -p 5433 -U postgres -w aps-test
+
+Create test database
+    %pg_home%\bin\psql.exe -h 127.0.0.1 -p 5433 postgres postgres
+    create database "aps-test" encoding 'UTF8';
+    \l
+
+Drop all shit
+    drop schema public cascade;
 
 JavaScript
 ==========

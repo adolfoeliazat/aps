@@ -419,10 +419,10 @@ fun enhanceDB() {
         em.close()
     }
 
-    userRepo.save(User(UserFields(CommonFields(), firstName = "Anonymous", lastName = "Customer", email = "No fucking email", passwordHash = "No fucking password", profilePhone = "No fucking phone", kind = UserKind.CUSTOMER, state = UserState.COOL, adminNotes = ""))-{o->
+    userRepo.save(User(UserFields(CommonFields(), firstName = "Anonymous", lastName = "Customer", email = "No fucking email", passwordHash = "No fucking password", profilePhone = "No fucking phone", kind = UserKind.CUSTOMER, state = UserState.COOL, adminNotes = "", subscribedToAllCategories = false))-{o->
         o.id = const.userID.anonymousCustomer
     })
-    userRepo.save(User(UserFields(CommonFields(), firstName = "Anonymous", lastName = "Writer", email = "No fucking email", passwordHash = "No fucking password", profilePhone = "No fucking phone", kind = UserKind.WRITER, state = UserState.COOL, adminNotes = ""))-{o->
+    userRepo.save(User(UserFields(CommonFields(), firstName = "Anonymous", lastName = "Writer", email = "No fucking email", passwordHash = "No fucking password", profilePhone = "No fucking phone", kind = UserKind.WRITER, state = UserState.COOL, adminNotes = "", subscribedToAllCategories = false))-{o->
         o.id = const.userID.anonymousWriter
     })
 }

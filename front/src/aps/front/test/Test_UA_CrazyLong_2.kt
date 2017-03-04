@@ -33,8 +33,8 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
     }
 
     val filesShortcutMode1 = FilesShortcutMode.B
-    val startPoint = 1
-//    val startPoint = 12 // 9 // 14
+//    val startPoint = 1
+    val startPoint = 10 // 14 // 9 // 12
     init {
 //        TestGlobal.describeStateConfig = DescribeStateConfig(showBanners = true, autoResumeAfterMs = null)
 //        TestGlobal.describeStateConfig = DescribeStateConfig(showBanners = true, autoResumeAfterMs = 2000)
@@ -458,6 +458,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
             }
 
             run { // Kafka fills profile
+                ___stopHereAndEverywhereAfter()
                 inputSetValue(fields.profilePhone_testRef, "+38 (099) 432-54-55")
                 inputSetValue(fields.aboutMe_testRef, "О себе? Вы че, охренели там? Я Кафка. Кафка я, ебаный Франц, бля! Уроды...")
                 seq.submitForm("0747ffeb-2906-4a94-8e45-8d24d92b9abf")
@@ -537,6 +538,8 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
         definePoint (14) {
             bootWriterWithToken("gogol", sessionIndex.gogol2, makeURL(pages.uaWriter.store, listOf()), aid = "8ce00463-19a8-4239-a113-7cd1d2255189")
+            ___stopEverywhere()
+            describeState("Quickly adding a bunch of orders to store...")
         }
     }
 

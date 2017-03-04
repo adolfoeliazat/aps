@@ -45,6 +45,7 @@ object fields                                              : Fuckers<FieldSpec>(
     val maxAllowedDurationOffer                            by namedFucker {IntFieldSpec(it, t("TOTE", "Верхний предел срока"), type = IntFieldType.Duration(), min = 1 * 24, max = 365 * 24)}; val maxAllowedDurationOffer_testRef = TestRef(maxAllowedDurationOffer)
 
     val uaDocumentCategory                                 by namedFucker {DocumentCategoryFieldSpec(it, t("TOTE", "Категория"))}; val uaDocumentCategory_testRef = TestRef(uaDocumentCategory)
+    val categorySubscriptions                              by namedFucker {DocumentCategorySetFieldSpec(it, t("TOTE", "Меня интересуют категории"))}; val categorySubscriptions_testRef = TestRef(categorySubscriptions)
 }
 
 

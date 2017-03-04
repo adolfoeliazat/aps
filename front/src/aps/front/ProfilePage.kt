@@ -45,6 +45,11 @@ class ProfilePage {
                             o.firstName.value = user().firstName
                             o.lastName.value = user().lastName
                             o.profilePhone.value = user().profilePhone
+                            o.categorySubscriptions.setValue(
+                                when {
+                                    user().allDocumentCategories -> DocumentCategorySetFieldValue.All()
+                                    else -> DocumentCategorySetFieldValue.Specific(user().documentCategories)
+                                })
                             o.aboutMe.value = user().aboutMe
                         },
                         primaryButtonTitle = t("TOTE", "Отправить на проверку"),

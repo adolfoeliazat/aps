@@ -36,7 +36,9 @@ class UserRTO(
     val aboutMe: String,
     val aboutMeHighlightRanges: List<IntRangeRTO>,
     val roles: Set<UserRole>,
-    override var editable: Boolean
+    override var editable: Boolean,
+    val allDocumentCategories: Boolean,
+    val documentCategories: List<UADocumentCategoryRTO>
 ) : RTOWithAdminNotes, MelindaItemRTO, TabithaEntityRTO
 
 class UAOrderRTO(

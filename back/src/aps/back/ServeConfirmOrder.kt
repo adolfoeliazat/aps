@@ -38,7 +38,8 @@ import java.util.*
                                 profilePhone = order.order.customerPhone,
                                 kind = UserKind.CUSTOMER,
                                 state = UserState.COOL,
-                                adminNotes = ""
+                                adminNotes = "",
+                                subscribedToAllCategories = false // Dummy
                             )
                         ))
                         orderRepo.save(order-{o->
