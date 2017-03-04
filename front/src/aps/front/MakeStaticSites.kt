@@ -9,9 +9,9 @@
 package aps.front
 
 import aps.*
-import aps.const.text.symbols.mdash
+import aps.const.text.symbols.emdash
 import aps.const.text.symbols.nbsp
-import aps.const.text.symbols.ndash
+import aps.const.text.symbols.endash
 import into.kommon.*
 import kotlin.js.json
 
@@ -327,10 +327,10 @@ object MakeStaticSites {
                 ua = "Please note that each AcademicPaperServed customer is eligible for one-time and life-time discounts. One-time discount is granted to each new customer registered in our system and makes 5% off the first order total. Lifetime discount is provided to each returning customer depending on the total number of pages (on multiple papers) ordered since the moment of registration, and namely:")
 
             o- locBullets(listOf(
-                LS(en="More than 50 pages${mdash}5%", ua="Более 50 страниц ${ndash} 5%"),
-                LS(en="More than 100 pages${mdash}10%", ua="Более 100 страниц ${ndash} 10%"),
-                LS(en="More than 150 pages${mdash}15%", ua="Более 150 страниц ${ndash} 15%"),
-                LS(en="More than 200 pages${mdash}30%", ua="Более 200 страниц ${ndash} 30%")))
+                LS(en="More than 50 pages${emdash}5%", ua="Более 50 страниц ${endash} 5%"),
+                LS(en="More than 100 pages${emdash}10%", ua="Более 100 страниц ${endash} 10%"),
+                LS(en="More than 150 pages${emdash}15%", ua="Более 150 страниц ${endash} 15%"),
+                LS(en="More than 200 pages${emdash}30%", ua="Более 200 страниц ${endash} 30%")))
 
             o- markdownPiece(
                 en = "We’re sure that at AcademicPaperServed we employ a fair discount policy. We respect each certain customer and hope to establish long-term cooperation with him/her. Since customers are our most valued asset, we put a lot of effort to retaining and satisfying them through our flexible lifetime discount policy.",
@@ -771,10 +771,10 @@ object MakeStaticSites {
                 en = "Please note that each AcademicPaperServed customer is eligible for one-time and life-time discounts. One-time discount is granted to each new customer registered in our system and makes 5% off the first order total. Lifetime discount is provided to each returning customer depending on the total number of pages (on multiple papers) ordered since the moment of registration, and namely:",
                 ua = "Please note that each AcademicPaperServed customer is eligible for one-time and life-time discounts. One-time discount is granted to each new customer registered in our system and makes 5% off the first order total. Lifetime discount is provided to each returning customer depending on the total number of pages (on multiple papers) ordered since the moment of registration, and namely:")
             o- locBullets(listOf(
-                LS(en="More than 50 pages${mdash}5%", ua="Более 50 страниц ${ndash} 5%"),
-                LS(en="More than 100 pages${mdash}10%", ua="Более 100 страниц ${ndash} 10%"),
-                LS(en="More than 150 pages${mdash}15%", ua="Более 150 страниц ${ndash} 15%"),
-                LS(en="More than 200 pages${mdash}30%", ua="Более 200 страниц ${ndash} 30%")))
+                LS(en="More than 50 pages${emdash}5%", ua="Более 50 страниц ${endash} 5%"),
+                LS(en="More than 100 pages${emdash}10%", ua="Более 100 страниц ${endash} 10%"),
+                LS(en="More than 150 pages${emdash}15%", ua="Более 150 страниц ${endash} 15%"),
+                LS(en="More than 200 pages${emdash}30%", ua="Более 200 страниц ${endash} 30%")))
             o- markdownPiece(
                 en = "We’re sure that at AcademicPaperServed we employ a fair discount policy. We respect each certain customer and hope to establish long-term cooperation with him/her. Since customers are our most valued asset, we put a lot of effort to retaining and satisfying them through our flexible lifetime discount policy.",
                 ua = "We’re sure that at AcademicPaperServed we employ a fair discount policy. We respect each certain customer and hope to establish long-term cooperation with him/her. Since customers are our most valued asset, we put a lot of effort to retaining and satisfying them through our flexible lifetime discount policy.")
@@ -1247,7 +1247,7 @@ object MakeStaticSites {
     }
 
     fun markdownPiece(content: String): ToReactElementable {
-        return markdown(dedent(content.replace("{{mdash}}", mdash)))
+        return markdown(dedent(content.replace("{{mdash}}", emdash)))
     }
 
 

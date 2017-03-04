@@ -638,7 +638,7 @@ object css {
 
     val jokeDollyButton by Style("opacity: 0.5; margin-right: ${3*8}px;")
 
-    object DocumentCategoryField : Group(null) {
+    object selena : Group(null) {
         val focusBack = BLUE_GRAY_50
         val hoverBack = GRAY_300
         val lightTextFore = GRAY_600
@@ -659,6 +659,9 @@ object css {
         val showMoreFocused by Style(style = "color: $lightTextFore; background-color: $focusBack; cursor: pointer; font-style: italic; text-decoration: underline;",
                                      hover = "background-color: $focusBack;")
         val nothing by Style("color: $lightTextFore; font-style: italic; margin-top: 1rem;")
+
+        val pickedItemActionIcon by Style(style = "color: $GRAY_300; cursor: pointer;",
+                                          hover = "color: $GRAY_500;")
     }
 
     init {touchObjectGraph(this)}

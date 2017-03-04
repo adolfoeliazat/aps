@@ -81,7 +81,7 @@ open class ElementBuilder(val tag: String, val attrs: Attrs, var style: Style, b
 
     override fun toReactElement(): ReactElement = control.toReactElement()
 
-    open fun wrapChild(index: Int, child: ToReactElementable): ToReactElementable = child
+    open fun wrapChild(child: ToReactElementable, index: Int, count: Int): ToReactElementable = child
 
     val control:Control2 by lazy {
         object : Control2(attrs) {
@@ -99,15 +99,16 @@ open class ElementBuilder(val tag: String, val attrs: Attrs, var style: Style, b
                 attrs.dataToggle?.let {jsAttrs["data-toggle"] = it}
                 attrs.dataID?.let {jsAttrs["data-id"] = it}
 
+                val childrenToMap = children
+                    .map {it.toReactElement()}
+                    .filterNotNull()
                 return React.createElement(
                     tag,
                     jsAttrs,
                     // TODO:vgrechka This looks shitty
-                    *children
-                        .map{it.toReactElement()}
-                        .filterNotNull()
+                    *childrenToMap
                         .mapIndexed {index, child ->
-                            wrapChild(index, ToReactElementable.from(child))
+                            wrapChild(ToReactElementable.from(child), index, count = childrenToMap.size)
                         }
                         .map{it.toReactElement()}
                         .filterNotNull()
@@ -154,6 +155,7 @@ data class Style(
     var fontStyle: String? = null,
     var display: String? = null,
     var flexGrow: Any? = null,
+    var flexWrap: Any? = null,
     var justifyContent: String? = null,
     var whiteSpace: String? = null,
     var cursor: String? = null,
@@ -211,6 +213,7 @@ data class Style(
             fontStyle?.let {o.fontStyle = it}
             display?.let {o.display = it}
             flexGrow?.let {o.flexGrow = it}
+            flexWrap?.let {o.flexWrap = it}
             justifyContent?.let {o.justifyContent = it}
             whiteSpace?.let {o.whiteSpace = it}
             cursor?.let {o.cursor = it}
@@ -755,25 +758,32 @@ fun ReactElement.toToReactElementable(): ToReactElementable {
 fun spancTitle(title: String): ReactElement =
     Shitus.spancTitle(json("title" to title))
 
-@GenerateSignatureMixes
-fun hor(spacing: Int, @Mix attrs: Attrs, @Mix style: Style, cellStyle: (Int) -> Style = {Style()}, block: ((ElementBuilder) -> Unit)? = null) =
+enum class HorGapSide { LEFT, RIGHT }
+
+fun hor(spacing: Int, attrs: Attrs = Attrs(), style: Style = Style(), cellStyle: (Int) -> Style = {Style()}, gapSide: HorGapSide = HorGapSide.LEFT, block: ((ElementBuilder) -> Unit)? = null) =
     object:ElementBuilder("div", attrs, style.copy(display="flex"), block) {
-        override fun wrapChild(index: Int, child: ToReactElementable) =
-            kdiv(cellStyle(index).copy(marginLeft = if (index > 0) spacing else 0)){o->
+        override fun wrapChild(child: ToReactElementable, index: Int, count: Int) =
+            kdiv(cellStyle(index).copy(
+                marginLeft = when (gapSide) {
+                    HorGapSide.LEFT -> if (index > 0) spacing else 0
+                    HorGapSide.RIGHT -> 0
+                },
+                marginRight = when (gapSide) {
+                    HorGapSide.LEFT -> 0
+                    HorGapSide.RIGHT -> if (index < count - 1) spacing else 0
+            })){o->
                 o- child
             }
     }
 
-@GenerateSignatureMixes
-fun hor1(@Mix attrs: Attrs, @Mix style: Style, cellStyle: (Int) -> Style = {Style()}, block: ((ElementBuilder) -> Unit)? = null) =
-    hor(fconst.hor1Width, attrs, style.copy(display="flex"), cellStyle, block)
+fun hor1(attrs: Attrs = Attrs(), style: Style = Style(), cellStyle: (Int) -> Style = {Style()}, block: ((ElementBuilder) -> Unit)? = null) =
+    hor(spacing = fconst.hor1Width, attrs = attrs, style = style.copy(display="flex"), cellStyle = cellStyle, block = block)
 
-@GenerateSignatureMixes
-fun hor2(@Mix attrs: Attrs = Attrs(), @Mix style: Style = Style(), cellStyle: (Int) -> Style = {Style()}, block: ((ElementBuilder) -> Unit)? = null) =
-    hor(fconst.hor2Width, attrs, style.copy(display="flex"), cellStyle, block)
+fun hor2(attrs: Attrs = Attrs(), style: Style = Style(), cellStyle: (Int) -> Style = {Style()}, block: ((ElementBuilder) -> Unit)? = null) =
+    hor(spacing = fconst.hor2Width, attrs = attrs, style = style.copy(display="flex"), cellStyle = cellStyle, block = block)
 
-fun hor3(attrs: Attrs = Attrs(), style: Style = Style(), cellStyle: (Int) -> Style = {Style()}, block: ((ElementBuilder) -> Unit)? = null) =
-    hor(fconst.hor3Width, attrs, style.copy(display="flex"), cellStyle, block)
+fun hor3(attrs: Attrs = Attrs(), style: Style = Style(), cellStyle: (Int) -> Style = {Style()}, gapSide: HorGapSide = HorGapSide.LEFT, block: ((ElementBuilder) -> Unit)? = null) =
+    hor(spacing = fconst.hor3Width, attrs = attrs, style = style.copy(display="flex"), cellStyle = cellStyle, gapSide = gapSide, block = block)
 
 fun pageHeader0(title: String, className: String = "") =
     kdiv(className="page-header $className", marginTop=0, marginBottom=15){o->

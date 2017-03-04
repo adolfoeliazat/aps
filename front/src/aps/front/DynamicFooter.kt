@@ -18,7 +18,7 @@ class DynamicFooter(val world: World) : Control2(Attrs()) {
     }}
 
     override fun render(): ToReactElementable {
-        return hor2(position = "absolute", right = 0, top = 0, fontSize = "12px", marginTop = 5, marginRight = 5){o->
+        return hor2(style = Style(position = "absolute", right = 0, top = 0, fontSize = "12px", marginTop = 5, marginRight = 5)){o->
             o- versions
             o- burger
         }

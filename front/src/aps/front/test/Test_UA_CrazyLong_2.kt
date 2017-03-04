@@ -404,28 +404,17 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 seq.button_modal(buttons.editStoreParams_testRef, "f770dff2-b2df-4231-810b-7596b2c6ace2")
 
                 run { // Choose document category
-                    val aid = "13359364-450b-4f47-b2fb-b0a4d1993a8a"
-                    var aidx = 1
-                    fun nextAID() = "$aid--${aidx++}"
-                    val assert: suspend () -> Unit = {assertScreenHTML(aid = nextAID())}
-                    val jerkKey: suspend (keyCode: Int, times: Int) -> Unit = {keyCode, times ->
-                        for (i in 1..times) {
-                            selenaSendSpecialKey(fields.uaDocumentCategory_testRef, keyCode)
-                            sleep(50)
-                            assert()
-                        }
-                    }
-
-                    seq.halfway_done({buttonClick(buttons.chooseDocumentCategory_testRef)}, nextAID())
-                    selenaSetInputValue(fields.uaDocumentCategory_testRef, "пр"); assert()
-                    selenaSetInputValue(fields.uaDocumentCategory_testRef, "пр0"); assert()
-                    selenaSetInputValue(fields.uaDocumentCategory_testRef, "при"); assert()
-                    selenaSetInputValue(fields.uaDocumentCategory_testRef, "пр"); assert()
-                    jerkKey(fconst.keyCode.down, 10)
-                    step({selenaSendSpecialKey(fields.uaDocumentCategory_testRef, fconst.keyCode.enter)}, TestGlobal.animationDoneLock, nextAID())
-                    selenaSetInputValue(fields.uaDocumentCategory_testRef, "про"); assert()
-                    jerkKey(fconst.keyCode.up, 4)
-                    selenaSendSpecialKey(fields.uaDocumentCategory_testRef, fconst.keyCode.enter)
+                    val st = SelenaTester.new(aid = "13359364-450b-4f47-b2fb-b0a4d1993a8a", field = fields.uaDocumentCategory_testRef)
+                    st.ellipsisButton()
+                    st.searchValue("пр")
+                    st.searchValue("пр0")
+                    st.searchValue("при")
+                    st.searchValue("пр")
+                    st.specialKey(fconst.keyCode.down, times = 10)
+                    st.specialKeyThenAnimation(fconst.keyCode.enter)
+                    st.searchValue("про")
+                    st.specialKey(fconst.keyCode.up, times = 4)
+                    st.specialKey(fconst.keyCode.enter)
                 }
 
                 seq.formSubmissionAttempts_pageLoaded(
@@ -458,7 +447,26 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
             }
 
             run { // Kafka fills profile
+                seq.halfway_done({tcheckbox.setValue(checkboxes.allCategories_testRef, false)}, aid = "4aa6761e-be38-43dc-b8fb-02703a7a8ab4")
+                val st = SelenaTester.new(aid = "2ae43628-de08-48bf-a584-2999fd66417c", field = fields.writerDocumentCategories_testRef)
+                st.searchValue("ж")
+                st.specialKey(fconst.keyCode.down, times = 10)
+                st.specialKeyThenAnimation(fconst.keyCode.enter)
+                st.specialKey(fconst.keyCode.up, times = 4)
+                st.specialKey(fconst.keyCode.down, times = 4)
+                st.specialKey(fconst.keyCode.enter)
+                st.specialKey(fconst.keyCode.down, times = 7)
+                st.specialKey(fconst.keyCode.enter)
+                st.searchValue("прог")
+                st.specialKey(fconst.keyCode.down, times = 1)
+                st.specialKey(fconst.keyCode.enter)
+                st.searchValue("пс")
+                st.specialKey(fconst.keyCode.down, times = 2)
+                st.specialKey(fconst.keyCode.enter)
+                st.specialKey(fconst.keyCode.up, times = 1)
+                st.specialKey(fconst.keyCode.enter)
                 ___stopHereAndEverywhereAfter()
+
                 inputSetValue(fields.profilePhone_testRef, "+38 (099) 432-54-55")
                 inputSetValue(fields.aboutMe_testRef, "О себе? Вы че, охренели там? Я Кафка. Кафка я, ебаный Франц, бля! Уроды...")
                 seq.submitForm("0747ffeb-2906-4a94-8e45-8d24d92b9abf")
@@ -590,7 +598,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
         inputSetValue(fields.signUpFirstName_testRef, firstName)
         inputSetValue(fields.signUpLastName_testRef, lastName)
         inputSetValue(fields.signUpEmail_testRef, "$nick@test.shit.ua")
-        checkboxSetValue(fields.agreeTerms_testRef, true)
+        tcheckbox.setValue(fields.agreeTerms_testRef, true)
         askMiranda(MirandaImposeNextGeneratedPassword("$nick-secret"))
         debugMailboxClear()
         seq.submitForm("$aid--4")

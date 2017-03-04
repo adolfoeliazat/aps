@@ -338,7 +338,7 @@ fun TestScenarioBuilder.endWorkRegion() {
 
         var pane by notNull<String>()
         pane = old_debugPanes.put(kdiv(className = css.test.popup.pause){o->
-            o- hor1(marginBottom = "0.5rem"){o->
+            o- hor1(style = Style(marginBottom = "0.5rem")){o->
                 o- Button(icon = fa.bomb, onClick = {
                     old_debugPanes.remove(pane)
                     signal.reject(Exception("Fucking killed"))

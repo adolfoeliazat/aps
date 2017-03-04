@@ -15,8 +15,8 @@ object const {
             val rightDoubleAngleQuotationSpaced = " » "
             val nl2 = "\n\n"
             val nbsp: String = "" + 0xa0.toChar()
-            val mdash = "—"
-            val ndash = "–"
+            val emdash = "—"
+            val endash = "–"
             val threeQuotes = "\"\"\""
             val times = "×"
         }

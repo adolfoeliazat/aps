@@ -8,36 +8,29 @@ import org.w3c.dom.events.KeyboardEvent
 import kotlin.js.Json
 import kotlin.properties.Delegates.notNull
 
-class SelenaKey(override val fqn: String) : Fucker(), FQNed
+class SelenaPickerKey(override val fqn: String) : Fucker(), FQNed
 
-class Selena(initialValue: UADocumentCategoryRTO, val key: SelenaKey) : Control2() {
-    private var value = initialValue
-    private val place = Placeholder()
+class SelenaPicker(val key: SelenaPickerKey, val selectCategory: (UADocumentCategoryRTO) -> Unit) {
+    // TODO:vgrechka If shit is pasted into search box without keyboard, search is not updated
+
     private var rootCategory: UADocumentCategoryRTO? = null
-    private var input by notNull<Input>()
+    var input by notNull<Input>()
     private var selectorPlace by notNull<Placeholder>()
     private var treeControl by notNull<ToReactElementable>()
     private val focusables = mutableListOf<Focusable>()
     private var currentFocusable: Focusable? = null
-    private val itemContainerID = puid()
     private var prevInputValueSeenInKeyUpHandler: String? = null
-
-    init {
-        enterViewMode()
-    }
+    private val itemContainerID = puid()
+    private var treeMode = true
 
     companion object {
-        val instances = mutableMapOf<SelenaKey, Selena>()
+        val instances = mutableMapOf<SelenaPickerKey, SelenaPicker>()
 
-        fun instance(key: SelenaKey): Selena {
+        fun instance(key: SelenaPickerKey): SelenaPicker {
             return instances[key] ?: bitch("No Selena keyed `${key.fqn}`")
         }
-
-        fun instance(field: TestRef<DocumentCategoryFieldSpec>): Selena {
-            return instance(FieldSpecToCtrlKey[field.it])
-        }
-
     }
+
 
     abstract class Focusable : Control2() {
         abstract fun select()
@@ -50,28 +43,86 @@ class Selena(initialValue: UADocumentCategoryRTO, val key: SelenaKey) : Control2
         }
     }
 
-    fun getValue() = value
+    suspend fun fuck1(place: Placeholder) {
+        val rootCategory = this.rootCategory
+        if (rootCategory == null) {
+            place.setContent(renderTicker())
+            TestGlobal.shitHalfwayLock.resumeTestAndPauseSutFromSut()
+            await(async {
+                val res = askRegina(ReginaGetDocumentCategories())
+                when (res) {
+                    is FormResponse2.Shitty -> imf("71191b6a-a183-4203-bee9-e90e43441e8a")
+                    is FormResponse2.Hunky -> {
+                        this.rootCategory = res.meat.root
+                        fuck1(place)
+                    }
+                }
+            })
+            TestGlobal.shitDoneLock.resumeTestFromSut()
+        } else {
+            treeControl = makeTreeControl()
+            selectorPlace = Placeholder(treeControl)
 
-    suspend fun testSetInputValue(s: String) {
-        prevInputValueSeenInKeyUpHandler = s
-        input.testSetValue(s)
-        syncTreeWithInput()
+            place.setContent(object:Control2() {
+                override fun render(): ToReactElementable {
+                    return kdiv{o->
+                        input = Input(autoFocus = true,
+                                      tabIndex = 0, // Needed for autoFocus to have effect
+                                      onKeyDown = this@SelenaPicker::onInputKeyDown,
+                                      onKeyUp = this@SelenaPicker::onInputKeyUp,
+                                      onFocus = this@SelenaPicker::onInputFocus,
+                                      onBlur = this@SelenaPicker::onInputBlur)
+                        o- input
+                        o- selectorPlace
+                    }
+                }
+
+                override fun componentDidMount() {
+                    instances[key] = this@SelenaPicker
+                }
+
+                override fun componentWillUnmount() {
+                    instances.remove(key)
+                }
+            })
+        }
     }
 
-    suspend fun testSendSpecialKey(keyCode: Int) {
-        onInputKeyDown(fakeKeyboardEvent(keyCode = keyCode))
+    private fun makeTreeControl(): ToReactElementable {
+        return shit{o->
+            for (cat in bang(rootCategory).children) {
+                o- makeTreeItemControl(cat)
+            }
+        }
     }
 
-    override fun render(): ToReactElementable {
-        return place
+    private fun onInputKeyUp(e: KeyboardEvent) {
+        if (input.value != prevInputValueSeenInKeyUpHandler) {
+            prevInputValueSeenInKeyUpHandler = input.value
+            if (e.keyCode !in setOf(38, 40, 13)) {
+                syncTreeWithInput()
+            }
+        }
     }
 
-    override fun componentDidMount() {
-        instances[key] = this
+    private fun onInputFocus(e: ReactEvent) {
+        currentFocusable?.setFocused(true)
     }
 
-    override fun componentWillUnmount() {
-        instances.remove(key)
+    private fun onInputBlur(e: ReactEvent) {
+        // dlog("onInputBlur")
+        currentFocusable?.setFocused(false)
+    }
+
+    fun syncTreeWithInput() {
+        val pattern = input.value.trim().toLowerCase()
+        // dlog("pattern = [$pattern]")
+        treeMode = pattern.isBlank()
+        if (treeMode) {
+            selectorPlace.setContent(treeControl)
+        } else {
+            selectorPlace.setContent(makeListControl(pattern))
+        }
     }
 
     private fun onInputKeyDown(e: KeyboardEvent) {
@@ -107,7 +158,7 @@ class Selena(initialValue: UADocumentCategoryRTO, val key: SelenaKey) : Control2
                                        initialItemIfNothingFocused: () -> Focusable,
                                        computeNewIndex: (index: Int) -> Int) {
         preventAndStop(e)
-        if (!focusables.isNotEmpty()) return
+        if (treeMode || focusables.isEmpty()) return
 
         currentFocusable?.setFocused(false)
 
@@ -136,76 +187,6 @@ class Selena(initialValue: UADocumentCategoryRTO, val key: SelenaKey) : Control2
                 container.scrollTop = elOffsetTop.toDouble() - containerOffsetHeight + elOffsetHeight
             else if (dy < 0)
                 container.scrollTop = bang(byid0(el.elementID)).offsetTop.toDouble()
-        }
-    }
-
-    private fun onInputKeyUp(e: KeyboardEvent) {
-        if (input.value != prevInputValueSeenInKeyUpHandler) {
-            prevInputValueSeenInKeyUpHandler = input.value
-            if (e.keyCode !in setOf(38, 40, 13)) {
-                syncTreeWithInput()
-            }
-        }
-    }
-
-    private fun onInputFocus(e: ReactEvent) {
-        currentFocusable?.setFocused(true)
-    }
-
-    private fun onInputBlur(e: ReactEvent) {
-        // dlog("onInputBlur")
-        currentFocusable?.setFocused(false)
-    }
-
-    private fun syncTreeWithInput() {
-        val pattern = input.value.trim().toLowerCase()
-        // dlog("pattern = [$pattern]")
-        if (pattern.isBlank()) {
-            selectorPlace.setContent(treeControl)
-        } else {
-            selectorPlace.setContent(makeListControl(pattern))
-        }
-    }
-
-    private fun enterViewMode() {
-        place.setContent(hor2(style = Style(alignItems = "center")){o->
-            o- value.pathTitle
-            o- Button(icon = fa.ellipsisH, key = buttons.chooseDocumentCategory) {
-                enterEditMode()
-            }
-        })
-    }
-
-    private suspend fun enterEditMode() {
-        val rootCategory = this.rootCategory
-        if (rootCategory == null) {
-            place.setContent(renderTicker())
-            TestGlobal.shitHalfwayLock.resumeTestAndPauseSutFromSut()
-            await(async {
-                val res = askRegina(ReginaGetDocumentCategories())
-                when (res) {
-                    is FormResponse2.Shitty -> imf("71191b6a-a183-4203-bee9-e90e43441e8a")
-                    is FormResponse2.Hunky -> {
-                        this.rootCategory = res.meat.root
-                        enterEditMode()
-                    }
-                }
-            })
-            TestGlobal.shitDoneLock.resumeTestFromSut()
-        } else {
-            treeControl = makeTreeControl()
-            selectorPlace = Placeholder(treeControl)
-
-            place.setContent(kdiv{o->
-                input = Input(autoFocus = true,
-                              tabIndex = 0, // Needed for autoFocus to have effect
-                              onKeyDown = this::onInputKeyDown,
-                              onKeyUp = this::onInputKeyUp,
-                              onFocus = this::onInputFocus,
-                              onBlur = this::onInputBlur)
-                o- input
-                o- selectorPlace
-            })
         }
     }
 
@@ -240,8 +221,8 @@ class Selena(initialValue: UADocumentCategoryRTO, val key: SelenaKey) : Control2
                                 title = highlightedShit(cat.pathTitle, ranges, tag = "span"),
                                 underline = false,
                                 className = when {
-                                    selected -> css.DocumentCategoryField.itemFocused
-                                    else -> css.DocumentCategoryField.item
+                                    selected -> css.selena.itemFocused
+                                    else -> css.selena.item
                                 })
                         }
                     }
@@ -258,7 +239,7 @@ class Selena(initialValue: UADocumentCategoryRTO, val key: SelenaKey) : Control2
         currentFocusable = null
 
         if (filteredItems.isEmpty())
-            return div(t("Fucking nothing", "Нихера не найдено"), className = css.DocumentCategoryField.nothing)
+            return div(t("Fucking nothing", "Нихера не найдено"), className = css.selena.nothing)
 
         val chunkSize = 9
         fun renderChunk(from: Int): ToReactElementable {
@@ -296,8 +277,8 @@ class Selena(initialValue: UADocumentCategoryRTO, val key: SelenaKey) : Control2
                                 Attrs(
                                     id = elementID,
                                     className = when {
-                                        selected -> css.DocumentCategoryField.showMoreFocused
-                                        else -> css.DocumentCategoryField.showMore
+                                        selected -> css.selena.showMoreFocused
+                                        else -> css.selena.showMore
                                     },
                                     onClick = {
                                         select()
@@ -319,41 +300,8 @@ class Selena(initialValue: UADocumentCategoryRTO, val key: SelenaKey) : Control2
         }
     }
 
-    private fun makeTreeControl(): ToReactElementable {
-        return shit{o->
-            for (cat in bang(this@Selena.rootCategory).children) {
-                o- this@Selena.makeTreeItemControl(cat)
-            }
-        }
-    }
-
     private fun shit(build: (ElementBuilder) -> Unit): ToReactElementable {
-        return kdiv(id = itemContainerID, className = css.DocumentCategoryField.itemContainer) {build(it)}
-    }
-
-    private fun renderItemTitle(cat: UADocumentCategoryRTO, title: String, underline: Boolean): ElementBuilder {
-        return renderItemTitle(cat, span(title), underline, css.DocumentCategoryField.item)
-    }
-
-    private fun renderItemTitle(cat: UADocumentCategoryRTO, title: ToReactElementable, underline: Boolean, className: String, id: String? = null): ElementBuilder {
-        return kdiv(
-            Attrs(id = id,
-                  className = className,
-                  onClick = {
-                      selectCategory(cat)
-                  }),
-            style = when {
-                underline -> Style(borderBottom = "1px solid ${Color.GRAY_500}")
-                else -> Style()
-            }
-        ){o->
-            o- title
-        }
-    }
-
-    private fun selectCategory(cat: UADocumentCategoryRTO) {
-        value = cat
-        enterViewMode()
+        return kdiv(id = itemContainerID, className = css.selena.itemContainer) {build(it)}
     }
 
     private fun makeTreeItemControl(cat: UADocumentCategoryRTO): ToReactElementable {
@@ -392,6 +340,83 @@ class Selena(initialValue: UADocumentCategoryRTO, val key: SelenaKey) : Control2
             }
         }
     }
+
+    private fun renderItemTitle(cat: UADocumentCategoryRTO, title: String, underline: Boolean): ElementBuilder {
+        return renderItemTitle(cat, span(title), underline, css.selena.item)
+    }
+
+    private fun renderItemTitle(cat: UADocumentCategoryRTO, title: ToReactElementable, underline: Boolean, className: String, id: String? = null): ElementBuilder {
+        return kdiv(
+            Attrs(id = id,
+                  className = className,
+                  onClick = {
+                      selectCategory(cat)
+                  }),
+            style = when {
+                underline -> Style(borderBottom = "1px solid ${Color.GRAY_500}")
+                else -> Style()
+            }
+        ){o->
+            o- title
+        }
+    }
+
+    suspend fun testSetInputValue(s: String) {
+        prevInputValueSeenInKeyUpHandler = s
+        input.testSetValue(s)
+        syncTreeWithInput()
+    }
+
+    fun testSendSpecialKey(keyCode: Int) {
+        onInputKeyDown(fakeKeyboardEvent(keyCode = keyCode))
+    }
+
+}
+
+class Selena(initialValue: UADocumentCategoryRTO, pickerKey: SelenaPickerKey) : Control2() {
+    private var value = initialValue
+    private val place = Placeholder()
+    private val picker = SelenaPicker(pickerKey, this::selectCategory)
+
+    init {
+        enterViewMode()
+    }
+
+    fun getValue() = value
+
+    suspend fun testSetInputValue(s: String) {
+        picker.testSetInputValue(s)
+    }
+
+    suspend fun testSendSpecialKey(keyCode: Int) {
+        picker.testSendSpecialKey(keyCode)
+    }
+
+    override fun render(): ToReactElementable {
+        return place
+    }
+
+
+    private fun enterViewMode() {
+        place.setContent(hor2(style = Style(alignItems = "center")){o->
+            o- value.pathTitle
+            o- Button(icon = fa.ellipsisH, key = buttons.chooseDocumentCategory) {
+                enterEditMode()
+            }
+        })
+    }
+
+    private suspend fun enterEditMode() {
+        picker.fuck1(place)
+    }
+
+
+
+    private fun selectCategory(cat: UADocumentCategoryRTO) {
+        value = cat
+        enterViewMode()
+    }
+
 }
 
 @Front class DocumentCategoryField(container: RequestMatumba, val spec: DocumentCategoryFieldSpec): FormFieldFront(container, spec.name) {
@@ -403,7 +428,7 @@ class Selena(initialValue: UADocumentCategoryRTO, val key: SelenaKey) : Control2
 
     fun setValue(value: UADocumentCategoryRTO) {
         check(include){"Attempt to write front DocumentCategoryField $name, which is not included    85452dad-ad55-4d63-b7ae-3811ddcc276a"}
-        selena = Selena(initialValue = value, key = FieldSpecToCtrlKey[spec])
+        selena = Selena(initialValue = value, pickerKey = FieldSpecToCtrlKey[spec])
         Globus.populatedFields += this
     }
 
@@ -418,14 +443,45 @@ class Selena(initialValue: UADocumentCategoryRTO, val key: SelenaKey) : Control2
     }
 }
 
-suspend fun selenaSetInputValue(field: TestRef<DocumentCategoryFieldSpec>, value: String) {
-    Selena.instance(field).testSetInputValue(value)
-}
+class SelenaTester private constructor (val pickerKey: SelenaPickerKey, val aid: String) {
+    var aidx = 1
 
-suspend fun selenaSendSpecialKey(field: TestRef<DocumentCategoryFieldSpec>, keyCode: Int) {
-    Selena.instance(field).testSendSpecialKey(keyCode)
-}
+    companion object {
+        fun new(field: TestRef<DocumentCategoryFieldSpec>, aid: String) = SelenaTester(FieldSpecToCtrlKey[field.it], aid)
+        fun new(field: TestRef<DocumentCategorySetFieldSpec>, aid: String) = SelenaTester(FieldSpecToCtrlKey[field.it], aid)
+    }
 
+    fun nextAID() = "$aid--${aidx++}"
+
+    suspend fun assert() {
+        assertScreenHTML(aid = nextAID())
+    }
+
+    suspend fun ellipsisButton() {
+        seq.halfway_done({buttonClick(buttons.chooseDocumentCategory_testRef)}, nextAID())
+    }
+
+    suspend fun searchValue(x: String) {
+        SelenaPicker.instance(pickerKey).testSetInputValue(x)
+        assert()
+    }
+
+    suspend fun specialKey(keyCode: Int, times: Int = 1) {
+        for (i in 1..times) {
+            sendSpecialKey(keyCode)
+            sleep(50)
+            assert()
+        }
+    }
+
+    suspend fun specialKeyThenAnimation(keyCode: Int) {
+        step({sendSpecialKey(keyCode)}, TestGlobal.animationDoneLock, nextAID())
+    }
+
+    private suspend fun sendSpecialKey(keyCode: Int) {
+        SelenaPicker.instance(pickerKey).testSendSpecialKey(keyCode)
+    }
+}
 
 
 

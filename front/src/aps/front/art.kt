@@ -13,7 +13,7 @@ import aps.Color.*
 import aps.*
 import aps.WorldPointRequest.Action.RESTORE
 import aps.WorldPointRequest.Action.SAVE
-import aps.const.text.symbols.mdash
+import aps.const.text.symbols.emdash
 import aps.front.testutils.*
 import into.kommon.*
 import jquery.jq
@@ -343,7 +343,7 @@ object art {
 
         val stack = null
         assertionErrorPane.set(json(
-            "message" to (message ?: "No fucking message") + mdash + hrss.currentTestScenario!!.name,
+            "message" to (message ?: "No fucking message") + emdash + hrss.currentTestScenario!!.name,
             "stack" to stack,
             "detailsUI" to kdiv(backgroundColor = WHITE){it-detailsUI}.toReactElement(),
             "scrollThere" to true))
@@ -364,7 +364,7 @@ object art {
                         o+ (1..indent).map {kdiv(width=20, borderLeft="2px dotted ${Color.GRAY_500}")}
                         o- lineContent
                         o- kdiv(className="showOnParentHovered"){o->
-                            o- hor2(marginLeft=8, paddingLeft=8, borderLeft="2px solid ${Color.GRAY_500}"){o->
+                            o- hor2(style = Style(marginLeft=8, paddingLeft=8, borderLeft="2px solid ${Color.GRAY_500}")){o->
                                 o+ actions
                                 o- renderStackLink(instr.definitionStackCapture)
 //                                o- renderExpandableOnDemandStack(instr)

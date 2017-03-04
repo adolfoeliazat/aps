@@ -5,6 +5,7 @@
       <w>acta</w>
       <w>actiona</w>
       <w>addon</w>
+      <w>aidx</w>
       <w>algo</w>
       <w>allkeys</w>
       <w>allopen</w>
@@ -70,8 +71,10 @@
       <w>ebaf</w>
       <w>elementable</w>
       <w>elid</w>
+      <w>emdash</w>
       <w>emoji</w>
       <w>emojis</w>
+      <w>endash</w>
       <w>entera</w>
       <w>eonasdan</w>
       <w>eprintln</w>
@@ -203,6 +206,7 @@
       <w>successa</w>
       <w>taba</w>
       <w>tamy</w>
+      <w>tcheckbox</w>
       <w>testconst</w>
       <w>testdata</w>
       <w>testdb</w>

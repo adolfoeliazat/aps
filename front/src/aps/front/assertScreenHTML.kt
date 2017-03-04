@@ -341,7 +341,7 @@ suspend fun assertScreenHTML(p: AssertScreenHTMLParams) {
                                 o- kdiv(className = mycss.title){o->
                                     o- "Visual Diff"
                                 }
-                                o- hor1(baseStyle = Style(justifyContent = "flex-end")){o->
+                                o- hor1(style = Style(justifyContent = "flex-end")){o->
                                     for (m in listOf(diffMode, hardenedMode, currentMode)) {
                                         o- m.renderButton()
                                     }
@@ -439,7 +439,7 @@ suspend fun showTestBanner(ctx: ShowTestBannerContext, title: String, subtitle: 
             HorizontalPosition.RIGHT -> style.right = 0
         }
         kdiv(className = className, baseStyle = style){o->
-            o- hor1(marginBottom = "0.5rem"){o->
+            o- hor1(style = Style(marginBottom = "0.5rem")){o->
                 o- Button(key = buttons.assertionBanner.play, icon = fa.play, style = ctx.bannerButtonStyle, onClick = {
                     assertionBannerPause.resolve()
                 })

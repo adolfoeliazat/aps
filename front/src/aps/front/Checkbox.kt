@@ -159,13 +159,14 @@ fun jsFacing_Checkbox(def: dynamic, key: CheckboxKey? = null): dynamic {
         })
 }
 
+object tcheckbox {
+    suspend fun setValue(field: TestRef<CheckboxFieldSpec>, value: Boolean) {
+        Checkbox.instance(FieldSpecToCtrlKey[field.it]).testSetValue(value)
+    }
 
-suspend fun checkboxSetValue(field: TestRef<CheckboxFieldSpec>, value: Boolean) {
-    checkboxSetValue(FieldSpecToCtrlKey[field.it], value)
-}
-
-suspend fun checkboxSetValue(key: CheckboxKey, value: Boolean) {
-    Checkbox.instance(key).testSetValue(value)
+    suspend fun setValue(key: TestRef<CheckboxKey>, value: Boolean) {
+        Checkbox.instance(key.it).testSetValue(value)
+    }
 }
 
 

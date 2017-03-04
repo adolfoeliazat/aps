@@ -17,17 +17,51 @@ import kotlin.properties.Delegates.notNull
         key = checkboxes.allCategories,
         titleControl = hor3{o->
             o- t("TOTE", "В любых, я умный шописец")
-            o- span(t("TOTE", "(Будет приходить куча спама, по всем заказам)"), Style(fontStyle = "italic"))
+            o- span(t("TOTE", "(Будет приходить куча спама ${const.text.symbols.emdash} по всем заказам)"), Style(fontStyle = "italic"))
         },
         onChange = {
             fuck()
         })
 
+    private val picker = SelenaPicker(FieldSpecToCtrlKey[spec], this::selectCategory)
+    private val pickerPlace by lazy {
+        Placeholder().also {async{picker.fuck1(it)}}
+    }
+
+    private val pickedCats = mutableListOf<UADocumentCategoryRTO>()
+    private val pickedCatsControl = Control2.from {me->
+        kdiv(marginTop = if (pickedCats.isNotEmpty()) "1rem" else null, marginBottom = "1rem"){o->
+            o- hor3(style = Style(flexWrap = "wrap"), gapSide = HorGapSide.RIGHT){o->
+                for (cat in pickedCats) {
+                    o- kdiv{o->
+                        o- hor1{o->
+                            o- cat.pathTitle
+                            o- kic(className = "${fa.trash} ${css.selena.pickedItemActionIcon}") {
+                                pickedCats -= cat
+                                me.update()
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun selectCategory(cat: UADocumentCategoryRTO) {
+        if (cat !in pickedCats) {
+            pickedCats += cat
+            pickedCatsControl.update()
+        }
+    }
+
     private fun fuck() {
         fuckingPlace.setContent(
             when {
                 allCheck.getValue() -> NOTRE
-                else -> span("pizda")
+                else -> kdiv{o->
+                    o- pickedCatsControl
+                    o- pickerPlace
+                }
             })
     }
 
@@ -53,5 +87,6 @@ import kotlin.properties.Delegates.notNull
 //        json[name] = selena.getValue().id.toString()
     }
 }
+
 
 

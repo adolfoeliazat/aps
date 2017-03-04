@@ -17,7 +17,7 @@ fun dumpShames() {
 fun dumpControls() {
     for (key in Input.instances.keys) clog("Input: ${key.fqn}")
     for (key in Button.instances.keys) clog("Button: ${key.fqn}")
-    for (key in Checkbox.instances.keys) clog("Checkbox: $key")
+    for (key in Checkbox.instances.keys) clog("Checkbox: ${key.fqn}")
     for (key in DateTimePicker.instances.keys) clog("DateTimePicker: $key")
     for (key in FileField.instances.keys) clog("FileField: ${key.name}")
     for (key in Select.instances.keys) clog("Select: ${key.fqn}")
