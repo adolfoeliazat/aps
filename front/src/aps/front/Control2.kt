@@ -183,7 +183,7 @@ abstract class Control2(val attrs: Attrs = Attrs()) : ToReactElementable, WithEl
                     } else {
                         TestGlobal.shameToControl[it] = json(
                             "testSetValue" to {x: dynamic -> asu {
-                                testSetValue(x)
+//                                testSetValue(x)
                             }},
                             "testGetValue" to {
                                 testGetValue()
@@ -242,7 +242,7 @@ abstract class Control2(val attrs: Attrs = Attrs()) : ToReactElementable, WithEl
         json() // Attributes
     )
 
-    open suspend fun testSetValue(x: dynamic) {die("Control $debugDisplayName doesn't support testSetValue")}
+//    open suspend fun testSetValue(x: dynamic) {die("Control $debugDisplayName doesn't support testSetValue")}
     open fun testGetValue(): Any? {die("Control $debugDisplayName doesn't support testGetValue")}
 
     open fun testClick(): Promisoid<Unit> {

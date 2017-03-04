@@ -12,16 +12,75 @@ import aps.*
 import into.kommon.*
 import kotlin.js.json
 
-class Checkbox(val valueSetter: (Boolean) -> Unit, val elementID: String) {
-    companion object {
-        val instances = mutableMapOf<CheckboxKey, Checkbox>()
+interface ICheckbox {
+    fun testSetValue(b: Boolean)
+}
 
-        fun instance(key: CheckboxKey): Checkbox {
+class Checkbox(
+    val key: CheckboxKey? = null,
+    id: String? = null,
+    val title: String? = null,
+    val titleControl: ToReactElementable? = null,
+    val onChange: suspend (Checkbox) -> Unit = {}
+) : Control2(Attrs(id = id)), ICheckbox {
+    companion object {
+        val instances = mutableMapOf<CheckboxKey, ICheckbox>()
+
+        fun instance(key: CheckboxKey): ICheckbox {
             return instances[key] ?: bitch("No Checkbox keyed `${key.fqn}`")
         }
     }
 
-    fun testSetValue(b: Boolean) {
+    private var value = false
+    private var disabled = false
+
+    fun getValue() = value
+
+    override fun componentDidMount() {
+        if (key != null) {
+            instances[key] = this
+        }
+    }
+
+    override fun componentWillUnmount() {
+        if (key != null) {
+            instances.remove(key)
+        }
+    }
+
+    fun setValue(b: Boolean) {
+        value = b
+        update()
+    }
+
+    override fun testSetValue(b: Boolean) {
+        val prevValue = value
+        setValue(b)
+        if (value != prevValue) async {
+            onChange(this)
+        }
+    }
+
+    override fun render(): ToReactElementable {
+        return hor1{o->
+            o- reactCreateElement("input", json(
+                "id" to elementID,
+                "type" to "checkbox",
+                "checked" to value,
+                "disabled" to disabled,
+                "onChange" to {
+                    setValue(!value)
+                    async {onChange(this)}
+                }
+            ))
+            o- title
+            o- titleControl
+        }
+    }
+}
+
+class LegacyCheckboxProxy(val valueSetter: (Boolean) -> Unit, val elementID: String) : ICheckbox {
+    override fun testSetValue(b: Boolean) {
         valueSetter(b)
     }
 }
@@ -84,7 +143,7 @@ fun jsFacing_Checkbox(def: dynamic, key: CheckboxKey? = null): dynamic {
 
             me.componentDidMount = {
                 if (key != null) {
-                    Checkbox.instances[key] = Checkbox(setValue, me.elementID)
+                    Checkbox.instances[key] = LegacyCheckboxProxy(setValue, me.elementID)
                 }
             }
 

@@ -116,23 +116,23 @@ class Select<E>(
 
     override fun testGetValue() = value.name
 
-    override suspend fun testSetValue(arg: dynamic) {
-        val stringValue = arg.value
-        val testActionHandOpts = arg.testActionHandOpts
-
-        if (art.testSpeed == "slow") {
-            val el = Shitus.byid0(elementID)
-            el.value = value
-            el.dispatchEvent(js("new MouseEvent('mousedown')"))
-            val testActionHand = art.showTestActionHand(global.Object.assign(json("target" to Shitus.byid(elementID)), testActionHandOpts))
-            await<dynamic>(Shitus.delay(global.DEBUG_ACTION_HAND_DELAY))
-            testActionHand.delete()
-
-            setValueExt(stringToValue(stringValue), notify = true)
-        } else {
-            setValueExt(stringToValue(stringValue), notify = true)
-        }
-    }
+//    suspend fun testSetValue(arg: dynamic) {
+//        val stringValue = arg.value
+//        val testActionHandOpts = arg.testActionHandOpts
+//
+//        if (art.testSpeed == "slow") {
+//            val el = Shitus.byid0(elementID)
+//            el.value = value
+//            el.dispatchEvent(js("new MouseEvent('mousedown')"))
+//            val testActionHand = art.showTestActionHand(global.Object.assign(json("target" to Shitus.byid(elementID)), testActionHandOpts))
+//            await<dynamic>(Shitus.delay(global.DEBUG_ACTION_HAND_DELAY))
+//            testActionHand.delete()
+//
+//            setValueExt(stringToValue(stringValue), notify = true)
+//        } else {
+//            setValueExt(stringToValue(stringValue), notify = true)
+//        }
+//    }
 
     suspend fun setValue(value: E) {
         val x = value.name

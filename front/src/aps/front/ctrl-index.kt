@@ -91,6 +91,10 @@ object links                             : Fuckers<LinkKey>(null) {
     }
 }
 
+object checkboxes                        : Fuckers<CheckboxKey>(null) {
+    val allCategories                    by namedFucker(::CheckboxKey); val allCategories_testRef = TestRef(allCategories)
+}
+
 
 
 

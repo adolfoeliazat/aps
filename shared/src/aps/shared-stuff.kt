@@ -140,7 +140,7 @@ class UpdateProfileRequest : RequestMatumba() {
     val firstName = TextField(this, fields.signUpFirstName)
     val lastName = TextField(this, fields.signUpLastName)
     val profilePhone = TextField(this, fields.profilePhone)
-    val categorySubscriptions = DocumentCategorySetField(this, fields.categorySubscriptions)
+    val categorySubscriptions = DocumentCategorySetField(this, fields.writerDocumentCategories)
     val aboutMe = TextField(this, fields.aboutMe)
 
     class Response(val newUser: UserRTO) : CommonResponseFieldsImpl()
