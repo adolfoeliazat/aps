@@ -2,10 +2,65 @@
 
 package aps.front
 
-import kotlin.reflect.KClass
+import kotlin.browser.window
+import kotlin.coroutines.experimental.*
+import kotlin.coroutines.experimental.intrinsics.*
+import kotlin.js.Date
+import kotlin.js.Promise
 
 //fun main(args: Array<String>) {
+//    async_selfContained {
+//        Q.qwe("aaaa")
+//        Q.qwe("bbbb")
+//    }
 //}
+//
+//interface I {
+//    suspend fun qwe(some: String = "thing") // For the second test, uncomment default parameter value
+//}
+//
+//object Q : I {
+//    override suspend fun qwe(some: String) {
+//        val start = Date().getTime()
+//        console.log("Entering qwe ($some)")
+//        sleep_selfContained(5000)
+//        console.log("Leaving qwe ($some). Elapsed: ${(Date().getTime() - start) / 1000}s")
+//    }
+//}
+//
+//
+////----------------------------------- Stuff -----------------------------------
+//
+//
+//suspend fun sleep_selfContained(ms: Int) {
+//    await_selfContained(delay_selfContained(ms))
+//}
+//
+//fun delay_selfContained(ms: Int) = Promise<Unit> {resolve, _ ->
+//    window.setTimeout({resolve(Unit)}, ms)
+//}
+//
+//fun <T> async_selfContained(block: suspend () -> T): Promise<T> =
+//    Promise {resolve, reject ->
+//        block.startCoroutine(object:Continuation<T> {
+//            override val context = EmptyCoroutineContext
+//            override fun resume(value: T) = resolve(value)
+//            override fun resumeWithException(exception: Throwable) = reject(exception)
+//        })
+//    }
+//
+//suspend fun <T> await_selfContained(p: Promise<T>): T =
+//    suspendCoroutineOrReturn {c: Continuation<T> ->
+//        p.then(onFulfilled = {c.resume(it)},
+//               onRejected = {c.resumeWithException(it)})
+//        COROUTINE_SUSPENDED
+//    }
+
+
+
+
+
+
 
 //fun qwe() {
 //    class X(val f: (() -> Unit)?)

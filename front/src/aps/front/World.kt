@@ -171,7 +171,8 @@ class World(val name: String) {
                                                              {def.header.toReactElement()},
                                                              if (def.headerControls != null) Shitus.diva(json("style" to json("position" to "absolute", "right" to 14, "top" to 16)), {def.headerControls.toReactElement()}) else null)}
                                             }),
-                                            {def.body.toReactElement()}
+                                            {def.body.toReactElement()},
+                                            kdiv(height = "1.5rem").toReactElement()
             )}
         }))
 

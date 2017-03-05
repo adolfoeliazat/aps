@@ -367,6 +367,10 @@ abstract class Control2(val attrs: Attrs = Attrs()) : ToReactElementable, WithEl
 //        }
     }
 
+    suspend fun hand(handOpts: HandOpts = HandOpts()) {
+        await(TestUserActionAnimation.hand(this, handOpts))
+    }
+
     companion object
 }
 

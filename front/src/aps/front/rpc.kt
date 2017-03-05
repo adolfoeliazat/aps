@@ -286,7 +286,14 @@ fun <Res> callRemoteProcedurePassingJSONObject(procedureName: String, requestJSO
     requestJSONObject.fakeEmail = Globus.isTest
     val responseJSONObject = await(fetchFromBackend("rpc/$procedureName", requestJSONObject))
 
-    dejsonizeValue<Res>(responseJSONObject, descr = descr)!!
+    val res = dejsonizeValue<Res>(responseJSONObject, descr = descr)!!
+
+// Should not slow down dangerous calls, maybe something else...
+//    if (isTest() && testOpts().slowRPC) {
+//        sleep(1000)
+//    }
+
+    res
 }
 
 fun windowLocationHrefToClientURL(href: String): String {

@@ -90,7 +90,9 @@ object IntFieldUtils {
     }
 }
 
-
+object DocumentCategorySetFieldUtils {
+    val allValue = "all"
+}
 
 
 

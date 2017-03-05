@@ -23,6 +23,7 @@ class Checkbox(
     val titleControl: ToReactElementable? = null,
     val onChange: suspend (Checkbox) -> Unit = {}
 ) : Control2(Attrs(id = id)), ICheckbox {
+
     companion object {
         val instances = mutableMapOf<CheckboxKey, ICheckbox>()
 
@@ -85,7 +86,10 @@ class LegacyCheckboxProxy(val valueSetter: (Boolean) -> Unit, val elementID: Str
     }
 }
 
-class CheckboxKey(override val fqn: String) : Fucker(), FQNed
+open class CheckboxKey(override val fqn: String) : Fucker(), FQNed
+
+data class SubscriptCheckboxKey(val key: CheckboxKey, val subscript: Any?)
+    : CheckboxKey(key.fqn + "-$subscript")
 
 fun jsFacing_Checkbox(def: dynamic, key: CheckboxKey? = null): dynamic {
     val onChange: (() -> Promisoid<Unit>)? = def.onChange
@@ -160,12 +164,21 @@ fun jsFacing_Checkbox(def: dynamic, key: CheckboxKey? = null): dynamic {
 }
 
 object tcheckbox {
-    suspend fun setValue(field: TestRef<CheckboxFieldSpec>, value: Boolean) {
-        Checkbox.instance(FieldSpecToCtrlKey[field.it]).testSetValue(value)
+    suspend fun setValue(field: TestRef<CheckboxFieldSpec>, value: Boolean, subscript: Any? = null) {
+        setValue(FieldSpecToCtrlKey[field.it], value, subscript)
     }
 
-    suspend fun setValue(key: TestRef<CheckboxKey>, value: Boolean) {
-        Checkbox.instance(key.it).testSetValue(value)
+    suspend fun setValue(key: TestRef<CheckboxKey>, value: Boolean, subscript: Any? = null) {
+        setValue(key.it, value, subscript)
+    }
+
+    private suspend fun setValue(key: CheckboxKey, value: Boolean, subscript: Any?) {
+        val target = Checkbox.instance(if (subscript == null) key
+                                       else SubscriptCheckboxKey(key, subscript))
+        if (target is Control2) {
+            target.hand()
+        }
+        target.testSetValue(value)
     }
 }
 

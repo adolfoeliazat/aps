@@ -75,10 +75,6 @@ class kic(
             instances.remove(key)
         }
     }
-
-    suspend fun hand(handOpts: HandOpts = HandOpts()) {
-        await(TestUserActionAnimation.hand(this, handOpts))
-    }
 }
 
 object tkic {

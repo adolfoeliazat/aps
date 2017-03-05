@@ -63,15 +63,16 @@ class SelenaPicker(val key: SelenaPickerKey, val selectCategory: (UADocumentCate
             treeControl = makeTreeControl()
             selectorPlace = Placeholder(treeControl)
 
+            input = Input(autoFocus = true,
+                          tabIndex = 0, // Needed for autoFocus to have effect
+                          onKeyDown = this@SelenaPicker::onInputKeyDown,
+                          onKeyUp = this@SelenaPicker::onInputKeyUp,
+                          onFocus = this@SelenaPicker::onInputFocus,
+                          onBlur = this@SelenaPicker::onInputBlur)
+
             place.setContent(object:Control2() {
                 override fun render(): ToReactElementable {
                     return kdiv{o->
-                        input = Input(autoFocus = true,
-                                      tabIndex = 0, // Needed for autoFocus to have effect
-                                      onKeyDown = this@SelenaPicker::onInputKeyDown,
-                                      onKeyUp = this@SelenaPicker::onInputKeyUp,
-                                      onFocus = this@SelenaPicker::onInputFocus,
-                                      onBlur = this@SelenaPicker::onInputBlur)
                         o- input
                         o- selectorPlace
                     }
@@ -97,6 +98,9 @@ class SelenaPicker(val key: SelenaPickerKey, val selectCategory: (UADocumentCate
     }
 
     private fun onInputKeyUp(e: KeyboardEvent) {
+        if (e.key in setOf(fconst.keyValue.control, fconst.keyValue.alt, fconst.keyValue.shift))
+            return
+
         if (input.value != prevInputValueSeenInKeyUpHandler) {
             prevInputValueSeenInKeyUpHandler = input.value
             if (e.keyCode !in setOf(38, 40, 13)) {
@@ -474,6 +478,16 @@ class SelenaTester private constructor (val pickerKey: SelenaPickerKey, val aid:
 
     private suspend fun sendSpecialKey(keyCode: Int) {
         SelenaPicker.instance(pickerKey).testSendSpecialKey(keyCode)
+    }
+
+    suspend fun setAllCheck(value: Boolean, expectingLongOperation: Boolean = false) {
+        val action: SFUnit = {tcheckbox.setValue(checkboxes.allCategories_testRef, value)}
+        if (expectingLongOperation) {
+            seq.halfway_done(action, aid = assert.nextAID())
+        } else {
+            action()
+            assert()
+        }
     }
 }
 

@@ -448,39 +448,50 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
             run { // Kafka fills profile
                 inputSetValue(fields.profilePhone_testRef, "+38 (099) 432-54-55")
-                seq.halfway_done({tcheckbox.setValue(checkboxes.allCategories_testRef, false)}, aid = "4aa6761e-be38-43dc-b8fb-02703a7a8ab4")
 
-                val st = SelenaTester.new(aid = "2ae43628-de08-48bf-a584-2999fd66417c", field = fields.writerDocumentCategories_testRef)
-                st.searchValue("ж")
-                st.specialKey(fconst.keyCode.down, times = 10)
-                st.specialKeyThenAnimation(fconst.keyCode.enter)
-                st.specialKey(fconst.keyCode.up, times = 4)
-                st.specialKey(fconst.keyCode.down, times = 4)
-                st.specialKey(fconst.keyCode.enter)
-                st.specialKey(fconst.keyCode.down, times = 7)
-                st.specialKey(fconst.keyCode.enter)
-                st.searchValue("прог")
-                st.specialKey(fconst.keyCode.down, times = 1)
-                st.specialKey(fconst.keyCode.enter)
-                st.searchValue("пс")
-                st.specialKey(fconst.keyCode.down, times = 2)
-                st.specialKey(fconst.keyCode.enter)
-                st.specialKey(fconst.keyCode.up, times = 1)
-                st.specialKey(fconst.keyCode.enter)
+                run { // Fuck around with categories
+                    val st = SelenaTester.new(aid = "2ae43628-de08-48bf-a584-2999fd66417c", field = fields.writerDocumentCategories_testRef)
+                    ___animateShitSlowly()
+                    st.setAllCheck(false, expectingLongOperation = true)
 
-                DocumentCategorySetFieldTester("adf38062-0e75-46ca-a41d-f1ee5c10301a").let {
-                    it.clickDelete(145L)
-                    it.clickDelete(42L)
-                    it.clickDelete(46L)
+                    st.searchValue("ко")
+                    st.specialKey(fconst.keyCode.down)
+                    st.specialKey(fconst.keyCode.enter)
+                    st.setAllCheck(true)
+                    st.setAllCheck(false)
+                    ___stopHereAndEverywhereAfter()
+
+                    st.searchValue("ж")
+                    st.specialKey(fconst.keyCode.down, times = 10)
+                    st.specialKeyThenAnimation(fconst.keyCode.enter)
+                    st.specialKey(fconst.keyCode.up, times = 4)
+                    st.specialKey(fconst.keyCode.down, times = 4)
+                    st.specialKey(fconst.keyCode.enter)
+                    st.specialKey(fconst.keyCode.down, times = 7)
+                    st.specialKey(fconst.keyCode.enter)
+                    st.searchValue("прог")
+                    st.specialKey(fconst.keyCode.down, times = 1)
+                    st.specialKey(fconst.keyCode.enter)
+                    st.searchValue("пс")
+                    st.specialKey(fconst.keyCode.down, times = 2)
+                    st.specialKey(fconst.keyCode.enter)
+                    st.specialKey(fconst.keyCode.up, times = 1)
+                    st.specialKey(fconst.keyCode.enter)
+
+                    DocumentCategorySetFieldTester("adf38062-0e75-46ca-a41d-f1ee5c10301a").let {
+                        it.clickDelete(145L)
+                        it.clickDelete(42L)
+                        it.clickDelete(46L)
+                    }
+
+                    st.searchValue("диз")
+                    st.specialKey(fconst.keyCode.down, times = 1)
+                    st.specialKey(fconst.keyCode.enter)
                 }
 
-                st.searchValue("диз")
-                st.specialKey(fconst.keyCode.down, times = 1)
-                st.specialKey(fconst.keyCode.enter)
-
                 scrollBodyToBottomGradually()
-
                 inputSetValue(fields.aboutMe_testRef, "О себе? Вы че, охренели там? Я Кафка. Кафка я, ебаный Франц, бля! Уроды...")
+                ___stopHereAndEverywhereAfter()
                 seq.submitForm("0747ffeb-2906-4a94-8e45-8d24d92b9abf")
             }
         }

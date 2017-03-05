@@ -38,6 +38,10 @@ fun ___animateShit() {
     TestGlobal.forcedTestOpts = testOpts().copy(animateUserActions = true)
 }
 
+fun ___animateShitSlowly() {
+    TestGlobal.forcedTestOpts = testOpts().copy(animateUserActions = true, slowRPC = true)
+}
+
 suspend fun describeState(descr: String, verticalPosition: VerticalPosition? = null, horizontalPosition: HorizontalPosition? = null) {
     val cfg = TestGlobal.describeStateConfig
     if (!cfg.showBanners) return

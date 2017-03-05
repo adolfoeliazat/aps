@@ -7,6 +7,7 @@ data class TestOptions(
     val stopOnAssertions: Boolean = false,
     val dontStopOnCorrectAssertions: Boolean = false,
     val animateUserActions: Boolean = false,
+    val slowRPC: Boolean = false,
     val slowdown: Int = 1,
     val handPauses: Boolean = false,
     val ignoreNotHardened: Boolean = false,

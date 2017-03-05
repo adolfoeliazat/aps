@@ -62,6 +62,12 @@ object fconst {
         val clientStateSnapshotPrefix = "clientStateSnapshot-"
     }
 
+    object keyValue {
+        val alt = "Alt"
+        val control = "Control"
+        val shift = "Shift"
+    }
+
     object keyCode {
         val enter = 13
         val up = 38

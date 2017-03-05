@@ -1116,7 +1116,7 @@ object MakeStaticSites {
     </script>
     </div> <!-- /#${fconst.elementID.root} -->
 
-    <div id="${fconst.elementID.footer}" style="position: relative; margin-top: 1.5rem;">
+    <div id="${fconst.elementID.footer}" style="position: relative">
         <div style="background-color: #f8f8f8; border: 1px solid #e7e7e7; color: #333; font-family: Helvetica Neue, Helvetica, Arial, sans-serif; font-size: 12px; padding-top: 5px; padding-bottom: 5px; height: 28px;">
             <div class="container">
                 ${when (clientKind) {
