@@ -660,8 +660,8 @@ object css {
                                      hover = "background-color: $focusBack;")
         val nothing by Style("color: $lightTextFore; font-style: italic; margin-top: 1rem;")
 
-        val pickedItemActionIcon by Style(style = "color: $GRAY_300; cursor: pointer;",
-                                          hover = "color: $GRAY_500;")
+        val pickedItemActionIcon by Style(style = "color: $GRAY_500; cursor: pointer;",
+                                          hover = "color: $GRAY_700;")
     }
 
     init {touchObjectGraph(this)}

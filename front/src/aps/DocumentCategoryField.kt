@@ -444,21 +444,15 @@ class Selena(initialValue: UADocumentCategoryRTO, pickerKey: SelenaPickerKey) : 
 }
 
 class SelenaTester private constructor (val pickerKey: SelenaPickerKey, val aid: String) {
-    var aidx = 1
-
     companion object {
         fun new(field: TestRef<DocumentCategoryFieldSpec>, aid: String) = SelenaTester(FieldSpecToCtrlKey[field.it], aid)
         fun new(field: TestRef<DocumentCategorySetFieldSpec>, aid: String) = SelenaTester(FieldSpecToCtrlKey[field.it], aid)
     }
 
-    fun nextAID() = "$aid--${aidx++}"
-
-    suspend fun assert() {
-        assertScreenHTML(aid = nextAID())
-    }
+    private val assert = SerialAsserter(aid)
 
     suspend fun ellipsisButton() {
-        seq.halfway_done({buttonClick(buttons.chooseDocumentCategory_testRef)}, nextAID())
+        seq.halfway_done({buttonClick(buttons.chooseDocumentCategory_testRef)}, assert.nextAID())
     }
 
     suspend fun searchValue(x: String) {
@@ -475,7 +469,7 @@ class SelenaTester private constructor (val pickerKey: SelenaPickerKey, val aid:
     }
 
     suspend fun specialKeyThenAnimation(keyCode: Int) {
-        step({sendSpecialKey(keyCode)}, TestGlobal.animationDoneLock, nextAID())
+        step({sendSpecialKey(keyCode)}, TestGlobal.animationDoneLock, assert.nextAID())
     }
 
     private suspend fun sendSpecialKey(keyCode: Int) {

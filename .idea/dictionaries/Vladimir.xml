@@ -16,6 +16,7 @@
       <w>apsdevua</w>
       <w>apsfront</w>
       <w>apsua</w>
+      <w>asserter</w>
       <w>atob</w>
       <w>backquote</w>
       <w>bconst</w>
@@ -215,6 +216,8 @@
       <w>thisy</w>
       <w>thiz</w>
       <w>timeroid</w>
+      <w>tkic</w>
+      <w>tkick</w>
       <w>tmodal</w>
       <w>tmpdir</w>
       <w>tsquery</w>

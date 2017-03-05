@@ -35,11 +35,24 @@ import kotlin.properties.Delegates.notNull
                 for (cat in pickedCats) {
                     o- kdiv{o->
                         o- hor1{o->
-                            o- cat.pathTitle
-                            o- kic(className = "${fa.trash} ${css.selena.pickedItemActionIcon}") {
-                                pickedCats -= cat
-                                me.update()
-                            }
+                            var labelStyle = Style()
+                            val titleControl = Control2.from {span(cat.pathTitle, labelStyle)}
+                            o- titleControl
+
+                            o- kic(key = SubscriptKicKey(kics.delete, cat.id),
+                                   className = "${fa.trash} ${css.selena.pickedItemActionIcon}",
+                                   onMouseEnter = {
+                                       labelStyle = Style(textDecoration = "line-through")
+                                       titleControl.update()
+                                   },
+                                   onMouseLeave = {
+                                       labelStyle = Style()
+                                       titleControl.update()
+                                   },
+                                   onClicka = {
+                                       pickedCats -= cat
+                                       me.update()
+                                   })
                         }
                     }
                 }
@@ -87,6 +100,34 @@ import kotlin.properties.Delegates.notNull
 //        json[name] = selena.getValue().id.toString()
     }
 }
+
+class DocumentCategorySetFieldTester(aid: String) {
+    val assert = SerialAsserter(aid)
+
+    suspend fun clickDelete(subscript: Long) {
+        tkic.mouseEnterClick(kics.delete_testRef, subscript)
+        assert()
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

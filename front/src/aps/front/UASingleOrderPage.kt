@@ -180,7 +180,7 @@ fun renderOrderParams(order: UAOrderRTO, storeEditingParams: RenderOrderParamsSt
             o- renderOrderStoreBoundaries(order)
         }
 
-        o- kdiv(height = "3rem")
+        o- renderBottomPageSpace()
     }
 }
 

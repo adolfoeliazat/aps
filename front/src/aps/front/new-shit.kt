@@ -96,6 +96,8 @@ open class ElementBuilder(val tag: String, val attrs: Attrs, var style: Style, b
                 attrs.tabIndex?.let {jsAttrs["tabIndex"] = it}
                 attrs.href?.let {jsAttrs["href"] = it}
                 attrs.onClick?.let {jsAttrs["onClick"] = it}
+                attrs.onMouseEnter?.let {jsAttrs["onMouseEnter"] = it}
+                attrs.onMouseLeave?.let {jsAttrs["onMouseLeave"] = it}
                 attrs.dataToggle?.let {jsAttrs["data-toggle"] = it}
                 attrs.dataID?.let {jsAttrs["data-id"] = it}
 
@@ -168,6 +170,7 @@ data class Style(
     var alignItems: String? = null,
     var transform: String? = null,
     var overflow: String? = null,
+    var textDecoration: String? = null,
     var backgroundImage: String? = null
 ) {
     fun toReactStyle(): dynamic {
@@ -226,6 +229,7 @@ data class Style(
             alignItems?.let {o.alignItems = it}
             transform?.let {o.transform = it}
             overflow?.let {o.overflow = it}
+            textDecoration?.let {o.textDecoration = it}
             backgroundImage?.let {o.backgroundImage = it}
         }
     }

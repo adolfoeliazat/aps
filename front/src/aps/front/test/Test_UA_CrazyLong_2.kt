@@ -221,13 +221,13 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
             }
             // dwarnStriking("cooooooooooooooool"); sleepTillEndOfTime()
             run { // Edit file -- cancel
-                step({kicClick(kics.edit_testRef, subscript = 27L)}, TestGlobal.modalShownLock, "5793721f-48fe-4821-8b12-8c9d41aade69")
+                step({tkic.click(kics.edit_testRef, subscript = 27L)}, TestGlobal.modalShownLock, "5793721f-48fe-4821-8b12-8c9d41aade69")
                 inputSetValue(fields.fileTitle_testRef, "Хуй")
                 describeState("Will cancel")
                 step({buttonClick(buttons.cancel_testRef)}, TestGlobal.modalHiddenLock, "74893db1-b1cb-4cae-8d17-441f715899d3")
             }
             run { // Edit file -- save, file not changed
-                step({kicClick(kics.edit_testRef, subscript = 27L)}, TestGlobal.modalShownLock, "e0795fd9-64ad-417d-bcb7-1f4dcd2a2f05")
+                step({tkic.click(kics.edit_testRef, subscript = 27L)}, TestGlobal.modalShownLock, "e0795fd9-64ad-417d-bcb7-1f4dcd2a2f05")
                 seq.formSubmissionAttempts(
                     aid = "2639505f-4b8c-44fd-b0b7-99b252062a72",
                     attempts = eachOrCombinationOfLasts(listOf(
@@ -238,7 +238,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 testDownloads("68bfe30e-efd6-4f22-93c2-2b249f78ff5a", mapOf(27L to "lousy writing 9.rtf"))
             }
             run { // Edit file -- save, file was changed
-                step({kicClick(kics.edit_testRef, subscript = 27L)}, TestGlobal.modalShownLock, "422ae986-3f93-419c-8dd6-26ae8dedee19")
+                step({tkic.click(kics.edit_testRef, subscript = 27L)}, TestGlobal.modalShownLock, "422ae986-3f93-419c-8dd6-26ae8dedee19")
                 inputSetValue(fields.fileTitle_testRef, "Рапунцель -- девица-распиздунцель")
                 fileFieldChoose("fuck you.rtf", "aec4c792-dd9c-4a98-9279-4cd29453ee1d")
                 testShit.imposeNextRequestTimestamp_killme()
@@ -246,7 +246,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 testDownloads("5a0fe187-166f-4db3-b249-b318d4818fa9", mapOf(27L to "fuck you.rtf"))
             }
             run { // Delete file -- no
-                step({kicClick(kics.delete_testRef, subscript = 26L)}, TestGlobal.modalShownLock, "e0bafefd-c7d5-4803-9f3b-df7f249b69e5")
+                step({tkic.click(kics.delete_testRef, subscript = 26L)}, TestGlobal.modalShownLock, "e0bafefd-c7d5-4803-9f3b-df7f249b69e5")
                 step({buttonClick(buttons.cancel_testRef)}, TestGlobal.modalHiddenLock, "f02892f1-0cde-4bb0-ac1c-81f9fa69d080")
             }
             run { // Delete file -- yes
@@ -362,12 +362,12 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 describeState("Admin can edit files")
                 //
                 scrollBodyGradually(500.0) // Item #3
-                step({kicClick(kics.edit_testRef, subscript = 3L)}, TestGlobal.modalShownLock, "98165d17-6cbd-4034-b5f5-1c7424336bde")
+                step({tkic.click(kics.edit_testRef, subscript = 3L)}, TestGlobal.modalShownLock, "98165d17-6cbd-4034-b5f5-1c7424336bde")
                 inputPrependValue(fields.fileDetails_testRef, "Следовать тупо этой инструкции. ")
                 inputPrependValue(fields.adminNotes_testRef, "Добавил немного порожняка к деталям.")
                 seq.submitForm("5c5f9391-b835-4be2-9402-d9c140d8e781")
                 //
-                step({kicClick(kics.edit_testRef, subscript = 3L)}, TestGlobal.modalShownLock, "9c2d9386-ce07-4d88-ada3-773062477f98")
+                step({tkic.click(kics.edit_testRef, subscript = 3L)}, TestGlobal.modalShownLock, "9c2d9386-ce07-4d88-ada3-773062477f98")
                 inputAppendValue(fields.adminNotes_testRef, " Ля-ля-ля...")
                 seq.submitForm("19b4abbe-9f88-4ec8-9cb6-5aa636122933")
                 //
@@ -447,7 +447,9 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
             }
 
             run { // Kafka fills profile
+                inputSetValue(fields.profilePhone_testRef, "+38 (099) 432-54-55")
                 seq.halfway_done({tcheckbox.setValue(checkboxes.allCategories_testRef, false)}, aid = "4aa6761e-be38-43dc-b8fb-02703a7a8ab4")
+
                 val st = SelenaTester.new(aid = "2ae43628-de08-48bf-a584-2999fd66417c", field = fields.writerDocumentCategories_testRef)
                 st.searchValue("ж")
                 st.specialKey(fconst.keyCode.down, times = 10)
@@ -465,9 +467,19 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 st.specialKey(fconst.keyCode.enter)
                 st.specialKey(fconst.keyCode.up, times = 1)
                 st.specialKey(fconst.keyCode.enter)
-                ___stopHereAndEverywhereAfter()
 
-                inputSetValue(fields.profilePhone_testRef, "+38 (099) 432-54-55")
+                DocumentCategorySetFieldTester("adf38062-0e75-46ca-a41d-f1ee5c10301a").let {
+                    it.clickDelete(145L)
+                    it.clickDelete(42L)
+                    it.clickDelete(46L)
+                }
+
+                st.searchValue("диз")
+                st.specialKey(fconst.keyCode.down, times = 1)
+                st.specialKey(fconst.keyCode.enter)
+
+                scrollBodyToBottomGradually()
+
                 inputSetValue(fields.aboutMe_testRef, "О себе? Вы че, охренели там? Я Кафка. Кафка я, ебаный Франц, бля! Уроды...")
                 seq.submitForm("0747ffeb-2906-4a94-8e45-8d24d92b9abf")
             }
@@ -694,9 +706,9 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
         try {
             TestGlobal.deleteWithoutConfirmation = deleteWithoutConfirmation
             if (deleteWithoutConfirmation) {
-                vanishSequence({kicClick(kics.delete_testRef, subscript = subscript)}, aid3)
+                vanishSequence({tkic.click(kics.delete_testRef, subscript = subscript)}, aid3)
             } else {
-                step({kicClick(kics.delete_testRef, subscript = subscript)}, TestGlobal.modalShownLock, aid1)
+                step({tkic.click(kics.delete_testRef, subscript = subscript)}, TestGlobal.modalShownLock, aid1)
                 vanishSequence({seq.submitForm(useFormDoneLock = false, aid = aid2)}, aid3)
             }
         } finally {
@@ -747,7 +759,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
         for (fileID in fileIDs) {
             ctx[fileID] = TestDownloadContext()
 
-            kicClick(kics.download_testRef, subscript = fileID)
+            tkic.click(kics.download_testRef, subscript = fileID)
             ctx[fileID]!!.downloadStartedLock.pauseTestFromTest()
             assertScreenHTML(descr = "downloadStartedLock:orderFileID=$fileID", aid = "$aid--downloadStarted-$fileID")
 

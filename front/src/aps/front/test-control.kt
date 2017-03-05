@@ -34,6 +34,10 @@ fun ___showStateDescriptionsButAutoResume() {
     TestGlobal.describeStateConfig = DescribeStateConfig(showBanners = true, autoResumeAfterMs = 5000)
 }
 
+fun ___animateShit() {
+    TestGlobal.forcedTestOpts = testOpts().copy(animateUserActions = true)
+}
+
 suspend fun describeState(descr: String, verticalPosition: VerticalPosition? = null, horizontalPosition: HorizontalPosition? = null) {
     val cfg = TestGlobal.describeStateConfig
     if (!cfg.showBanners) return

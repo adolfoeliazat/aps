@@ -35,7 +35,7 @@ suspend fun condition(action: suspend () -> Unit, lock: TestLock) {
 }
 
 suspend fun checkActionDisabled(key: TestRef<KicKey>, subscript: Any?) {
-    condition({kicClick(key, subscript)}, TestGlobal.disabledActionHitLock)
+    condition({tkic.click(key, subscript)}, TestGlobal.disabledActionHitLock)
 }
 
 suspend fun waitAndCheckDownload(orderFileID: Long, expectedFileName: String) {
@@ -52,10 +52,18 @@ class DescribeStateConfig(
 
 
 suspend fun burgerKicClick(subscript: Any? = null, aid: String) {
-    kicClick(kics.burger_testRef, subscript)
+    tkic.click(kics.burger_testRef, subscript)
     assertScreenHTML(aid = aid)
 }
 
+class SerialAsserter(val aid: String) {
+    private var aidx = 1
+
+    fun nextAID() = "$aid--${aidx++}"
+
+    suspend operator fun invoke() = assertScreenHTML(aid = nextAID())
+
+}
 
 
 

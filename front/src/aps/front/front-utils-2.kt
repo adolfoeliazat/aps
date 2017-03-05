@@ -161,7 +161,9 @@ fun randomInt(minInclusive: Int, maxExclusive: Int): Int {
     return Math.floor(Math.random() * (maxExclusive - minInclusive)) + minInclusive
 }
 
+typealias SFUnit = suspend () -> Unit
 
+fun renderBottomPageSpace() = kdiv(height = "3rem")
 
 
 

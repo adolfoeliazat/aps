@@ -177,23 +177,23 @@ abstract class Control2(val attrs: Attrs = Attrs()) : ToReactElementable, WithEl
 
 
                 val effectiveShame: String? = effectiveShame
-                effectiveShame?.let {
-                    if (TestGlobal.shameToControl.containsKey(it)) {
-                        stickException(json("exception" to Error("There is already a thing shamed ${it}")))
-                    } else {
-                        TestGlobal.shameToControl[it] = json(
-                            "testSetValue" to {x: dynamic -> asu {
-//                                testSetValue(x)
-                            }},
-                            "testGetValue" to {
-                                testGetValue()
-                            },
-                            "testClick" to {async<Unit>{
-                                await(testClick())
-                            }}
-                        )
-                    }
-                }
+//                effectiveShame?.let {
+//                    if (TestGlobal.shameToControl.containsKey(it)) {
+//                        stickException(json("exception" to Error("There is already a thing shamed ${it}")))
+//                    } else {
+//                        TestGlobal.shameToControl[it] = json(
+//                            "testSetValue" to {x: dynamic -> asu {
+////                                testSetValue(x)
+//                            }},
+//                            "testGetValue" to {
+//                                testGetValue()
+//                            },
+//                            "testClick" to {async<Unit>{
+//                                await(testClick())
+//                            }}
+//                        )
+//                    }
+//                }
 
                 componentDidMount()
             },
@@ -245,13 +245,13 @@ abstract class Control2(val attrs: Attrs = Attrs()) : ToReactElementable, WithEl
 //    open suspend fun testSetValue(x: dynamic) {die("Control $debugDisplayName doesn't support testSetValue")}
     open fun testGetValue(): Any? {die("Control $debugDisplayName doesn't support testGetValue")}
 
-    open fun testClick(): Promisoid<Unit> {
-        if (simpleTestClickImpl()) {
-            return onRootClick(DummyMouseEvent())
-        } else {
-            die("Control $debugDisplayName doesn't support testClick")
-        }
-    }
+//    open fun testClick(): Promisoid<Unit> {
+//        if (simpleTestClickImpl()) {
+//            return onRootClick(DummyMouseEvent())
+//        } else {
+//            die("Control $debugDisplayName doesn't support testClick")
+//        }
+//    }
 
     fun update() {
         if (isInTestScenario() && hrss.worldIsHalted) return
