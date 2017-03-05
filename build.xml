@@ -17,6 +17,7 @@
 
     <path id="cp">
         <pathelement location="${env.APS_HOME}/back/out"/>
+        <pathelement location="${env.APS_HOME}/tools/out"/>
         <fileset dir="${env.APS_HOME}/lib" includes="*.jar"/>
         <fileset dir="${env.APS_HOME}/back/lib" includes="*.jar"/>
         <fileset dir="${env.APS_HOME}/back/lib-gradle" includes="*.jar"/>

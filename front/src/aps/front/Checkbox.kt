@@ -164,6 +164,10 @@ fun jsFacing_Checkbox(def: dynamic, key: CheckboxKey? = null): dynamic {
 }
 
 object tcheckbox {
+    //// spewTestFiddlers(type = "Checkbox")
+    //// ----
+    //// ====
+
     suspend fun setValue(field: TestRef<CheckboxFieldSpec>, value: Boolean, subscript: Any? = null) {
         setValue(FieldSpecToCtrlKey[field.it], value, subscript)
     }
