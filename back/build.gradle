@@ -53,6 +53,7 @@ dependencies {
     compile 'com.h2database:h2:1.4.193'
     compile 'net.bytebuddy:byte-buddy:1.6.7'
     compile 'net.bytebuddy:byte-buddy-agent:1.6.7'
+    compile 'org.jetbrains.kotlin:kotlin-script-util:1.1.0'
 }
 
 task importDeps(type: Copy) {

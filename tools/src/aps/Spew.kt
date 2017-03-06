@@ -1,7 +1,9 @@
 package aps
 
 import into.kommon.*
+import org.jetbrains.kotlin.cli.jvm.K2JVMCompiler
 import java.io.File
+import javax.script.ScriptEngineManager
 import kotlin.properties.Delegates.notNull
 
 object Spew {
@@ -22,7 +24,7 @@ object Spew {
 
                 init {
                     parseFile()
-                    println(output)
+                    // println(output)
                 }
 
                 fun parseFile() {
@@ -74,6 +76,13 @@ object Spew {
                     output += endText
 
                     val indent = endText.length - endText.trimStart().length
+                    val script = scriptBuf.toString()
+
+                    println("Executing script: [$script]")
+                    K2JVMCompiler.main(arrayOf("-version")) // XXX Without this it shits with "Failed to initialize native filesystem for Windows"
+                    val engine = ScriptEngineManager().getEngineByExtension("kts")!!
+                    println("Engine: $engine")
+                    engine.eval(script)
                     output += " ".repeat(indent)  + "// Here is some generated shit for you\n"
 
                     while (readToken() is Token.LittleMotherfucker) { // Skipping previously generated shit
@@ -87,6 +96,9 @@ object Spew {
         println("We good")
     }
 }
+
+
+
 
 
 
