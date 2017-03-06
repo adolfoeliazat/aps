@@ -14,7 +14,7 @@ fun ReginaLoadUser.serve(): ReginaLoadUser.Response {
         fuckAnyUser(FuckAnyUserParams(
             bpc = bpc, makeRequest = {UpdateProfileRequest()},
             runShit = fun(ctx, req): UpdateProfileRequest.Response {
-                checkingAllFieldsRetrieved(req) {
+                return checkingAllFieldsRetrieved(req) {
                     // TODO:vgrechka Security
                     val user = ctx.user!!
                     user-{o->
@@ -26,10 +26,25 @@ fun ReginaLoadUser.serve(): ReginaLoadUser.Response {
                         o.user.profileUpdatedAt = RequestGlobus.stamp
 
                         if (o.user.kind == UserKind.WRITER) {
+                            val subs = req.categorySubscriptions.value
+                            exhaustive/when (subs) {
+                                is DocumentCategorySetFieldValue.All -> {
+                                    o.user.subscribedToAllCategories = true
+                                    o.documentCategorySubscriptions.clear()
+                                }
+                                is DocumentCategorySetFieldValue.Specific -> {
+                                    o.user.subscribedToAllCategories = false
+                                    for (cat in subs.categories) {
+                                        userTimesDocumentCategoryRepo.save(UserTimesDocumentCategory(
+                                            user = user,
+                                            category = uaDocumentCategoryRepo.findOrDie(cat.id)))
+                                    }
+                                }
+                            }
                             o.user.state = UserState.PROFILE_APPROVAL_PENDING
                         }
                     }
-                    return UpdateProfileRequest.Response(user.toRTO(searchWords = listOf()))
+                    UpdateProfileRequest.Response(userRepo.findOrDie(user.id!!).toRTO(searchWords = listOf()))
                 }
             }
         ))

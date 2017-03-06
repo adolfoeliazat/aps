@@ -61,6 +61,7 @@ suspend fun askRegina(p: ReginaAcceptProfile): FormResponse2<ReginaAcceptProfile
 suspend fun askRegina(p: ReginaCustomerSendOrderForApprovalAfterFixing): FormResponse2<ReginaCustomerSendOrderForApprovalAfterFixing.Response> = _askRegina(p)
 suspend fun <T : HistoryItemRTOFields> askRegina(p: ReginaGetPairOfLastHistoryItems<T>): FormResponse2<ReginaGetPairOfLastHistoryItems<T>.Response> = _askRegina(p)
 suspend fun askRegina(p: ReginaGetDocumentCategories): FormResponse2<ReginaGetDocumentCategories.Response> = _askRegina(p)
+suspend fun askRegina(p: ReginaGetMyself): FormResponse2<ReginaGetMyself.Response> = _askRegina(p)
 
 
 private suspend fun <Res> _askMiranda(p: Any): Res =

@@ -191,7 +191,7 @@ import java.util.*
             bpc = bpc, makeRequest = {UAOrderFileParamsRequest(isAdmin = requestUser.user.kind == UserKind.ADMIN,
                                                                isUpdate = true)},
             runShit = fun(ctx, req): UAUpdateOrderFileResponse {
-                checkingAllFieldsRetrieved(req) {
+                return checkingAllFieldsRetrieved(req) {
                     val file = uaOrderFileRepo.findOrDie(req.fileID.value)
                     // TODO:vgrechka Check permissions
                     file-{o->
@@ -208,7 +208,7 @@ import java.util.*
                         updateAdminNotes(o.orderFile, req)
                         o.orderFile.common.touch()
                     }
-                    return UAUpdateOrderFileResponse(file.toRTO(listOf()))
+                    UAUpdateOrderFileResponse(file.toRTO(listOf()))
                 }
             }
         ))
@@ -307,6 +307,10 @@ fun ReginaGetDocumentCategories.serve(): ReginaGetDocumentCategories.Response {
     return ReginaGetDocumentCategories.Response(cat)
 }
 
+fun ReginaGetMyself.serve(): ReginaGetMyself.Response {
+    // TODO:vgrechka Security
+    return ReginaGetMyself.Response(requestUser.toRTO(searchWords = listOf()))
+}
 
 
 

@@ -2,6 +2,7 @@ package aps
 
 import aps.back.*
 import into.kommon.*
+import org.springframework.data.repository.findOrDie
 import kotlin.properties.Delegates
 import kotlin.properties.Delegates.notNull
 
@@ -17,21 +18,16 @@ import kotlin.properties.Delegates.notNull
     }
 
     override fun loadOrBitch(input: Map<String, Any?>, fieldErrors: MutableList<FieldError>) {
-        val s = (input[name] ?: bitch("Gimme $name, motherfucker")) as String
+        val jsonValue = input[name] ?: bitch("Gimme $name, motherfucker")
         _value = when {
-            s == DocumentCategorySetFieldUtils.allValue -> DocumentCategorySetFieldValue.All()
+            jsonValue == DocumentCategorySetFieldUtils.allValue -> DocumentCategorySetFieldValue.All()
             else -> {
-                s
-                imf()
+                val stringIDs: List<String> = cast(jsonValue)
+                DocumentCategorySetFieldValue.Specific(stringIDs.map {
+                    uaDocumentCategoryRepo.findOrDie(it.toLong()).toRTO()
+                })
             }
         }
-//        val cat = uaDocumentCategoryRepo.findOne(stringID.toLong())
-//        if (cat == null) {
-//            fieldErrors += FieldError(name, t("TOTE", "Я не признаю такую категорию"))
-//            return
-//        }
-//
-//        _value = cat
     }
 }
 

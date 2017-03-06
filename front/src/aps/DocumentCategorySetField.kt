@@ -13,7 +13,7 @@ import kotlin.properties.Delegates.notNull
     private val allCheck = Checkbox(
         key = checkboxes.allCategories,
         titleControl = hor3{o->
-            o- t("TOTE", "В любых, я умный шописец")
+            o- fconst.text.inAnyCategory
             o- span(t("TOTE", "(Будет приходить куча спама ${const.text.symbols.emdash} по всем заказам)"), Style(fontStyle = "italic"))
         },
         onChange = {
@@ -24,9 +24,6 @@ import kotlin.properties.Delegates.notNull
         })
 
     private val picker = SelenaPicker(FieldSpecToCtrlKey[spec], this::selectCategory)
-    private val pickerPlace by lazy {
-        Placeholder().also {async{picker.fuck1(it)}}
-    }
 
     private val pickedCatsControl = Control2.from {me->
         val value = this.value as DocumentCategorySetFieldValue.Specific
@@ -74,6 +71,8 @@ import kotlin.properties.Delegates.notNull
                 is DocumentCategorySetFieldValue.All -> NOTRE
                 is DocumentCategorySetFieldValue.Specific -> kdiv{o->
                     o- pickedCatsControl
+
+                    val pickerPlace = Placeholder().also {async{picker.fuck1(it)}}
                     o- pickerPlace
                 }
             })

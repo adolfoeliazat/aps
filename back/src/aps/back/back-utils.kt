@@ -96,7 +96,7 @@ fun updateAdminNotes(fields: FieldsWithAdminNotes, req: RequestWithAdminNotes) {
         fields.adminNotes = req.adminNotes.value
 }
 
-inline fun <T> checkingAllFieldsRetrieved(req: RequestMatumba, block: () -> T): T {
+fun <T> checkingAllFieldsRetrieved(req: RequestMatumba, block: () -> T): T {
     RequestGlobus.retrievedFields.clear()
     val res = block()
     for (field in req._fields) {

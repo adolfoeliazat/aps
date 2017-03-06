@@ -451,7 +451,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
                 run { // Fuck around with categories
                     val st = SelenaTester.new(aid = "2ae43628-de08-48bf-a584-2999fd66417c", field = fields.writerDocumentCategories_testRef)
-                    ___animateShitSlowly()
+                    // ___animateShitSlowly()
                     st.setAllCheck(false, expectingLongOperation = true)
 
                     st.searchValue("ко")
@@ -459,7 +459,6 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                     st.specialKey(fconst.keyCode.enter)
                     st.setAllCheck(true)
                     st.setAllCheck(false)
-                    ___stopHereAndEverywhereAfter()
 
                     st.searchValue("ж")
                     st.specialKey(fconst.keyCode.down, times = 10)
@@ -491,8 +490,8 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
                 scrollBodyToBottomGradually()
                 inputSetValue(fields.aboutMe_testRef, "О себе? Вы че, охренели там? Я Кафка. Кафка я, ебаный Франц, бля! Уроды...")
-                ___stopHereAndEverywhereAfter()
                 seq.submitForm("0747ffeb-2906-4a94-8e45-8d24d92b9abf")
+                ___stopHereAndEverywhereAfter()
             }
         }
 
@@ -517,9 +516,11 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
         }
 
         definePoint(12) {
-            run { // Kafka changes phone in profile
+            run { // Kafka changes his profile
                 bootWriterWithTokenToProfilePage("kafka", sessionIndex.kafka3, "c896ce76-1483-4da7-9ebf-2504a87e18d5")
-                setProfileFields_submitForm(profilePhone = "+38 (099) 432-54-75", aid = "195b4d45-8f7b-4579-9c7c-8ee385484ee4")
+                inputSetValue(fields.profilePhone_testRef, "+38 (099) 432-54-75")
+                ___stopHereAndEverywhereAfter()
+                seq.submitForm("cdeb7efb-d98f-4a8d-91d7-2f8c3a817bfd")
             }
 
             run { // Admin looks at profile change history

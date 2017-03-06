@@ -11,6 +11,8 @@ package aps.front
 import aps.*
 import into.kommon.*
 
+// TODO:vgrechka Test case: User unchecks "subscribed to all categories", but doesn't select anything specific
+
 class ProfilePage {
     suspend fun load(): PageLoadingError? {
         Globus.world.setPage(Page(
@@ -54,13 +56,15 @@ class ProfilePage {
                         },
                         primaryButtonTitle = t("TOTE", "Отправить на проверку"),
                         onSuccessa = {res->
-                            Globus.world.userMaybe = res.newUser
-                            Globus.world.replaceNavigate(makeURL(
-                                when (user().kind) {
-                                    UserKind.CUSTOMER -> pages.uaCustomer.profile
-                                    UserKind.WRITER -> pages.uaWriter.profile
-                                    UserKind.ADMIN -> wtf("ede39b9a-a775-4f64-9929-73b1f08b3304")
-                                }, listOf()))
+                            showingModalIfError({askRegina(ReginaGetMyself())}) {myself->
+                                Globus.world.userMaybe = myself.user
+                                Globus.world.replaceNavigate(makeURL(
+                                    when (user().kind) {
+                                        UserKind.CUSTOMER -> pages.uaCustomer.profile
+                                        UserKind.WRITER -> pages.uaWriter.profile
+                                        UserKind.ADMIN -> wtf("ede39b9a-a775-4f64-9929-73b1f08b3304")
+                                    }, listOf()))
+                            }
                         }
                     ))
                 }
@@ -85,6 +89,25 @@ fun renderProfile(user: UserRTO, opts: UserRTORenderingOptions = UserRTORenderin
             o- m.col(3, fields.signUpFirstName.title, user.firstName, contentClassName = opts.outlineFirstName.then{css.redOutline})
             o- m.col(3, fields.signUpLastName.title, user.lastName, contentClassName = opts.outlineLastName.then{css.redOutline})
             o- m.col(3, fields.profilePhone.title, user.profilePhone, contentClassName = opts.outlinePhone.then{css.redOutline})
+        }
+
+        if (user.kind == UserKind.WRITER) {
+            o- m.row{o->
+                o- m.col(12, fields.writerDocumentCategories.title){o->
+                    if (user.allDocumentCategories) {
+                        o- fconst.text.inAnyCategory
+                    } else {
+                        o- hor3(style = Style(flexWrap = "wrap"), gapSide = HorGapSide.RIGHT){o->
+                            for (cat in user.documentCategories) {
+                                o- kdiv{o->
+                                    o- ki(className = fa.caretRight.className, baseStyle = Style(marginRight = "0.5rem"))
+                                    o- cat.pathTitle
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         if (user.aboutMe.isNotBlank())

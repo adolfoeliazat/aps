@@ -53,9 +53,12 @@ object Spew {
     }
 
     @JvmStatic fun main(args: Array<String>) {
-        for (f in listOf(File(const.file.APS_HOME + "/front/src/aps/front/Checkbox.kt"))) {
+        val frontFiles = listOf("Checkbox.kt")
+        val allPaths = frontFiles.map {const.file.APS_HOME + "/front/src/aps/front/$it"}
+        for (path in allPaths) {
             object {
-                val fileText = f.readText()
+                val file = File(path)
+                val fileText = file.readText()
                 var pos = 0
                 val output = StringBuilder()
 
@@ -63,8 +66,8 @@ object Spew {
                     parseFile()
                     val newCode = output.toString()
                     File("${const.file.APS_TEMP}/fuck.kt").writeText(newCode)
-                    backup(f)
-                    f.writeText(newCode)
+                    backup(file)
+                    file.writeText(newCode)
                 }
 
                 fun parseFile() {

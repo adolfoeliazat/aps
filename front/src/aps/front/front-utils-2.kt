@@ -165,6 +165,19 @@ typealias SFUnit = suspend () -> Unit
 
 fun renderBottomPageSpace() = kdiv(height = "3rem")
 
+inline suspend fun <reified Meat> showingModalIfError(noinline requestShit: suspend () -> FormResponse2<Meat>, noinline block: suspend (Meat) -> Unit): Boolean {
+    val res = requestShit()
+    return when (res) {
+        is FormResponse2.Shitty<*> -> {
+            openErrorModal(res.error)
+            false
+        }
+        is FormResponse2.Hunky<*> -> {
+            block(res.meat as Meat) // Checked because of `reified`
+            true
+        }
+    }
+}
 
 
 

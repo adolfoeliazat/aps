@@ -73,6 +73,10 @@ object fconst {
         val up = 38
         val down = 40
     }
+
+    object text {
+        val inAnyCategory = t("TOTE", "В любых, я умный шописец")
+    }
 }
 
 

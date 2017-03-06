@@ -289,6 +289,10 @@ class ObjectRequest : RequestMatumba() {
     class Response(val root: UADocumentCategoryRTO) : CommonResponseFieldsImpl()
 }
 
+@Ser class ReginaGetMyself {
+    class Response(val user: UserRTO) : CommonResponseFieldsImpl()
+}
+
 
 
 
