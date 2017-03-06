@@ -1,12 +1,11 @@
 package aps
 
+import aps.back.*
 import into.kommon.*
 import org.jetbrains.kotlin.cli.jvm.K2JVMCompiler
 import java.io.File
-import javax.script.Invocable
-import javax.script.ScriptContext
+import java.time.LocalDateTime
 import javax.script.ScriptEngineManager
-import javax.script.SimpleBindings
 import kotlin.properties.Delegates.notNull
 
 object Spew {
@@ -25,6 +24,7 @@ object Spew {
         fun spewTestFiddlers(type: String) {
             clog("Spewing test fiddlers for $type")
             out("""
+                // pizda 2
                 suspend fun setValue(field: TestRef<CheckboxFieldSpec>, value: Boolean, subscript: Any? = null) {
                     setValue(FieldSpecToCtrlKey[field.it], value, subscript)
                 }
@@ -61,7 +61,10 @@ object Spew {
 
                 init {
                     parseFile()
-                    File("c:/tmp/fuck.kt").writeText(output.toString())
+                    val newCode = output.toString()
+                    File("${const.file.APS_TEMP}/fuck.kt").writeText(newCode)
+                    backup(f)
+                    f.writeText(newCode)
                 }
 
                 fun parseFile() {
@@ -81,8 +84,8 @@ object Spew {
                 fun readToken(): Token {
                     if (pos > fileText.lastIndex) return Token.EOF("")
                     val restText = fileText.substring(pos)
-                    Regex("^[ \\t]*//// ----\\r?\\n").find(restText)?.let {return Token.ScriptEnd(it.value)}
-                    Regex("^[ \\t]*//// ====\\r?\\n").find(restText)?.let {return Token.GeneratedShitEnd(it.value)}
+                    Regex("^[ \\t]*//// -----\\r?\\n").find(restText)?.let {return Token.ScriptEnd(it.value)}
+                    Regex("^[ \\t]*//// =====\\r?\\n").find(restText)?.let {return Token.GeneratedShitEnd(it.value)}
                     "////".let {if (restText.startsWith(it)) return Token.ScriptStart(it)}
                     return Token.LittleMotherfucker(restText.substring(0, 1))
                 }
@@ -120,18 +123,37 @@ object Spew {
                     val engine = ScriptEngineManager().getEngineByExtension("kts")!!
                     clog("Engine: $engine")
 
+                    engine.eval("// Print all your dumb warnings, which we don't give a fuck about")
+                    clog(); clog(); clog(); clog()
+
                     scriptContext = SpewScriptContext(output, indent)
                     engine.eval("""
                         val ctx = ${Spew::class.qualifiedName}.scriptContext
                         $script
                     """)
 
-                    output += " ".repeat(indent)  + "// Here is some generated shit for you\n"
-
                     while (readToken() is Token.LittleMotherfucker) { // Skipping previously generated shit
                         slurp<Token.LittleMotherfucker>().text
                     }
                     output += slurp<Token.GeneratedShitEnd>().text
+                }
+
+                fun backup(file: File) {
+                    check(file.path.startsWith(const.file.APS_HOME)){"9911cfc6-6435-4a54-aa74-ad492162181a"}
+
+                    val stamp = LocalDateTime.now().format(PG_LOCAL_DATE_TIME).replace(Regex("[ :\\.]"), "-")
+                    val outPath = (
+                        const.file.APS_TEMP + "/spew-bak/" +
+                            file.path
+                                .substring(const.file.APS_HOME.length)
+                                .replace("\\", "/")
+                                .replace(Regex("^/"), "")
+                                .replace("/", "--")
+                            + "----$stamp"
+                        )
+
+                    clog("Backing up: $outPath")
+                    File(outPath).writeText(file.readText())
                 }
             }
         }
@@ -139,6 +161,8 @@ object Spew {
         clog("We good")
     }
 }
+
+
 
 
 

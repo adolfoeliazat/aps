@@ -164,18 +164,17 @@ fun jsFacing_Checkbox(def: dynamic, key: CheckboxKey? = null): dynamic {
 }
 
 object tcheckbox {
-    //// println("Holy shit, I'm being evaluated like crazy..."); ctx.spewTestFiddlers(type = "Checkbox")
-    //// ----
-    //// ====
-
+    //// ctx.spewTestFiddlers(type = "Checkbox")
+    //// -----
+    // pizda 2
     suspend fun setValue(field: TestRef<CheckboxFieldSpec>, value: Boolean, subscript: Any? = null) {
         setValue(FieldSpecToCtrlKey[field.it], value, subscript)
     }
-
+    
     suspend fun setValue(key: TestRef<CheckboxKey>, value: Boolean, subscript: Any? = null) {
         setValue(key.it, value, subscript)
     }
-
+    
     private suspend fun setValue(key: CheckboxKey, value: Boolean, subscript: Any?) {
         val target = Checkbox.instance(if (subscript == null) key
                                        else SubscriptCheckboxKey(key, subscript))
@@ -184,10 +183,8 @@ object tcheckbox {
         }
         target.testSetValue(value)
     }
+    //// =====
 }
-
-
-
 
 
 
