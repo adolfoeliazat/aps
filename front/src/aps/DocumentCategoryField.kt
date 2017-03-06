@@ -447,10 +447,10 @@ class Selena(initialValue: UADocumentCategoryRTO, pickerKey: SelenaPickerKey) : 
     }
 }
 
-class SelenaTester private constructor (val pickerKey: SelenaPickerKey, val aid: String) {
+class SelenaPickerTester private constructor (val pickerKey: SelenaPickerKey, val aid: String) {
     companion object {
-        fun new(field: TestRef<DocumentCategoryFieldSpec>, aid: String) = SelenaTester(FieldSpecToCtrlKey[field.it], aid)
-        fun new(field: TestRef<DocumentCategorySetFieldSpec>, aid: String) = SelenaTester(FieldSpecToCtrlKey[field.it], aid)
+        fun new(field: TestRef<DocumentCategoryFieldSpec>, aid: String) = SelenaPickerTester(FieldSpecToCtrlKey[field.it], aid)
+        fun new(field: TestRef<DocumentCategorySetFieldSpec>, aid: String) = SelenaPickerTester(FieldSpecToCtrlKey[field.it], aid)
     }
 
     private val assert = SerialAsserter(aid)
@@ -478,16 +478,6 @@ class SelenaTester private constructor (val pickerKey: SelenaPickerKey, val aid:
 
     private suspend fun sendSpecialKey(keyCode: Int) {
         SelenaPicker.instance(pickerKey).testSendSpecialKey(keyCode)
-    }
-
-    suspend fun setAllCheck(value: Boolean, expectingLongOperation: Boolean = false) {
-        val action: SFUnit = {tcheckbox.setValue(checkboxes.allCategories_testRef, value)}
-        if (expectingLongOperation) {
-            seq.halfway_done(action, aid = assert.nextAID())
-        } else {
-            action()
-            assert()
-        }
     }
 }
 

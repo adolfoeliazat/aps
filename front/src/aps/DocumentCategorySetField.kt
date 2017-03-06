@@ -116,6 +116,16 @@ class DocumentCategorySetFieldTester(aid: String) {
         tkic.mouseEnterClick(kics.delete_testRef, subscript)
         assert()
     }
+
+    suspend fun setAllCheck(value: Boolean, expectingLongOperation: Boolean = false) {
+        val action: SFUnit = {tcheckbox.setValue(checkboxes.allCategories_testRef, value)}
+        if (expectingLongOperation) {
+            seq.halfway_done(action, aid = assert.nextAID())
+        } else {
+            action()
+            assert()
+        }
+    }
 }
 
 

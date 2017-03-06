@@ -93,7 +93,7 @@ data class CommonFields(
                indexes = arrayOf(Index(columnList = "user_email")))
 class User(
     @Embedded var user: UserFields,
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user") var documentCategorySubscriptions: MutableList<UserTimesDocumentCategory> = mutableListOf()
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = arrayOf(CascadeType.ALL), orphanRemoval = true) var documentCategorySubscriptions: MutableList<UserTimesDocumentCategory> = mutableListOf()
 )
     : MeganItem<UserRTO>, ClitoralEntity0()
 {
@@ -215,7 +215,7 @@ interface UserParamsHistoryItemTimesDocumentCategoryRepository : CrudRepository<
 class UserParamsHistoryItem(
     @Embedded var history: HistoryFields,
     @Embedded var entity: UserFields,
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "historyItem") var documentCategorySubscriptions: MutableList<UserParamsHistoryItemTimesDocumentCategory>
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "historyItem", cascade = arrayOf(CascadeType.ALL), orphanRemoval = true) var documentCategorySubscriptions: MutableList<UserParamsHistoryItemTimesDocumentCategory>
 )
     : ClitoralEntity0(), MeganItem<UserParamsHistoryItemRTO>
 {

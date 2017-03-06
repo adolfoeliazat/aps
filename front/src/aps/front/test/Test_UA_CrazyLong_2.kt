@@ -34,7 +34,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
     val filesShortcutMode1 = FilesShortcutMode.B
 //    val startPoint = 1
-    val startPoint = 10 // 14 // 9 // 12
+    val startPoint = 12 // 14 // 9 // 12
     init {
 //        TestGlobal.describeStateConfig = DescribeStateConfig(showBanners = true, autoResumeAfterMs = null)
 //        TestGlobal.describeStateConfig = DescribeStateConfig(showBanners = true, autoResumeAfterMs = 2000)
@@ -404,7 +404,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 seq.button_modal(buttons.editStoreParams_testRef, "f770dff2-b2df-4231-810b-7596b2c6ace2")
 
                 run { // Choose document category
-                    val st = SelenaTester.new(aid = "13359364-450b-4f47-b2fb-b0a4d1993a8a", field = fields.uaDocumentCategory_testRef)
+                    val st = SelenaPickerTester.new(aid = "13359364-450b-4f47-b2fb-b0a4d1993a8a", field = fields.uaDocumentCategory_testRef)
                     st.ellipsisButton()
                     st.searchValue("пр")
                     st.searchValue("пр0")
@@ -450,48 +450,47 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 inputSetValue(fields.profilePhone_testRef, "+38 (099) 432-54-55")
 
                 run { // Fuck around with categories
-                    val st = SelenaTester.new(aid = "2ae43628-de08-48bf-a584-2999fd66417c", field = fields.writerDocumentCategories_testRef)
+                    val ct = DocumentCategorySetFieldTester("adf38062-0e75-46ca-a41d-f1ee5c10301a")
+                    val pt = SelenaPickerTester.new(aid = "2ae43628-de08-48bf-a584-2999fd66417c", field = fields.writerDocumentCategories_testRef)
+
                     // ___animateShitSlowly()
-                    st.setAllCheck(false, expectingLongOperation = true)
+                    ct.setAllCheck(false, expectingLongOperation = true)
 
-                    st.searchValue("ко")
-                    st.specialKey(fconst.keyCode.down)
-                    st.specialKey(fconst.keyCode.enter)
-                    st.setAllCheck(true)
-                    st.setAllCheck(false)
+                    pt.searchValue("ко")
+                    pt.specialKey(fconst.keyCode.down)
+                    pt.specialKey(fconst.keyCode.enter)
+                    ct.setAllCheck(true)
+                    ct.setAllCheck(false)
 
-                    st.searchValue("ж")
-                    st.specialKey(fconst.keyCode.down, times = 10)
-                    st.specialKeyThenAnimation(fconst.keyCode.enter)
-                    st.specialKey(fconst.keyCode.up, times = 4)
-                    st.specialKey(fconst.keyCode.down, times = 4)
-                    st.specialKey(fconst.keyCode.enter)
-                    st.specialKey(fconst.keyCode.down, times = 7)
-                    st.specialKey(fconst.keyCode.enter)
-                    st.searchValue("прог")
-                    st.specialKey(fconst.keyCode.down, times = 1)
-                    st.specialKey(fconst.keyCode.enter)
-                    st.searchValue("пс")
-                    st.specialKey(fconst.keyCode.down, times = 2)
-                    st.specialKey(fconst.keyCode.enter)
-                    st.specialKey(fconst.keyCode.up, times = 1)
-                    st.specialKey(fconst.keyCode.enter)
+                    pt.searchValue("ж")
+                    pt.specialKey(fconst.keyCode.down, times = 10)
+                    pt.specialKeyThenAnimation(fconst.keyCode.enter)
+                    pt.specialKey(fconst.keyCode.up, times = 4)
+                    pt.specialKey(fconst.keyCode.down, times = 4)
+                    pt.specialKey(fconst.keyCode.enter)
+                    pt.specialKey(fconst.keyCode.down, times = 7)
+                    pt.specialKey(fconst.keyCode.enter)
+                    pt.searchValue("прог")
+                    pt.specialKey(fconst.keyCode.down)
+                    pt.specialKey(fconst.keyCode.enter)
+                    pt.searchValue("пс")
+                    pt.specialKey(fconst.keyCode.down, times = 2)
+                    pt.specialKey(fconst.keyCode.enter)
+                    pt.specialKey(fconst.keyCode.up)
+                    pt.specialKey(fconst.keyCode.enter)
 
-                    DocumentCategorySetFieldTester("adf38062-0e75-46ca-a41d-f1ee5c10301a").let {
-                        it.clickDelete(145L)
-                        it.clickDelete(42L)
-                        it.clickDelete(46L)
-                    }
+                    ct.clickDelete(145L)
+                    ct.clickDelete(42L)
+                    ct.clickDelete(46L)
 
-                    st.searchValue("диз")
-                    st.specialKey(fconst.keyCode.down, times = 1)
-                    st.specialKey(fconst.keyCode.enter)
+                    pt.searchValue("диз")
+                    pt.specialKey(fconst.keyCode.down)
+                    pt.specialKey(fconst.keyCode.enter)
                 }
 
                 scrollBodyToBottomGradually()
                 inputSetValue(fields.aboutMe_testRef, "О себе? Вы че, охренели там? Я Кафка. Кафка я, ебаный Франц, бля! Уроды...")
                 seq.submitForm("0747ffeb-2906-4a94-8e45-8d24d92b9abf")
-                ___stopHereAndEverywhereAfter()
             }
         }
 
@@ -519,14 +518,20 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
             run { // Kafka changes his profile
                 bootWriterWithTokenToProfilePage("kafka", sessionIndex.kafka3, "c896ce76-1483-4da7-9ebf-2504a87e18d5")
                 inputSetValue(fields.profilePhone_testRef, "+38 (099) 432-54-75")
-                ___stopHereAndEverywhereAfter()
+
+                val ct = DocumentCategorySetFieldTester("84bc9bee-8606-47e3-9fa8-9fb41036ac4e")
+                val pt = SelenaPickerTester.new(aid = "77ef2ea9-8fed-4c35-8f60-5b5315be9e59", field = fields.writerDocumentCategories_testRef)
+                ct.clickDelete(123L)
+                pt.searchValue("ауд")
+                pt.specialKey(fconst.keyCode.down)
+                pt.specialKey(fconst.keyCode.enter)
+
                 seq.submitForm("cdeb7efb-d98f-4a8d-91d7-2f8c3a817bfd")
             }
 
             run { // Admin looks at profile change history
                 bootAdmin_openWriterToApprove(sessionIndex.dasja5, 3L, "21af756c-20b0-48be-89a5-7b0c2e1654b8")
                 seq.halfway_done({buttonClick(buttons.history_testRef)}, "84837274-ff9a-4ae8-81ae-566685fe87fc")
-                // ___showStateDescriptions()
                 testCompareBelow(subscript = 9L, stateDescr = "Diff: states, phones", aid = "ed3da430-f954-4c31-b923-0a60c6276b54")
                 if (!skipLengthyStuff) {
                     testCompareBelow(scrollTop = 381, subscript = 8L, stateDescr = "Diff: states", aid = "95099fb6-44bd-4991-b869-32b276790fdf")
@@ -537,7 +542,6 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                     testCompareBelow(scrollTop = 1740, subscript = 3L, stateDescr = "Diff: state, phone, about me", aid = "ecc07cbe-e6b0-437c-b54e-21e326680072")
                 }
                 seq.halfway_done({buttonClick(buttons.back_testRef)}, "fa9cb012-92d4-4f28-a451-af5faf5a2fd7")
-                // ___stopHereAndEverywhereAfter()
                 seq.halfway_modal_closed(action = {buttonClick(buttons.compare_testRef)},
                                          modalAction = {
                                              describeState("Phone was changed")
@@ -585,6 +589,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
         burgerKicClick(subscript = subscript, aid = "$aid--1")
         sleep(100)
         step({linkClick(links.compareBelow_testRef, subscript = subscript)}, TestGlobal.modalShownLock, "$aid--2")
+        ___stopHereAndEverywhereAfter()
         describeState(stateDescr)
         tmodal.closeWaiting()
     }

@@ -34,17 +34,21 @@ fun ReginaLoadUser.serve(): ReginaLoadUser.Response {
                                 }
                                 is DocumentCategorySetFieldValue.Specific -> {
                                     o.user.subscribedToAllCategories = false
+                                    user.documentCategorySubscriptions.clear()
                                     for (cat in subs.categories) {
-                                        userTimesDocumentCategoryRepo.save(UserTimesDocumentCategory(
-                                            user = user,
-                                            category = uaDocumentCategoryRepo.findOrDie(cat.id)))
+                                        user.documentCategorySubscriptions.add(
+                                            userTimesDocumentCategoryRepo.save(UserTimesDocumentCategory(
+                                                user = user,
+                                                category = uaDocumentCategoryRepo.findOrDie(cat.id)
+                                            ))
+                                        )
                                     }
                                 }
                             }
                             o.user.state = UserState.PROFILE_APPROVAL_PENDING
                         }
                     }
-                    UpdateProfileRequest.Response(userRepo.findOrDie(user.id!!).toRTO(searchWords = listOf()))
+                    UpdateProfileRequest.Response()
                 }
             }
         ))
