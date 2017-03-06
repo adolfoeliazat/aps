@@ -3,7 +3,10 @@ package aps
 import into.kommon.*
 import org.jetbrains.kotlin.cli.jvm.K2JVMCompiler
 import java.io.File
+import javax.script.Invocable
+import javax.script.ScriptContext
 import javax.script.ScriptEngineManager
+import javax.script.SimpleBindings
 import kotlin.properties.Delegates.notNull
 
 object Spew {
@@ -15,6 +18,40 @@ object Spew {
         class EOF(text: String) : Token(text)
     }
 
+    var scriptContext by notNull<SpewScriptContext>()
+
+    class SpewScriptContext(val output: StringBuilder, val indent: Int) {
+        @Suppress("Unused")
+        fun spewTestFiddlers(type: String) {
+            clog("Spewing test fiddlers for $type")
+            out("""
+                suspend fun setValue(field: TestRef<CheckboxFieldSpec>, value: Boolean, subscript: Any? = null) {
+                    setValue(FieldSpecToCtrlKey[field.it], value, subscript)
+                }
+
+                suspend fun setValue(key: TestRef<CheckboxKey>, value: Boolean, subscript: Any? = null) {
+                    setValue(key.it, value, subscript)
+                }
+
+                private suspend fun setValue(key: CheckboxKey, value: Boolean, subscript: Any?) {
+                    val target = Checkbox.instance(if (subscript == null) key
+                                                   else SubscriptCheckboxKey(key, subscript))
+                    if (target is Control2) {
+                        target.hand()
+                    }
+                    target.testSetValue(value)
+                }
+            """)
+        }
+
+        fun out(src: String) {
+            var s = dedent(src)
+            s = reindent(indent, s)
+            if (!s.endsWith("\n")) s += "\n"
+            output += s
+        }
+    }
+
     @JvmStatic fun main(args: Array<String>) {
         for (f in listOf(File(const.file.APS_HOME + "/front/src/aps/front/Checkbox.kt"))) {
             object {
@@ -24,7 +61,7 @@ object Spew {
 
                 init {
                     parseFile()
-                    // println(output)
+                    File("c:/tmp/fuck.kt").writeText(output.toString())
                 }
 
                 fun parseFile() {
@@ -34,7 +71,7 @@ object Spew {
                             is Token.ScriptStart -> parseScript()
                             is Token.EOF -> break@fucking
                             else -> {
-                                println("Shit at position: [${fileText.substring(pos, pos + 10)}]")
+                                clog("Shit at position: [${fileText.substring(pos, pos + 10)}]")
                                 wtf("ca8c26bb-2d28-4e1c-94fa-342a2a4611aa")
                             }
                         }
@@ -78,11 +115,17 @@ object Spew {
                     val indent = endText.length - endText.trimStart().length
                     val script = scriptBuf.toString()
 
-                    println("Executing script: [$script]")
+                    clog("Executing script: [$script]")
                     K2JVMCompiler.main(arrayOf("-version")) // XXX Without this it shits with "Failed to initialize native filesystem for Windows"
                     val engine = ScriptEngineManager().getEngineByExtension("kts")!!
-                    println("Engine: $engine")
-                    engine.eval(script)
+                    clog("Engine: $engine")
+
+                    scriptContext = SpewScriptContext(output, indent)
+                    engine.eval("""
+                        val ctx = ${Spew::class.qualifiedName}.scriptContext
+                        $script
+                    """)
+
                     output += " ".repeat(indent)  + "// Here is some generated shit for you\n"
 
                     while (readToken() is Token.LittleMotherfucker) { // Skipping previously generated shit
@@ -93,7 +136,7 @@ object Spew {
             }
         }
 
-        println("We good")
+        clog("We good")
     }
 }
 

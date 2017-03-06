@@ -164,7 +164,7 @@ fun jsFacing_Checkbox(def: dynamic, key: CheckboxKey? = null): dynamic {
 }
 
 object tcheckbox {
-    //// println("Holy shit, I'm being evaluated like crazy...") // spewTestFiddlers(type = "Checkbox")
+    //// println("Holy shit, I'm being evaluated like crazy..."); ctx.spewTestFiddlers(type = "Checkbox")
     //// ----
     //// ====
 
