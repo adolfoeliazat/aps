@@ -93,7 +93,7 @@ fun renderProfile(user: UserRTO, opts: UserRTORenderingOptions = UserRTORenderin
 
         if (user.kind == UserKind.WRITER) {
             o- m.row{o->
-                o- m.col(12, fields.writerDocumentCategories.title){o->
+                o- m.col(12, fields.writerDocumentCategories.title, contentClassName = opts.outlineWriterDocumentCategories.then{css.redOutline}){o->
                     if (user.allDocumentCategories) {
                         o- fconst.text.inAnyCategory
                     } else {
@@ -122,6 +122,7 @@ class UserRTORenderingOptions(
     val outlineState: Boolean = false,
     val outlineFirstName: Boolean = false,
     val outlineLastName: Boolean = false,
+    val outlineWriterDocumentCategories: Boolean = false,
     val adminNotesOptions: RTOWithAdminNotesRenderingOptions = RTOWithAdminNotesRenderingOptions()
 )
 

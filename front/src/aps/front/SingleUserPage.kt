@@ -54,14 +54,24 @@ class SingleUserPage {
                         renderItem = {thisItem, thatItem ->
                             renderUserParamsHistoryItem(thisItem, when {
                                 thatItem == null -> UserRTORenderingOptions()
-                                else -> UserRTORenderingOptions(
-                                    outlinePhone = thisItem.entity.profilePhone != thatItem.entity.profilePhone,
-                                    outlineState = thisItem.entity.state != thatItem.entity.state,
-                                    outlineFirstName = thisItem.entity.firstName != thatItem.entity.firstName,
-                                    outlineLastName = thisItem.entity.lastName != thatItem.entity.lastName,
-                                    outlineAboutMe = thisItem.entity.aboutMe != thatItem.entity.aboutMe,
-                                    adminNotesOptions = RTOWithAdminNotesRenderingOptions.fromComparedPair(thisItem.entity, thatItem.entity)
-                                )}
+                                else -> {
+                                    val a = thisItem.entity
+                                    val b = thatItem.entity
+                                    UserRTORenderingOptions(
+                                        outlinePhone = a.profilePhone != b.profilePhone,
+                                        outlineState = a.state != b.state,
+                                        outlineFirstName = a.firstName != b.firstName,
+                                        outlineLastName = a.lastName != b.lastName,
+                                        outlineAboutMe = a.aboutMe != b.aboutMe,
+                                        outlineWriterDocumentCategories = when {
+                                            a.allDocumentCategories != b.allDocumentCategories -> true
+                                            a.allDocumentCategories -> false
+                                            else -> a.documentCategories.map {it.id}.toSet() != b.documentCategories.map {it.id}.toSet()
+                                        },
+                                        adminNotesOptions = RTOWithAdminNotesRenderingOptions.fromComparedPair(a, b)
+                                    )
+                                }
+                            }
                             )
                         },
                         sendHistoryItemsRequest = {req-> sendGetUserParamsHistoryItems(req)},

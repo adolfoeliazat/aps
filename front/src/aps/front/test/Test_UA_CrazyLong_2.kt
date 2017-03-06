@@ -589,7 +589,6 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
         burgerKicClick(subscript = subscript, aid = "$aid--1")
         sleep(100)
         step({linkClick(links.compareBelow_testRef, subscript = subscript)}, TestGlobal.modalShownLock, "$aid--2")
-        ___stopHereAndEverywhereAfter()
         describeState(stateDescr)
         tmodal.closeWaiting()
     }
