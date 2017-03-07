@@ -11,5 +11,10 @@ package aps
 import aps.*
 
 @Generated @Ser class MirandaImposeNextGeneratedPassword(val password: String)
+@Generated class MirandaImposeNextGeneratedPassword_Response(val value: Unit) : CommonResponseFieldsImpl()
 @Generated @Ser class MirandaImposeNextGeneratedUserToken(val token: String)
+@Generated class MirandaImposeNextGeneratedUserToken_Response(val value: Unit) : CommonResponseFieldsImpl()
 @Generated @Ser class MirandaImposeNextOrderID(val id: Long)
+@Generated class MirandaImposeNextOrderID_Response(val value: Unit) : CommonResponseFieldsImpl()
+@Generated @Ser class MirandaGetGeneratedTestTimestamps()
+@Generated class MirandaGetGeneratedTestTimestamps_Response(val value: List<String>) : CommonResponseFieldsImpl()

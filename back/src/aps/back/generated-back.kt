@@ -10,12 +10,15 @@ package aps.back
 
 import aps.*
 
-@Generated fun MirandaImposeNextGeneratedPassword.serve() {
-    mirandaImposeNextGeneratedPassword(password = this.password)
+@Generated fun MirandaImposeNextGeneratedPassword.serve(): MirandaImposeNextGeneratedPassword_Response {
+    return MirandaImposeNextGeneratedPassword_Response(mirandaImposeNextGeneratedPassword(password = this.password))
 }
-@Generated fun MirandaImposeNextGeneratedUserToken.serve() {
-    mirandaImposeNextGeneratedUserToken(token = this.token)
+@Generated fun MirandaImposeNextGeneratedUserToken.serve(): MirandaImposeNextGeneratedUserToken_Response {
+    return MirandaImposeNextGeneratedUserToken_Response(mirandaImposeNextGeneratedUserToken(token = this.token))
 }
-@Generated fun MirandaImposeNextOrderID.serve() {
-    mirandaImposeNextOrderID(id = this.id)
+@Generated fun MirandaImposeNextOrderID.serve(): MirandaImposeNextOrderID_Response {
+    return MirandaImposeNextOrderID_Response(mirandaImposeNextOrderID(id = this.id))
+}
+@Generated fun MirandaGetGeneratedTestTimestamps.serve(): MirandaGetGeneratedTestTimestamps_Response {
+    return MirandaGetGeneratedTestTimestamps_Response(mirandaGetGeneratedTestTimestamps())
 }

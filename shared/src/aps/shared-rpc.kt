@@ -248,9 +248,6 @@ class ObjectRequest : RequestMatumba() {
 
 
 
-@Ser class MirandaGetGeneratedTestTimestamps {
-    class Response(val list: List<String>) : CommonResponseFieldsImpl()
-}
 
 @Ser sealed class What(val hack: Int = -1) {  // TODO:vgrechka Get rid of shit shit, just use MirandaSeedStuff1
 }

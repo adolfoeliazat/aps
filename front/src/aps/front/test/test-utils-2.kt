@@ -167,7 +167,7 @@ class TestShit {
 
     val _timestamps by lazy{async{
         // GenerateTimestamps.kt
-        val list = askMiranda(MirandaGetGeneratedTestTimestamps()).list
+        val list = mirandaGetGeneratedTestTimestamps()
 //        for (i in 1..list.lastIndex) {
 //            check(list[i - 1] < list[i]) {"Stamp ${i - 1} (${list[i - 1]}) is not before $i (${list[i]})"}
 //        }

@@ -100,12 +100,25 @@ object Spew {
                 fname.startsWith("miranda") -> {
                     clog("Generating Miranda function stub/skeleton for $fname")
                     val sharedParamsClassName = fname.capitalize()
-                    val sharedResponseClassName = "GenericResponse"
+
+                    val declaredReturnType = function.typeReference?.node?.chars
+                    val returnType = when {
+                        declaredReturnType == null -> {
+                            if (!function.hasBlockBody()) wtf("No expression-body @Remote functions, please. I'm not going to guess your fucking types")
+                            "Unit"
+                        }
+                        else -> declaredReturnType
+                    }
+                    val sharedResponseClassName = "${sharedParamsClassName}_Response"
 
                     val paramsText = function.valueParameterList?.node?.chars?.toString() ?: wtf("d1e169a7-6502-4fae-bdd6-30ed3d32ea17")
-                    val sharedFuckers = paramsText.replace("(", "(val ").replace(",", ", val ")
+                    val sharedFuckers = when {
+                        function.valueParameterList!!.parameters.isEmpty() -> "()"
+                        else -> paramsText.replace("(", "(val ").replace(",", ", val ")
+                    }
                     shitShared("""
                         @Generated @Ser class $sharedParamsClassName$sharedFuckers
+                        @Generated class $sharedResponseClassName(val value: $returnType) : CommonResponseFieldsImpl()
                     """)
 
                     val frontFuckers1 = function.valueParameters
@@ -115,15 +128,15 @@ object Spew {
                         .map {"${it.name} = ${it.name}"}
                         .joinToString(", ")
                     shitFront("""
-                        @Generated suspend fun $fname($frontFuckers1): $sharedResponseClassName = _askMiranda($sharedParamsClassName($frontFuckers2))
+                        @Generated suspend fun $fname($frontFuckers1): $returnType = _askMiranda<$sharedResponseClassName>($sharedParamsClassName($frontFuckers2)).value
                     """)
 
                     val backFuckers = function.valueParameters
                         .map {"${it.name} = this.${it.name}"}
                         .joinToString(", ")
                     shitBack("""
-                        @Generated fun $sharedParamsClassName.serve() {
-                            $fname($backFuckers)
+                        @Generated fun $sharedParamsClassName.serve(): $sharedResponseClassName {
+                            return $sharedResponseClassName($fname($backFuckers))
                         }
                     """)
                 }

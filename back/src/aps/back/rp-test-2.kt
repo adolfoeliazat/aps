@@ -186,12 +186,26 @@ private fun snapshotFileNameBase(snapshotName: String) =
 
 annotation class Remote
 
-@Remote fun mirandaImposeNextGeneratedPassword(password: String) = TestServerFiddling.nextGeneratedPassword.set(password)
-@Remote fun mirandaImposeNextGeneratedUserToken(token: String) = TestServerFiddling.nextGeneratedUserToken.set(token)
-@Remote fun mirandaImposeNextOrderID(id: Long) = TestServerFiddling.nextOrderID.set(id)
+@Remote fun mirandaImposeNextGeneratedPassword(password: String) {
+    TestServerFiddling.nextGeneratedPassword.set(password)
+}
 
-fun MirandaGetGeneratedTestTimestamps.serve(): MirandaGetGeneratedTestTimestamps.Response {
-    return MirandaGetGeneratedTestTimestamps.Response(generateTestTimestamps("2014-03-02 04:32:11"))
+@Remote fun mirandaImposeNextGeneratedUserToken(token: String) {
+    TestServerFiddling.nextGeneratedUserToken.set(token)
+}
+
+@Remote fun mirandaImposeNextOrderID(id: Long) {
+    TestServerFiddling.nextOrderID.set(id)
+}
+
+@Remote fun mirandaGetGeneratedTestTimestamps(): List<String> {
+    val startingFrom = "2014-03-02 04:32:11"
+    val count = 10000
+    val seq = RandomInstantSequence(startingFrom)
+    return (1..count).map {
+        PG_LOCAL_DATE_TIME.format(seq.current
+                                      .also {seq.advance()})
+    }
 }
 
 fun MirandaSeedSomeShit.serve(): MirandaSeedSomeShit.Response {
