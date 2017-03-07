@@ -14,3 +14,4 @@ import aps.*
 @Generated suspend fun mirandaImposeNextGeneratedUserToken(token:String): Unit = _askMiranda<MirandaImposeNextGeneratedUserToken_Response>(MirandaImposeNextGeneratedUserToken(token = token)).value
 @Generated suspend fun mirandaImposeNextOrderID(id:Long): Unit = _askMiranda<MirandaImposeNextOrderID_Response>(MirandaImposeNextOrderID(id = id)).value
 @Generated suspend fun mirandaGetGeneratedTestTimestamps(): List<String> = _askMiranda<MirandaGetGeneratedTestTimestamps_Response>(MirandaGetGeneratedTestTimestamps()).value
+@Generated suspend fun mirandaSeedSomeStuff1(): Unit = _askMiranda<MirandaSeedSomeStuff1_Response>(MirandaSeedSomeStuff1()).value

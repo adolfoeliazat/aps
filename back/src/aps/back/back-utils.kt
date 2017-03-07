@@ -82,7 +82,8 @@ fun hashPassword(clearText: String): String = BCrypt.hashpw(clearText, BCrypt.ge
 
 
 val requestUserMaybe get() = RequestGlobus.procedureCtx.user
-val requestUser get() = requestUserMaybe!!
+val requestUserEntity get() = requestUserMaybe!!
+val requestUser get() = requestUserEntity.user
 
 fun isAdmin() = requestUserMaybe?.user?.kind == UserKind.ADMIN
 

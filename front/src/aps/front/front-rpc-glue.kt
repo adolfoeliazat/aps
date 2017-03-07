@@ -50,8 +50,6 @@ suspend fun send(req: UADownloadOrderFileRequest): FormResponse2<DownloadFileRes
 suspend fun send(req: UACustomerSendOrderDraftForApprovalRequest): FormResponse2<UACustomerSendOrderDraftForApprovalRequest.Response> = _send3(req)
 suspend fun send(req: UAAdminGetStuffToDoRequest): FormResponse2<UAAdminGetStuffToDoRequest.Response> = _send3(req)
 
-suspend fun askMiranda(p: MirandaSeedSomeShit): MirandaSeedSomeShit.Response = _askMiranda(p)
-
 suspend fun askRegina(p: Any): FormResponse2<*> = _askRegina<Any>(p)
 suspend fun askRegina(p: ReginaAdminSendOrderToStore): FormResponse2<ReginaAdminSendOrderToStore.Response> = _askRegina(p)
 suspend fun askRegina(p: ReginaLoadUser): FormResponse2<ReginaLoadUser.Response> = _askRegina(p)

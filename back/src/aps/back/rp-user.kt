@@ -151,7 +151,7 @@ fun ReginaLoadUser.serve(): ReginaLoadUser.Response {
 }
 
 fun ReginaAcceptProfile.serve(): ReginaAcceptProfile.Response {
-    check(requestUser.user.kind == UserKind.ADMIN){"0efef8d0-8598-4056-ba55-cd8bb1910cb8"}
+    check(requestUserEntity.user.kind == UserKind.ADMIN){"0efef8d0-8598-4056-ba55-cd8bb1910cb8"}
     // TODO:vgrechka Security
     userRepo.findOrDie(this.userID)-{o->
         check(o.user.state in setOf(UserState.PROFILE_APPROVAL_PENDING)){"7af262c7-2a28-43f8-910a-ccf3569142e9"}

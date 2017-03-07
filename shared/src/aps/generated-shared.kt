@@ -18,3 +18,5 @@ import aps.*
 @Generated class MirandaImposeNextOrderID_Response(val value: Unit) : CommonResponseFieldsImpl()
 @Generated @Ser class MirandaGetGeneratedTestTimestamps()
 @Generated class MirandaGetGeneratedTestTimestamps_Response(val value: List<String>) : CommonResponseFieldsImpl()
+@Generated @Ser class MirandaSeedSomeStuff1()
+@Generated class MirandaSeedSomeStuff1_Response(val value: Unit) : CommonResponseFieldsImpl()

@@ -105,7 +105,7 @@ import java.util.*
     override fun serve() {
         fuckAnyUser(FuckAnyUserParams(
             bpc = bpc,
-            makeRequest = {UAOrderParamsRequest(isAdmin = requestUser.user.kind == UserKind.ADMIN,
+            makeRequest = {UAOrderParamsRequest(isAdmin = requestUserEntity.user.kind == UserKind.ADMIN,
                                                 isUpdate = true)},
             runShit = fun(ctx, req: UAOrderParamsRequest): UAUpdateOrderResponse {
                 // TODO:vgrechka Security
@@ -175,9 +175,9 @@ import java.util.*
                         sha256 = Hashing.sha256().hashBytes(content).toString(),
                         sizeBytes = content.size,
                         content = content,
-                        creator = requestUser,
-                        forCustomerSeenAsFrom = requestUser.user.kind, // TODO:vgrechka ...
-                        forWriterSeenAsFrom = requestUser.user.kind // TODO:vgrechka ...
+                        creator = requestUserEntity,
+                        forCustomerSeenAsFrom = requestUserEntity.user.kind, // TODO:vgrechka ...
+                        forWriterSeenAsFrom = requestUserEntity.user.kind // TODO:vgrechka ...
                     )
                 ))
 
@@ -190,7 +190,7 @@ import java.util.*
 @Servant class ServeUAUpdateOrderFile : BitchyProcedure() {
     override fun serve() {
         fuckAnyUser(FuckAnyUserParams(
-            bpc = bpc, makeRequest = {UAOrderFileParamsRequest(isAdmin = requestUser.user.kind == UserKind.ADMIN,
+            bpc = bpc, makeRequest = {UAOrderFileParamsRequest(isAdmin = requestUserEntity.user.kind == UserKind.ADMIN,
                                                                isUpdate = true)},
             runShit = fun(ctx, req): UAUpdateOrderFileResponse {
                 return checkingAllFieldsRetrieved(req) {
@@ -277,7 +277,7 @@ import java.util.*
 }
 
 fun ReginaCustomerSendOrderForApprovalAfterFixing.serve(): ReginaCustomerSendOrderForApprovalAfterFixing.Response {
-    check(requestUser.user.kind == UserKind.CUSTOMER){"70630d2d-6796-4af8-8ac6-16e09a8b37e1"}
+    check(requestUserEntity.user.kind == UserKind.CUSTOMER){"70630d2d-6796-4af8-8ac6-16e09a8b37e1"}
     // TODO:vgrechka Security
     val order = uaOrderRepo.findOrDie(this.orderID)
     check(order.order.state == UAOrderState.RETURNED_TO_CUSTOMER_FOR_FIXING){"698dd409-f382-45df-9e65-fff590302dd0"}
@@ -286,7 +286,7 @@ fun ReginaCustomerSendOrderForApprovalAfterFixing.serve(): ReginaCustomerSendOrd
 }
 
 fun ReginaAdminSendOrderToStore.serve(): ReginaAdminSendOrderToStore.Response {
-    check(requestUser.user.kind == UserKind.ADMIN){"0af9f1b0-b5fb-4fb2-b3a9-198a0185ee15"}
+    check(requestUserEntity.user.kind == UserKind.ADMIN){"0af9f1b0-b5fb-4fb2-b3a9-198a0185ee15"}
     // TODO:vgrechka Security
 
     val order = uaOrderRepo.findOrDie(this.orderID)
@@ -311,7 +311,7 @@ fun ReginaGetDocumentCategories.serve(): ReginaGetDocumentCategories.Response {
 
 fun ReginaGetMyself.serve(): ReginaGetMyself.Response {
     // TODO:vgrechka Security
-    return ReginaGetMyself.Response(requestUser.toRTO(searchWords = listOf()))
+    return ReginaGetMyself.Response(requestUserEntity.toRTO(searchWords = listOf()))
 }
 
 

@@ -274,6 +274,11 @@ enum class StoreFilter(override val title: String): Titled {
     ALL(t("TOTE", "Все"))
 }
 
+//enum class WriterStoreFilter(override val title: String): Titled {
+//    ALL(t("TOTE", "Все")),
+//    MY_SPECIALIZATION(t("TOTE", "Моя специализация"))
+//}
+
 enum class WriterFileFilter(override val title: String): Titled {
     ALL(t("TOTE", "Все")),
     FROM_ME(t("TOTE", "Мои")),

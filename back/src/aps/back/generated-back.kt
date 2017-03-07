@@ -22,3 +22,6 @@ import aps.*
 @Generated fun MirandaGetGeneratedTestTimestamps.serve(): MirandaGetGeneratedTestTimestamps_Response {
     return MirandaGetGeneratedTestTimestamps_Response(mirandaGetGeneratedTestTimestamps())
 }
+@Generated fun MirandaSeedSomeStuff1.serve(): MirandaSeedSomeStuff1_Response {
+    return MirandaSeedSomeStuff1_Response(mirandaSeedSomeStuff1())
+}

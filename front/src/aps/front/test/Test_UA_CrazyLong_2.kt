@@ -21,20 +21,22 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
     object sessionIndex {
         val ivo1=1; val ivo2=2; val ivo3=3; val ivo4=4; val ivo5=5
         val kafka1=1; val kafka2=2; val kafka3=3
-        val gogol1=1; val gogol2=2;
+        val gogol1=1; val gogol2=2
         val dasja1=1; val dasja2=2; val dasja3=3; val dasja4=4; val dasja5=5; val dasja6=6
     }
 
     enum class FilesShortcutMode { ALL, A, B }
+    val filesShortcutMode1 = FilesShortcutMode.B
 
     object testdata {
         val trialDetails = "Кто-то, по-видимому, оклеветал Йозефа К., потому  что,  не сделав   ничего  дурного,  он  попал  под  арест.\n\nКухарка  его квартирной хозяйки,  фрау  Грубах,  ежедневно  приносившая  ему завтрак около восьми, на этот раз не явилась. Такого случая еще не  бывало. К. немного подождал, поглядел с кровати на старуху, живущую напротив, - она смотрела из окна с  каким-то  необычным для  нее  любопытством - и потом, чувствуя и голод, и некоторое недоумение, позвонил. Тотчас же  раздался  стук,  и  в  комнату вошел  какой-то  человек. К. никогда раньше в этой квартире его не видел."
         val rapunzelDetails = "Одна пара жила по соседству с колдуньей. Однажды беременная жена увидела, что у соседки растёт рапунцель и попросила мужа добыть ей этого лакомства. Муж решил украсть листьев для жены, но колдунья поймала его и разрешила брать у неё рапунцеля сколько угодно в обмен на обещание отдать ей первенца. Когда у жены родилась девочка, колдунья забрала её в падчерицы и назвала Рапунцель."
     }
 
-    val filesShortcutMode1 = FilesShortcutMode.B
-    val startPoint = 1
+//    val startPoint = 1
 //    val startPoint = 10 // 14 // 9 // 12
+    val startPoint = 14
+
     init {
 //        TestGlobal.describeStateConfig = DescribeStateConfig(showBanners = true, autoResumeAfterMs = null)
 //        TestGlobal.describeStateConfig = DescribeStateConfig(showBanners = true, autoResumeAfterMs = 2000)
@@ -576,7 +578,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
         }
 
         definePoint (14) {
-            askMiranda(MirandaSeedSomeShit(Stuff1()))
+            mirandaSeedSomeStuff1()
             bootWriterWithToken("gogol", sessionIndex.gogol2, makeURL(pages.uaWriter.store, listOf()), aid = "8ce00463-19a8-4239-a113-7cd1d2255189")
             ___stopEverywhere()
         }

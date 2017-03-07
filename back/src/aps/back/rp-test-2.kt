@@ -208,34 +208,29 @@ annotation class Remote
     }
 }
 
-fun MirandaSeedSomeShit.serve(): MirandaSeedSomeShit.Response {
-    exhaustive/when (what) {
-        is Stuff1 -> {
-            val vit = userRepo.save(User(UserFields(
-                firstName = "Tony", lastName = "De Vit", email = "vit@test.shit.ua", profilePhone = "+38 (01) 2345678",
-                kind = UserKind.CUSTOMER, state = UserState.COOL, passwordHash = hashPassword("vit-secret"),
-                aboutMe = "Я Тони-длинный-макарони", adminNotes = "Тони мудак",
-                profileRejectionReason = "", banReason = "", subscribedToAllCategories = false,
-                common = CommonFields(createdAt = nextRandomOldStamp(), updatedAt = nextRandomOldStamp()), profileUpdatedAt = nextRandomOldStamp()
-            )))
+@Remote fun mirandaSeedSomeStuff1() {
+    val vit = userRepo.save(User(UserFields(
+        firstName = "Tony", lastName = "De Vit", email = "vit@test.shit.ua", profilePhone = "+38 (01) 2345678",
+        kind = UserKind.CUSTOMER, state = UserState.COOL, passwordHash = hashPassword("vit-secret"),
+        aboutMe = "Я Тони-длинный-макарони", adminNotes = "Тони мудак",
+        profileRejectionReason = "", banReason = "", subscribedToAllCategories = false,
+        common = CommonFields(createdAt = nextRandomOldStamp(), updatedAt = nextRandomOldStamp()), profileUpdatedAt = nextRandomOldStamp()
+    )))
 
-            run {
-                val customer = vit
-                uaOrderRepo.save(UAOrder(UAOrderFields(
-                    title = "Король-лягушонок", documentType = UADocumentType.ESSAY, state = UAOrderState.IN_STORE,
-                    category = uaDocumentCategoryRepo.findOrDie(const.uaDocumentCategoryID.linguistics),
-                    numPages = 53, numSources = 20,
-                    minAllowedPriceOffer = 1000_00, maxAllowedPriceOffer = 5000_00,
-                    minAllowedDurationOffer = 10 * 24, maxAllowedDurationOffer = 15 * 24,
-                    details = "Золотой мяч королевны при игре падает в бездонный колодец, что вызывает поток слёз. Сострадательный лягушонок вызывается помочь вытащить мячик. Королевна в свою очередь обещает, что будет его подругой детства и разделит с ним досуг, стол и кровать. Когда королевна получает мяч назад, то быстро убегает. Всё же, на следующий день лягушка добирается до двери дворца и, по настоянию отца-короля королевна неохотно исполняет своё обещание. Однако, когда лягушонок требует, чтобы она взяла его с собой на кровать, грозя пожаловаться отцу-королю, та от отвращения что было мочи бросает лягушонка об стену. В то же самое мгновение лягушка превращается в статного королевича с красивыми и ласковыми глазами. Выясняется, что над ним тяготели чары злой ведьмы и только королевна могла их разрушить. Наутро он везёт королевскую дочь как свою законную супругу, в роскошной карете в собственное королевство. Во время поездки их сопровождает верный слуга Генрих, который от печали по королевичу заковал своё сердце тремя железными обручами. В дороге, от переполняющей сердце Генриха радости по поводу освобождения его господина, эти железные оковы лопаются с громким треском.",
-                    customer = customer, customerFirstName = customer.user.firstName, customerLastName = customer.user.lastName, customerPhone = customer.user.profilePhone, customerEmail = customer.user.email,
-                    adminNotes = "Fucking notes 1", confirmationSecret = "", whatShouldBeFixedByCustomer  = "",
-                    common = CommonFields(createdAt = nextRandomOldStamp(), updatedAt = nextRandomOldStamp()), movedToStoreAt = nextRandomOldStamp()
-                )))
-            }
-        }
+    run {
+        val customer = vit
+        uaOrderRepo.save(UAOrder(UAOrderFields(
+            title = "Король-лягушонок", documentType = UADocumentType.ESSAY, state = UAOrderState.IN_STORE,
+            category = uaDocumentCategoryRepo.findOrDie(const.uaDocumentCategoryID.linguistics),
+            numPages = 53, numSources = 20,
+            minAllowedPriceOffer = 1000_00, maxAllowedPriceOffer = 5000_00,
+            minAllowedDurationOffer = 10 * 24, maxAllowedDurationOffer = 15 * 24,
+            details = "Золотой мяч королевны при игре падает в бездонный колодец, что вызывает поток слёз. Сострадательный лягушонок вызывается помочь вытащить мячик. Королевна в свою очередь обещает, что будет его подругой детства и разделит с ним досуг, стол и кровать. Когда королевна получает мяч назад, то быстро убегает. Всё же, на следующий день лягушка добирается до двери дворца и, по настоянию отца-короля королевна неохотно исполняет своё обещание. Однако, когда лягушонок требует, чтобы она взяла его с собой на кровать, грозя пожаловаться отцу-королю, та от отвращения что было мочи бросает лягушонка об стену. В то же самое мгновение лягушка превращается в статного королевича с красивыми и ласковыми глазами. Выясняется, что над ним тяготели чары злой ведьмы и только королевна могла их разрушить. Наутро он везёт королевскую дочь как свою законную супругу, в роскошной карете в собственное королевство. Во время поездки их сопровождает верный слуга Генрих, который от печали по королевичу заковал своё сердце тремя железными обручами. В дороге, от переполняющей сердце Генриха радости по поводу освобождения его господина, эти железные оковы лопаются с громким треском.",
+            customer = customer, customerFirstName = customer.user.firstName, customerLastName = customer.user.lastName, customerPhone = customer.user.profilePhone, customerEmail = customer.user.email,
+            adminNotes = "Fucking notes 1", confirmationSecret = "", whatShouldBeFixedByCustomer  = "",
+            common = CommonFields(createdAt = nextRandomOldStamp(), updatedAt = nextRandomOldStamp()), movedToStoreAt = nextRandomOldStamp()
+        )))
     }
-    return MirandaSeedSomeShit.Response()
 }
 
 

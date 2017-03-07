@@ -249,14 +249,6 @@ class ObjectRequest : RequestMatumba() {
 
 
 
-@Ser sealed class What(val hack: Int = -1) {  // TODO:vgrechka Get rid of shit shit, just use MirandaSeedStuff1
-}
-@Ser class Stuff1 : What()
-@Ser class MirandaSeedSomeShit(val what: What) {
-    class Response : CommonResponseFieldsImpl()
-}
-
-
 @Ser class ReginaAdminSendOrderToStore(val orderID: Long) {
     class Response : CommonResponseFieldsImpl()
 }

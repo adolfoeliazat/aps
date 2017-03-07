@@ -407,7 +407,7 @@ class UAOrderFile(@Embedded var orderFile: UAOrderFileFields)
             sizeBytes = orderFile.sizeBytes,
             detailsHighlightRanges = highlightRanges(orderFile.details, searchWords),
             editable = run {
-                val user = requestUser
+                val user = requestUserEntity
                 when (user.user.kind) {
                     UserKind.ADMIN -> true
                     UserKind.CUSTOMER -> orderFile.order.order.state in setOf(UAOrderState.CUSTOMER_DRAFT, UAOrderState.RETURNED_TO_CUSTOMER_FOR_FIXING)
@@ -418,7 +418,7 @@ class UAOrderFile(@Embedded var orderFile: UAOrderFileFields)
                 searchWords.isEmpty() -> listOf()
                 else -> highlightRanges(orderFile.name.chopOffFileExtension(), searchWords)
             },
-            seenAsFrom = when (requestUser.user.kind) {
+            seenAsFrom = when (requestUserEntity.user.kind) {
                 UserKind.CUSTOMER -> orderFile.forCustomerSeenAsFrom
                 UserKind.WRITER -> orderFile.forWriterSeenAsFrom
                 UserKind.ADMIN -> orderFile.creator.user.kind

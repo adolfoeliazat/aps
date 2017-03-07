@@ -17,9 +17,11 @@ class StorePage {
                     makeURL(pages.uaAdmin.order, listOf())
                 }
             ),
-            makeURLForReload = {boobsParams ->
-                makeURL(pages.uaAdmin.orders, boobsParams)
-            },
+            makeURLForReload = {boobsParams -> when (user().kind) {
+                UserKind.WRITER -> makeURL(pages.uaWriter.store, boobsParams)
+                UserKind.CUSTOMER -> imf("620d20fd-86ec-4cce-9bc4-efd396b46f72")
+                UserKind.ADMIN -> imf("8eef9765-5cf4-4663-b755-dbf4980e666e")
+            }},
             filterValues = StoreFilter.values(),
             defaultFilterValue = StoreFilter.ALL,
             filterSelectKey = selects.storeFilter,
