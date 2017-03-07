@@ -253,11 +253,15 @@ class ObjectRequest : RequestMatumba() {
     class Response : CommonResponseFieldsImpl()
 }
 
+@Ser class MirandaImposeNextOrderID(val id: Long) {
+    class Response : CommonResponseFieldsImpl()
+}
+
 @Ser class MirandaGetGeneratedTestTimestamps {
     class Response(val list: List<String>) : CommonResponseFieldsImpl()
 }
 
-@Ser sealed class What(val hack: Int = -1) {
+@Ser sealed class What(val hack: Int = -1) {  // TODO:vgrechka Get rid of shit shit, just use MirandaSeedStuff1
 }
 @Ser class Stuff1 : What()
 @Ser class MirandaSeedSomeShit(val what: What) {

@@ -192,6 +192,11 @@ fun MirandaImposeNextGeneratedPassword.serve(): MirandaImposeNextGeneratedPasswo
     return MirandaImposeNextGeneratedPassword.Response()
 }
 
+fun MirandaImposeNextOrderID.serve(): MirandaImposeNextOrderID.Response {
+    TestServerFiddling.nextOrderID.set(this.id)
+    return MirandaImposeNextOrderID.Response()
+}
+
 fun MirandaGetGeneratedTestTimestamps.serve(): MirandaGetGeneratedTestTimestamps.Response {
     return MirandaGetGeneratedTestTimestamps.Response(generateTestTimestamps("2014-03-02 04:32:11"))
 }

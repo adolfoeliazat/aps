@@ -52,6 +52,7 @@ suspend fun send(req: UAAdminGetStuffToDoRequest): FormResponse2<UAAdminGetStuff
 
 suspend fun askMiranda(p: MirandaImposeNextGeneratedUserToken): MirandaImposeNextGeneratedUserToken.Response = _askMiranda(p)
 suspend fun askMiranda(p: MirandaImposeNextGeneratedPassword): MirandaImposeNextGeneratedPassword.Response = _askMiranda(p)
+suspend fun askMiranda(p: MirandaImposeNextOrderID): MirandaImposeNextOrderID.Response = _askMiranda(p)
 suspend fun askMiranda(p: MirandaGetGeneratedTestTimestamps): MirandaGetGeneratedTestTimestamps.Response = _askMiranda(p)
 suspend fun askMiranda(p: MirandaSeedSomeShit): MirandaSeedSomeShit.Response = _askMiranda(p)
 

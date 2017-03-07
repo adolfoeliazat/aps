@@ -48,7 +48,9 @@ import java.util.*
                         maxAllowedDurationOffer = -1,
                         category = uaDocumentCategoryRepo.findOrDie(const.uaDocumentCategoryID.misc)
                     )
-                ))
+                )-{o->
+                    o.imposedIDToGenerate = TestServerFiddling.nextOrderID.getAndReset()
+                })
 
                 val vspacing = "0.5em"
                 fun row(title: String, value: Any) = """

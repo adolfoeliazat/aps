@@ -33,8 +33,8 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
     }
 
     val filesShortcutMode1 = FilesShortcutMode.B
-//    val startPoint = 1
-    val startPoint = 10 // 14 // 9 // 12
+    val startPoint = 1
+//    val startPoint = 10 // 14 // 9 // 12
     init {
 //        TestGlobal.describeStateConfig = DescribeStateConfig(showBanners = true, autoResumeAfterMs = null)
 //        TestGlobal.describeStateConfig = DescribeStateConfig(showBanners = true, autoResumeAfterMs = 2000)
@@ -46,11 +46,11 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
     var currentPoint = 0
 
+    val orderID = 2398L
 
     override suspend fun run1() {
         forceFast()
         initialTestShit(this)
-
         definePoint(1) {
             run { // Make order
                 bootFreshCustomer("ivo", sessionIndex.ivo1)
@@ -61,6 +61,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 debugMailboxClear()
                 selectSetValue(fields.uaDocumentType_testRef, UADocumentType.PRACTICE)
                 imposeNextGeneratedConfirmationSecret("top-fucking-secret")
+                askMiranda(MirandaImposeNextOrderID(orderID))
                 seq.formSubmissionAttempts(
                     aid = "c31b6b5e-aac1-4136-8bef-906cf5be8cdc-1",
                     attempts = eachOrCombinationOfLasts(listOf(
@@ -181,20 +182,22 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                     }
                     FilesShortcutMode.A -> {
                         addFile(bunch1.first())
-                        bunch1.subList(1, bunch1.lastIndex).forEach {addFileBackendOnly(it, orderID = 1L)}
+                        bunch1.subList(1, bunch1.lastIndex).forEach {addFileBackendOnly(it, orderID = orderID)}
                         addFile(bunch1.last())
 
                         addFile(bunch2.first())
-                        bunch2.subList(1, bunch2.lastIndex).forEach {addFileBackendOnly(it, orderID = 1L)}
+                        bunch2.subList(1, bunch2.lastIndex).forEach {addFileBackendOnly(it, orderID = orderID)}
                         addFile(bunch2.last())
 
                         addFile(bunch3.first())
-                        bunch3.subList(1, bunch3.lastIndex).forEach {addFileBackendOnly(it, orderID = 1L)}
+                        bunch3.subList(1, bunch3.lastIndex).forEach {addFileBackendOnly(it, orderID = orderID)}
                         addFile(bunch3.last())
                         imf("FilesShortcutMode.A")
                     }
                     FilesShortcutMode.B -> {
-                        (bunch1 + bunch2 + bunch3.subList(0, bunch3.lastIndex)).forEach {addFileBackendOnly(it, orderID = 1L)}
+                        (bunch1 + bunch2 + bunch3.subList(0, bunch3.lastIndex)).forEach {
+                            addFileBackendOnly(it, orderID = orderID)
+                        }
                         addFile(bunch3.last())
                     }
                 }
@@ -301,7 +304,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
             run { // Admin rejects order
                 seq.halfway_done({linkClick(links.adminDashboard.ordersToApprove_testRef)}, "e1cdd9ea-7ad0-467e-9add-c9d67c19b883")
-                lipsTitleClick(1L, "4d382cc9-c529-47bc-9026-0ceec0716a5c")
+                lipsTitleClick(orderID, "4d382cc9-c529-47bc-9026-0ceec0716a5c")
                 seq.button_modal(buttons.reject_testRef, "0417ea80-b99b-498e-9e51-c4f829d08499")
                 seq.formSubmissionAttempts_pageLoaded(
                     aid = "e07d4eab-e003-4149-bfc9-9b3557aacfb5",
@@ -326,7 +329,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
         definePoint(7) {
             run { // Customer refreshes order page
-                bootCustomerWithTokenToOrderPage("ivo", sessionIndex.ivo4, orderID = 1, aid = "a298e6af-61e6-4db1-812f-16e0d6d75c5c")
+                bootCustomerWithTokenToOrderPage("ivo", sessionIndex.ivo4, orderID = orderID, aid = "a298e6af-61e6-4db1-812f-16e0d6d75c5c")
                 describeState("Customer sees what should be fixed")
             }
 
@@ -356,7 +359,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
             }
 
             run { // Admin makes minor changes to files
-                lipsTitleClick(1L, "394199d1-73da-4a7d-b462-13d5e8e0a789")
+                lipsTitleClick(orderID, "394199d1-73da-4a7d-b462-13d5e8e0a789")
                 tabSequence(tabs.order.files_testRef, "d3461e3e-4a41-42f5-8cec-451b70e4bfbb", "63b49f23-604a-4184-8ac8-28c73027473b")
 
                 describeState("Admin can edit files")
@@ -439,7 +442,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
         }
 
         definePoint(10) {
-            bootCustomerWithTokenToOrderPage("ivo", sessionIndex.ivo5, orderID = 1L, aid = "cddb0684-949d-4e09-a77c-18edb59aef81")
+            bootCustomerWithTokenToOrderPage("ivo", sessionIndex.ivo5, orderID = orderID, aid = "cddb0684-949d-4e09-a77c-18edb59aef81")
             describeState("Customer sees that order was accepted")
 
             run { // Writer kafka signs up
