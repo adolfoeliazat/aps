@@ -34,7 +34,7 @@ private val paramClassToServeMethod = ConcurrentHashMap<Class<*>, Method>()
 private fun serveObjectRequest(req: ObjectRequest): CommonResponseFields {
     val p = req.params.value
     val method = paramClassToServeMethod.computeIfAbsent(p::class.java) {
-        for (cname in listOf("Rp_orderKt", "Rp_userKt", "Rp_historyKt", "Rp_testKt", "Rp_test_2Kt")) {
+        for (cname in listOf("Generated_backKt", "Rp_orderKt", "Rp_userKt", "Rp_historyKt", "Rp_testKt", "Rp_test_2Kt")) {
             val clazz = Class.forName("aps.back.$cname")
             try {
                 return@computeIfAbsent clazz.getDeclaredMethod("serve", p::class.java)

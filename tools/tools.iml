@@ -10,7 +10,6 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="back" />
     <orderEntry type="library" name="fuck3" level="project" />
     <orderEntry type="library" name="KotlinJavaRuntime" level="project" />
     <orderEntry type="module-library">
@@ -19,7 +18,22 @@
           <root url="jar://$KOTLIN_BUNDLED$/lib/kotlin-compiler.jar!/" />
         </CLASSES>
         <JAVADOC />
-        <SOURCES />
+        <SOURCES>
+          <root url="file://$MODULE_DIR$/../../vendor/kotlin/kotlin-1.1/compiler/cli/cli-common/src" />
+          <root url="file://$MODULE_DIR$/../../vendor/kotlin/kotlin-1.1/compiler/cli/cli-common/src" />
+          <root url="file://$MODULE_DIR$/../../vendor/kotlin/kotlin-1.1/compiler/cli/cli-common" />
+          <root url="file://$MODULE_DIR$/../../vendor/kotlin/kotlin-1.1/compiler/cli/cli-common/src" />
+          <root url="file://$MODULE_DIR$/../../vendor/kotlin/kotlin-1.1/compiler/cli/src" />
+          <root url="file://$MODULE_DIR$/../../vendor/kotlin/kotlin-1.1/compiler/cli/src" />
+          <root url="file://$MODULE_DIR$/../../vendor/kotlin/kotlin-1.1/compiler/frontend/src" />
+          <root url="file://$MODULE_DIR$/../../vendor/kotlin/kotlin-1.1/compiler/frontend/src" />
+          <root url="file://$MODULE_DIR$/../../vendor/kotlin/kotlin-1.1/compiler/util/src" />
+          <root url="file://$MODULE_DIR$/../../vendor/kotlin/kotlin-1.1/compiler/util/src" />
+          <root url="file://$MODULE_DIR$/../../vendor/kotlin/kotlin-1.1/core/descriptors/src" />
+          <root url="file://$MODULE_DIR$/../../vendor/kotlin/kotlin-1.1/core/descriptors/src" />
+          <root url="file://$MODULE_DIR$/../../vendor/kotlin/kotlin-1.1/compiler/backend/src" />
+          <root url="file://$MODULE_DIR$/../../vendor/kotlin/kotlin-1.1/compiler/backend/src" />
+        </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library">
@@ -28,7 +42,9 @@
           <root url="jar://$MODULE_DIR$/../back/lib-gradle/kotlin-script-util-1.1.0.jar!/" />
         </CLASSES>
         <JAVADOC />
-        <SOURCES />
+        <SOURCES>
+          <root url="file://$MODULE_DIR$/../../vendor/kotlin/kotlin-1.1/libraries/tools/kotlin-script-util/src/main/kotlin" />
+        </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library">

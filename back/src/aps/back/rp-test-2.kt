@@ -191,6 +191,7 @@ fun MirandaImposeNextGeneratedPassword.serve() {
 }
 
 annotation class Remote
+annotation class Generated
 
 @Remote fun mirandaImposeNextOrderID(id: Long) = TestServerFiddling.nextOrderID.set(id)
 
