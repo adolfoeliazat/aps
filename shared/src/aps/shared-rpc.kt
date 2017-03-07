@@ -245,17 +245,9 @@ class ObjectRequest : RequestMatumba() {
 
 
 
-@Ser class MirandaImposeNextGeneratedUserToken(val token: String) {
-    class Response : CommonResponseFieldsImpl()
-}
-
-@Ser class MirandaImposeNextGeneratedPassword(val password: String) {
-    class Response : CommonResponseFieldsImpl()
-}
-
-@Ser class MirandaImposeNextOrderID(val id: Long) {
-    class Response : CommonResponseFieldsImpl()
-}
+@Ser class MirandaImposeNextGeneratedUserToken(val token: String)
+@Ser class MirandaImposeNextGeneratedPassword(val password: String)
+@Ser class MirandaImposeNextOrderID(val id: Long)
 
 @Ser class MirandaGetGeneratedTestTimestamps {
     class Response(val list: List<String>) : CommonResponseFieldsImpl()

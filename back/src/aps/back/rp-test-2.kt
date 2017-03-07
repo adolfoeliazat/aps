@@ -182,20 +182,21 @@ private fun snapshotFileNameBase(snapshotName: String) =
     }
 }
 
-fun MirandaImposeNextGeneratedUserToken.serve(): MirandaImposeNextGeneratedUserToken.Response {
+fun MirandaImposeNextGeneratedUserToken.serve() {
     TestServerFiddling.nextGeneratedUserToken.set(this.token)
-    return MirandaImposeNextGeneratedUserToken.Response()
 }
 
-fun MirandaImposeNextGeneratedPassword.serve(): MirandaImposeNextGeneratedPassword.Response {
+fun MirandaImposeNextGeneratedPassword.serve() {
     TestServerFiddling.nextGeneratedPassword.set(this.password)
-    return MirandaImposeNextGeneratedPassword.Response()
 }
 
-fun MirandaImposeNextOrderID.serve(): MirandaImposeNextOrderID.Response {
-    TestServerFiddling.nextOrderID.set(this.id)
-    return MirandaImposeNextOrderID.Response()
-}
+annotation class Remote
+
+@Remote fun mirandaImposeNextOrderID(id: Long) = TestServerFiddling.nextOrderID.set(id)
+
+//fun MirandaImposeNextOrderID.serve() {
+//    TestServerFiddling.nextOrderID.set(this.id)
+//}
 
 fun MirandaGetGeneratedTestTimestamps.serve(): MirandaGetGeneratedTestTimestamps.Response {
     return MirandaGetGeneratedTestTimestamps.Response(generateTestTimestamps("2014-03-02 04:32:11"))

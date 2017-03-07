@@ -50,9 +50,9 @@ suspend fun send(req: UADownloadOrderFileRequest): FormResponse2<DownloadFileRes
 suspend fun send(req: UACustomerSendOrderDraftForApprovalRequest): FormResponse2<UACustomerSendOrderDraftForApprovalRequest.Response> = _send3(req)
 suspend fun send(req: UAAdminGetStuffToDoRequest): FormResponse2<UAAdminGetStuffToDoRequest.Response> = _send3(req)
 
-suspend fun askMiranda(p: MirandaImposeNextGeneratedUserToken): MirandaImposeNextGeneratedUserToken.Response = _askMiranda(p)
-suspend fun askMiranda(p: MirandaImposeNextGeneratedPassword): MirandaImposeNextGeneratedPassword.Response = _askMiranda(p)
-suspend fun askMiranda(p: MirandaImposeNextOrderID): MirandaImposeNextOrderID.Response = _askMiranda(p)
+suspend fun askMiranda(p: MirandaImposeNextGeneratedUserToken): GenericResponse = _askMiranda(p)
+suspend fun askMiranda(p: MirandaImposeNextGeneratedPassword): GenericResponse = _askMiranda(p)
+suspend fun askMiranda(p: MirandaImposeNextOrderID): GenericResponse = _askMiranda(p)
 suspend fun askMiranda(p: MirandaGetGeneratedTestTimestamps): MirandaGetGeneratedTestTimestamps.Response = _askMiranda(p)
 suspend fun askMiranda(p: MirandaSeedSomeShit): MirandaSeedSomeShit.Response = _askMiranda(p)
 

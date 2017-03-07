@@ -43,7 +43,13 @@ private fun serveObjectRequest(req: ObjectRequest): CommonResponseFields {
         }
         wtf("p::class = ${p::class}    a322c2b4-25af-45e1-a7ae-a5484a941ec3")
     }
-    return method.invoke(null, p) as CommonResponseFields
+
+    val res = method.invoke(null, p)
+    return when (res) {
+        null /*Unit*/ -> GenericResponse()
+        is CommonResponseFields -> res
+        else -> wtf("d07d35f4-c52b-46f4-92d1-f5b25f76bac1")
+    }
 }
 
 
