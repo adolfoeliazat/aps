@@ -182,22 +182,13 @@ private fun snapshotFileNameBase(snapshotName: String) =
     }
 }
 
-fun MirandaImposeNextGeneratedUserToken.serve() {
-    TestServerFiddling.nextGeneratedUserToken.set(this.token)
-}
 
-fun MirandaImposeNextGeneratedPassword.serve() {
-    TestServerFiddling.nextGeneratedPassword.set(this.password)
-}
 
 annotation class Remote
-annotation class Generated
 
+@Remote fun mirandaImposeNextGeneratedPassword(password: String) = TestServerFiddling.nextGeneratedPassword.set(password)
+@Remote fun mirandaImposeNextGeneratedUserToken(token: String) = TestServerFiddling.nextGeneratedUserToken.set(token)
 @Remote fun mirandaImposeNextOrderID(id: Long) = TestServerFiddling.nextOrderID.set(id)
-
-//fun MirandaImposeNextOrderID.serve() {
-//    TestServerFiddling.nextOrderID.set(this.id)
-//}
 
 fun MirandaGetGeneratedTestTimestamps.serve(): MirandaGetGeneratedTestTimestamps.Response {
     return MirandaGetGeneratedTestTimestamps.Response(generateTestTimestamps("2014-03-02 04:32:11"))

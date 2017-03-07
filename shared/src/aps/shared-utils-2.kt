@@ -6,6 +6,8 @@ import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KMutableProperty
 import kotlin.reflect.KProperty
 
+annotation class Generated
+
 fun escapeHTML(s: String) =
     s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
 

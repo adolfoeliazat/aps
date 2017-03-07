@@ -10,6 +10,12 @@ package aps.back
 
 import aps.*
 
+@Generated fun MirandaImposeNextGeneratedPassword.serve() {
+    mirandaImposeNextGeneratedPassword(password = this.password)
+}
+@Generated fun MirandaImposeNextGeneratedUserToken.serve() {
+    mirandaImposeNextGeneratedUserToken(token = this.token)
+}
 @Generated fun MirandaImposeNextOrderID.serve() {
     mirandaImposeNextOrderID(id = this.id)
 }

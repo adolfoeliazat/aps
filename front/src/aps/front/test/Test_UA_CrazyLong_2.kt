@@ -61,7 +61,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 debugMailboxClear()
                 selectSetValue(fields.uaDocumentType_testRef, UADocumentType.PRACTICE)
                 imposeNextGeneratedConfirmationSecret("top-fucking-secret")
-                askMiranda(MirandaImposeNextOrderID(orderID))
+                mirandaImposeNextOrderID(orderID)
                 seq.formSubmissionAttempts(
                     aid = "c31b6b5e-aac1-4136-8bef-906cf5be8cdc-1",
                     attempts = eachOrCombinationOfLasts(listOf(
@@ -94,7 +94,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                                  url = makeConfirmationURL("top-fucking-secret"),
                                  fillTypedStorageLocal = {},
                                  fillRawStorageLocal = {})
-                askMiranda(MirandaImposeNextGeneratedUserToken("ivo-fucking-token"))
+                mirandaImposeNextGeneratedUserToken("ivo-fucking-token")
                 // TODO:vgrechka Impose customer password
                 ivo3.coitizeAndBootAsserting(assertStatic = {assertScreenHTML("Static confirmOrder", "2acbad6a-e169-4c0d-9938-99fac621fef5")},
                                              assertDynamic = {assertScreenHTML("Dynamic confirmOrder", "a6a44d05-7c1d-4dbf-82a2-3b42e0ca98f3")})
@@ -630,13 +630,13 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
         inputSetValue(fields.signUpLastName_testRef, lastName)
         inputSetValue(fields.signUpEmail_testRef, "$nick@test.shit.ua")
         tcheckbox.setValue(fields.agreeTerms_testRef, true)
-        askMiranda(MirandaImposeNextGeneratedPassword("$nick-secret"))
+        mirandaImposeNextGeneratedPassword("$nick-secret")
         debugMailboxClear()
         seq.submitForm("$aid--4")
         debugMailboxCheck("$aid--5")
 
         inputSetValue(fields.signInPassword_testRef, "$nick-secret")
-        askMiranda(MirandaImposeNextGeneratedUserToken("$nick-fucking-token"))
+        mirandaImposeNextGeneratedUserToken("$nick-fucking-token")
         seq.submitForm("$aid--6")
     }
 
@@ -679,7 +679,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
         topNavItemSequence(page = pages.uaWriter.signIn_testRef, aid = "aea03aff-9c1a-4aaa-9786-ce4be57018fd")
         inputSetValue(fields.signInEmail_testRef, "dasja@test.shit.ua")
         inputSetValue(fields.signInPassword_testRef, "dasja-secret")
-        askMiranda(MirandaImposeNextGeneratedUserToken("dasja-fucking-token"))
+        mirandaImposeNextGeneratedUserToken("dasja-fucking-token")
         seq.submitForm("0132de44-85ca-41a5-b926-859e2bd07461")
     }
 

@@ -10,4 +10,6 @@ package aps
 
 import aps.*
 
-@Ser class MirandaImposeNextOrderID(val id: Long)
+@Generated @Ser class MirandaImposeNextGeneratedPassword(val password: String)
+@Generated @Ser class MirandaImposeNextGeneratedUserToken(val token: String)
+@Generated @Ser class MirandaImposeNextOrderID(val id: Long)
