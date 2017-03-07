@@ -121,6 +121,11 @@ suspend fun waitAnimationFrame() {
     await(tillAnimationFrame())
 }
 
+suspend fun waitVisualShit() {
+    sleep(0)
+    waitAnimationFrame()
+}
+
 typealias CSSSelector = String
 
 fun cwarnTitle(title: String) {

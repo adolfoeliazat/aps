@@ -257,6 +257,12 @@ class ObjectRequest : RequestMatumba() {
     class Response(val list: List<String>) : CommonResponseFieldsImpl()
 }
 
+@Ser sealed class What(val hack: Int = -1) {
+}
+@Ser class Stuff1 : What()
+@Ser class MirandaSeedSomeShit(val what: What) {
+    class Response : CommonResponseFieldsImpl()
+}
 
 
 @Ser class ReginaAdminSendOrderToStore(val orderID: Long) {

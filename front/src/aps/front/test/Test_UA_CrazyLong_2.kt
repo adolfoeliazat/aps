@@ -34,7 +34,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
     val filesShortcutMode1 = FilesShortcutMode.B
 //    val startPoint = 1
-    val startPoint = 12 // 14 // 9 // 12
+    val startPoint = 10 // 14 // 9 // 12
     init {
 //        TestGlobal.describeStateConfig = DescribeStateConfig(showBanners = true, autoResumeAfterMs = null)
 //        TestGlobal.describeStateConfig = DescribeStateConfig(showBanners = true, autoResumeAfterMs = 2000)
@@ -479,9 +479,9 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                     pt.specialKey(fconst.keyCode.up)
                     pt.specialKey(fconst.keyCode.enter)
 
-                    ct.clickDelete(145L)
-                    ct.clickDelete(42L)
-                    ct.clickDelete(46L)
+                    ct.clickDelete(const.uaDocumentCategoryID.psychology)
+                    ct.clickDelete(const.uaDocumentCategoryID.locationOfProductiveForces)
+                    ct.clickDelete(const.uaDocumentCategoryID.strategicManagement)
 
                     pt.searchValue("диз")
                     pt.specialKey(fconst.keyCode.down)
@@ -521,7 +521,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
                 val ct = DocumentCategorySetFieldTester("84bc9bee-8606-47e3-9fa8-9fb41036ac4e")
                 val pt = SelenaPickerTester.new(aid = "77ef2ea9-8fed-4c35-8f60-5b5315be9e59", field = fields.writerDocumentCategories_testRef)
-                ct.clickDelete(123L)
+                ct.clickDelete(const.uaDocumentCategoryID.civilLaw)
                 pt.searchValue("ауд")
                 pt.specialKey(fconst.keyCode.down)
                 pt.specialKey(fconst.keyCode.enter)
@@ -573,9 +573,9 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
         }
 
         definePoint (14) {
+            askMiranda(MirandaSeedSomeShit(Stuff1()))
             bootWriterWithToken("gogol", sessionIndex.gogol2, makeURL(pages.uaWriter.store, listOf()), aid = "8ce00463-19a8-4239-a113-7cd1d2255189")
             ___stopEverywhere()
-            describeState("Quickly adding a bunch of orders to store...")
         }
     }
 

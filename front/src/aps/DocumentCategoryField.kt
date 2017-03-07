@@ -460,6 +460,7 @@ class SelenaPickerTester private constructor (val pickerKey: SelenaPickerKey, va
     }
 
     suspend fun searchValue(x: String) {
+        waitVisualShit() // XXX
         SelenaPicker.instance(pickerKey).testSetInputValue(x)
         assert()
     }
