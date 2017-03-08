@@ -270,14 +270,10 @@ enum class AdminOrderFilter(override val title: String): Titled {
     TO_APPROVE(t("TOTE", "Ждут аппрува"))
 }
 
-enum class StoreFilter(override val title: String): Titled {
-    ALL(t("TOTE", "Все"))
+enum class WriterStoreFilter(override val title: String): Titled {
+    ALL(t("TOTE", "Все")),
+    MY_SPECIALIZATION(t("TOTE", "Моя специализация"))
 }
-
-//enum class WriterStoreFilter(override val title: String): Titled {
-//    ALL(t("TOTE", "Все")),
-//    MY_SPECIALIZATION(t("TOTE", "Моя специализация"))
-//}
 
 enum class WriterFileFilter(override val title: String): Titled {
     ALL(t("TOTE", "Все")),
@@ -307,10 +303,9 @@ interface EntityResponse<out T> {
 
 class SimpleEntityResponse<out T>(override val entity: T) : CommonResponseFieldsImpl(), EntityResponse<T>
 
-class ItemsRequest<Filter>(filterValues: Array<Filter>) : RequestMatumba()
-where Filter: Enum<Filter>, Filter: Titled {
+class ItemsRequest() : RequestMatumba() {
     val parentEntityID by maybeLongHiddenField()
-    val filter = EnumHiddenField(this, "filter", filterValues)
+    val filter = StringHiddenField(this, "filter")
     val ordering = EnumHiddenField(this, "ordering", Ordering.values())
     val searchString = TextField(this, fields.searchString)
     val fromID by maybeLongHiddenField()

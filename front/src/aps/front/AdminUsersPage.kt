@@ -29,7 +29,8 @@ class AdminUsersPage {
         return pageLoadedFineResult
     }
 
-    fun makeBoobs(): MelindaBoobs<UserRTO, AdminUserFilter, UserParamsRequest, CreateUserResponse, UserParamsRequest, UpdateUserResponse> {
+    // AdminUserFilter,
+    fun makeBoobs(): MelindaBoobs<UserRTO, UserParamsRequest, CreateUserResponse, UserParamsRequest, UpdateUserResponse> {
         return MelindaBoobs(
             createParams = MelindaCreateParams(
                 hasCreateButton = false,
@@ -42,10 +43,10 @@ class AdminUsersPage {
             makeURLForReload = {boobsParams ->
                 makeURL(pages.uaAdmin.users, boobsParams)
             },
-            filterValues = AdminUserFilter.values(),
-            defaultFilterValue = AdminUserFilter.ALL,
+            filterValues = enumValuesToStringIDTimesTitleList(AdminUserFilter.values()),
+            defaultFilterValue = AdminUserFilter.ALL.name,
             filterSelectKey = selects.adminUserFilter,
-            vaginalInterface = MelindaVagina<UserRTO, AdminUserFilter, UserParamsRequest, UpdateUserResponse> (
+            vaginalInterface = MelindaVagina<UserRTO, UserParamsRequest, UpdateUserResponse> (
                 sendItemsRequest = {req -> sendGetUsers(req)},
                 shouldShowFilter = {true},
                 getParentEntityID = {null},
@@ -68,6 +69,7 @@ class AdminUsersPage {
             )
         )
     }
+
 }
 
 

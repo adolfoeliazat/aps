@@ -69,14 +69,36 @@ object inputs                            : Fuckers<InputKey>(null) {
     val search                           by namedFucker(::InputKey); val search_testRef = TestRef(search)
 }
 
-object selects                           : Fuckers<EnumSelectKey<*>>(null) {
+object enumSelects                       : Fuckers<EnumSelectKey<*>>(null) {
     val ordering                         by namedFucker({EnumSelectKey<Ordering>(it)}); val ordering_testRef = TestRef(ordering)
-    val customerFileFilter               by namedFucker({EnumSelectKey<CustomerFileFilter>(it)}); val customerFileFilter_testRef = TestRef(customerFileFilter)
-    val userParamsHistoryFilter          by namedFucker({EnumSelectKey<UserParamsHistoryFilter>(it)}); val userParamsHistoryFilter_testRef = TestRef(userParamsHistoryFilter)
 
-    val adminOrderFilter                 by namedFucker({EnumSelectKey<AdminOrderFilter>(it)}); val adminOrderFilter_testRef = TestRef(adminOrderFilter)
-    val adminUserFilter                  by namedFucker({EnumSelectKey<AdminUserFilter>(it)}); val adminUserFilter_testRef = TestRef(adminUserFilter)
-    val storeFilter                      by namedFucker({EnumSelectKey<StoreFilter>(it)}); val storeFilter_testRef = TestRef(storeFilter)
+}
+
+object selects                           : Fuckers<SelectKey>(null) {
+    val adminUserFilter                  by namedFucker(::SelectKey); val adminUserFilter_testRef = TestRef(adminUserFilter)
+    suspend fun adminUserFilter_testSetValue(value: AdminUserFilter) {
+        tselect.setValue(adminUserFilter_testRef, value.name)
+    }
+
+    val writerStoreFilter                by namedFucker(::SelectKey); val writerStoreFilter_testRef = TestRef(writerStoreFilter)
+    suspend fun writerStoreFilter_testSetValue(value: WriterStoreFilter) {
+        tselect.setValue(writerStoreFilter_testRef, value.name)
+    }
+
+    val customerFileFilter               by namedFucker(::SelectKey); val customerFileFilter_testRef = TestRef(customerFileFilter)
+    suspend fun customerFileFilter_testSetValue(value: CustomerFileFilter) {
+        tselect.setValue(customerFileFilter_testRef, value.name)
+    }
+
+    val adminOrderFilter                 by namedFucker(::SelectKey); val adminOrderFilter_testRef = TestRef(adminOrderFilter)
+    suspend fun adminOrderFilter_testSetValue(value: CustomerFileFilter) {
+        tselect.setValue(adminOrderFilter_testRef, value.name)
+    }
+
+    val userParamsHistoryFilter          by namedFucker(::SelectKey); val userParamsHistoryFilter_testRef = TestRef(userParamsHistoryFilter)
+    suspend fun userParamsHistoryFilter_testSetValue(value: CustomerFileFilter) {
+        tselect.setValue(userParamsHistoryFilter_testRef, value.name)
+    }
 }
 
 object links                             : Fuckers<LinkKey>(null) {

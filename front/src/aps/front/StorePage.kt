@@ -6,9 +6,9 @@ import into.kommon.*
 class StorePage {
     suspend fun load() = booby.load()
 
-    val booby: BoobyLoader<UAOrderRTO, StoreFilter, UAOrderParamsRequest, UACreateOrderResponse, UAOrderParamsRequest, UAUpdateOrderResponse> by mere(BoobyLoader(
+    val booby: BoobyLoader<UAOrderRTO, UAOrderParamsRequest, UACreateOrderResponse, UAOrderParamsRequest, UAUpdateOrderResponse> by mere(BoobyLoader(
         header = t("TOTE", "Стор"),
-        makeBoobs = {MelindaBoobs<UAOrderRTO, StoreFilter, UAOrderParamsRequest, UACreateOrderResponse, UAOrderParamsRequest, UAUpdateOrderResponse>(
+        makeBoobs = {MelindaBoobs<UAOrderRTO, UAOrderParamsRequest, UACreateOrderResponse, UAOrderParamsRequest, UAUpdateOrderResponse>(
             createParams = MelindaCreateParams(
                 hasCreateButton = false,
                 createModalTitle = t("TOTE", "Новый заказ"),
@@ -22,10 +22,10 @@ class StorePage {
                 UserKind.CUSTOMER -> imf("620d20fd-86ec-4cce-9bc4-efd396b46f72")
                 UserKind.ADMIN -> imf("8eef9765-5cf4-4663-b755-dbf4980e666e")
             }},
-            filterValues = StoreFilter.values(),
-            defaultFilterValue = StoreFilter.ALL,
-            filterSelectKey = selects.storeFilter,
-            vaginalInterface = MelindaVagina<UAOrderRTO, StoreFilter, UAOrderParamsRequest, UAUpdateOrderResponse>(
+            filterValues = enumValuesToStringIDTimesTitleList(WriterStoreFilter.values()),
+            defaultFilterValue = WriterStoreFilter.ALL.name,
+            filterSelectKey = selects.writerStoreFilter,
+            vaginalInterface = MelindaVagina<UAOrderRTO, UAOrderParamsRequest, UAUpdateOrderResponse>(
                 sendItemsRequest = {req-> sendGetStoreItems(req)},
                 shouldShowFilter = {true},
                 getParentEntityID = {null},

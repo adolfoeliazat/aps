@@ -276,9 +276,15 @@ fun String.escapeSingleQuotes(): String =
 //    enumValues<E>().find {it.name.toUpperCase() == s?.toUpperCase()}
 //        ?: default
 
-fun <E : Enum<E>> String?.relaxedToEnum(values: Array<E>, default: E): E =
-    values.find {it.name.toUpperCase() == this?.toUpperCase()}
-        ?: default
+fun <E : Enum<E>> String?.relaxedToEnum(values: Array<E>, default: E): E {
+    val value = values.find {it.name.toUpperCase() == this?.toUpperCase()}
+    if (value != null) return value
+    if (!this.isNullOrBlank() && isTest()) {
+        wtf("this = $this    9217a34b-58ff-4e93-bb95-0db9481a5363")
+    } else {
+        return default
+    }
+}
 
 fun String.lastIndexOfOrNull(s: String): Int? {
     val index = lastIndexOf(s)

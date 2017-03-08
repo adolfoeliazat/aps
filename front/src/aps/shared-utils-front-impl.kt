@@ -434,6 +434,8 @@ val CaptureStackException.prettyCapturedStack: Promisoid<String> get() = async {
     await(stackToMappedClientStackString(lines.joinToString("\n")))
 }
 
+fun isTest(): Boolean = TestGlobal.testRunning
+
 
 
 

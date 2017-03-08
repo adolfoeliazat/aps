@@ -15,14 +15,11 @@ import org.w3c.dom.events.KeyboardEvent
 import kotlin.collections.*
 import kotlin.js.json
 
-val reactNull = oldShitAsToReactElementable(null)
+//val reactNull = oldShitAsToReactElementable(null)
 
-enum class HeaderMode {
-    BROWSING, CREATING
-}
-
-fun usualHeader(title: String): ToReactElementable =
-    pageHeader0(title)
+//enum class HeaderMode {
+//    BROWSING, CREATING
+//}
 
 //class Pizdalinda<Item, Entity, Filter>(
 //    val ui: World,
@@ -291,68 +288,68 @@ fun usualHeader(title: String): ToReactElementable =
 //}
 
 
-fun getURLQueryParam(ui: World, name: String): String? {
-    return ui.urlQuery[name]
-}
+//fun getURLQueryParam(ui: World, name: String): String? {
+//    return ui.urlQuery[name]
+//}
 
-fun <Item, Filter>
-renderMoreable(ui: World,
-               itemsRes: ItemsResponse<Item>,
-               itemsReq: ItemsRequest<Filter>,
-               renderItem: (Int, Item) -> ToReactElementable,
-               chunkName: String = "chunk",
-               chunkIndex: Int = 0,
-               style: dynamic = undefined)
-where Filter : Enum<Filter>, Filter : Titled {
-    var bottom: dynamic = undefined
-
-    if (itemsRes.moreFromID != null) {
-        bottom = Shitus.updatableElement(json(), updatableElementCtor@{update: dynamic ->
-            val moreButtonID = puid()
-            var thing: dynamic = undefined
-            thing = Shitus.diva(json("style" to style), Shitus.button(json(
-                "id" to moreButtonID,
-                "tamyShamy" to "showMore",
-                "title" to t("Show More", "Показать еще"),
-                "style" to json("background" to Color.BLUE_GRAY_50, "width" to "100%", "marginTop" to 15),
-                "onClick" to onClick@{async{
-                    await(effects).blinkOn(Shitus.byid(moreButtonID), BlinkOpts(dtop = "-16px"))
-                    // testGlobal['button_showMore_blinks'] = true
-
-                    imf("renderMoreable")
-//                    val moreRes = __await<dynamic>(jshit.ui.rpcSoft(global.Object.assign(itemsReq, json("fromID" to itemsRes.moreFromID))))
+//fun <Item, Filter>
+//renderMoreable(ui: World,
+//               itemsRes: ItemsResponse<Item>,
+//               itemsReq: ItemsRequest<Filter>,
+//               renderItem: (Int, Item) -> ToReactElementable,
+//               chunkName: String = "chunk",
+//               chunkIndex: Int = 0,
+//               style: dynamic = undefined)
+//where Filter : Enum<Filter>, Filter : Titled {
+//    var bottom: dynamic = undefined
 //
-//                    if (moreRes.error) { console.error(moreRes.error); return@onClick }
-//                    // TODO:vgrechka Handle RPC error in Show More button    408e3096-aab1-42f5-9209-a9b35e7b5800
-//                    effects.blinkOff()
-//                    // testGlobal['button_showMore_blinks'] = false
+//    if (itemsRes.moreFromID != null) {
+//        bottom = Shitus.updatableElement(json(), updatableElementCtor@{update: dynamic ->
+//            val moreButtonID = puid()
+//            var thing: dynamic = undefined
+//            thing = Shitus.diva(json("style" to style), Shitus.button(json(
+//                "id" to moreButtonID,
+//                "tamyShamy" to "showMore",
+//                "title" to t("Show More", "Показать еще"),
+//                "style" to json("background" to Color.BLUE_GRAY_50, "width" to "100%", "marginTop" to 15),
+//                "onClick" to onClick@{async{
+//                    await(effects).blinkOn(Shitus.byid(moreButtonID), BlinkOpts(dtop = "-16px"))
+//                    // testGlobal['button_showMore_blinks'] = true
 //
-//                    thing = jshit.ui.renderMoreable(json("itemsRes" to moreRes, "itemsReq" to itemsReq, "renderItem" to renderItem, "chunkName" to chunkName, "chunkIndex" to chunkIndex + 1))
+//                    imf("renderMoreable")
+////                    val moreRes = __await<dynamic>(jshit.ui.rpcSoft(global.Object.assign(itemsReq, json("fromID" to itemsRes.moreFromID))))
+////
+////                    if (moreRes.error) { console.error(moreRes.error); return@onClick }
+////                    // TODO:vgrechka Handle RPC error in Show More button    408e3096-aab1-42f5-9209-a9b35e7b5800
+////                    effects.blinkOff()
+////                    // testGlobal['button_showMore_blinks'] = false
+////
+////                    thing = jshit.ui.renderMoreable(json("itemsRes" to moreRes, "itemsReq" to itemsReq, "renderItem" to renderItem, "chunkName" to chunkName, "chunkIndex" to chunkIndex + 1))
+//
+//                    update()
+//                }}
+//            )))
+//
+//            return@updatableElementCtor {thing}
+//        })
+//    }
+//
+//    return Shitus.diva(json("controlTypeName" to "renderMoreable"),
+//        if (itemsRes.items.isEmpty())
+//            Shitus.diva(json("style" to json("marginTop" to 10)), t("TOTE", "Здесь ничего нет, такие дела..."))
+//        else {
+//            Shitus.diva.apply(null, js("[]").concat(
+//                json("tame" to "${chunkName}${Shitus.sufindex(chunkIndex)}"),
+//                itemsRes.items.mapIndexed { index, item -> renderItem(index, item).toReactElement() }.toJSArray()))
+//        },
+//        bottom
+//    )
+//}
 
-                    update()
-                }}
-            )))
 
-            return@updatableElementCtor {thing}
-        })
-    }
-
-    return Shitus.diva(json("controlTypeName" to "renderMoreable"),
-        if (itemsRes.items.isEmpty())
-            Shitus.diva(json("style" to json("marginTop" to 10)), t("TOTE", "Здесь ничего нет, такие дела..."))
-        else {
-            Shitus.diva.apply(null, js("[]").concat(
-                json("tame" to "${chunkName}${Shitus.sufindex(chunkIndex)}"),
-                itemsRes.items.mapIndexed { index, item -> renderItem(index, item).toReactElement() }.toJSArray()))
-        },
-        bottom
-    )
-}
-
-
-fun <E: Enum<E>> stringToEnum(s: String?, values: Array<E>): E {
-    return values.find {it.name == s} ?: wtf("stringToEnum: s = [$s]; values = [${values.joinToString{it.name}}]")
-}
+//fun <E: Enum<E>> stringToEnum(s: String?, values: Array<E>): E {
+//    return values.find {it.name == s} ?: wtf("stringToEnum: s = [$s]; values = [${values.joinToString{it.name}}]")
+//}
 
 
 

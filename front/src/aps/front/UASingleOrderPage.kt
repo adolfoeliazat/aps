@@ -5,7 +5,6 @@ package aps.front
 import aps.*
 import aps.front.frontSymbols.numberSign
 import into.kommon.*
-import kotlin.reflect.KFunction1
 
 class UASingleOrderPage {
     var tabitha by notNullOnce<Tabitha<UAOrderRTO>>()
@@ -82,7 +81,7 @@ class UASingleOrderPage {
                 }
             },
             makeTabs = {listOf(
-                UsualParamsTab<UAOrderRTO, /*HistoryItemRTO=*/ Nothing, /*HistoryFilter=*/ Nothing, UAOrderParamsRequest, GenericResponse>(
+                UsualParamsTab<UAOrderRTO, /*HistoryItemRTO=*/ Nothing, UAOrderParamsRequest, GenericResponse>(
                     tabitha,
                     tabKey = tabs.order.params,
                     renderBody = {renderOrderParams(order, RenderOrderParamsStoreEditingParams(tabitha))},

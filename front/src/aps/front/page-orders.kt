@@ -6,9 +6,9 @@ import into.kommon.*
 class UAAdminOrdersPage {
     suspend fun load() = booby.load()
 
-    val booby: BoobyLoader<UAOrderRTO, AdminOrderFilter, UAOrderParamsRequest, UACreateOrderResponse, UAOrderParamsRequest, UAUpdateOrderResponse> by mere(BoobyLoader(
+    val booby: BoobyLoader<UAOrderRTO, UAOrderParamsRequest, UACreateOrderResponse, UAOrderParamsRequest, UAUpdateOrderResponse> by mere(BoobyLoader(
         header = t("TOTE", "Заказы"),
-        makeBoobs = {MelindaBoobs<UAOrderRTO, AdminOrderFilter, UAOrderParamsRequest, UACreateOrderResponse, UAOrderParamsRequest, UAUpdateOrderResponse>(
+        makeBoobs = {MelindaBoobs<UAOrderRTO, UAOrderParamsRequest, UACreateOrderResponse, UAOrderParamsRequest, UAUpdateOrderResponse>(
             createParams = MelindaCreateParams(
                 hasCreateButton = false,
                 createModalTitle = t("TOTE", "Новый заказ"),
@@ -20,10 +20,10 @@ class UAAdminOrdersPage {
             makeURLForReload = {boobsParams ->
                 makeURL(pages.uaAdmin.orders, boobsParams)
             },
-            filterValues = AdminOrderFilter.values(),
-            defaultFilterValue = AdminOrderFilter.ALL,
+            filterValues = enumValuesToStringIDTimesTitleList(AdminOrderFilter.values()),
+            defaultFilterValue = AdminOrderFilter.ALL.name,
             filterSelectKey = selects.adminOrderFilter,
-            vaginalInterface = MelindaVagina<UAOrderRTO, AdminOrderFilter, UAOrderParamsRequest, UAUpdateOrderResponse>(
+            vaginalInterface = MelindaVagina<UAOrderRTO, UAOrderParamsRequest, UAUpdateOrderResponse>(
                 sendItemsRequest = {req-> sendUAAdminGetOrders(req)},
                 shouldShowFilter = {true},
                 getParentEntityID = {null},

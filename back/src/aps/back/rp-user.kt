@@ -59,7 +59,7 @@ fun ReginaLoadUser.serve(): ReginaLoadUser.Response {
     override fun serve() {
         fuckAnyUser(FuckAnyUserParams(
             bpc = bpc,
-            makeRequest = {ItemsRequest(AdminUserFilter.values())},
+            makeRequest = {ItemsRequest()},
             runShit = fun(ctx, req): ItemsResponse<UserRTO> {
                 return megan(
                     req = req,
@@ -76,7 +76,8 @@ fun ReginaLoadUser.serve(): ReginaLoadUser.Response {
                             params += MeganQueryParam("state", state.name)
                         }
 
-                        exhaustive/when (req.filter.value) {
+                        val filter = req.filter.value.relaxedToEnum(AdminUserFilter.values(), AdminUserFilter.ALL)
+                        exhaustive/when (filter) {
                             AdminUserFilter.ALL -> {}
                             AdminUserFilter.COOL -> filterByState(UserState.COOL)
                             AdminUserFilter.PROFILE_APPROVAL_PENDING -> filterByState(UserState.PROFILE_APPROVAL_PENDING)
@@ -94,9 +95,9 @@ fun ReginaLoadUser.serve(): ReginaLoadUser.Response {
     override fun serve() {
         fuckAnyUser(FuckAnyUserParams(
             bpc = bpc,
-            makeRequest = {ItemsRequest(UserParamsHistoryFilter.values())},
+            makeRequest = {ItemsRequest()},
             runShit = fun(ctx, req): ItemsResponse<UserParamsHistoryItemRTO> {
-                return megan<UserParamsHistoryItem, UserParamsHistoryItemRTO, UserParamsHistoryFilter>(
+                return megan<UserParamsHistoryItem, UserParamsHistoryItemRTO>(
                     req = req,
                     checkShit = {
                         // TODO:vgrechka ...

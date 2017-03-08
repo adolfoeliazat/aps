@@ -292,6 +292,11 @@ fun dwarnStrikingAndExit(vararg xs: Any?) {
     exitProcess(0)
 }
 
+fun isTest(): Boolean {
+    // TODO:vgrechka ...
+    return true
+}
+
 
 
 

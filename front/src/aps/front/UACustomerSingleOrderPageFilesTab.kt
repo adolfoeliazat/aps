@@ -22,7 +22,7 @@ class UACustomerSingleOrderPageFilesTab(val order: UAOrderRTO) : TabithaTab {
 
     override suspend fun load(): FormResponse2.Shitty<*>? {
         val boobs = MelindaBoobs<
-            UAOrderFileRTO, CustomerFileFilter,
+            UAOrderFileRTO,
             UAOrderFileParamsRequest, UACreateOrderFileResponse,
             UAOrderFileParamsRequest, UAUpdateOrderFileResponse
         >(
@@ -44,8 +44,8 @@ class UACustomerSingleOrderPageFilesTab(val order: UAOrderRTO) : TabithaTab {
             makeURLForReload = {boobsParams->
                 makeURL(pages.uaCustomer.order, myURLParamValues() + boobsParams)
             },
-            filterValues = CustomerFileFilter.values(),
-            defaultFilterValue = CustomerFileFilter.ALL,
+            filterValues = enumValuesToStringIDTimesTitleList(CustomerFileFilter.values()),
+            defaultFilterValue = CustomerFileFilter.ALL.name,
             filterSelectKey = selects.customerFileFilter,
             vaginalInterface = vaginalInterface
         )
@@ -93,7 +93,7 @@ class UACustomerSingleOrderPageFilesTab(val order: UAOrderRTO) : TabithaTab {
 
     private class FileLipsState(val downloadActive: Boolean)
 
-    val vaginalInterface = MelindaVagina<UAOrderFileRTO, CustomerFileFilter, UAOrderFileParamsRequest, UAUpdateOrderFileResponse> (
+    val vaginalInterface = MelindaVagina<UAOrderFileRTO, UAOrderFileParamsRequest, UAUpdateOrderFileResponse> (
         updateParams = MelindaVaginalUpdateParams(
             updateItemProcedureNameIfNotDefault = "UAUpdateOrderFile",
             getItemFromUpdateItemResponse = {res-> res.updatedFile},

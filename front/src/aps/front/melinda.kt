@@ -17,11 +17,10 @@ class MelindaVaginalUpdateParams<ItemRTO, out UpdateItemRequest, in UpdateItemRe
 
 class MelindaVagina<
     ItemRTO,
-    Filter,
     out UpdateItemRequest,
     in UpdateItemResponse>
 (
-    val sendItemsRequest: suspend (req: ItemsRequest<Filter>) -> FormResponse2<ItemsResponse<ItemRTO>>,
+    val sendItemsRequest: suspend (req: ItemsRequest) -> FormResponse2<ItemsResponse<ItemRTO>>,
     val shouldShowFilter: () -> Boolean,
     val getParentEntityID: () -> Long?,
     val humanItemTypeName: String,
@@ -30,8 +29,6 @@ class MelindaVagina<
     val updateParams: MelindaVaginalUpdateParams<ItemRTO, UpdateItemRequest, UpdateItemResponse>?
 )
 where
-    Filter : Enum<Filter>,
-    Filter : Titled,
     UpdateItemRequest : RequestMatumba,
     UpdateItemResponse : CommonResponseFields
 
@@ -65,34 +62,33 @@ class MelindaCreateParams<CreateRequest, CreateResponse>(
     CreateRequest : RequestMatumba,
     CreateResponse : CommonResponseFields
 
+class StringIDTimesTitle(val id: String, val title: String)
 
 class MelindaBoobs<
     Item,
-    Filter,
     CreateRequest, CreateResponse,
     UpdateItemRequest, UpdateItemResponse>
 (
     val createParams: MelindaCreateParams<CreateRequest, CreateResponse>?,
     val makeURLForReload: (boobsParams: List<URLParamValue<*>>) -> String,
-    val filterValues: Array<Filter>,
-    val defaultFilterValue: Filter,
-    val filterSelectKey: EnumSelectKey<Filter>,
+    val filterValues: List<StringIDTimesTitle>,
+    val defaultFilterValue: String,
+    val filterSelectKey: SelectKey,
     val hasRefreshButton: Boolean = false,
     val renderStripStuff: (ElementBuilder) -> Unit = {},
     val vaginalInterface: MelindaVagina<
         Item,
-        Filter,
         UpdateItemRequest, UpdateItemResponse>
 ) where
-    Filter: Enum<Filter>, Filter: Titled,
     Item : MelindaItemRTO,
     CreateRequest : RequestMatumba, CreateResponse : CommonResponseFields,
     UpdateItemRequest : RequestMatumba, UpdateItemResponse : CommonResponseFields
 {
     val urlQuery = _URLQuery()
-    inner class _URLQuery : URLQueryParamsMarker {
+
+    class _URLQuery : URLQueryParamsMarker {
         val ordering by EnumURLParam(Ordering.values(), default = Ordering.DESC)
-        val filter by EnumURLParam(filterValues, default = defaultFilterValue)
+        val filter by StringURLParam("")
         val search by StringURLParam("")
     }
 
@@ -148,7 +144,7 @@ class MelindaBoobs<
         override fun getSearchString() = urlQuery.search.get()
     }
 
-    val filterSelect = EnumSelect(
+    val filterSelect = Select(
         key = filterSelectKey,
         values = filterValues,
         initialValue = urlQuery.filter.get(),
@@ -158,7 +154,7 @@ class MelindaBoobs<
     )
 
     val orderingSelect = EnumSelect(
-        key = selects.ordering,
+        key = enumSelects.ordering,
         values = Ordering.values(),
         initialValue = urlQuery.ordering.get(),
         isAction = true,
@@ -207,7 +203,7 @@ class MelindaBoobs<
     }
 
     private suspend fun requestChunk(fromID: Long?): FormResponse2<ItemsResponse<Item>> {
-        val res = vaginalInterface.sendItemsRequest(ItemsRequest(filterValues)-{o->
+        val res = vaginalInterface.sendItemsRequest(ItemsRequest()-{o->
             o.parentEntityID.value = vaginalInterface.getParentEntityID()
             o.filter.value = urlQuery.filter.get()
             o.ordering.value = urlQuery.ordering.get()
@@ -549,11 +545,10 @@ fun <ItemRTO : MelindaItemRTO, LipsState> makeUsualMelindaLips(
     }
 }
 
-class BoobyLoader<Item, Filter, CreateRequest, CreateResponse, UpdateItemRequest, UpdateItemResponse>(
+class BoobyLoader<Item, CreateRequest, CreateResponse, UpdateItemRequest, UpdateItemResponse>(
     val header: String,
-    val makeBoobs: () -> MelindaBoobs<Item, Filter, CreateRequest, CreateResponse, UpdateItemRequest, UpdateItemResponse>
+    val makeBoobs: () -> MelindaBoobs<Item, CreateRequest, CreateResponse, UpdateItemRequest, UpdateItemResponse>
 ) where
-    Filter: Enum<Filter>, Filter: Titled,
     Item : MelindaItemRTO,
     CreateRequest : RequestMatumba, CreateResponse : CommonResponseFields,
     UpdateItemRequest : RequestMatumba, UpdateItemResponse : CommonResponseFields

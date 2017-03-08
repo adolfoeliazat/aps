@@ -39,7 +39,7 @@ class DashboardPage(val world: World) {
                                     title = t("TOTE", "Новых заказов рассмотреть"),
                                     amount = r.ordersToApprove,
                                     url = makeURL(pages.uaAdmin.orders, listOf(
-                                        URLParamValue(UAAdminOrdersPage().booby.makeBoobs().urlQuery.filter, AdminOrderFilter.TO_APPROVE)
+                                        URLParamValue(MelindaBoobs._URLQuery().filter, AdminOrderFilter.TO_APPROVE.name)
                                     )),
                                     linkKey = links.adminDashboard.ordersToApprove)}),
 
@@ -48,7 +48,7 @@ class DashboardPage(val world: World) {
                                 render = {renderWorkItem(
                                     title = t("TOTE", "Заапрувить профилей писателей"), amount = r.writerProfilesToApprove,
                                     url = makeURL(pages.uaAdmin.users, listOf(
-                                        URLParamValue(AdminUsersPage().makeBoobs().urlQuery.filter, AdminUserFilter.PROFILE_APPROVAL_PENDING)
+                                        URLParamValue(MelindaBoobs._URLQuery().filter, AdminUserFilter.PROFILE_APPROVAL_PENDING.name)
                                     )),
                                     linkKey = links.adminDashboard.writerProfilesToApprove)}))
 

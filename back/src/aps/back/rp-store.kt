@@ -7,12 +7,7 @@ import into.kommon.*
     override fun serve() {
         fuckAnyUser(FuckAnyUserParams(
             bpc = bpc,
-            makeRequest = {ItemsRequest(filterValues = when (requestUser.kind) {
-                UserKind.WRITER -> StoreFilter.values()
-//                UserKind.WRITER -> WriterStoreFilter.values()
-                UserKind.ADMIN -> imf("ed999540-edf0-4ed0-a220-ba5b2d2a8689")
-                UserKind.CUSTOMER -> wtf("3b32cd38-599b-43b1-8cc4-9d24b5e924f5")
-            })},
+            makeRequest = {ItemsRequest()},
             runShit = fun(ctx, req): ItemsResponse<UAOrderRTO> {
                 // TODO:vgrechka Security
                 return megan(
@@ -26,10 +21,16 @@ import into.kommon.*
                         s += " and order_state = :state"
                         params += MeganQueryParam("state", UAOrderState.IN_STORE.name)
 
-                        exhaustive/when (req.filter.value) {
-                            StoreFilter.ALL -> {}
-//                            WriterStoreFilter.ALL -> {}
-//                            WriterStoreFilter.MY_SPECIALIZATION -> imf("871a3c22-e02a-4c7d-b936-21fa91f398ef")
+                        exhaustive/when (requestUser.kind) {
+                            UserKind.WRITER -> {
+                                val filter = req.filter.value.relaxedToEnum(WriterStoreFilter.values(), WriterStoreFilter.ALL)
+                                exhaustive/when (filter) {
+                                    WriterStoreFilter.ALL -> {}
+                                    WriterStoreFilter.MY_SPECIALIZATION -> imf("871a3c22-e02a-4c7d-b936-21fa91f398ef")
+                                }
+                            }
+                            UserKind.ADMIN -> imf("40319ac2-de28-4d0c-be65-8554065d2127")
+                            UserKind.CUSTOMER -> wtf("82267ddc-62c1-4984-8414-0276a1ad30ae")
                         }
                     }
                 )

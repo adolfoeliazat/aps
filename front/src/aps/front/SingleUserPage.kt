@@ -32,7 +32,7 @@ class SingleUserPage {
                 }
             },
             makeTabs = {listOf(
-                UsualParamsTab<UserRTO, UserParamsHistoryItemRTO, UserParamsHistoryFilter, UserParamsRequest, GenericResponse>(
+                UsualParamsTab<UserRTO, UserParamsHistoryItemRTO, UserParamsRequest, GenericResponse>(
                     tabitha,
                     tabKey = tabs.user.params,
                     renderBody = {renderProfile(user)},
@@ -49,7 +49,7 @@ class SingleUserPage {
                             populateWithAdminNotes(o, user)
                         }
                     )},
-                    historyParams = HistoryParams<UserParamsHistoryItemRTO, UserParamsHistoryFilter>(
+                    historyParams = HistoryParams<UserParamsHistoryItemRTO>(
                         historyItemClass = UserParamsHistoryItemRTO::class,
                         renderItem = {thisItem, thatItem ->
                             renderUserParamsHistoryItem(thisItem, when {
@@ -75,8 +75,8 @@ class SingleUserPage {
                             )
                         },
                         sendHistoryItemsRequest = {req-> sendGetUserParamsHistoryItems(req)},
-                        historyFilterValues = UserParamsHistoryFilter.values(),
-                        defaultHistoryFilterValue = UserParamsHistoryFilter.ALL,
+                        historyFilterValues = enumValuesToStringIDTimesTitleList(UserParamsHistoryFilter.values()),
+                        defaultHistoryFilterValue = UserParamsHistoryFilter.ALL.name,
                         historyFilterSelectKey = selects.userParamsHistoryFilter
                     )
                 )

@@ -189,8 +189,14 @@ object getStringUIDForObject {
     operator fun invoke(obj: Any): String = nameToUID.getOrPut(obj) {puid()}
 }
 
+fun <E> enumValuesToStringIDTimesTitleList(values: Array<E>): List<StringIDTimesTitle>
+    where E : Enum<E>, E : Titled
+{
+    return values.map {StringIDTimesTitle(it.name, it.title)}
+}
 
-
+fun usualHeader(title: String): ToReactElementable =
+    pageHeader0(title)
 
 
 

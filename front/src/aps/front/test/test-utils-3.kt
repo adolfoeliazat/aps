@@ -7,8 +7,6 @@ import into.mochka.assert
 import into.mochka.assertEquals
 import kotlin.browser.window
 
-fun isTest(): Boolean = TestGlobal.testRunning
-
 fun TestScenarioBuilder.submitSignInForm(shit: TestShit, userData: TestUserData, descr: String, aid: String) {
     imf("reimplement submitSignInForm")
 //    inputSetValue(fieldSpecs.email_testRef.name, userData.email)

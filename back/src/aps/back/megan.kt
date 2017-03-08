@@ -14,8 +14,8 @@ interface MeganItem<out RTO> : ToRtoable<RTO> {
 
 class MeganQueryParam(val name: String, val value: Any)
 
-fun <Item, ItemRTO, Filter> megan(
-    req: ItemsRequest<Filter>,
+fun <Item, ItemRTO> megan(
+    req: ItemsRequest,
     checkShit: () -> Unit,
     table: String,
     itemClass: Class<Item>,
@@ -23,8 +23,6 @@ fun <Item, ItemRTO, Filter> megan(
     addToWhere: (StringBuilder, MutableList<MeganQueryParam>) -> Unit
 ): ItemsResponse<ItemRTO>
 where
-    Filter: Enum<Filter>,
-    Filter: Titled,
     Item: MeganItem<ItemRTO>
 {
     TestServerFiddling.nextRequestError.getAndReset()?.let(::bitchExpectedly)

@@ -102,18 +102,17 @@ class Tabitha<EntityRTO>(
     }
 }
 
-class UsualParamsTab<ItemRTO, HistoryItemRTO, HistoryFilter, Req : RequestMatumba, Res : CommonResponseFields>(
+class UsualParamsTab<ItemRTO, HistoryItemRTO, Req : RequestMatumba, Res : CommonResponseFields>(
     val tabitha: Tabitha<*>,
     tabKey: TabKey,
     renderBody: () -> ToReactElementable,
     hasEditButton: Boolean,
     editModalTitle: String,
     makeFormSpec: () -> FormSpec<Req, Res>,
-    val historyParams: HistoryParams<HistoryItemRTO, HistoryFilter>? = null
+    val historyParams: HistoryParams<HistoryItemRTO>? = null
 )
     : TabithaTab
 where
-    HistoryFilter : Enum<HistoryFilter>, HistoryFilter : Titled,
     HistoryItemRTO : MelindaItemRTO, HistoryItemRTO : HistoryItemRTOFields
 {
     enum class Mode {
@@ -127,7 +126,7 @@ where
         if (mode == Mode.HISTORY) {
             historyParams!!
 
-            val boobs = MelindaBoobs<HistoryItemRTO, HistoryFilter, /*CreateRequest=*/ Nothing, /*CreateResponse=*/ Nothing, /*UpdateItemRequest=*/ Nothing, /*UpdateItemResponse=*/ Nothing>(
+            val boobs = MelindaBoobs<HistoryItemRTO, /*CreateRequest=*/ Nothing, /*CreateResponse=*/ Nothing, /*UpdateItemRequest=*/ Nothing, /*UpdateItemResponse=*/ Nothing>(
                 createParams = null,
                 makeURLForReload = {boobsParams->
                     makeURL(pages.uaCustomer.order, boobsParams + listOf(
@@ -144,7 +143,7 @@ where
                         }
                     }
                 },
-                vaginalInterface = MelindaVagina<HistoryItemRTO, HistoryFilter, /*UpdateItemRequest=*/ Nothing, /*UpdateItemResponse=*/ Nothing>(
+                vaginalInterface = MelindaVagina<HistoryItemRTO, /*UpdateItemRequest=*/ Nothing, /*UpdateItemResponse=*/ Nothing>(
                     sendItemsRequest = historyParams.sendHistoryItemsRequest,
                     shouldShowFilter = {true},
                     getParentEntityID = {TabithaURLQuery.id.get()},
@@ -268,16 +267,14 @@ where
 
 }
 
-class HistoryParams<HistoryItemRTO, Filter>(
+class HistoryParams<HistoryItemRTO : HistoryItemRTOFields>(
     val historyItemClass: KClass<HistoryItemRTO>,
     val renderItem: (thisItem: HistoryItemRTO, thatItem: HistoryItemRTO?) -> ToReactElementable,
-    val sendHistoryItemsRequest: suspend (req: ItemsRequest<Filter>) -> FormResponse2<ItemsResponse<HistoryItemRTO>>,
-    val historyFilterValues: Array<Filter>,
-    val defaultHistoryFilterValue: Filter,
-    val historyFilterSelectKey: EnumSelectKey<Filter>
-) where
-    Filter : Enum<Filter>, Filter : Titled,
-    HistoryItemRTO : HistoryItemRTOFields
+    val sendHistoryItemsRequest: suspend (req: ItemsRequest) -> FormResponse2<ItemsResponse<HistoryItemRTO>>,
+    val historyFilterValues: List<StringIDTimesTitle>,
+    val defaultHistoryFilterValue: String,
+    val historyFilterSelectKey: SelectKey
+)
 
 
 

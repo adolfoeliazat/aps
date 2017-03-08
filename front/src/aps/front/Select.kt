@@ -10,15 +10,13 @@ import aps.*
 import into.kommon.*
 import kotlin.js.*
 
-class SelectKey<T>(override val fqn: String) : Fucker(), FQNed
-where T : Titled
+class SelectKey(override val fqn: String) : Fucker(), FQNed
 
-class Select<T>(
-    val key: SelectKey<T>? = null,
+class Select(
+    val key: SelectKey? = null,
     attrs: Attrs = Attrs(),
-    val values: Array<T>,
-    val initialValue: T?,
-    val getItemID: (T) -> String,
+    val values: List<StringIDTimesTitle>,
+    val initialValue: String?,
     val isAction: Boolean = false,
     val style: Json = json(),
     val volatileDisabled: (() -> Boolean)? = null,
@@ -28,28 +26,20 @@ class Select<T>(
     val onFocusa: suspend () -> Unit = {},
     val onBlur: () -> Unit = {},
     val onBlura: suspend () -> Unit = {}
-) : Control2(attrs), Blinkable where T : Titled {
+) : Control2(attrs), Blinkable {
     var blinker: BlinkerOperations? = null
 
     companion object {
-        val instances = mutableMapOf<SelectKey<*>, Select<*>>()
+        val instances = mutableMapOf<SelectKey, Select>()
 
         @Suppress("UNCHECKED_CAST")
-        fun <E> instance(key: SelectKey<E>/*, values: Array<E>*/): Select<E>
-            where E : Enum<E>, E : Titled
-        {
-            val select = instances[key] as Select<E>? ?: bitch("No Select keyed `${key.fqn}`")
-//            val expectedEnumName = values[0]::class.js.name
-//            val actualEnumName = select.values[0]::class.js.name
-//            check(expectedEnumName == actualEnumName
-//                      && arraysEquals(values, select.values)) {
-//                "Select values mismatch. Expected $expectedEnumName, got $actualEnumName"}
-            return select
+        fun instance(key: SelectKey): Select {
+            return instances[key] ?: bitch("No Select keyed `${key.fqn}`")
         }
     }
 
     var persistentDisabled: Boolean = false
-    var value: T = initialValue ?: values[0]
+    var value: String = initialValue ?: values[0].id
 
     override fun defaultControlTypeName() = "Select"
 
@@ -57,25 +47,23 @@ class Select<T>(
         wantNull(volatileDisabled) {"volatileDisabled conflicts with persistent disabling"}
     }
 
-    fun stringToValue(s: String) = values.find {getItemID(it) == s}
-        ?: wtf("53afaa3a-19bd-4c82-a9c2-1b67a919a8c0")
-
-    private val stringValue get() = getItemID(value)
+//    fun stringToValue(s: String) = values.find {it.id == s}
+//        ?: wtf("53afaa3a-19bd-4c82-a9c2-1b67a919a8c0")
 
     override fun render(): ToReactElementable {
         return reactCreateElement("select", json(
             "id" to elementID,
             "className" to "form-control",
-            "value" to stringValue,
+            "value" to value,
 
             // React doesn't add `selected` attribute to `option`s, so we capture value here.
             // Needed for HTML assertions.
-            "data-value" to stringValue,
+            "data-value" to value,
 
             "disabled" to (volatileDisabled?.let {it()} ?: persistentDisabled),
 
             "onChange" to {asu{
-                setValue(stringToValue(Shitus.byid0(elementID).value))
+                setValue(Shitus.byid0(elementID).value)
                 onChange()
                 asu {onChanga()}
             }},
@@ -90,20 +78,20 @@ class Select<T>(
                 onBlura()
             }}),
 
-                                  values.map {
-                                      reactCreateElement("option", json("value" to getItemID(it)), listOf(it.title.asDynamicReactElement()))
-                                  }
+          values.map {
+              reactCreateElement("option", json("value" to it.id), listOf(it.title.asDynamicReactElement()))
+          }
         ).toToReactElementable()
     }
 
 
-    override fun testGetValue() = stringValue
+    override fun testGetValue() = value
 
-    suspend fun setValue(value: T) {
+    suspend fun setValue(value: String) {
         setValueExt(value)
     }
 
-    suspend fun setValueExt(newValue: T, notify: Boolean = false) {
+    suspend fun setValueExt(newValue: String, notify: Boolean = false) {
         value = newValue
         update()
 
@@ -150,19 +138,12 @@ class Select<T>(
     }
 }
 
-suspend fun <E> selectSetValue(keyRef: TestRef<SelectKey<E>>, value: E)
-where E : Enum<E>, E : Titled {
-    _selectSetValue(keyRef.it, value)
+object tselect {
+    suspend fun setValue(keyRef: TestRef<SelectKey>, value: String) {
+        notAwait {Select.instance(keyRef.it).setValueExt(value, notify = true)}
+    }
 }
 
-//suspend fun <E> selectSetValue(spec: TestRef<SelectFieldSpec<E>>, value: E)
-//where E : Enum<E>, E : Titled {
-//    _selectSetValue(FieldSpecToCtrlKey[spec.it], value)
-//}
-
-private suspend fun <E> _selectSetValue(key: SelectKey<E>, value: E) where E : Enum<E>, E : Titled {
-    notAwait {Select.instance(key).setValueExt(value, notify = true)}
-}
 
 
 

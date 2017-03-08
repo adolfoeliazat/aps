@@ -14,7 +14,7 @@ import org.springframework.data.repository.findOrDie
     override fun serve() {
         fuckAdmin(FuckAdminParams(
             bpc = bpc,
-            makeRequest = {ItemsRequest(AdminOrderFilter.values())},
+            makeRequest = {ItemsRequest()},
             runShit = fun(ctx, req): ItemsResponse<UAOrderRTO> {
                 return megan(
                     req = req,
@@ -24,7 +24,8 @@ import org.springframework.data.repository.findOrDie
                     table = "ua_orders",
                     itemClass = UAOrder::class.java,
                     addToWhere = {s, params ->
-                        exhaustive/when (req.filter.value) {
+                        val filter = req.filter.value.relaxedToEnum(AdminOrderFilter.values(), AdminOrderFilter.ALL)
+                        exhaustive/when (filter) {
                             AdminOrderFilter.ALL -> {}
                             AdminOrderFilter.TO_APPROVE -> {
                                 s += " and order_state = :state"
@@ -42,7 +43,7 @@ import org.springframework.data.repository.findOrDie
     override fun serve() {
         fuckAnyUser(FuckAnyUserParams(
             bpc = bpc,
-            makeRequest = {ItemsRequest(CustomerFileFilter.values())},
+            makeRequest = {ItemsRequest()},
             runShit = fun(ctx, req): ItemsResponse<UAOrderFileRTO> {
                 return megan(
                     req = req,
@@ -55,7 +56,8 @@ import org.springframework.data.repository.findOrDie
                     itemClass = UAOrderFile::class.java,
                     parentKey = "orderFile_order__id",
                     addToWhere = {s, params ->
-                        exhaustive/when (req.filter.value) {
+                        val filter = req.filter.value.relaxedToEnum(CustomerFileFilter.values(), CustomerFileFilter.ALL)
+                        exhaustive/when (filter) {
                             CustomerFileFilter.ALL -> {}
                             CustomerFileFilter.FROM_ME -> imf("41654446-347a-4d51-b27b-bb5d9a750820")
                             CustomerFileFilter.FROM_WRITER -> imf("537f0e0c-77f4-483e-8f5a-c29cfcfdfd5b")
