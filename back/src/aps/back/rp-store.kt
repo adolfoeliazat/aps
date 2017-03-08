@@ -2,6 +2,7 @@ package aps.back
 
 import aps.*
 import into.kommon.*
+import org.springframework.data.repository.findOrDie
 
 @Servant class ServeGetStoreItems : BitchyProcedure() {
     override fun serve() {
@@ -48,6 +49,44 @@ import into.kommon.*
         ))
     }
 }
+
+@Servant class ServeBid : BitchyProcedure() {
+    override fun serve() {
+        fuckAnyUser(FuckAnyUserParams(
+            bpc = bpc,
+            makeRequest = {BidRequest()},
+            runShit = fun(ctx, req: BidRequest): GenericResponse {
+                // TODO:vgrechka Security
+                checkingAllFieldsRetrieved(req) {
+                    val order = uaOrderRepo.findOrDie(req.orderID.value)
+                    bidRepo.save(Bid(
+                        bidPriceOffer = req.bidPriceOffer.value,
+                        bidDurationOffer = req.bidDurationOffer.value,
+                        bidComment = req.bidComment.value,
+                        adminNotes = "",
+                        order = order
+                    ))
+                }
+                return GenericResponse()
+            }
+        ))
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

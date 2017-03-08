@@ -7,6 +7,7 @@ object fields                                              : Fuckers<FieldSpec>(
     val genericPassword                                    by namedFucker {TextFieldSpec(it, t("TOTE", "Пароль"), TextFieldType.PASSWORD, minLen = 8, maxLen = 50)}
     val genericPhone                                       by namedFucker {TextFieldSpec(it, t("TOTE", "Телефон"), TextFieldType.PHONE, minLen = 6, maxLen = 50, minDigits = 6)}
     val genericRejectionReason                             by namedFucker {TextFieldSpec(it, t("TOTE", "Причина отказа"), TextFieldType.TEXTAREA, 10, 5000)}
+    val genericComment                                     by namedFucker {TextFieldSpec(it, t("TOTE", "Комментарий"), TextFieldType.TEXTAREA, 10, 5000)}
 
     val signUpFirstName                                    by namedFucker {genericFirstName.copy(name = it)}; val signUpFirstName_testRef = TestRef(signUpFirstName)
     val signUpLastName                                     by namedFucker {genericLastName.copy(name = it)}; val signUpLastName_testRef = TestRef(signUpLastName)
@@ -46,6 +47,10 @@ object fields                                              : Fuckers<FieldSpec>(
 
     val uaDocumentCategory                                 by namedFucker {DocumentCategoryFieldSpec(it, t("TOTE", "Категория"))}; val uaDocumentCategory_testRef = TestRef(uaDocumentCategory)
     val writerDocumentCategories                           by namedFucker {DocumentCategorySetFieldSpec(it, t("TOTE", "Ваяю в категориях"))}; val writerDocumentCategories_testRef = TestRef(writerDocumentCategories)
+
+    val bidPriceOffer                                      by namedFucker {IntFieldSpec(it, t("TOTE", "Моя цена"), type = IntFieldType.Money(), min = 100_00, max = 50000_00)}; val bidPriceOffer_testRef = TestRef(bidPriceOffer)
+    val bidDurationOffer                                   by namedFucker {IntFieldSpec(it, t("TOTE", "Мой срок"), type = IntFieldType.Duration(), min = 1 * 24, max = 365 * 24)}; val bidDurationOffer_testRef = TestRef(bidDurationOffer)
+    val bidComment                                         by namedFucker {genericComment.copy(name = it)}; val bidComment_testRef = TestRef(bidComment)
 }
 
 

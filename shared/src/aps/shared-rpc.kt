@@ -235,6 +235,13 @@ class UAOrderStoreParamsRequest : RequestMatumba() {
     val uaDocumentCategory = DocumentCategoryField(this, fields.uaDocumentCategory)
 }
 
+class BidRequest : RequestMatumba() {
+    val orderID by longHiddenField()
+    val bidPriceOffer = IntField(this, fields.bidPriceOffer)
+    val bidDurationOffer = IntField(this, fields.bidDurationOffer)
+    val bidComment = TextField(this, fields.bidComment)
+}
+
 annotation class NoArgCtor
 annotation class AllOpen
 annotation class Ser

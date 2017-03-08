@@ -40,6 +40,9 @@ object css {
         def.visited?.let {allShit += ".$name:visited {$it}"}
         def.hover?.let {allShit += ".$name:hover {$it}"}
         def.active?.let {allShit += ".$name:active {$it}"}
+        def.focus?.let {allShit += ".$name:focus {$it}"}
+        def.hoverActive?.let {allShit += ".$name:hover:active {$it}"}
+        def.hoverFocus?.let {allShit += ".$name:hover:focus {$it}"}
         def.firstChild?.let {allShit += ".$name:first-child {$it}"}
         def.notFirstChild?.let {allShit += ".$name:nth-child(1n+2) {$it}"}
     }
@@ -50,6 +53,9 @@ object css {
         val visited: String? = null,
         val hover: String? = null,
         val active: String? = null,
+        val focus: String? = null,
+        val hoverActive: String? = null,
+        val hoverFocus: String? = null,
         val firstChild: String? = null,
         val notFirstChild: String? = null
     )
@@ -663,6 +669,18 @@ object css {
         val pickedItemActionIcon by Style(style = "color: $GRAY_500; cursor: pointer;",
                                           hover = "color: $GRAY_700;")
     }
+
+    val bidButton by Style(
+        style = """
+            position: absolute;
+            right: 0px;
+            top: 0px;
+            background: $LIME_100;""",
+        hover = "background: $LIME_300;",
+        active = "background: $LIME_300;",
+        focus = "background: $LIME_300;",
+        hoverActive = "background: $LIME_300;",
+        hoverFocus = "background: $LIME_300;")
 
     init {touchObjectGraph(this)}
 }

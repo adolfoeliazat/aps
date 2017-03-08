@@ -41,7 +41,7 @@ import aps.*
 
     val tselect.adminUserFilter get() = __AdminUserFilterTester
     object __AdminUserFilterTester {
-        suspend fun setRawValue(value: String) = tselect.setValue(selects.writerStoreFilter, value)
+        suspend fun setRawValue(value: String) = tselect.setValue(selects.adminUserFilter, value)
         suspend fun setValue(value: AdminUserFilter) = setRawValue(value.name)
     }
 
@@ -49,7 +49,7 @@ import aps.*
 
     val tselect.customerFileFilter get() = __CustomerFileFilterTester
     object __CustomerFileFilterTester {
-        suspend fun setRawValue(value: String) = tselect.setValue(selects.writerStoreFilter, value)
+        suspend fun setRawValue(value: String) = tselect.setValue(selects.customerFileFilter, value)
         suspend fun setValue(value: CustomerFileFilter) = setRawValue(value.name)
     }
 
@@ -57,7 +57,7 @@ import aps.*
 
     val tselect.adminOrderFilter get() = __AdminOrderFilterTester
     object __AdminOrderFilterTester {
-        suspend fun setRawValue(value: String) = tselect.setValue(selects.writerStoreFilter, value)
+        suspend fun setRawValue(value: String) = tselect.setValue(selects.adminOrderFilter, value)
         suspend fun setValue(value: CustomerFileFilter) = setRawValue(value.name)
     }
 
@@ -65,7 +65,7 @@ import aps.*
 
     val tselect.userParamsHistoryFilter get() = __UserParamsHistoryFilterTester
     object __UserParamsHistoryFilterTester {
-        suspend fun setRawValue(value: String) = tselect.setValue(selects.writerStoreFilter, value)
+        suspend fun setRawValue(value: String) = tselect.setValue(selects.userParamsHistoryFilter, value)
         suspend fun setValue(value: CustomerFileFilter) = setRawValue(value.name)
     }
 

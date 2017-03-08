@@ -54,7 +54,7 @@ class StorePage {
 
 fun renderStoreItem(order: UAOrderRTO): ToReactElementable {
     val m = MelindaTools
-    return kdiv{o->
+    return kdiv(position = "relative"){o->
         o- m.row{o->
             o- m.col(3, t("TOTE", "Попал в стор")){o->
                 o- formatUnixTime(bang(order.movedToStoreAt))
@@ -73,6 +73,26 @@ fun renderStoreItem(order: UAOrderRTO): ToReactElementable {
         o- renderOrderStoreBoundaries(order)
         o- m.detailsRow(order.details, order.detailsHighlightRanges, title = fields.orderDetails.title)
         o- renderAdminNotesIfNeeded(order)
+
+        if (user().kind == UserKind.WRITER) {
+            o- Button(icon = fa.usd, title = t("TOTE", "Дайте мне"), className = css.bidButton, key = buttons.bid) {
+                openEditModal(
+                    title = t("TOTE", "Заявка на выполнение"),
+                    formSpec = FormSpec<BidRequest, GenericResponse>(
+                        primaryButtonTitle = t("TOTE", "Да!"),
+                        cancelButtonTitle = t("TOTE", "Та не..."),
+                        req = BidRequest()-{o->
+                            o.orderID.value = order.id
+                        }
+                    ),
+                    onSuccessa = {
+                    }
+                )
+            }
+        }
     }
 }
+
+
+
 

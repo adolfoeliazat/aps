@@ -396,7 +396,7 @@ private fun Spew.generateSeparateShit.processSelectControlKey(decl: KtProperty) 
 
             val tselect.$keyName get() = $testerObjectName
             object $testerObjectName {
-                suspend fun setRawValue(value: String) = tselect.setValue(selects.writerStoreFilter, value)
+                suspend fun setRawValue(value: String) = tselect.setValue(selects.$keyName, value)
                 $setValueFunsForEnums
             }
     """)

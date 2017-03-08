@@ -14,6 +14,7 @@ private val skipLengthyStuff = true
 // TODO:vgrechka Test case: File download error
 // TODO:vgrechka Test case: Unexpected backend error when sending order for approval
 // TODO:vgrechka Test case: Customer chooses to not specify last name during anonymous order creation
+// TODO:vgrechka Test case: Writer bids not within limits
 
 class Test_UA_CrazyLong_2 : FuckingScenario() {
     // http://aps-ua-writer.local:3022/faq.html?test=Test_UA_CrazyLong_2&stopOnAssertions=true&dontStopOnCorrectAssertions=true&animateUserActions=false&handPauses=true
@@ -590,6 +591,11 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
             bootWriterWithToken("gogol", sessionIndex.gogol2, makeURL(pages.uaWriter.store, listOf()), aid = "8ce00463-19a8-4239-a113-7cd1d2255189")
             seq.halfway_done({tselect.writerStoreFilter.setValue(WriterStoreFilter.ALL)}, "c4282033-c71e-4145-8f78-3315ded330ae")
             seq.halfway_done({tselect.writerStoreFilter.setValue(WriterStoreFilter.MY_SPECIALIZATION)}, "16ab30bd-ec58-4533-84ca-585cb161a867")
+            seq.button_modal(buttons.bid_testRef, "e8ec6357-a848-4ce1-94b2-b7888e931285")
+            inputSetValue(fields.bidPriceOffer_testRef, "700")
+            inputSetValue(fields.bidDurationOffer_testRef, "10")
+            inputSetValue(fields.bidComment_testRef, "Наваяю, а хуле. Я ж писатель")
+            seq.submitForm("39cb9d18-26ae-4bb7-987a-2a19ff4ec5a2")
             ___stopEverywhere()
         }
     }

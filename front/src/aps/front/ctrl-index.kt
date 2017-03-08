@@ -40,6 +40,7 @@ object buttons                           : Fuckers<ButtonKey>(null) {
     val editStoreParams                  by namedFucker(::ButtonKey); val editStoreParams_testRef = TestRef(editStoreParams)
     val joke                             by namedFucker(::ButtonKey); val joke_testRef = TestRef(joke)
     val chooseDocumentCategory           by namedFucker(::ButtonKey); val chooseDocumentCategory_testRef = TestRef(chooseDocumentCategory)
+    val bid                              by namedFucker(::ButtonKey); val bid_testRef = TestRef(bid)
 
 
     object modal                         : Fuckers<ButtonKey>(this) {

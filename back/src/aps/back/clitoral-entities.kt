@@ -20,6 +20,7 @@ val uaOrderFileRepo get() = springctx.getBean(UAOrderFileRepository::class.java)
 val uaDocumentCategoryRepo get() = springctx.getBean(UADocumentCategoryRepository::class.java)!!
 val userTimesDocumentCategoryRepo get() = springctx.getBean(UserTimesDocumentCategoryRepository::class.java)!!
 val userParamsHistoryItemTimesDocumentCategoryRepo get() = springctx.getBean(UserParamsHistoryItemTimesDocumentCategoryRepository::class.java)!!
+val bidRepo get() = springctx.getBean(BidRepository::class.java)!!
 
 
 private fun currentTimestampForEntity(): Timestamp {
@@ -307,7 +308,8 @@ data class UAOrderFields(
     var minAllowedDurationOffer: Int,
     var maxAllowedDurationOffer: Int,
     @ManyToOne(fetch = FetchType.EAGER) var customer: User?, // TODO:vgrechka Think about nullability of this shit. Order can be draft, before customer even confirmed herself
-    @ManyToOne(fetch = FetchType.LAZY) var category: UADocumentCategory
+    @ManyToOne(fetch = FetchType.LAZY) var category: UADocumentCategory,
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "order") var bids: MutableList<Bid> = mutableListOf()
 ) : FieldsWithAdminNotes
 
 @Entity @Table(name = "ua_orders",
@@ -496,6 +498,38 @@ interface UADocumentCategoryRepository : CrudRepository<UADocumentCategory, Long
 }
 
 
+//============================== Bid ==============================
+
+
+@Entity @Table(name = "bids",
+               indexes = arrayOf(Index(columnList = "order__id")))
+class Bid(
+    @Embedded var common: CommonFields = CommonFields(),
+    var bidPriceOffer: Int,
+    var bidDurationOffer: Int,
+    @Column(length = MAX_STRING) var bidComment: String,
+    override @Column(length = MAX_STRING) var adminNotes: String,
+    @ManyToOne(fetch = FetchType.LAZY) var order: UAOrder
+)
+    : ClitoralEntity0(), FieldsWithAdminNotes
+{
+    fun toRTO(searchWords: List<String>): BidRTO {
+        val title = "pizda"
+        return BidRTO(
+            id = id!!,
+            title = title,
+            editable = false,
+            titleHighlightRanges = highlightRanges(title, searchWords),
+            createdAt = common.createdAt.time,
+            updatedAt = common.updatedAt.time,
+            adminNotes = adminNotes,
+            adminNotesHighlightRanges = highlightRanges(adminNotes, searchWords)
+        )
+    }
+}
+
+interface BidRepository : CrudRepository<Bid, Long> {
+}
 
 
 

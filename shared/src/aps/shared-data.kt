@@ -160,6 +160,17 @@ class UADocumentCategoryRTO(
     val children: List<UADocumentCategoryRTO>
 )
 
+class BidRTO(
+    override var id: Long,
+    override var title: String,
+    override var editable: Boolean,
+    override var titleHighlightRanges: List<IntRangeRTO>,
+    val createdAt: Long,
+    val updatedAt: Long,
+    override var adminNotes: String,
+    override var adminNotesHighlightRanges: List<IntRangeRTO>
+) : MelindaItemRTO, RTOWithAdminNotes
+
 
 
 
