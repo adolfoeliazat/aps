@@ -29,8 +29,8 @@ class MaybeStringURLParam : URLParam<String>, ReadOnlyProperty<Any?, MaybeString
 class StringURLParam(val default: String) : URLParam<String>, ReadOnlyProperty<Any?, StringURLParam> {
     override var name by notNull<String>()
 
-    fun get(world: World = Globus.world): String {
-        return world.urlQuery[name] ?: default
+    fun get(): String {
+        return Globus.world.urlQuery[name] ?: default
     }
 
     override fun getValue(thisRef: Any?, property: KProperty<*>): StringURLParam {

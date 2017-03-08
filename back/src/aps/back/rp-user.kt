@@ -27,7 +27,7 @@ fun ReginaLoadUser.serve(): ReginaLoadUser.Response {
 
                         if (o.user.kind == UserKind.WRITER) {
                             val subs = req.categorySubscriptions.value
-                            exhaustive/when (subs) {
+                            exhaustive=when (subs) {
                                 is DocumentCategorySetFieldValue.All -> {
                                     o.user.subscribedToAllCategories = true
                                     o.documentCategorySubscriptions.clear()
@@ -76,8 +76,8 @@ fun ReginaLoadUser.serve(): ReginaLoadUser.Response {
                             params += MeganQueryParam("state", state.name)
                         }
 
-                        val filter = req.filter.value.relaxedToEnum(AdminUserFilter.values(), AdminUserFilter.ALL)
-                        exhaustive/when (filter) {
+                        val filter = req.filter.value.relaxedToEnumOrDie(AdminUserFilter.values())
+                        exhaustive=when (filter) {
                             AdminUserFilter.ALL -> {}
                             AdminUserFilter.COOL -> filterByState(UserState.COOL)
                             AdminUserFilter.PROFILE_APPROVAL_PENDING -> filterByState(UserState.PROFILE_APPROVAL_PENDING)

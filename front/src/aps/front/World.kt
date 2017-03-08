@@ -110,7 +110,7 @@ class World(val name: String) {
         tokenMaybe = tsl.token
         if (tokenMaybe != null) {
             val res = send(tokenMaybe, SignInWithTokenRequest())
-            exhaustive/when (res) {
+            exhaustive=when (res) {
                 is FormResponse2.Hunky -> {
                     userMaybe = res.meat.user
                 }

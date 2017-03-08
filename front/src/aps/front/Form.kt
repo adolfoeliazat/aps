@@ -309,7 +309,7 @@ fun badTextFieldValuesThenValid(
         }
         add("too long", TestData.generateShit(f.maxLen + 1))
 
-        exhaustive/when (f.type) {
+        exhaustive=when (f.type) {
             TextFieldType.EMAIL -> {
                 add("malformed 1", "shit")
                 // TODO:vgrechka Other shitty emails?

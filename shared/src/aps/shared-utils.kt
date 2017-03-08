@@ -209,9 +209,7 @@ fun puid(): String = puidPrefix + _puid++
 
 fun <T> Iterable<T>.without(xs: Iterable<T>) = this.filter{!xs.contains(it)}
 
-object exhaustive {
-    infix operator fun <T> div(rhs: T): Unit {}
-}
+var exhaustive: Any? = null
 
 fun <T> cast(x: Any?): T = x as T
 
@@ -258,7 +256,7 @@ class DebugNoise(val tag: String, val mute: Boolean, val style: Style = IN_THREE
 
     inline fun clog(vararg xs: Any?) {
         if (!mute) {
-            exhaustive/when (style) {
+            exhaustive=when (style) {
                 IN_THREE_DASHES -> aps.clog("---$tag---", *xs)
                 COLON -> aps.clog("$tag: ", *xs)
             }
@@ -276,15 +274,15 @@ fun String.escapeSingleQuotes(): String =
 //    enumValues<E>().find {it.name.toUpperCase() == s?.toUpperCase()}
 //        ?: default
 
+fun <E : Enum<E>> String?.relaxedToEnumOrNull(values: Array<E>) =
+    values.find {it.name.toUpperCase() == this?.toUpperCase()}
+
 fun <E : Enum<E>> String?.relaxedToEnum(values: Array<E>, default: E): E {
-    val value = values.find {it.name.toUpperCase() == this?.toUpperCase()}
-    if (value != null) return value
-    if (!this.isNullOrBlank() && isTest()) {
-        wtf("this = $this    9217a34b-58ff-4e93-bb95-0db9481a5363")
-    } else {
-        return default
-    }
+    return relaxedToEnumOrNull(values) ?: default
 }
+
+fun <E : Enum<E>> String?.relaxedToEnumOrDie(values: Array<E>): E =
+    relaxedToEnumOrNull(values) ?: wtf("this = $this    c526f090-69ce-4ffe-9faa-beb678c6e409")
 
 fun String.lastIndexOfOrNull(s: String): Int? {
     val index = lastIndexOf(s)

@@ -48,6 +48,11 @@ Create test database
 Drop all shit
     drop schema public cascade;
 
+PSQL stuff
+    \x auto                         Automatic output format (rows/columns) depending on whether data fits on screen
+    \pset pager
+
+
 JavaScript
 ==========
 

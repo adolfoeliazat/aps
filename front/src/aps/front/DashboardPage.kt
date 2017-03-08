@@ -22,7 +22,7 @@ class DashboardPage(val world: World) {
 
     private suspend fun loadForFuckingAdmin() {
         val res = send(UAAdminGetStuffToDoRequest())
-        exhaustive/when(res) {
+        exhaustive=when(res) {
             is FormResponse2.Shitty -> {
                 setPage(renderErrorBanner(res.error))
             }

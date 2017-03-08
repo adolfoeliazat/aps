@@ -74,7 +74,7 @@ class UACustomerSingleOrderPageFilesTab(val order: UAOrderRTO) : TabithaTab {
         val res = send(UADownloadOrderFileRequest()-{o->
             o.fileID.value = item.id
         })
-        exhaustive / when (res) {
+        exhaustive=when (res) {
             is FormResponse2.Shitty -> {
                 imf("onDownload fuckup")
             }

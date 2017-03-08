@@ -180,7 +180,7 @@ object art {
                         }
                     }
                     !skipping -> {
-                        exhaustive/when (instr) {
+                        exhaustive=when (instr) {
                             is TestInstruction.WorldPoint -> {
                                 die("Don't fucking use me    5583ccb6-9a7b-4128-bfa4-8b20da2e7f2e")
 //                                val wpname: String = fullWorldPointName(instr)

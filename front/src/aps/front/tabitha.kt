@@ -228,7 +228,7 @@ where
                                 val res = askRegina(ReginaGetPairOfLastHistoryItems(
                                     type = historyParams.historyItemClass,
                                     entityID = tabitha.entityID))
-                                exhaustive/when (res) {
+                                exhaustive=when (res) {
                                     is FormResponse2.Shitty -> openErrorModal(res.error)
                                     is FormResponse2.Hunky -> {
                                         if (res.meat.prelastItem != null) {

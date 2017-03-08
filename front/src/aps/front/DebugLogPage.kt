@@ -36,7 +36,7 @@ class DebugLogPage(val world: World) {
                 }
             }
 
-            exhaustive/when (urlQuery.cut) {
+            exhaustive=when (urlQuery.cut) {
                 Cut.NONE -> {}
                 Cut.LAST_BOOT -> {
                     cutFromLastBoot(rootMessages.lastIndex)
@@ -113,7 +113,7 @@ class DebugLogPage(val world: World) {
                 }
 
                 kdiv(position = "relative", className = CN_ROW){o->
-                    exhaustive/when (msg) {
+                    exhaustive=when (msg) {
                         is Separator -> {
                             o- when (msg.type) {
                                 SEPARATOR -> renderSeparator(msg, "1px solid $BLUE_500", "0.75em")

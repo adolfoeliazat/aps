@@ -18,7 +18,7 @@ class ProfilePage {
         Globus.world.setPage(Page(
             header = usualHeader(t("TOTE", "Профиль")),
             body = kdiv{o->
-                exhaustive/when (user().kind) {
+                exhaustive=when (user().kind) {
                     UserKind.WRITER -> when (user().state) {
                         UserState.COOL -> {
                             o- renderBannerCalmWarning(t("TOTE", "При изменении профиля, пока мы его будем проверять, сервис будет недоступен"))

@@ -24,8 +24,8 @@ import org.springframework.data.repository.findOrDie
                     table = "ua_orders",
                     itemClass = UAOrder::class.java,
                     addToWhere = {s, params ->
-                        val filter = req.filter.value.relaxedToEnum(AdminOrderFilter.values(), AdminOrderFilter.ALL)
-                        exhaustive/when (filter) {
+                        val filter = req.filter.value.relaxedToEnumOrDie(AdminOrderFilter.values())
+                        exhaustive=when (filter) {
                             AdminOrderFilter.ALL -> {}
                             AdminOrderFilter.TO_APPROVE -> {
                                 s += " and order_state = :state"
@@ -56,8 +56,8 @@ import org.springframework.data.repository.findOrDie
                     itemClass = UAOrderFile::class.java,
                     parentKey = "orderFile_order__id",
                     addToWhere = {s, params ->
-                        val filter = req.filter.value.relaxedToEnum(CustomerFileFilter.values(), CustomerFileFilter.ALL)
-                        exhaustive/when (filter) {
+                        val filter = req.filter.value.relaxedToEnumOrDie(CustomerFileFilter.values())
+                        exhaustive=when (filter) {
                             CustomerFileFilter.ALL -> {}
                             CustomerFileFilter.FROM_ME -> imf("41654446-347a-4d51-b27b-bb5d9a750820")
                             CustomerFileFilter.FROM_WRITER -> imf("537f0e0c-77f4-483e-8f5a-c29cfcfdfd5b")

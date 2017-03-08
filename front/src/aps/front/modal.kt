@@ -371,7 +371,7 @@ fun modalConfirmAndDelete_killme(msg: String, req: DeleteRequest): Promisoid<Boo
                         tickerPlace.setContent(renderTicker("left"))
                         async {
                             val res = await(send(req))
-                            exhaustive/when (res) {
+                            exhaustive=when (res) {
                                 is ZimbabweResponse.Shitty -> {
                                     errorPlace.setContent(renderErrorBanner(res.error))
                                     tickerPlace.setContent(NOTRE)

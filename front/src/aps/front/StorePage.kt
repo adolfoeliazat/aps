@@ -23,7 +23,7 @@ class StorePage {
                 UserKind.ADMIN -> imf("8eef9765-5cf4-4663-b755-dbf4980e666e")
             }},
             filterValues = enumValuesToStringIDTimesTitleList(WriterStoreFilter.values()),
-            defaultFilterValue = WriterStoreFilter.ALL.name,
+            defaultFilterValue = WriterStoreFilter.MY_SPECIALIZATION.name,
             filterSelectKey = selects.writerStoreFilter,
             vaginalInterface = MelindaVagina<UAOrderRTO, UAOrderParamsRequest, UAUpdateOrderResponse>(
                 sendItemsRequest = {req-> sendGetStoreItems(req)},

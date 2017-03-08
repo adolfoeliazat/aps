@@ -101,5 +101,32 @@ fun <T> Boolean.then(block: () -> T): T? = when (this) {
     else -> null
 }
 
+fun String.orDefaultIfBlank(default: String) = when {
+    isBlank() -> default
+    else -> this
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

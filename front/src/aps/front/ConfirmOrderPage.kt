@@ -14,7 +14,7 @@ class ConfirmOrderPage(val world: World) {
         val res = send(ConfirmOrderRequest()-{o->
             o.secret.value = urlQuery.secret.get(world)
         })
-        exhaustive/when (res) {
+        exhaustive=when (res) {
             is FormResponse2.Shitty -> {
                 world.setPage(Page(
                     header = usualHeader(t("TOTE", "Подтверждение заказа")),

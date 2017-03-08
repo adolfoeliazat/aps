@@ -34,7 +34,7 @@ fun sendingDollyButtonHandler(
 
     val res = sendRequest()
     di.setBusy(false)
-    exhaustive/when (res) {
+    exhaustive=when (res) {
         is FormResponse2.Shitty -> {
             TestGlobal.shitDoneLock.resumeTestFromSut()
             openErrorModal(res.error)

@@ -136,7 +136,7 @@ import kotlin.js.json
     override fun populateRemote(json: Json): Promisoid<Unit> {
         val _content = content
         val shit = ResolvableShit<Unit>()
-        exhaustive/when (_content) {
+        exhaustive=when (_content) {
             is FileField.Content.Provided -> {
                 val reader = FileReader()
                 reader.onload = {

@@ -430,11 +430,11 @@ suspend fun showTestBanner(ctx: ShowTestBannerContext, title: String, subtitle: 
     assertionBannerPause = ResolvableShit<Unit>()
     ctx.banner = Control2.from {
         val style = Style()
-        exhaustive / when (ctx.verticalPosition) {
+        exhaustive=when (ctx.verticalPosition) {
             VerticalPosition.TOP -> style.top = 0
             VerticalPosition.BOTTOM -> style.bottom = 0
         }
-        exhaustive / when (ctx.horizontalPosition) {
+        exhaustive=when (ctx.horizontalPosition) {
             HorizontalPosition.LEFT -> style.left = 0
             HorizontalPosition.RIGHT -> style.right = 0
         }

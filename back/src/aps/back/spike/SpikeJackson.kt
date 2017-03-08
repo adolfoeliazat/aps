@@ -124,7 +124,7 @@ private fun test1() {
         clog("hackyJson_RedisLogMessage", hackyJson_RedisLogMessage)
 
         val msgIn = objectMapper.readValue(json_RedisLogMessage, RedisLogMessage::class.java)
-        exhaustive / when (msgIn) {
+        exhaustive=when (msgIn) {
             is RedisLogMessage.Separator -> {
                 clog("Yeah, separator: ${msgIn.type} ${msgIn.text}")
             }

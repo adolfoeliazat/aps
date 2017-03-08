@@ -147,7 +147,7 @@ class MelindaBoobs<
     val filterSelect = Select(
         key = filterSelectKey,
         values = filterValues,
-        initialValue = urlQuery.filter.get(),
+        initialValue = getFilterValue(),
         isAction = true,
         style = json("width" to 160),
         volatileDisabled = {headerControlsDisabled}
@@ -205,7 +205,7 @@ class MelindaBoobs<
     private suspend fun requestChunk(fromID: Long?): FormResponse2<ItemsResponse<Item>> {
         val res = vaginalInterface.sendItemsRequest(ItemsRequest()-{o->
             o.parentEntityID.value = vaginalInterface.getParentEntityID()
-            o.filter.value = urlQuery.filter.get()
+            o.filter.value = getFilterValue()
             o.ordering.value = urlQuery.ordering.get()
             o.searchString.value = urlQuery.search.get()
             o.fromID.value = fromID
@@ -262,7 +262,7 @@ class MelindaBoobs<
                                 }
 
                                 if (res != null) {
-                                    exhaustive / when (res) {
+                                    exhaustive=when (res) {
                                         is FormResponse2.Shitty -> openErrorModal(res.error)
                                         is FormResponse2.Hunky -> {
                                             tongues.addAll(res.meat.items.map {MelindaTongue(it)})
@@ -286,6 +286,10 @@ class MelindaBoobs<
                 o- placeholder
             }
         }
+    }
+
+    private fun getFilterValue(): String {
+        return urlQuery.filter.get().orDefaultIfBlank(defaultFilterValue)
     }
 
     inner class MelindaTongue(var _item: Item) {

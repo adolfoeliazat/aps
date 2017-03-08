@@ -33,9 +33,9 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
         val rapunzelDetails = "Одна пара жила по соседству с колдуньей. Однажды беременная жена увидела, что у соседки растёт рапунцель и попросила мужа добыть ей этого лакомства. Муж решил украсть листьев для жены, но колдунья поймала его и разрешила брать у неё рапунцеля сколько угодно в обмен на обещание отдать ей первенца. Когда у жены родилась девочка, колдунья забрала её в падчерицы и назвала Рапунцель."
     }
 
-    val startPoint = 1
+//    val startPoint = 1
 //    val startPoint = 10 // 14 // 9 // 12
-//    val startPoint = 14
+    val startPoint = 14
 
     init {
 //        TestGlobal.describeStateConfig = DescribeStateConfig(showBanners = true, autoResumeAfterMs = null)
@@ -176,7 +176,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 check(bunch2.size == const.moreableChunkSize) {"bunch2.size"}
                 check(bunch3.size < const.moreableChunkSize) {"bunch3.size"}
 
-                exhaustive / when (filesShortcutMode1) {
+                exhaustive=when (filesShortcutMode1) {
                     FilesShortcutMode.ALL -> {
                         bunch1.forEach {addFile(it)}
                         bunch2.forEach {addFile(it)}
@@ -568,6 +568,14 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
             run { // Gogol fills profile
                 inputSetValue(fields.profilePhone_testRef, "+38 (095) 683-11-42")
                 inputSetValue(fields.aboutMe_testRef, "Я ебаный гоголь-моголь. Что тут еще сказать...")
+
+                val ct = DocumentCategorySetFieldTester("e4b591b0-fee9-421f-b020-d8e0056db0cf")
+                ct.setAllCheck(false, expectingLongOperation = true)
+                val pt = SelenaPickerTester.new(aid = "16461639-bb48-437b-998e-2ddb030e233e", field = fields.writerDocumentCategories_testRef)
+                pt.searchValue("прогр")
+                pt.specialKey(fconst.keyCode.down)
+                pt.specialKey(fconst.keyCode.enter)
+
                 seq.submitForm("fc05361d-5c20-4081-8bae-aaf4c00ed8be")
             }
 
@@ -583,6 +591,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
             ___stopEverywhere()
         }
     }
+
 
     private suspend fun lipsTitleClick(subscript: Long, aid: String) {
         seq.halfway_done({linkClick(links.lipsTitle_testRef, subscript = subscript)}, aid)

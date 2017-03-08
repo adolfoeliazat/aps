@@ -43,7 +43,7 @@ object TestUserActionAnimation {
         var marginTop: String? = null
         val verticalGap = 5
         val horizontalGap = 5
-        exhaustive/when (opts.direction) {
+        exhaustive=when (opts.direction) {
             HandDirection.UP -> {
                 my.left = el.offset().left + el.outerWidth() / 2
                 my.top = el.offset().top + el.outerHeight() + verticalGap
