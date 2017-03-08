@@ -1,6 +1,7 @@
 package aps.front
 
 import aps.*
+import kotlin.reflect.KClass
 
 object tabs                              : Fuckers<TabKey>(null) {
     object order                         : Fuckers<TabKey>(this) {
@@ -74,32 +75,14 @@ object enumSelects                       : Fuckers<EnumSelectKey<*>>(null) {
 
 }
 
-object selects                           : Fuckers<SelectKey>(null) {
-    val adminUserFilter                  by namedFucker(::SelectKey); val adminUserFilter_testRef = TestRef(adminUserFilter)
-    suspend fun adminUserFilter_testSetValue(value: AdminUserFilter) {
-        tselect.setValue(adminUserFilter_testRef, value.name)
-    }
-
-    val writerStoreFilter                by namedFucker(::SelectKey); val writerStoreFilter_testRef = TestRef(writerStoreFilter)
-    suspend fun writerStoreFilter_testSetValue(value: WriterStoreFilter) {
-        tselect.setValue(writerStoreFilter_testRef, value.name)
-    }
-
-    val customerFileFilter               by namedFucker(::SelectKey); val customerFileFilter_testRef = TestRef(customerFileFilter)
-    suspend fun customerFileFilter_testSetValue(value: CustomerFileFilter) {
-        tselect.setValue(customerFileFilter_testRef, value.name)
-    }
-
-    val adminOrderFilter                 by namedFucker(::SelectKey); val adminOrderFilter_testRef = TestRef(adminOrderFilter)
-    suspend fun adminOrderFilter_testSetValue(value: CustomerFileFilter) {
-        tselect.setValue(adminOrderFilter_testRef, value.name)
-    }
-
-    val userParamsHistoryFilter          by namedFucker(::SelectKey); val userParamsHistoryFilter_testRef = TestRef(userParamsHistoryFilter)
-    suspend fun userParamsHistoryFilter_testSetValue(value: CustomerFileFilter) {
-        tselect.setValue(userParamsHistoryFilter_testRef, value.name)
-    }
+object selects {
+    val writerStoreFilter = SelectKey(testerEnums = listOf(WriterStoreFilter::class))
+    val adminUserFilter = SelectKey(testerEnums = listOf(AdminUserFilter::class))
+    val customerFileFilter = SelectKey(testerEnums = listOf(CustomerFileFilter::class))
+    val adminOrderFilter = SelectKey(testerEnums = listOf(CustomerFileFilter::class))
+    val userParamsHistoryFilter = SelectKey(testerEnums = listOf(CustomerFileFilter::class))
 }
+
 
 object links                             : Fuckers<LinkKey>(null) {
     val createAccount                    by namedFucker(::LinkKey); val createAccount_testRef = TestRef(createAccount)

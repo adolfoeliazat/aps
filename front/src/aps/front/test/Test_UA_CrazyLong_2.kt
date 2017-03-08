@@ -588,6 +588,8 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
         definePoint (14) {
             mirandaSeedSomeStuff1()
             bootWriterWithToken("gogol", sessionIndex.gogol2, makeURL(pages.uaWriter.store, listOf()), aid = "8ce00463-19a8-4239-a113-7cd1d2255189")
+            seq.halfway_done({tselect.writerStoreFilter.setValue(WriterStoreFilter.ALL)}, "c4282033-c71e-4145-8f78-3315ded330ae")
+            seq.halfway_done({tselect.writerStoreFilter.setValue(WriterStoreFilter.MY_SPECIALIZATION)}, "16ab30bd-ec58-4533-84ca-585cb161a867")
             ___stopEverywhere()
         }
     }

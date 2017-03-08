@@ -10,6 +10,11 @@ package aps.back
 
 import aps.*
 
+
+// ==================================================================
+// REMOTE PROCEDURE SKELETONS
+// ==================================================================
+
 @Generated fun MirandaImposeNextGeneratedPassword.serve(): MirandaImposeNextGeneratedPassword_Response {
     return MirandaImposeNextGeneratedPassword_Response(mirandaImposeNextGeneratedPassword(password = this.password))
 }

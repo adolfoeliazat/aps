@@ -10,6 +10,11 @@ package aps
 
 import aps.*
 
+
+// ==================================================================
+// REMOTE PROCEDURE TOS
+// ==================================================================
+
 @Generated @Ser class MirandaImposeNextGeneratedPassword(val password: String)
 @Generated class MirandaImposeNextGeneratedPassword_Response(val value: Unit) : CommonResponseFieldsImpl()
 @Generated @Ser class MirandaImposeNextGeneratedUserToken(val token: String)

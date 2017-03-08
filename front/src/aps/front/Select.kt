@@ -9,8 +9,13 @@ package aps.front
 import aps.*
 import into.kommon.*
 import kotlin.js.*
+import kotlin.reflect.KClass
 
-class SelectKey(override val fqn: String) : Fucker(), FQNed
+class SelectKey(val testerEnums: List<KClass<*>> = listOf()) {
+    val fqn: String get() = imf("aeb11f89-f53b-4201-bcbb-944b66b3d27c")
+}
+
+//class SelectKey(override val fqn: String) : Fucker(), FQNed
 
 class Select(
     val key: SelectKey? = null,
@@ -139,8 +144,8 @@ class Select(
 }
 
 object tselect {
-    suspend fun setValue(keyRef: TestRef<SelectKey>, value: String) {
-        notAwait {Select.instance(keyRef.it).setValueExt(value, notify = true)}
+    suspend fun setValue(keyRef: SelectKey, value: String) {
+        notAwait {Select.instance(keyRef).setValueExt(value, notify = true)}
     }
 }
 

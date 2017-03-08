@@ -10,8 +10,62 @@ package aps.front
 
 import aps.*
 
+
+// ==================================================================
+// REMOTE PROCEDURE STUBS
+// ==================================================================
+
 @Generated suspend fun mirandaImposeNextGeneratedPassword(password:String): Unit = _askMiranda<MirandaImposeNextGeneratedPassword_Response>(MirandaImposeNextGeneratedPassword(password = password)).value
 @Generated suspend fun mirandaImposeNextGeneratedUserToken(token:String): Unit = _askMiranda<MirandaImposeNextGeneratedUserToken_Response>(MirandaImposeNextGeneratedUserToken(token = token)).value
 @Generated suspend fun mirandaImposeNextOrderID(id:Long): Unit = _askMiranda<MirandaImposeNextOrderID_Response>(MirandaImposeNextOrderID(id = id)).value
 @Generated suspend fun mirandaGetGeneratedTestTimestamps(): List<String> = _askMiranda<MirandaGetGeneratedTestTimestamps_Response>(MirandaGetGeneratedTestTimestamps()).value
 @Generated suspend fun mirandaSeedSomeStuff1(): Unit = _askMiranda<MirandaSeedSomeStuff1_Response>(MirandaSeedSomeStuff1()).value
+
+// ==================================================================
+// CONTROL TESTING HELPERS
+// ==================================================================
+
+// ------------------------------------------------------------------
+// Select
+// ------------------------------------------------------------------
+
+// writerStoreFilter
+
+    val tselect.writerStoreFilter get() = __WriterStoreFilterTester
+    object __WriterStoreFilterTester {
+        suspend fun setRawValue(value: String) = tselect.setValue(selects.writerStoreFilter, value)
+        suspend fun setValue(value: WriterStoreFilter) = setRawValue(value.name)
+    }
+
+// adminUserFilter
+
+    val tselect.adminUserFilter get() = __AdminUserFilterTester
+    object __AdminUserFilterTester {
+        suspend fun setRawValue(value: String) = tselect.setValue(selects.writerStoreFilter, value)
+        suspend fun setValue(value: AdminUserFilter) = setRawValue(value.name)
+    }
+
+// customerFileFilter
+
+    val tselect.customerFileFilter get() = __CustomerFileFilterTester
+    object __CustomerFileFilterTester {
+        suspend fun setRawValue(value: String) = tselect.setValue(selects.writerStoreFilter, value)
+        suspend fun setValue(value: CustomerFileFilter) = setRawValue(value.name)
+    }
+
+// adminOrderFilter
+
+    val tselect.adminOrderFilter get() = __AdminOrderFilterTester
+    object __AdminOrderFilterTester {
+        suspend fun setRawValue(value: String) = tselect.setValue(selects.writerStoreFilter, value)
+        suspend fun setValue(value: CustomerFileFilter) = setRawValue(value.name)
+    }
+
+// userParamsHistoryFilter
+
+    val tselect.userParamsHistoryFilter get() = __UserParamsHistoryFilterTester
+    object __UserParamsHistoryFilterTester {
+        suspend fun setRawValue(value: String) = tselect.setValue(selects.writerStoreFilter, value)
+        suspend fun setValue(value: CustomerFileFilter) = setRawValue(value.name)
+    }
+
