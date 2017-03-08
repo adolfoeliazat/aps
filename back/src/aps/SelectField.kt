@@ -2,11 +2,10 @@ package aps
 
 import aps.back.*
 
-@Back class SelectField<T>(
-    container: RequestMatumba,
-    val spec: SelectFieldSpec<T>
-) : FormFieldBack(container, spec.name)
-where T : Enum<T>, T : Titled {
+@Back class SelectField<T>(container: RequestMatumba, val spec: TitledEnumSelectFieldSpec<T>)
+    : FormFieldBack(container, spec.name)
+    where T : Enum<T>, T : Titled
+{
     private lateinit var _value: T
 
     val value: T get() {

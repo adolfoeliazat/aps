@@ -10,15 +10,14 @@ import aps.*
 import into.kommon.*
 import kotlin.js.*
 
-class SelectKey<T>(override val fqn: String) : Fucker(), FQNed
-where T : Titled
+class EnumSelectKey<E>(override val fqn: String) : Fucker(), FQNed
+where E : Enum<E>, E : Titled
 
-class Select<T>(
-    val key: SelectKey<T>? = null,
+class EnumSelect<E>(
+    val key: EnumSelectKey<E>? = null,
     attrs: Attrs = Attrs(),
-    val values: Array<T>,
-    val initialValue: T?,
-    val getItemID: (T) -> String,
+    val values: Array<E>,
+    val initialValue: E?,
     val isAction: Boolean = false,
     val style: Json = json(),
     val volatileDisabled: (() -> Boolean)? = null,
@@ -28,17 +27,17 @@ class Select<T>(
     val onFocusa: suspend () -> Unit = {},
     val onBlur: () -> Unit = {},
     val onBlura: suspend () -> Unit = {}
-) : Control2(attrs), Blinkable where T : Titled {
+) : Control2(attrs), Blinkable where E : Enum<E>, E : Titled {
     var blinker: BlinkerOperations? = null
 
     companion object {
-        val instances = mutableMapOf<SelectKey<*>, Select<*>>()
+        val instances = mutableMapOf<EnumSelectKey<*>, EnumSelect<*>>()
 
         @Suppress("UNCHECKED_CAST")
-        fun <E> instance(key: SelectKey<E>/*, values: Array<E>*/): Select<E>
+        fun <E> instance(key: EnumSelectKey<E>/*, values: Array<E>*/): EnumSelect<E>
             where E : Enum<E>, E : Titled
         {
-            val select = instances[key] as Select<E>? ?: bitch("No Select keyed `${key.fqn}`")
+            val select = instances[key] as EnumSelect<E>? ?: bitch("No Select keyed `${key.fqn}`")
 //            val expectedEnumName = values[0]::class.js.name
 //            val actualEnumName = select.values[0]::class.js.name
 //            check(expectedEnumName == actualEnumName
@@ -49,7 +48,7 @@ class Select<T>(
     }
 
     var persistentDisabled: Boolean = false
-    var value: T = initialValue ?: values[0]
+    var value: E = initialValue ?: values[0]
 
     override fun defaultControlTypeName() = "Select"
 
@@ -57,20 +56,19 @@ class Select<T>(
         wantNull(volatileDisabled) {"volatileDisabled conflicts with persistent disabling"}
     }
 
-    fun stringToValue(s: String) = values.find {getItemID(it) == s}
-        ?: wtf("53afaa3a-19bd-4c82-a9c2-1b67a919a8c0")
-
-    private val stringValue get() = getItemID(value)
+    fun stringToValue(s: String) = values.find {it.name == s}
+        ?: throw FatException("Select value: $s",
+                              markdownPayload = markdownTitledList("Available values:", values.map {it.name}))
 
     override fun render(): ToReactElementable {
         return reactCreateElement("select", json(
             "id" to elementID,
             "className" to "form-control",
-            "value" to stringValue,
+            "value" to value.name,
 
             // React doesn't add `selected` attribute to `option`s, so we capture value here.
             // Needed for HTML assertions.
-            "data-value" to stringValue,
+            "data-value" to value.name,
 
             "disabled" to (volatileDisabled?.let {it()} ?: persistentDisabled),
 
@@ -90,20 +88,21 @@ class Select<T>(
                 onBlura()
             }}),
 
-                                  values.map {
-                                      reactCreateElement("option", json("value" to getItemID(it)), listOf(it.title.asDynamicReactElement()))
-                                  }
+            values.map {
+                reactCreateElement("option", json("value" to it.name), listOf(it.title.asDynamicReactElement()))
+            }
         ).toToReactElementable()
     }
 
+    override fun testGetValue() = value.name
 
-    override fun testGetValue() = stringValue
 
-    suspend fun setValue(value: T) {
+    suspend fun setValue(value: E) {
+        val x = value.name
         setValueExt(value)
     }
 
-    suspend fun setValueExt(newValue: T, notify: Boolean = false) {
+    suspend fun setValueExt(newValue: E, notify: Boolean = false) {
         value = newValue
         update()
 
@@ -150,22 +149,19 @@ class Select<T>(
     }
 }
 
-suspend fun <E> selectSetValue(keyRef: TestRef<SelectKey<E>>, value: E)
+suspend fun <E> enumSelectSetValue(keyRef: TestRef<EnumSelectKey<E>>, value: E)
 where E : Enum<E>, E : Titled {
-    _selectSetValue(keyRef.it, value)
+    _enumSelectSetValue(keyRef.it, value)
 }
 
-//suspend fun <E> selectSetValue(spec: TestRef<SelectFieldSpec<E>>, value: E)
-//where E : Enum<E>, E : Titled {
-//    _selectSetValue(FieldSpecToCtrlKey[spec.it], value)
-//}
-
-private suspend fun <E> _selectSetValue(key: SelectKey<E>, value: E) where E : Enum<E>, E : Titled {
-    notAwait {Select.instance(key).setValueExt(value, notify = true)}
+suspend fun <E> enumSelectSetValue(spec: TestRef<TitledEnumSelectFieldSpec<E>>, value: E)
+where E : Enum<E>, E : Titled {
+    _enumSelectSetValue(FieldSpecToCtrlKey[spec.it], value)
 }
 
-
-
+private suspend fun <E> _enumSelectSetValue(key: EnumSelectKey<E>, value: E) where E : Enum<E>, E : Titled {
+    notAwait {EnumSelect.instance(key).setValueExt(value, notify = true)}
+}
 
 
 

@@ -76,7 +76,7 @@ class MelindaBoobs<
     val makeURLForReload: (boobsParams: List<URLParamValue<*>>) -> String,
     val filterValues: Array<Filter>,
     val defaultFilterValue: Filter,
-    val filterSelectKey: SelectKey<Filter>,
+    val filterSelectKey: EnumSelectKey<Filter>,
     val hasRefreshButton: Boolean = false,
     val renderStripStuff: (ElementBuilder) -> Unit = {},
     val vaginalInterface: MelindaVagina<
@@ -148,7 +148,7 @@ class MelindaBoobs<
         override fun getSearchString() = urlQuery.search.get()
     }
 
-    val filterSelect = Select(
+    val filterSelect = EnumSelect(
         key = filterSelectKey,
         values = filterValues,
         initialValue = urlQuery.filter.get(),
@@ -157,7 +157,7 @@ class MelindaBoobs<
         volatileDisabled = {headerControlsDisabled}
     )
 
-    val orderingSelect = Select(
+    val orderingSelect = EnumSelect(
         key = selects.ordering,
         values = Ordering.values(),
         initialValue = urlQuery.ordering.get(),

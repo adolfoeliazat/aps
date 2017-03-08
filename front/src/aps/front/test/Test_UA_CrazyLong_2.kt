@@ -33,9 +33,9 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
         val rapunzelDetails = "Одна пара жила по соседству с колдуньей. Однажды беременная жена увидела, что у соседки растёт рапунцель и попросила мужа добыть ей этого лакомства. Муж решил украсть листьев для жены, но колдунья поймала его и разрешила брать у неё рапунцеля сколько угодно в обмен на обещание отдать ей первенца. Когда у жены родилась девочка, колдунья забрала её в падчерицы и назвала Рапунцель."
     }
 
-//    val startPoint = 1
+    val startPoint = 1
 //    val startPoint = 10 // 14 // 9 // 12
-    val startPoint = 14
+//    val startPoint = 14
 
     init {
 //        TestGlobal.describeStateConfig = DescribeStateConfig(showBanners = true, autoResumeAfterMs = null)
@@ -61,7 +61,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                                    aid = "00c34b38-a47d-4ae5-a8f3-6cceadb0d481")
                 describeState("Anonymous order creation form")
                 debugMailboxClear()
-                selectSetValue(fields.uaDocumentType_testRef, UADocumentType.PRACTICE)
+                enumSelectSetValue(fields.uaDocumentType_testRef, UADocumentType.PRACTICE)
                 imposeNextGeneratedConfirmationSecret("top-fucking-secret")
                 mirandaImposeNextOrderID(orderID)
                 seq.formSubmissionAttempts(
@@ -101,6 +101,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 ivo3.coitizeAndBootAsserting(assertStatic = {assertScreenHTML("Static confirmOrder", "2acbad6a-e169-4c0d-9938-99fac621fef5")},
                                              assertDynamic = {assertScreenHTML("Dynamic confirmOrder", "a6a44d05-7c1d-4dbf-82a2-3b42e0ca98f3")})
                 // TODO:vgrechka Email with password should be sent to customer
+                ___stopHereAndEverywhereAfter()
             }
 
             run { // Edit params -- cancel
@@ -112,7 +113,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
             run { // Edit params -- save
                 seq.editButton_modal("f0386438-99f7-417a-83a6-b29d804a1b1c")
-                selectSetValue(fields.uaDocumentType_testRef, UADocumentType.LAB)
+                enumSelectSetValue(fields.uaDocumentType_testRef, UADocumentType.LAB)
                 seq.formSubmissionAttempts(
                     aid = "3_beaa5793-9590-415e-8bc9-ca6fec7ead52",
                     attempts = eachOrCombinationOfLasts(listOf(
@@ -129,7 +130,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
             run { // Edit params -- save 2
                 seq.editButton_modal("b556cf5e-0184-4ce0-8560-f083861116e7")
-                selectSetValue(fields.uaDocumentType_testRef, UADocumentType.PRACTICE)
+                enumSelectSetValue(fields.uaDocumentType_testRef, UADocumentType.PRACTICE)
                 seq.submitForm("6ea13411-892b-4e96-a1b8-c77b23e29567")
             }
         }
@@ -757,7 +758,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
     }
 
     private suspend fun testOrdering(ordering: Ordering, aid: String) {
-        seq.halfway_done({selectSetValue(selects.ordering_testRef, ordering)}, aid)
+        seq.halfway_done({enumSelectSetValue(selects.ordering_testRef, ordering)}, aid)
     }
 
     private suspend fun testSearch(query: String, aid: String) {

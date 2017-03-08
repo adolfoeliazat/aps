@@ -179,6 +179,27 @@ inline suspend fun <reified Meat> showingModalIfError(noinline requestShit: susp
     }
 }
 
+interface ShitWithRenderFunction {
+    val render: () -> ReactElement
+}
+
+
+object getStringUIDForObject {
+    private val nameToUID = WeakMap<Any, String>()
+    operator fun invoke(obj: Any): String = nameToUID.getOrPut(obj) {puid()}
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

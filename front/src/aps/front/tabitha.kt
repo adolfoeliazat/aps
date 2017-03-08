@@ -274,7 +274,7 @@ class HistoryParams<HistoryItemRTO, Filter>(
     val sendHistoryItemsRequest: suspend (req: ItemsRequest<Filter>) -> FormResponse2<ItemsResponse<HistoryItemRTO>>,
     val historyFilterValues: Array<Filter>,
     val defaultHistoryFilterValue: Filter,
-    val historyFilterSelectKey: SelectKey<Filter>
+    val historyFilterSelectKey: EnumSelectKey<Filter>
 ) where
     Filter : Enum<Filter>, Filter : Titled,
     HistoryItemRTO : HistoryItemRTOFields

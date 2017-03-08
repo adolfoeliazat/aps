@@ -50,8 +50,6 @@ abstract class Control2(val attrs: Attrs = Attrs()) : ToReactElementable, WithEl
     open fun componentWillUpdate       (){}
     open fun componentWillUnmount      (){}
     open fun defaultControlTypeName() = "SomeShit"
-    open fun contributeTestState(state: TestStateContributions) {}
-    open fun contributeTestStateIfTamed(state: TestStateContributions) {}
     open fun ignoreDebugCtrlShiftClick() = false
     open fun defaultNoStateContributions() = false
     open fun effectiveShameDefaultsToTamePath() = true
@@ -140,25 +138,6 @@ abstract class Control2(val attrs: Attrs = Attrs()) : ToReactElementable, WithEl
                 addEventListeners()
 
                 art.uiStateContributions[id] = {state: TestStateContributions ->
-                    var shouldContribute = !noStateContributions
-
-                    if (shouldContribute) {
-                        Shitus.byid(elementID).parents().each {
-                            val parentControls = Shitus.elementIDToControls[js("this").id] || jsArrayOf()
-                            for (parentControl in jsArrayToListOfDynamic(parentControls)) {
-                                if (parentControl.noStateContributions) {
-                                    shouldContribute = false
-                                    return@each false // break
-                                }
-                            }
-                        }
-                    }
-
-                    if (shouldContribute) {
-                        contributeTestState(state)
-                        if (tame != null) contributeTestStateIfTamed(state)
-                    }
-
                     for (entry in jsArrayToListOfDynamic(lodash.toPairs(attrs.tattrs ?: js("({})")))) {
                         val key: dynamic = entry[0]
                         val value: dynamic = entry[1]
@@ -174,26 +153,6 @@ abstract class Control2(val attrs: Attrs = Attrs()) : ToReactElementable, WithEl
                         }
                     }
                 }
-
-
-                val effectiveShame: String? = effectiveShame
-//                effectiveShame?.let {
-//                    if (TestGlobal.shameToControl.containsKey(it)) {
-//                        stickException(json("exception" to Error("There is already a thing shamed ${it}")))
-//                    } else {
-//                        TestGlobal.shameToControl[it] = json(
-//                            "testSetValue" to {x: dynamic -> asu {
-////                                testSetValue(x)
-//                            }},
-//                            "testGetValue" to {
-//                                testGetValue()
-//                            },
-//                            "testClick" to {async<Unit>{
-//                                await(testClick())
-//                            }}
-//                        )
-//                    }
-//                }
 
                 componentDidMount()
             },

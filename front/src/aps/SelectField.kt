@@ -6,27 +6,26 @@ import aps.front.*
 import kotlin.js.Json
 import kotlin.js.json
 
-@Front class SelectField<T>(
-    container: RequestMatumba,
-    val spec: SelectFieldSpec<T>)
+@Front class SelectField<T>(container: RequestMatumba, val spec: TitledEnumSelectFieldSpec<T>)
     : FormFieldFront(container, spec.name)
-where T : Enum<T>, T : Titled
+    where T : Enum<T>, T : Titled
 {
     override var error: String? = null
 
-    val select = Select(key = FieldSpecToCtrlKey[spec],
-                        attrs = Attrs(),
-                        values = spec.values,
-                        initialValue = null,
-                        onChange = {
-                            form.fieldChanged()
-                        },
-                        onFocus = {
-                            form.fieldFocused(this)
-                        },
-                        onBlur = {
-                            form.fieldBlurred(this)
-                        }
+    val select = EnumSelect(
+        key = FieldSpecToCtrlKey[spec],
+        attrs = Attrs(),
+        values = spec.values,
+        initialValue = null,
+        onChange = {
+            form.fieldChanged()
+        },
+        onFocus = {
+            form.fieldFocused(this)
+        },
+        onBlur = {
+            form.fieldBlurred(this)
+        }
     )
 
     override fun render(): ReactElement {

@@ -22,9 +22,6 @@ class faIcon(val icon: String, @Mix attrs: Attrs, @Mix val style: Style): Contro
                        "className" to "fa fa-${icon} ${attrs.className}",
                        "style" to style.toReactStyle())))
 
-    override fun contributeTestStateIfTamed(state: TestStateContributions) {
-        state.put(this, tamePath(), icon)
-    }
 }
 
 //fun jsFacing_faIcon(def: dynamic): ReactElement {

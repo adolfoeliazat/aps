@@ -10,7 +10,7 @@ object FieldSpecToCtrlKey {
     operator fun get(spec: CheckboxFieldSpec) = get(spec, ::CheckboxKey)
     operator fun get(spec: DocumentCategoryFieldSpec) = get(spec, ::SelenaPickerKey)
     operator fun get(spec: DocumentCategorySetFieldSpec) = get(spec, ::SelenaPickerKey)
-    operator fun <E> get(spec: SelectFieldSpec<E>) where E : Enum<E>, E : Titled = get(spec, {SelectKey<E>(it)})
+    operator fun <E> get(spec: TitledEnumSelectFieldSpec<E>) where E : Enum<E>, E : Titled = get(spec, {EnumSelectKey<E>(it)})
 
     private operator fun <K : Any> get(spec: FieldSpec, makeKey: (String) -> K): K =
         cast(map.getOrPut(spec) {makeKey(spec.name)})

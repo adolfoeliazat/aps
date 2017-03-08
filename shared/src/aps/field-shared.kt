@@ -24,7 +24,7 @@ class CheckboxFieldSpec(
     val mandatoryYesError: String? = null
 ) : FieldSpec()
 
-class SelectFieldSpec<T>(
+class TitledEnumSelectFieldSpec<T>(
     override val name: String,
     val title: String,
     val values: Array<T>
