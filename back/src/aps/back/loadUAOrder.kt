@@ -8,25 +8,6 @@ package aps.back
 
 import aps.*
 
-@Servant class ServeLoadUAOrder(
-    val orderRepo: UAOrderRepository,
-    val userRepo: UserRepository,
-    val userTokenRepo: UserTokenRepository
-) : BitchyProcedure() {
-    override fun serve() {
-        fuckAnyUser(FuckAnyUserParams(
-            bpc = bpc,
-            makeRequest = {LoadUAOrderRequest()},
-            runShit = fun(ctx, req: LoadUAOrderRequest): LoadUAOrderRequest.Response {
-                fun bitchNotFound(): Nothing = bitchExpectedly(t("TOTE", "Нет такого заказа (по крайней мере, для тебя)"))
-
-                val order = orderRepo.findOne(req.id.value.toLong()) ?: bitchNotFound()
-                // TODO:vgrechka Check access
-                return LoadUAOrderRequest.Response(order.toRTO(listOf()))
-            }
-        ))
-    }
-}
 
 
 

@@ -17,7 +17,7 @@ interface TabithaTab {
 class Tabitha<EntityRTO>(
     val tabKeys: Fuckers<TabKey>,
     val defaultTab: TabKey,
-    val loadEntity: suspend (Long) -> FormResponse2<EntityResponse<EntityRTO>>,
+    val loadEntity: suspend (Long) -> FormResponse2<EntityRTO>,
     val renderBelowHeader: () -> ToReactElementable,
     val makeTabs: () -> List<TabithaTab>,
     val pageHeaderTitle: () -> String,
@@ -41,7 +41,7 @@ class Tabitha<EntityRTO>(
             is FormResponse2.Shitty -> {
                 return PageLoadingError(res.error)
             }
-            is FormResponse2.Hunky -> res.meat.entity
+            is FormResponse2.Hunky -> res.meat
         }
 
         val tabs = makeTabs()
@@ -225,9 +225,9 @@ where
                     if (historyParams != null) {
                         o- Button(icon = fa.adjust, level = Button.Level.DEFAULT, key = buttons.compare) {
                             twoStepBlinkingSut(it.jqel) {
-                                val res = askRegina(ReginaGetPairOfLastHistoryItems(
+                                val res = reginaGetPairOfLastHistoryItems(
                                     type = historyParams.historyItemClass,
-                                    entityID = tabitha.entityID))
+                                    entityID = tabitha.entityID)
                                 exhaustive=when (res) {
                                     is FormResponse2.Shitty -> openErrorModal(res.error)
                                     is FormResponse2.Hunky -> {

@@ -39,7 +39,7 @@ object Spew {
             shitHeaderComment(shitFront, "aps.front")
             shitHeaderComment(shitShared, "aps")
 
-            val remoteProcFiles = listOf("rp-test-2.kt", "rp-shebang.kt")
+            val remoteProcFiles = listOf("rp-test-2.kt", "rp-shebang.kt", "rp-user.kt", "rp-order.kt", "rp-history.kt")
             val ctrlIndexFile = "ctrl-index.kt"
             val backSrcFiles = remoteProcFiles
             val frontSrcFiles = listOf(ctrlIndexFile)
@@ -119,6 +119,7 @@ object Spew {
                 package $packageName
 
                 import aps.*
+                import kotlin.reflect.KClass
             """)
             shit("")
         }
@@ -337,8 +338,16 @@ private fun Spew.generateSeparateShit.processRemoteFunction(function: KtNamedFun
 private fun Spew.generateSeparateShit.processRemoteFunctionTemplate(function: KtNamedFunction, humanName: String, genericFrontFunction: String, frontReturnType: (returnType: String) -> String, simplifyResponseOnFront: (String) -> String) {
     val fname = function.name!!
     clog("Generating $humanName function stub/skeleton for $fname")
-    val sharedParamsClassName = "__${fname.capitalize()}"
 
+    val sharedParamsClassName = "__${fname.capitalize()}"
+    val typeParams = function.typeParameterList?.text ?: ""
+    val typeParamsSpaced = if (typeParams.isNotBlank()) " " + typeParams else typeParams
+    val typeParamsOnlyNames = when {
+        typeParams.isBlank() -> ""
+        else -> "<" + function.typeParameters
+            .map {it.name}
+            .joinToString(", ") + ">"
+    }
     val declaredReturnType = function.typeReference?.node?.chars
     val returnType = when {
         declaredReturnType == null -> {
@@ -355,8 +364,8 @@ private fun Spew.generateSeparateShit.processRemoteFunctionTemplate(function: Kt
         else -> paramsText.replace("(", "(val ").replace(",", ", val ")
     }
     shitShared("""
-        @Generated @Ser class $sharedParamsClassName$sharedFuckers
-        @Generated class $sharedResponseClassName(override val value: $returnType) : CommonResponseFieldsImpl(), SingleValueResponse<$returnType>
+        @Generated @Ser class $sharedParamsClassName$typeParams$sharedFuckers
+        @Generated class $sharedResponseClassName$typeParams(override val value: $returnType) : CommonResponseFieldsImpl(), SingleValueResponse<$returnType>
     """)
 
     val frontFuckers1 = function.valueParameters
@@ -366,14 +375,14 @@ private fun Spew.generateSeparateShit.processRemoteFunctionTemplate(function: Kt
         .map {"${it.name} = ${it.name}"}
         .joinToString(", ")
     shitFront("""
-        @Generated suspend fun $fname($frontFuckers1): ${frontReturnType(returnType)} = ${simplifyResponseOnFront("$genericFrontFunction<$sharedResponseClassName>($sharedParamsClassName($frontFuckers2))")}
+        @Generated suspend fun$typeParamsSpaced $fname($frontFuckers1): ${frontReturnType(returnType)} = ${simplifyResponseOnFront("$genericFrontFunction<$sharedResponseClassName$typeParamsOnlyNames>($sharedParamsClassName($frontFuckers2))")}
     """)
 
     val backFuckers = function.valueParameters
         .map {"${it.name} = this.${it.name}"}
         .joinToString(", ")
     shitBack("""
-        @Generated fun $sharedParamsClassName.serve(): $sharedResponseClassName {
+        @Generated fun$typeParamsSpaced $sharedParamsClassName$typeParamsOnlyNames.serve(): $sharedResponseClassName$typeParamsOnlyNames {
             return $sharedResponseClassName($fname($backFuckers))
         }
     """)

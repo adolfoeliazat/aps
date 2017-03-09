@@ -9,6 +9,7 @@
 package aps
 
 import aps.*
+import kotlin.reflect.KClass
 
 
 // ==================================================================
@@ -25,5 +26,19 @@ import aps.*
 @Generated class __MirandaGetGeneratedTestTimestamps_Response(override val value: List<String>) : CommonResponseFieldsImpl(), SingleValueResponse<List<String>>
 @Generated @Ser class __MirandaSeedSomeStuff1()
 @Generated class __MirandaSeedSomeStuff1_Response(override val value: Unit) : CommonResponseFieldsImpl(), SingleValueResponse<Unit>
+@Generated @Ser class __ReginaLoadUser(val userID: Long)
+@Generated class __ReginaLoadUser_Response(override val value: UserRTO) : CommonResponseFieldsImpl(), SingleValueResponse<UserRTO>
+@Generated @Ser class __ReginaAcceptProfile(val userID: Long)
+@Generated class __ReginaAcceptProfile_Response(override val value: Unit) : CommonResponseFieldsImpl(), SingleValueResponse<Unit>
+@Generated @Ser class __ReginaCustomerSendOrderForApprovalAfterFixing(val orderID: Long)
+@Generated class __ReginaCustomerSendOrderForApprovalAfterFixing_Response(override val value: Unit) : CommonResponseFieldsImpl(), SingleValueResponse<Unit>
 @Generated @Ser class __ReginaAdminSendOrderToStore(val orderID: Long)
 @Generated class __ReginaAdminSendOrderToStore_Response(override val value: Unit) : CommonResponseFieldsImpl(), SingleValueResponse<Unit>
+@Generated @Ser class __ReginaLoadUAOrder(val id: Long)
+@Generated class __ReginaLoadUAOrder_Response(override val value: UAOrderRTO) : CommonResponseFieldsImpl(), SingleValueResponse<UAOrderRTO>
+@Generated @Ser class __ReginaGetDocumentCategories()
+@Generated class __ReginaGetDocumentCategories_Response(override val value: UADocumentCategoryRTO) : CommonResponseFieldsImpl(), SingleValueResponse<UADocumentCategoryRTO>
+@Generated @Ser class __ReginaGetMyself()
+@Generated class __ReginaGetMyself_Response(override val value: UserRTO) : CommonResponseFieldsImpl(), SingleValueResponse<UserRTO>
+@Generated @Ser class __ReginaGetPairOfLastHistoryItems<T : HistoryItemRTOFields>(val type: KClass<T>, val  entityID: Long)
+@Generated class __ReginaGetPairOfLastHistoryItems_Response<T : HistoryItemRTOFields>(override val value: PairOfLastHistoryItems<T>) : CommonResponseFieldsImpl(), SingleValueResponse<PairOfLastHistoryItems<T>>

@@ -9,6 +9,7 @@
 package aps.front
 
 import aps.*
+import kotlin.reflect.KClass
 
 
 // ==================================================================
@@ -20,7 +21,14 @@ import aps.*
 @Generated suspend fun mirandaImposeNextOrderID(id:Long): Unit = _askMiranda<__MirandaImposeNextOrderID_Response>(__MirandaImposeNextOrderID(id = id)).value
 @Generated suspend fun mirandaGetGeneratedTestTimestamps(): List<String> = _askMiranda<__MirandaGetGeneratedTestTimestamps_Response>(__MirandaGetGeneratedTestTimestamps()).value
 @Generated suspend fun mirandaSeedSomeStuff1(): Unit = _askMiranda<__MirandaSeedSomeStuff1_Response>(__MirandaSeedSomeStuff1()).value
+@Generated suspend fun reginaLoadUser(userID:Long): FormResponse2<UserRTO> = _simplifyFormResponseMeat(_askRegina<__ReginaLoadUser_Response>(__ReginaLoadUser(userID = userID)))
+@Generated suspend fun reginaAcceptProfile(userID:Long): FormResponse2<Unit> = _simplifyFormResponseMeat(_askRegina<__ReginaAcceptProfile_Response>(__ReginaAcceptProfile(userID = userID)))
+@Generated suspend fun reginaCustomerSendOrderForApprovalAfterFixing(orderID:Long): FormResponse2<Unit> = _simplifyFormResponseMeat(_askRegina<__ReginaCustomerSendOrderForApprovalAfterFixing_Response>(__ReginaCustomerSendOrderForApprovalAfterFixing(orderID = orderID)))
 @Generated suspend fun reginaAdminSendOrderToStore(orderID:Long): FormResponse2<Unit> = _simplifyFormResponseMeat(_askRegina<__ReginaAdminSendOrderToStore_Response>(__ReginaAdminSendOrderToStore(orderID = orderID)))
+@Generated suspend fun reginaLoadUAOrder(id:Long): FormResponse2<UAOrderRTO> = _simplifyFormResponseMeat(_askRegina<__ReginaLoadUAOrder_Response>(__ReginaLoadUAOrder(id = id)))
+@Generated suspend fun reginaGetDocumentCategories(): FormResponse2<UADocumentCategoryRTO> = _simplifyFormResponseMeat(_askRegina<__ReginaGetDocumentCategories_Response>(__ReginaGetDocumentCategories()))
+@Generated suspend fun reginaGetMyself(): FormResponse2<UserRTO> = _simplifyFormResponseMeat(_askRegina<__ReginaGetMyself_Response>(__ReginaGetMyself()))
+@Generated suspend fun <T : HistoryItemRTOFields> reginaGetPairOfLastHistoryItems(type:KClass<T>, entityID:Long): FormResponse2<PairOfLastHistoryItems<T>> = _simplifyFormResponseMeat(_askRegina<__ReginaGetPairOfLastHistoryItems_Response<T>>(__ReginaGetPairOfLastHistoryItems(type = type, entityID = entityID)))
 
 // ==================================================================
 // CONTROL TESTING HELPERS

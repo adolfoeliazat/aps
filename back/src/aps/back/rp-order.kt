@@ -276,42 +276,65 @@ import java.util.*
     }
 }
 
-fun ReginaCustomerSendOrderForApprovalAfterFixing.serve(): ReginaCustomerSendOrderForApprovalAfterFixing.Response {
+@Remote fun reginaCustomerSendOrderForApprovalAfterFixing(orderID: Long) {
     check(requestUserEntity.user.kind == UserKind.CUSTOMER){"70630d2d-6796-4af8-8ac6-16e09a8b37e1"}
     // TODO:vgrechka Security
-    val order = uaOrderRepo.findOrDie(this.orderID)
+    val order = uaOrderRepo.findOrDie(orderID)
     check(order.order.state == UAOrderState.RETURNED_TO_CUSTOMER_FOR_FIXING){"698dd409-f382-45df-9e65-fff590302dd0"}
     order.order.state = UAOrderState.WAITING_ADMIN_APPROVAL
-    return ReginaCustomerSendOrderForApprovalAfterFixing.Response()
 }
 
-//fun ReginaAdminSendOrderToStore.serve(): ReginaAdminSendOrderToStore.Response {
-//    check(requestUserEntity.user.kind == UserKind.ADMIN){"0af9f1b0-b5fb-4fb2-b3a9-198a0185ee15"}
-//    // TODO:vgrechka Security
-//
-//    val order = uaOrderRepo.findOrDie(this.orderID)
-//    val ord = order.order
-//    check(ord.state in setOf(UAOrderState.WAITING_ADMIN_APPROVAL)){"7af262c7-2a28-43f8-910a-ccf3569142e9"}
-//    if (-1 in setOf(ord.minAllowedDurationOffer, ord.maxAllowedDurationOffer,
-//                    ord.minAllowedPriceOffer, ord.maxAllowedPriceOffer)) {
-//        bitchExpectedly(t("TOTE", "Сперва заполни параметры для стора"))
+@Remote fun reginaAdminSendOrderToStore(orderID: Long) {
+    check(requestUserEntity.user.kind == UserKind.ADMIN){"0af9f1b0-b5fb-4fb2-b3a9-198a0185ee15"}
+    // TODO:vgrechka Security
+
+    val order = uaOrderRepo.findOrDie(orderID)
+    val ord = order.order
+    check(ord.state in setOf(UAOrderState.WAITING_ADMIN_APPROVAL)){"7af262c7-2a28-43f8-910a-ccf3569142e9"}
+    if (-1 in setOf(ord.minAllowedDurationOffer, ord.maxAllowedDurationOffer,
+                    ord.minAllowedPriceOffer, ord.maxAllowedPriceOffer)) {
+        bitchExpectedly(t("TOTE", "Сперва заполни параметры для стора"))
+    }
+
+    ord.whatShouldBeFixedByCustomer = null
+    ord.movedToStoreAt = RequestGlobus.stamp
+    ord.state = UAOrderState.IN_STORE
+}
+
+@Remote fun reginaLoadUAOrder(id: Long): UAOrderRTO {
+    // TODO:vgrechka Security
+
+    fun bitchNotFound(): Nothing = bitchExpectedly(t("TOTE", "Нет такого заказа (по крайней мере, для тебя)"))
+
+    val order = uaOrderRepo.findOne(id) ?: bitchNotFound()
+    return order.toRTO(listOf())
+}
+
+//@Servant class ServeLoadUAOrder(
+//    val orderRepo: UAOrderRepository,
+//    val userRepo: UserRepository,
+//    val userTokenRepo: UserTokenRepository
+//) : BitchyProcedure() {
+//    override fun serve() {
+//        fuckAnyUser(FuckAnyUserParams(
+//            bpc = bpc,
+//            makeRequest = {LoadUAOrderRequest()},
+//            runShit = fun(ctx, req: LoadUAOrderRequest): LoadUAOrderRequest.Response {
+//            }
+//        ))
 //    }
-//
-//    ord.whatShouldBeFixedByCustomer = null
-//    ord.movedToStoreAt = RequestGlobus.stamp
-//    ord.state = UAOrderState.IN_STORE
-//    return ReginaAdminSendOrderToStore.Response()
 //}
 
-fun ReginaGetDocumentCategories.serve(): ReginaGetDocumentCategories.Response {
+
+@Remote fun reginaGetDocumentCategories(): UADocumentCategoryRTO {
     // TODO:vgrechka Security
     val cat = uaDocumentCategoryRepo.findOrDie(const.uaDocumentCategoryID.root).toRTO(loadChildren = true)
-    return ReginaGetDocumentCategories.Response(cat)
+    return cat
 }
 
-fun ReginaGetMyself.serve(): ReginaGetMyself.Response {
+@Remote fun reginaGetMyself(): UserRTO {
     // TODO:vgrechka Security
-    return ReginaGetMyself.Response(requestUserEntity.toRTO(searchWords = listOf()))
+    return requestUserEntity.toRTO(searchWords = listOf())
 }
 
 

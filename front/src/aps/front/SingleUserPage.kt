@@ -15,7 +15,7 @@ class SingleUserPage {
             tabKeys = tabs.user,
             defaultTab = tabs.user.params,
             loadEntity = {id->
-                askRegina(ReginaLoadUser(id))
+                reginaLoadUser(id)
             },
             renderBelowHeader = {
                 when (user.state) {
@@ -25,7 +25,7 @@ class SingleUserPage {
                         blankRejectingRequest = RejectProfileRequest(),
                         entityID = user.id,
                         tabitha = tabitha,
-                        sendAcceptingRequest = {entityID-> askRegina(ReginaAcceptProfile(entityID))},
+                        sendAcceptingRequest = {entityID-> reginaAcceptProfile(entityID)},
                         bottomGap = true)
                     UserState.PROFILE_REJECTED -> renderMaybeRejectionReasonBanner(user.profileRejectionReason)
                     else -> NOTRE

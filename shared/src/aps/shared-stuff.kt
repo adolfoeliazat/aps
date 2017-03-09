@@ -293,15 +293,15 @@ enum class CustomerOrderFilter(override val title: String): Titled {
     ALL(t("TOTE", "Все"))
 }
 
-class EntityRequest() : RequestMatumba() {
-    val id = StringHiddenField(this, "id")
-}
-
-interface EntityResponse<out T> {
-    val entity: T
-}
-
-class SimpleEntityResponse<out T>(override val entity: T) : CommonResponseFieldsImpl(), EntityResponse<T>
+//class EntityRequest() : RequestMatumba() {
+//    val id = StringHiddenField(this, "id")
+//}
+//
+//interface EntityResponse<out T> {
+//    val entity: T
+//}
+//
+//class SimpleEntityResponse<out T>(override val entity: T) : CommonResponseFieldsImpl(), EntityResponse<T>
 
 class ItemsRequest() : RequestMatumba() {
     val parentEntityID by maybeLongHiddenField()
@@ -465,10 +465,10 @@ abstract class CommonResponseFieldsImpl : CommonResponseFields {
     override lateinit var backendVersion: String
 }
 
-class LoadUAOrderRequest : RequestMatumba() {
-    val id by longHiddenField()
-    class Response(override val entity: UAOrderRTO) : CommonResponseFieldsImpl(), EntityResponse<UAOrderRTO>
-}
+//class LoadUAOrderRequest : RequestMatumba() {
+//    val id by longHiddenField()
+//    class Response(override val entity: UAOrderRTO) : CommonResponseFieldsImpl(), EntityResponse<UAOrderRTO>
+//}
 
 enum class Color(val string: String) {
     // https://www.google.com/design/spec/style/color.html#color-color-palette

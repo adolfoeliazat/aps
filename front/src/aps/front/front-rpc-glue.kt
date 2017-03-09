@@ -27,7 +27,6 @@ fun send(req: TestTakeSnapshotRequest): Promisoid<TestTakeSnapshotRequest.Respon
 fun send(req: TestLoadSnapshotRequest): Promisoid<TestLoadSnapshotRequest.Response> = callDangerousMatumba(req)
 fun send(req: GetSentEmailsRequest): Promisoid<GetSentEmailsRequest.Response> = callDangerousMatumba(req)
 fun send(req: ClearSentEmailsRequest): Promisoid<GenericResponse> = callDangerousMatumba(req)
-suspend fun send(req: LoadUAOrderRequest): FormResponse2<LoadUAOrderRequest.Response> = _send3SofteningShit(req)
 suspend fun send(req: TestSQLFiddleRequest): TestSQLFiddleRequest.Response = callDangerousMatumba2(req)
 //suspend fun send(req: ImposeNextGeneratedPasswordRequest): ImposeNextGeneratedPasswordRequest.Response = callDangerousMatumba2(req)
 suspend fun send(req: ImposeNextRequestErrorRequest): GenericResponse = callDangerousMatumba2(req)
@@ -49,14 +48,6 @@ suspend fun sendUACreateOrderFile(req: UAOrderFileParamsRequest): FormResponse2<
 suspend fun send(req: UADownloadOrderFileRequest): FormResponse2<DownloadFileResponse> = _send3(req)
 suspend fun send(req: UACustomerSendOrderDraftForApprovalRequest): FormResponse2<UACustomerSendOrderDraftForApprovalRequest.Response> = _send3(req)
 suspend fun send(req: UAAdminGetStuffToDoRequest): FormResponse2<UAAdminGetStuffToDoRequest.Response> = _send3(req)
-
-//suspend fun askRegina(p: ReginaAdminSendOrderToStore): FormResponse2<ReginaAdminSendOrderToStore.Response> = _askRegina(p)
-suspend fun askRegina(p: ReginaLoadUser): FormResponse2<ReginaLoadUser.Response> = _askRegina(p)
-suspend fun askRegina(p: ReginaAcceptProfile): FormResponse2<ReginaAcceptProfile.Response> = _askRegina(p)
-suspend fun askRegina(p: ReginaCustomerSendOrderForApprovalAfterFixing): FormResponse2<ReginaCustomerSendOrderForApprovalAfterFixing.Response> = _askRegina(p)
-suspend fun <T : HistoryItemRTOFields> askRegina(p: ReginaGetPairOfLastHistoryItems<T>): FormResponse2<ReginaGetPairOfLastHistoryItems<T>.Response> = _askRegina(p)
-suspend fun askRegina(p: ReginaGetDocumentCategories): FormResponse2<ReginaGetDocumentCategories.Response> = _askRegina(p)
-suspend fun askRegina(p: ReginaGetMyself): FormResponse2<ReginaGetMyself.Response> = _askRegina(p)
 
 
 suspend fun <Res> _askMiranda(p: Any): Res =

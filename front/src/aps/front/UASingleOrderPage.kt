@@ -16,11 +16,7 @@ class UASingleOrderPage {
             page = pages.uaCustomer.order,
             tabKeys = tabs.order,
             defaultTab = tabs.order.params,
-            loadEntity = {id->
-                send(LoadUAOrderRequest()-{o->
-                    o.id.value = id
-                })
-            },
+            loadEntity = {id-> reginaLoadUAOrder(id)},
             renderBelowHeader = {
                 when (order.state) {
                     UAOrderState.CUSTOMER_DRAFT -> when (Globus.world.user.kind) {
@@ -68,7 +64,7 @@ class UASingleOrderPage {
                                     title = t("TOTE", "Исправил"), level = Button.Level.PRIMARY, key = buttons.sendForApprovalAfterFixing,
                                     onClick = sendingDollyButtonHandler(
                                         sendRequest = {
-                                            askRegina(ReginaCustomerSendOrderForApprovalAfterFixing(orderID = order.id))
+                                            reginaCustomerSendOrderForApprovalAfterFixing(orderID = order.id)
                                         },
                                         onSuccess = {
                                             tabitha.reloadPage()

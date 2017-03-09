@@ -252,43 +252,10 @@ class ObjectRequest : RequestMatumba() {
 
 
 
-
-
-
-
-//@Ser class ReginaAdminSendOrderToStore(val orderID: Long) {
-//    class Response : CommonResponseFieldsImpl()
-//}
-
-@Ser class ReginaLoadUser(val userID: Long) {
-    class Response(override val entity: UserRTO) : CommonResponseFieldsImpl(), EntityResponse<UserRTO>
-}
-
-@Ser class ReginaAcceptProfile(val userID: Long) {
-    class Response : CommonResponseFieldsImpl()
-}
-
-@Ser class ReginaCustomerSendOrderForApprovalAfterFixing(val orderID: Long) {
-    class Response : CommonResponseFieldsImpl()
-}
-
-@Ser class ReginaGetPairOfLastHistoryItems<HistoryItemRTO : HistoryItemRTOFields>(
-    val type: KClass<HistoryItemRTO>,
-    val entityID: Long
-) {
-    inner class Response/*<out HistoryItemRTO : HistoryItemRTOFields>*/(
-        val lastItem: HistoryItemRTO,
-        val prelastItem: HistoryItemRTO?
-    ) : CommonResponseFieldsImpl()
-}
-
-@Ser class ReginaGetDocumentCategories {
-    class Response(val root: UADocumentCategoryRTO) : CommonResponseFieldsImpl()
-}
-
-@Ser class ReginaGetMyself {
-    class Response(val user: UserRTO) : CommonResponseFieldsImpl()
-}
+class PairOfLastHistoryItems<out HistoryItemRTO : HistoryItemRTOFields>(
+    val lastItem: HistoryItemRTO,
+    val prelastItem: HistoryItemRTO?
+)
 
 
 

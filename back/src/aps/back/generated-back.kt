@@ -9,6 +9,7 @@
 package aps.back
 
 import aps.*
+import kotlin.reflect.KClass
 
 
 // ==================================================================
@@ -30,6 +31,27 @@ import aps.*
 @Generated fun __MirandaSeedSomeStuff1.serve(): __MirandaSeedSomeStuff1_Response {
     return __MirandaSeedSomeStuff1_Response(mirandaSeedSomeStuff1())
 }
+@Generated fun __ReginaLoadUser.serve(): __ReginaLoadUser_Response {
+    return __ReginaLoadUser_Response(reginaLoadUser(userID = this.userID))
+}
+@Generated fun __ReginaAcceptProfile.serve(): __ReginaAcceptProfile_Response {
+    return __ReginaAcceptProfile_Response(reginaAcceptProfile(userID = this.userID))
+}
+@Generated fun __ReginaCustomerSendOrderForApprovalAfterFixing.serve(): __ReginaCustomerSendOrderForApprovalAfterFixing_Response {
+    return __ReginaCustomerSendOrderForApprovalAfterFixing_Response(reginaCustomerSendOrderForApprovalAfterFixing(orderID = this.orderID))
+}
 @Generated fun __ReginaAdminSendOrderToStore.serve(): __ReginaAdminSendOrderToStore_Response {
     return __ReginaAdminSendOrderToStore_Response(reginaAdminSendOrderToStore(orderID = this.orderID))
+}
+@Generated fun __ReginaLoadUAOrder.serve(): __ReginaLoadUAOrder_Response {
+    return __ReginaLoadUAOrder_Response(reginaLoadUAOrder(id = this.id))
+}
+@Generated fun __ReginaGetDocumentCategories.serve(): __ReginaGetDocumentCategories_Response {
+    return __ReginaGetDocumentCategories_Response(reginaGetDocumentCategories())
+}
+@Generated fun __ReginaGetMyself.serve(): __ReginaGetMyself_Response {
+    return __ReginaGetMyself_Response(reginaGetMyself())
+}
+@Generated fun <T : HistoryItemRTOFields> __ReginaGetPairOfLastHistoryItems<T>.serve(): __ReginaGetPairOfLastHistoryItems_Response<T> {
+    return __ReginaGetPairOfLastHistoryItems_Response(reginaGetPairOfLastHistoryItems(type = this.type, entityID = this.entityID))
 }

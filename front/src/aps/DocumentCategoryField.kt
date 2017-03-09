@@ -49,11 +49,11 @@ class SelenaPicker(val key: SelenaPickerKey, val selectCategory: (UADocumentCate
             place.setContent(renderTicker())
             TestGlobal.shitHalfwayLock.resumeTestAndPauseSutFromSut()
             await(async {
-                val res = askRegina(ReginaGetDocumentCategories())
+                val res = reginaGetDocumentCategories()
                 when (res) {
                     is FormResponse2.Shitty -> imf("71191b6a-a183-4203-bee9-e90e43441e8a")
                     is FormResponse2.Hunky -> {
-                        this.rootCategory = res.meat.root
+                        this.rootCategory = res.meat
                         fuck1(place)
                     }
                 }
