@@ -54,6 +54,7 @@ class StorePage {
 
 fun renderStoreItem(tongue: MelindaTongueInterface<UAOrderRTO>): ToReactElementable {
     val order = tongue.item
+    val myBid = order.myBid
     val m = MelindaTools
     return kdiv(position = "relative"){o->
         o- m.row{o->
@@ -72,30 +73,38 @@ fun renderStoreItem(tongue: MelindaTongueInterface<UAOrderRTO>): ToReactElementa
         }
 
         o- renderOrderStoreBoundaries(order)
+
+        if (myBid != null) {
+            o- kdiv(className = css.myBidInStoreItem){o->
+                o- m.row{o->
+                    o- m.col(6, fields.bidPriceOffer.title, renderMoney(myBid.priceOffer))
+                    o- m.col(6, fields.bidDurationOffer.title, renderDurationHours(myBid.durationOffer))
+                }
+                o- m.detailsRow(myBid.comment, title = t("TOTE", "Комментарий к заявке"), highlightRanges = listOf())
+            }
+        }
+
         o- m.detailsRow(order.details, order.detailsHighlightRanges, title = fields.orderDetails.title)
         o- renderAdminNotesIfNeeded(order)
 
-        if (user().kind == UserKind.WRITER) {
-            if (!order.wasBidByMe) {
-                o- Button(icon = fa.usd, title = t("TOTE", "Дайте мне"), className = css.bidButton, key = buttons.bid) {
-                    openEditModal(
-                        title = t("TOTE", "Заявка на выполнение"),
-                        formSpec = FormSpec<BidRequest, GenericResponse>(
-                            primaryButtonTitle = t("TOTE", "Да!"),
-                            cancelButtonTitle = t("TOTE", "Та не..."),
-                            req = BidRequest()-{o->
-                                o.orderID.value = order.id
-                            }
-                        ),
-                        onSuccessBeforeClosingModal = {
-                            showingModalIfShittyResponse({reginaLoadUAOrder(order.id)}) {
-                                tongue.replaceItem(it)
-                            }
+
+        if (myBid == null) {
+            o- Button(icon = fa.usd, title = t("TOTE", "Дайте мне"), className = css.bidButton, key = buttons.bid) {
+                openEditModal(
+                    title = t("TOTE", "Заявка на выполнение"),
+                    formSpec = FormSpec<BidRequest, GenericResponse>(
+                        primaryButtonTitle = t("TOTE", "Да!"),
+                        cancelButtonTitle = t("TOTE", "Та не..."),
+                        req = BidRequest()-{o->
+                            o.orderID.value = order.id
                         }
-                    )
-                }
-            } else {
-                o- "I bid for it"
+                    ),
+                    onSuccessBeforeClosingModal = {
+                        showingModalIfShittyResponse({reginaLoadUAOrder(order.id)}) {
+                            tongue.replaceItem(it)
+                        }
+                    }
+                )
             }
         }
     }

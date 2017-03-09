@@ -69,7 +69,7 @@ class UAOrderRTO(
     var minAllowedDurationOffer: Int,
     var maxAllowedDurationOffer: Int,
     val documentCategory: UADocumentCategoryRTO,
-    val wasBidByMe: Boolean
+    val myBid: BidRTO?
 ) : MelindaItemRTO, RTOWithAdminNotes, TabithaEntityRTO
 
 data class IntRangeRTO(
@@ -169,7 +169,10 @@ class BidRTO(
     val createdAt: Long,
     val updatedAt: Long,
     override var adminNotes: String,
-    override var adminNotesHighlightRanges: List<IntRangeRTO>
+    override var adminNotesHighlightRanges: List<IntRangeRTO>,
+    val priceOffer: Int,
+    val durationOffer: Int,
+    val comment: String
 ) : MelindaItemRTO, RTOWithAdminNotes
 
 

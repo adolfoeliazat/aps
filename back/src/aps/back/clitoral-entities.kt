@@ -350,11 +350,9 @@ class UAOrder(@Embedded var order: UAOrderFields)
             minAllowedDurationOffer = order.minAllowedDurationOffer,
             maxAllowedDurationOffer = order.maxAllowedDurationOffer,
             documentCategory = order.category.toRTO(),
-            wasBidByMe = when (requestUser.kind) {
-                UserKind.CUSTOMER, UserKind.ADMIN -> false
-                UserKind.WRITER -> {
-                    bidRepo.findByBidder(requestUserEntity) != null
-                }
+            myBid = when (requestUser.kind) {
+                UserKind.CUSTOMER, UserKind.ADMIN -> null
+                UserKind.WRITER -> bidRepo.findByBidder(requestUserEntity)?.toRTO(searchWords = listOf())
             }
         )
     }
@@ -530,7 +528,10 @@ class Bid(
             createdAt = common.createdAt.time,
             updatedAt = common.updatedAt.time,
             adminNotes = adminNotes,
-            adminNotesHighlightRanges = highlightRanges(adminNotes, searchWords)
+            adminNotesHighlightRanges = highlightRanges(adminNotes, searchWords),
+            priceOffer = priceOffer,
+            durationOffer = durationOffer,
+            comment = comment
         )
     }
 }

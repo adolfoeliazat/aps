@@ -682,6 +682,12 @@ object css {
         hoverActive = "background: $LIME_300;",
         hoverFocus = "background: $LIME_300;")
 
+    val myBidInStoreItem by Style("""
+        background: $LIME_100;
+        border-top: 0.2rem dashed $LIME_900;
+        border-bottom: 0.2rem dashed $LIME_900;
+    """)
+
     init {touchObjectGraph(this)}
 }
 

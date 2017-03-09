@@ -350,21 +350,21 @@ class MelindaBoobs<
 }
 
 object MelindaTools {
-    fun row(marginBottom: String? = "0.5em", build: (ElementBuilder) -> Unit) =
-        kdiv(className = "row", marginBottom = marginBottom){o->
+    fun row(marginBottom: String? = "0.5em", className: String? = null, build: (ElementBuilder) -> Unit) =
+        kdiv(className = "row ${className?:""}", marginBottom = marginBottom){o->
             build(o)
         }
 
-    fun col(size: Int, title: String, contentStyle: Style? = null, contentClassName: String? = null, build: (ElementBuilder) -> Unit) =
-        kdiv(className = "col-md-$size"){o->
+    fun col(size: Int, title: String, contentStyle: Style? = null, contentClassName: String? = null, colClassName: String? = null, build: (ElementBuilder) -> Unit) =
+        kdiv(className = "col-md-$size ${colClassName?:""}"){o->
             o- klabel(marginBottom = 0) {it - title}
             o- kdiv(Attrs(className = contentClassName), contentStyle ?: Style()){o->
                 build(o)
             }
         }
 
-    fun col(size: Int, title: String, content: ToReactElementable) =
-        col(size, title){o->
+    fun col(size: Int, title: String, content: ToReactElementable, contentClassName: String? = null, colClassName: String? = null) =
+        col(size, title, contentClassName = contentClassName, colClassName = colClassName){o->
             o- content
         }
 
