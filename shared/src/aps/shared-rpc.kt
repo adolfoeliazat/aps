@@ -204,8 +204,11 @@ class UACustomerSendOrderDraftForApprovalRequest : RequestMatumba() {
 }
 
 class UAAdminGetStuffToDoRequest : RequestMatumba() {
-    class Response(val ordersToApprove: Long,
-                   val writerProfilesToApprove: Long) : CommonResponseFieldsImpl()
+    class Response(
+        val ordersToApprove: Long,
+        val writerProfilesToApprove: Long,
+        val bidsToConsider: Long
+    ) : CommonResponseFieldsImpl()
 }
 
 
@@ -235,11 +238,12 @@ class UAOrderStoreParamsRequest : RequestMatumba() {
     val uaDocumentCategory = DocumentCategoryField(this, fields.uaDocumentCategory)
 }
 
-class BidRequest : RequestMatumba() {
+class BidRequest(isAdmin: Boolean, isUpdate: Boolean) : RequestMatumba(), RequestWithAdminNotes {
     val orderID by longHiddenField()
     val bidPriceOffer = IntField(this, fields.bidPriceOffer)
     val bidDurationOffer = IntField(this, fields.bidDurationOffer)
     val bidComment = TextField(this, fields.bidComment)
+    override val adminNotes = TextField(this, fields.adminNotes, include = isAdmin)
 }
 
 annotation class NoArgCtor

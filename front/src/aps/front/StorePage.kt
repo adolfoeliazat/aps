@@ -1,7 +1,6 @@
 package aps.front
 
 import aps.*
-import aps.const.text.symbols.emdash
 import aps.const.text.symbols.endash
 import into.kommon.*
 
@@ -124,7 +123,7 @@ fun renderStoreItem(tongue: MelindaTongueInterface<UAOrderRTO>): ToReactElementa
                     formSpec = FormSpec<BidRequest, GenericResponse>(
                         primaryButtonTitle = t("TOTE", "Да!"),
                         cancelButtonTitle = t("TOTE", "Та не..."),
-                        req = BidRequest()-{o->
+                        req = BidRequest(isAdmin = false, isUpdate = false)-{o->
                             o.orderID.value = order.id
                         }
                     ),

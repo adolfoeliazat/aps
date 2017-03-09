@@ -15,7 +15,8 @@ import aps.*
             runShit = fun(ctx, req): UAAdminGetStuffToDoRequest.Response {
                 return UAAdminGetStuffToDoRequest.Response(
                     ordersToApprove = uaOrderRepo.countByOrder_State(UAOrderState.WAITING_ADMIN_APPROVAL),
-                    writerProfilesToApprove = userRepo.countByUser_KindAndUser_State(UserKind.WRITER, UserState.PROFILE_APPROVAL_PENDING)
+                    writerProfilesToApprove = userRepo.countByUser_KindAndUser_State(UserKind.WRITER, UserState.PROFILE_APPROVAL_PENDING),
+                    bidsToConsider = bidRepo.countByToConsiderByAdmin(true)
                 )
             }
         ))

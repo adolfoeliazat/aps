@@ -50,7 +50,17 @@ class DashboardPage(val world: World) {
                                     url = makeURL(pages.uaAdmin.users, listOf(
                                         URLParamValue(MelindaBoobs._URLQuery().filter, AdminUserFilter.PROFILE_APPROVAL_PENDING.name)
                                     )),
-                                    linkKey = links.adminDashboard.writerProfilesToApprove)}))
+                                    linkKey = links.adminDashboard.writerProfilesToApprove)}),
+
+                            Metric(
+                                contributionToTotal = r.bidsToConsider,
+                                render = {renderWorkItem(
+                                    title = t("TOTE", "Рвущиеся пахать рабы"), amount = r.bidsToConsider,
+                                    url = makeURL(pages.uaAdmin.bids, listOf(
+                                        URLParamValue(MelindaBoobs._URLQuery().filter, AdminBidFilter.TO_CONSIDER.name)
+                                    )),
+                                    linkKey = links.adminDashboard.bidsToConsider)})
+                        )
 
                         val total = metrics.sumByLong {it.contributionToTotal}
                         when (total) {

@@ -45,6 +45,7 @@ object pages {
         val dashboard by namedFucker {privatePage(it) {DashboardPage(it).load()}}; val dashboard_testRef = TestRef(dashboard)
         val users by namedFucker {privatePage(it, t("Users", "Засранцы")) {AdminUsersPage().load()}}; val users_testRef = TestRef(users)
         val user by namedFucker {privatePage(it) {SingleUserPage().load()}}; val user_testRef = TestRef(user)
+        val bids by namedFucker {privatePage(it, t("Bids", "Ставки")) {BidsPage().load()}}
     }
 }
 

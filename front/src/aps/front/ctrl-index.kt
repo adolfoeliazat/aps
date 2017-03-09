@@ -82,6 +82,7 @@ object selects {
     val customerFileFilter = SelectKey(testerEnums = listOf(CustomerFileFilter::class))
     val adminOrderFilter = SelectKey(testerEnums = listOf(CustomerFileFilter::class))
     val userParamsHistoryFilter = SelectKey(testerEnums = listOf(CustomerFileFilter::class))
+    val adminBidFilter = SelectKey(testerEnums = listOf(AdminBidFilter::class))
 }
 
 
@@ -94,6 +95,7 @@ object links                             : Fuckers<LinkKey>(null) {
     object adminDashboard                : Fuckers<LinkKey>(null) {
         val ordersToApprove              by namedFucker(::LinkKey); val ordersToApprove_testRef = TestRef(ordersToApprove)
         val writerProfilesToApprove      by namedFucker(::LinkKey); val writerProfilesToApprove_testRef = TestRef(writerProfilesToApprove)
+        val bidsToConsider               by namedFucker(::LinkKey); val bidsToConsider_testRef = TestRef(bidsToConsider)
     }
 }
 

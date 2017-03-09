@@ -555,7 +555,8 @@ class Bid(
     @Column(length = MAX_STRING) var comment: String,
     override @Column(length = MAX_STRING) var adminNotes: String,
     @ManyToOne(fetch = FetchType.LAZY) var order: UAOrder,
-    @ManyToOne(fetch = FetchType.LAZY) var bidder: User
+    @ManyToOne(fetch = FetchType.LAZY) var bidder: User,
+    var toConsiderByAdmin: Boolean
 )
     : ClitoralEntity0(), FieldsWithAdminNotes
 {
@@ -580,6 +581,7 @@ class Bid(
 interface BidRepository : CrudRepository<Bid, Long> {
     fun findByOrderAndBidder(order: UAOrder, bidder: User): Bid?
     fun findByOrder(order: UAOrder): List<Bid>
+    fun countByToConsiderByAdmin(x: Boolean): Long
 }
 
 

@@ -37,6 +37,7 @@ suspend fun send(req: SaveCapturedVisualShitRequest): SaveCapturedVisualShitRequ
 suspend fun sendUACustomerGetOrderFiles(req: ItemsRequest): FormResponse2<ItemsResponse<UAOrderFileRTO>> = _send3SofteningShit(req, "UACustomerGetOrderFiles")
 suspend fun sendUAAdminGetOrders(req: ItemsRequest): FormResponse2<ItemsResponse<UAOrderRTO>> = _send3SofteningShit(req, "UAAdminGetOrders")
 suspend fun sendGetStoreItems(req: ItemsRequest): FormResponse2<ItemsResponse<UAOrderRTO>> = _send3SofteningShit(req, "GetStoreItems")
+suspend fun sendGetBids(req: ItemsRequest): FormResponse2<ItemsResponse<BidRTO>> = _send3SofteningShit(req, "GetBids")
 suspend fun sendGetUsers(req: ItemsRequest): FormResponse2<ItemsResponse<UserRTO>> = _send3SofteningShit(req, "GetUsers")
 suspend fun sendGetUserParamsHistoryItems(req: ItemsRequest): FormResponse2<ItemsResponse<UserParamsHistoryItemRTO>> = _send3SofteningShit(req, "GetUserParamsHistoryItems")
 suspend fun send(req: TestTakeTestPointSnapshotRequest): TestTakeTestPointSnapshotRequest.Response = await(callDangerousMatumba(req))

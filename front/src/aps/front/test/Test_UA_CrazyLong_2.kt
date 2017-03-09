@@ -23,7 +23,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
         val ivo1=1; val ivo2=2; val ivo3=3; val ivo4=4; val ivo5=5
         val kafka1=1; val kafka2=2; val kafka3=3; val kafka4=4
         val gogol1=1; val gogol2=2
-        val dasja1=1; val dasja2=2; val dasja3=3; val dasja4=4; val dasja5=5; val dasja6=6
+        val dasja1=1; val dasja2=2; val dasja3=3; val dasja4=4; val dasja5=5; val dasja6=6; val dasja7=7
     }
 
     enum class FilesShortcutMode { ALL, A, B }
@@ -593,6 +593,9 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
             seq.halfway_done({tselect.writerStoreFilter.setValue(WriterStoreFilter.MY_SPECIALIZATION)}, "16ab30bd-ec58-4533-84ca-585cb161a867")
             seq.bid(itemID = 2398L, price = 700, duration = 10, comment = "Наваяю, а хуле. Я ж писатель", aid = "b2bcbed7-9eca-46b2-84b6-862b9b0b650c")
             seq.halfway_done({tselect.writerStoreFilter.setValue(WriterStoreFilter.ALL)}, "85f566ec-9d74-4144-b8bd-9fcf6d5a37a7")
+
+            bootAdminWithTokenToDashboard(sessionIndex.dasja7, "058aa385-e3ff-499f-9238-91fac3def784")
+            ___stopHereAndEverywhereAfter()
 
             bootWriterWithTokenToStore("kafka", sessionIndex.kafka4, "4a52d83e-5c4a-4da4-abe3-56a045b342d0")
             seq.bid(itemID = 2398L, price = 750, duration = 9, comment = "Тю, я тоже ни хуя себе писатель. Отдайте лучше мне", aid = "f23382a5-9ef3-405c-a0ad-a187184e8959")

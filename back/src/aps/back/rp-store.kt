@@ -54,7 +54,7 @@ import org.springframework.data.repository.findOrDie
     override fun serve() {
         fuckAnyUser(FuckAnyUserParams(
             bpc = bpc,
-            makeRequest = {BidRequest()},
+            makeRequest = {BidRequest(isAdmin = false, isUpdate = false)},
             runShit = fun(ctx, req: BidRequest): GenericResponse {
                 // TODO:vgrechka Security
                 checkingAllFieldsRetrieved(req) {
@@ -65,7 +65,8 @@ import org.springframework.data.repository.findOrDie
                         comment = req.bidComment.value,
                         adminNotes = "",
                         order = order,
-                        bidder = requestUserEntity
+                        bidder = requestUserEntity,
+                        toConsiderByAdmin = true
                     ))
                 }
                 return GenericResponse()
