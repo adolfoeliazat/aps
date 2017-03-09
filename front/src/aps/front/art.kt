@@ -16,7 +16,6 @@ import aps.WorldPointRequest.Action.SAVE
 import aps.const.text.symbols.emdash
 import aps.front.testutils.*
 import into.kommon.*
-import jquery.jq
 import org.w3c.dom.events.KeyboardEvent
 import kotlin.js.Json
 import kotlin.js.json

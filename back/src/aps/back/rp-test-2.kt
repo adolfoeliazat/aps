@@ -217,6 +217,14 @@ annotation class Remote
         common = CommonFields(createdAt = nextRandomOldStamp(), updatedAt = nextRandomOldStamp()), profileUpdatedAt = nextRandomOldStamp()
     )))
 
+    val warren = userRepo.save(User(UserFields(
+        firstName = "Nick", lastName = "Warren", email = "warren@test.shit.ua", profilePhone = "+38 (01) 8498577",
+        kind = UserKind.CUSTOMER, state = UserState.COOL, passwordHash = hashPassword("warren-secret"),
+        aboutMe = "Я Ник -- нахуй поник", adminNotes = "Че, музычка нормальная, но как заказчик -- говно",
+        profileRejectionReason = "", banReason = "", subscribedToAllCategories = false,
+        common = CommonFields(createdAt = nextRandomOldStamp(), updatedAt = nextRandomOldStamp()), profileUpdatedAt = nextRandomOldStamp()
+    )))
+
     run {
         val customer = vit
         uaOrderRepo.save(UAOrder(UAOrderFields(
@@ -228,6 +236,20 @@ annotation class Remote
             details = "Золотой мяч королевны при игре падает в бездонный колодец, что вызывает поток слёз. Сострадательный лягушонок вызывается помочь вытащить мячик. Королевна в свою очередь обещает, что будет его подругой детства и разделит с ним досуг, стол и кровать. Когда королевна получает мяч назад, то быстро убегает. Всё же, на следующий день лягушка добирается до двери дворца и, по настоянию отца-короля королевна неохотно исполняет своё обещание. Однако, когда лягушонок требует, чтобы она взяла его с собой на кровать, грозя пожаловаться отцу-королю, та от отвращения что было мочи бросает лягушонка об стену. В то же самое мгновение лягушка превращается в статного королевича с красивыми и ласковыми глазами. Выясняется, что над ним тяготели чары злой ведьмы и только королевна могла их разрушить. Наутро он везёт королевскую дочь как свою законную супругу, в роскошной карете в собственное королевство. Во время поездки их сопровождает верный слуга Генрих, который от печали по королевичу заковал своё сердце тремя железными обручами. В дороге, от переполняющей сердце Генриха радости по поводу освобождения его господина, эти железные оковы лопаются с громким треском.",
             customer = customer, customerFirstName = customer.user.firstName, customerLastName = customer.user.lastName, customerPhone = customer.user.profilePhone, customerEmail = customer.user.email,
             adminNotes = "Fucking notes 1", confirmationSecret = "", whatShouldBeFixedByCustomer  = "",
+            common = CommonFields(createdAt = nextRandomOldStamp(), updatedAt = nextRandomOldStamp()), movedToStoreAt = nextRandomOldStamp()
+        )))
+    }
+    run {
+        val customer = warren
+        uaOrderRepo.save(UAOrder(UAOrderFields(
+            title = "Дружба кошки и мышки", documentType = UADocumentType.DRAWING, state = UAOrderState.IN_STORE,
+            category = uaDocumentCategoryRepo.findOrDie(const.uaDocumentCategoryID.advocacy),
+            numPages = 3, numSources = 0,
+            minAllowedPriceOffer = 100_00, maxAllowedPriceOffer = 300_00,
+            minAllowedDurationOffer = 1 * 24, maxAllowedDurationOffer = 3 * 24,
+            details = "Кошка и мышка завязывают знакомство. При этом кошка признаётся в своей дружбе и большой любви, так что мышка соглашается поселиться с ней в одном доме и вести общее хозяйство. Вместе они решают заготовить на зиму припасы, чтобы не испытывать голод, для чего покупают себе горшок полный жира и прячут его под алтарем церкви, поскольку это место кажется самым надёжным. Через какое-то время кошке захотелось отведать жирку. Она обманывает мышку, что будто бы приглашена как кума на крестины ребёнка своей двоюродной сестры, а сама бежит в кирху и слизывает с горшочка жира плёночку. Та же история повторилась ещё два раза, пока горшочек совсем не опустел. На вопросы мышки об имени крещёного кошка последовательно отвечает: Початочек, Серёдочка, Последышек. Когда наступила зима, мышь с кошкой отправились за своим припасом. Мышка, увидев пустой горшочек, сразу же подозревает кошку. Кошка в ответ хватает и проглатывает мышку.",
+            customer = customer, customerFirstName = customer.user.firstName, customerLastName = customer.user.lastName, customerPhone = customer.user.profilePhone, customerEmail = customer.user.email,
+            adminNotes = "Fucking notes 2", confirmationSecret = "", whatShouldBeFixedByCustomer  = "",
             common = CommonFields(createdAt = nextRandomOldStamp(), updatedAt = nextRandomOldStamp()), movedToStoreAt = nextRandomOldStamp()
         )))
     }

@@ -10,7 +10,6 @@ package aps.front
 
 import aps.*
 import into.kommon.*
-import jquery.*
 import org.w3c.dom.*
 import org.w3c.dom.css.*
 import org.w3c.dom.events.Event
@@ -255,35 +254,82 @@ fun encodeURIComponent(s: String): String = global.encodeURIComponent(s)
 fun arraysEquals(a: Array<*>, b: Array<*>): Boolean =
     a.asList() == b.asList()
 
-fun scrollBodyToShitGradually(
-    dy: Int = -10,
-    bursts: Int = fconst.defaultScrollBursts,
-    dontScrollToTopItem: Boolean = false,
-    getShit: () -> JQuery
-): Promisoid<Unit> = async {
-    await(tillAnimationFrame())
-    val shit = getShit()
-    check(shit[0] != null) {"Shit to scroll to is not found"}
-
-    if (dontScrollToTopItem) {
-        if (shit.hasClass(css.lipsItem)) {
-            var topItem = shit[0]!!
-            jq(".${css.lipsItem}").each {_, el ->
-                if (el.offsetTop < topItem.offsetTop)
-                    topItem = el
-            }
-            if (shit[0] == topItem) return@async
+object scroll {
+    object element {
+        suspend fun toBottomGradually(jqel: JQuery) {
+            sleep(0)
+            val el = bang(jqel[0])
+            val targetTop = el.scrollHeight - el.offsetHeight
+            scrollElementGradually(jqel, targetTop.toDouble())
         }
+
     }
 
-    val targetTop: Double
-    targetTop = shit.offset().top - const.topNavbarHeight + dy
-    await(scrollBodyGraduallyPromise(targetTop, bursts))
+    object body {
+        class toShitGradually(
+            val dy: Int = -10,
+            val bursts: Int = fconst.defaultScrollBursts,
+            val dontScrollToTopItem: Boolean = false,
+            val getShit: () -> JQuery
+        ) {
+            suspend fun go() = await(promise())
+
+            fun promise() = async {
+                await(tillAnimationFrame())
+                val shit = getShit()
+                check(shit[0] != null) {"Shit to scroll to is not found"}
+
+                if (dontScrollToTopItem) {
+                    if (shit.hasClass(css.lipsItem)) {
+                        var topItem = shit[0]!!
+                        jq(".${css.lipsItem}").each {_, el ->
+                            if (el.offsetTop < topItem.offsetTop)
+                                topItem = el
+                        }
+                        if (shit[0] == topItem) return@async
+                    }
+                }
+
+                val targetTop: Double
+                targetTop = shit.offset().top - const.topNavbarHeight + dy
+                await(graduallyPromise(targetTop, bursts))
+            }
+        }
+
+        fun graduallyPromise(targetTop: Double, bursts: Int = fconst.defaultScrollBursts) = async {
+            scrollElementGradually(jqbody, targetTop, bursts)
+        }
+
+        suspend fun gradually(targetTop: Double, bursts: Int = fconst.defaultScrollBursts) {
+            await(graduallyPromise(targetTop, bursts))
+        }
+
+        suspend fun gradually(targetTop: Int, bursts: Int = fconst.defaultScrollBursts) {
+            gradually(targetTop.toDouble(), bursts)
+        }
+
+        suspend fun toBottomGradually() {
+            sleep(0)
+            gradually(jqbody.height().toDouble() - jqwindow.height().toDouble() + const.topNavbarHeight)
+        }
+
+        suspend fun toTopGradually() {
+            sleep(0)
+            gradually(0.0)
+        }
+
+        fun toShit(shit: JQuery, dy: Int = 0) {
+            jqbody.scrollTop(shit.offset().top - 50 + dy)
+        }
+
+        suspend fun toMelindaItemGradually(id: Long) {
+            val elementID = TestGlobal.melindaItemIDToHeaderElementID[id] ?: wtf("id = $id    4955591e-85ee-4c2b-8540-ad010d2f5352")
+            toShitGradually{byid(elementID)}.go()
+        }
+    }
 }
 
-fun scrollBodyGraduallyPromise(targetTop: Double, bursts: Int = fconst.defaultScrollBursts) = async {
-    scrollElementGradually(jqbody, targetTop, bursts)
-}
+
 
 private suspend fun scrollElementGradually(jqel: JQuery, targetTop: Double, bursts: Int = fconst.defaultScrollBursts) {
     val startTop = jqel.scrollTop()
@@ -294,30 +340,6 @@ private suspend fun scrollElementGradually(jqel: JQuery, targetTop: Double, burs
     jqel.scrollTop(targetTop)
 }
 
-suspend fun scrollBodyGradually(targetTop: Double, bursts: Int = fconst.defaultScrollBursts) {
-    await(scrollBodyGraduallyPromise(targetTop, bursts))
-}
-
-suspend fun scrollBodyGradually(targetTop: Int, bursts: Int = fconst.defaultScrollBursts) {
-    scrollBodyGradually(targetTop.toDouble(), bursts)
-}
-
-suspend fun scrollBodyToBottomGradually() {
-    sleep(0)
-    scrollBodyGradually(jqbody.height().toDouble() - jqwindow.height().toDouble() + const.topNavbarHeight)
-}
-
-suspend fun scrollBodyToTopGradually() {
-    sleep(0)
-    scrollBodyGradually(0.0)
-}
-
-suspend fun scrollElementToBottomGradually(jqel: JQuery) {
-    sleep(0)
-    val el = bang(jqel[0])
-    val targetTop = el.scrollHeight - el.offsetHeight
-    scrollElementGradually(jqel, targetTop.toDouble())
-}
 
 suspend fun scrollElementToTopGradually(jqel: JQuery) {
     sleep(0)

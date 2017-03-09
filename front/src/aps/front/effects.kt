@@ -9,8 +9,6 @@
 package aps.front
 
 import aps.*
-import jquery.JQuery
-import jquery.jq
 import kotlin.js.json
 import kotlin.properties.Delegates.notNull
 

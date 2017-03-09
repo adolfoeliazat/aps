@@ -3,7 +3,6 @@ package aps.front
 import aps.*
 import aps.front.fconst.test.testOffClassSuffix
 import into.kommon.*
-import jquery.jq
 
 fun fillTestProfile_Gaylord(o: TestSetUserFieldsRequest) {
     o.insertedAt.value = "2016-11-23 13:15:25"

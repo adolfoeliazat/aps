@@ -118,7 +118,7 @@ fun renderStoreItem(tongue: MelindaTongueInterface<UAOrderRTO>): ToReactElementa
 
 
         if (myBid == null) {
-            o- Button(icon = fa.usd, title = t("TOTE", "Дайте мне"), className = css.bidButton, key = buttons.bid) {
+            o- Button(icon = fa.usd, title = t("TOTE", "Дайте мне"), className = css.bidButton, key = SubscriptButtonKey(buttons.bid, order.id)) {
                 openEditModal(
                     title = t("TOTE", "Заявка на выполнение"),
                     formSpec = FormSpec<BidRequest, GenericResponse>(

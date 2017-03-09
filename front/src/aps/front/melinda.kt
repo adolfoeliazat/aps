@@ -272,7 +272,7 @@ class MelindaBoobs<
                                                 makeItemsControl(startIndex = tongues.lastIndex - res.meat.items.size + 1,
                                                                  moreFromID = res.meat.moreFromID,
                                                                  containerID = newChunkContainerID))
-                                            await(scrollBodyToShitGradually {byid(newChunkContainerID)})
+                                            scroll.body.toShitGradually{byid(newChunkContainerID)}.go()
                                         }
                                     }
                                 }
@@ -506,47 +506,58 @@ fun <ItemRTO : MelindaItemRTO, LipsState> makeUsualMelindaLips(
                 else -> c.rightIcon
             }
 
-            return hor3(Attrs(className = c.controls)){o->
-                val updateTitleControls = {state: LipsState ->
-                    titleControlsPlace.setContent(renderTitleControls(state))
-                }
-                renderAdditionalControls(o, state, updateTitleControls)
-
-                if (item.editable) {
-                    callbacks.onDelete?.let {act->
-                        o- kic("${fa.trash} $iconClass",
-                               style = Style(),
-                               key = SubscriptKicKey(kics.delete, item.id),
-                               onClicka = disableableHandler(disabled) {act()})
-                    }
-                    callbacks.onEdit?.let {act->
-                        o- kic("${fa.pencil} $iconClass",
-                               style = Style(),
-                               key = SubscriptKicKey(kics.edit, item.id),
-                               onClicka = disableableHandler(disabled) {act()})
-                    }
+            val elementID = puid()
+            return object:Control2() {
+                override fun componentDidMount() {
+                    TestGlobal.melindaItemIDToHeaderElementID[item.id] = elementID
                 }
 
-                burgerMenu()?.let {menu->
-                    if (menu.items.isNotEmpty()) {
-                        o- kdiv(className = "dropdown"){o->
-                            o- kic("${fa.bars} $iconClass",
+                override fun componentWillUnmount() {
+                    TestGlobal.melindaItemIDToHeaderElementID -= item.id
+                }
+
+                override fun render() = hor3(Attrs(id = elementID, className = c.controls)){o->
+                    val updateTitleControls = {state: LipsState ->
+                        titleControlsPlace.setContent(renderTitleControls(state))
+                    }
+                    renderAdditionalControls(o, state, updateTitleControls)
+
+                    if (item.editable) {
+                        callbacks.onDelete?.let {act->
+                            o- kic("${fa.trash} $iconClass",
                                    style = Style(),
-                                   dataToggle = "dropdown",
-                                   key = SubscriptKicKey(kics.burger, item.id),
-                                   onClicka = disableableHandler(disabled) {
+                                   key = SubscriptKicKey(kics.delete, item.id),
+                                   onClicka = disableableHandler(disabled) {act()})
+                        }
+                        callbacks.onEdit?.let {act->
+                            o- kic("${fa.pencil} $iconClass",
+                                   style = Style(),
+                                   key = SubscriptKicKey(kics.edit, item.id),
+                                   onClicka = disableableHandler(disabled) {act()})
+                        }
+                    }
 
-                                   })
+                    burgerMenu()?.let {menu->
+                        if (menu.items.isNotEmpty()) {
+                            o- kdiv(className = "dropdown"){o->
+                                o- kic("${fa.bars} $iconClass",
+                                       style = Style(),
+                                       dataToggle = "dropdown",
+                                       key = SubscriptKicKey(kics.burger, item.id),
+                                       onClicka = disableableHandler(disabled) {
 
-                            o- reactCreateElement("ul", json(
+                                       })
+
+                                o- reactCreateElement("ul", json(
                                     "className" to "dropdown-menu dropdown-menu-right",
                                     "style" to json("minWidth" to "10rem")),
-                                menu.items.map {item->
-                                    reactCreateElement("li", json(), listOf(
-                                        link2(key = item.linkKey, title = item.title) {
-                                            item.act()
-                                        }.toReactElement()
-                                    ))})
+                                                      menu.items.map {item->
+                                                          reactCreateElement("li", json(), listOf(
+                                                              link2(key = item.linkKey, title = item.title) {
+                                                                  item.act()
+                                                              }.toReactElement()
+                                                          ))})
+                            }
                         }
                     }
                 }

@@ -11,7 +11,6 @@ package aps.front
 import aps.*
 import aps.front.testutils.*
 import into.kommon.*
-import jquery.jq
 import org.w3c.dom.events.KeyboardEvent
 import kotlin.browser.document
 import kotlin.browser.window

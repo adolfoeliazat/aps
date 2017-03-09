@@ -14,8 +14,6 @@ import aps.const.text.symbols.threeQuotes
 import aps.front.testutils.*
 import into.kommon.*
 import into.mochka.assert
-import jquery.JQuery
-import jquery.jq
 import org.w3c.dom.events.Event
 import org.w3c.dom.events.KeyboardEvent
 import kotlin.browser.window

@@ -271,7 +271,7 @@ class SelenaPicker(val key: SelenaPickerKey, val selectCategory: (UADocumentCate
                             }
 
                             async {
-                                scrollElementToBottomGradually(byid(itemContainerID))
+                                scroll.element.toBottomGradually(byid(itemContainerID))
                                 TestGlobal.animationDoneLock.resumeTestFromSut()
                             }
                         }

@@ -74,6 +74,7 @@ object TestGlobal {
     var describeStateConfig = DescribeStateConfig(showBanners = true)
     var deleteWithoutConfirmation = false
     var currentTestShit by notNullOnce<TestShit>()
+    val melindaItemIDToHeaderElementID = mutableMapOf<Long, String>()
 }
 
 fun requestAnimationFrame(block: () -> Unit) {

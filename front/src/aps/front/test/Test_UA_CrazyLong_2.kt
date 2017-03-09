@@ -207,11 +207,11 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
                 testShowMore("7e3e18fd-62e3-4cfb-8f75-a00778eca95a")
                 testShowMore("8f506811-4b7c-44a7-a9f7-37449fa320f7")
-                scrollBodyToBottomGradually()
+                scroll.body.toBottomGradually()
             }
 
             run { // Switch to Params and back to Files
-                scrollBodyToTopGradually()
+                scroll.body.toTopGradually()
                 tabSequence(tabs.order.params_testRef, "f0526589-fa1e-4a2a-818f-3d4eca9e231a", "721ff1f7-093a-4752-a699-75debd0a2d99")
                 tabSequence(tabs.order.files_testRef, "3c35734a-6cc1-4de4-a69d-421acd693603", "95b74865-e2dd-4b9c-a6b4-76dc967ad5dd")
             }
@@ -268,10 +268,10 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 assertScreenHTML(aid = "348ddf37-5a1a-44b4-8fb7-1b05a9d35563")
                 testOrdering(Ordering.ASC, "a862fd73-f127-4c23-a1da-ee1e8f82a35e")
                 testShowMore("c69f27bc-e9fe-4a4f-a9fd-c630f2904d6a")
-                scrollBodyToTopGradually()
+                scroll.body.toTopGradually()
                 testOrdering(Ordering.DESC, "be35468d-07f9-4f6b-8060-1d5cfec18ec7")
                 testShowMore("284f44ce-5650-46b7-a7cb-f0e3553bdee4")
-                scrollBodyToTopGradually()
+                scroll.body.toTopGradually()
 
                 testSearch("рапунцель", "7aeb3111-f760-43bf-aaed-db645570a658")
                 testSearch("рапунцель вдова", "a2fd753b-a979-46af-8f40-53fafb25ae12")
@@ -346,7 +346,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 testShowMore("99a09289-39c1-42a7-8610-21009b25500d")
                 for (id in listOf(7L, 6L, 5L, 4L))
                     testDeleteFile(id, "ce15fe6f-3bad-44ce-bedb-ec550e22cb23--$id", deleteWithoutConfirmation = true)
-                scrollBodyToTopGradually()
+                scroll.body.toTopGradually()
                 describeState("Enough murders")
             }
 
@@ -367,7 +367,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
                 describeState("Admin can edit files")
                 //
-                scrollBodyGradually(500.0) // Item #3
+                scroll.body.gradually(500.0) // Item #3
                 step({tkic.click(kics.edit_testRef, subscript = 3L)}, TestGlobal.modalShownLock, "98165d17-6cbd-4034-b5f5-1c7424336bde")
                 inputPrependValue(fields.fileDetails_testRef, "Следовать тупо этой инструкции. ")
                 inputPrependValue(fields.adminNotes_testRef, "Добавил немного порожняка к деталям.")
@@ -377,7 +377,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 inputAppendValue(fields.adminNotes_testRef, " Ля-ля-ля...")
                 seq.submitForm("19b4abbe-9f88-4ec8-9cb6-5aa636122933")
                 //
-                scrollBodyToTopGradually()
+                scroll.body.toTopGradually()
                 addFile(AddFileParams(fileName = "idiot.rtf",
                                       title = "(Fucking) Idiot by (fucking idiot) Dostoevsky",
                                       details = "Why am I adding this? Cause I can! I'm the fucking admin, u-ha-ha-ha...",
@@ -406,7 +406,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 seq.acceptShit_errorModal(aid = "a192eb93-ed65-4ded-9c19-51c0f001cf4d",
                                           errorStateDescr = "Store params should be entered first")
 
-                scrollBodyToBottomGradually()
+                scroll.body.toBottomGradually()
                 seq.button_modal(buttons.editStoreParams_testRef, "f770dff2-b2df-4231-810b-7596b2c6ace2")
 
                 run { // Choose document category
@@ -438,7 +438,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 inputSetValue(fields.minAllowedPriceOffer_testRef, "300")
                 seq.submitForm_pageLoaded("600c87d9-fd23-468d-8d05-12b493d3e14c")
 
-                scrollBodyToTopGradually()
+                scroll.body.toTopGradually()
                 seq.acceptShit("3196309c-b789-436c-89a4-27128aa59a46")
                 // TODO:vgrechka Email should be sent to customer
             }
@@ -494,7 +494,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                     pt.specialKey(fconst.keyCode.enter)
                 }
 
-                scrollBodyToBottomGradually()
+                scroll.body.toBottomGradually()
                 inputSetValue(fields.aboutMe_testRef, "О себе? Вы че, охренели там? Я Кафка. Кафка я, ебаный Франц, бля! Уроды...")
                 seq.submitForm("0747ffeb-2906-4a94-8e45-8d24d92b9abf")
             }
@@ -591,11 +591,14 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
             bootWriterWithTokenToStore("gogol", sessionIndex.gogol2, "0dd26e71-43e6-410d-a032-d12846bfe231")
             seq.halfway_done({tselect.writerStoreFilter.setValue(WriterStoreFilter.ALL)}, "c4282033-c71e-4145-8f78-3315ded330ae")
             seq.halfway_done({tselect.writerStoreFilter.setValue(WriterStoreFilter.MY_SPECIALIZATION)}, "16ab30bd-ec58-4533-84ca-585cb161a867")
-            seq.bid(price = 700, duration = 10, comment = "Наваяю, а хуле. Я ж писатель", aid = "b2bcbed7-9eca-46b2-84b6-862b9b0b650c")
+            seq.bid(itemID = 2398L, price = 700, duration = 10, comment = "Наваяю, а хуле. Я ж писатель", aid = "b2bcbed7-9eca-46b2-84b6-862b9b0b650c")
             seq.halfway_done({tselect.writerStoreFilter.setValue(WriterStoreFilter.ALL)}, "85f566ec-9d74-4144-b8bd-9fcf6d5a37a7")
 
             bootWriterWithTokenToStore("kafka", sessionIndex.kafka4, "4a52d83e-5c4a-4da4-abe3-56a045b342d0")
-            seq.bid(price = 750, duration = 9, comment = "Тю, я тоже ни хуя себе писатель. Отдайте лучше мне", aid = "f23382a5-9ef3-405c-a0ad-a187184e8959")
+            seq.bid(itemID = 2398L, price = 750, duration = 9, comment = "Тю, я тоже ни хуя себе писатель. Отдайте лучше мне", aid = "f23382a5-9ef3-405c-a0ad-a187184e8959")
+            seq.halfway_done({tselect.writerStoreFilter.setValue(WriterStoreFilter.ALL)}, "26ecd7c4-e8c1-44a8-a761-5006e0aa3cca")
+            scroll.body.toMelindaItemGradually(1L)
+            seq.bid(itemID = 1L, price = 3000, duration = 13, comment = "Я без дупля, что здесь писать в комменте...", aid = "ba926021-d3ae-4a85-99d8-efb34c8a7bab")
         }
     }
 
@@ -605,7 +608,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
     private suspend fun testCompareBelow(subscript: Long, stateDescr: String, scrollTop: Int? = null, aid: String) {
         if (scrollTop != null)
-            scrollBodyGradually(scrollTop)
+            scroll.body.gradually(scrollTop)
         burgerKicClick(subscript = subscript, aid = "$aid--1")
         sleep(100)
         step({linkClick(links.compareBelow_testRef, subscript = subscript)}, TestGlobal.modalShownLock, "$aid--2")
@@ -785,7 +788,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
     }
 
     private suspend fun testShowMore(aid: String) {
-        scrollBodyToBottomGradually()
+        scroll.body.toBottomGradually()
         sequence({buttonClick(buttons.showMore_testRef)},
                  steps = listOf(
                      PauseAssertResumeStep(TestGlobal.showMoreHalfwayLock, "$aid--halfway"),

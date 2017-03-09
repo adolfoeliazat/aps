@@ -3,7 +3,6 @@ package aps.front
 import aps.*
 import aps.Color.*
 import into.kommon.*
-import jquery.*
 import org.w3c.dom.events.Event
 import org.w3c.dom.events.KeyboardEvent
 import kotlin.browser.document
@@ -198,7 +197,7 @@ suspend fun assertScreenHTML(p: AssertScreenHTMLParams) {
                                         ctx.horizontalPosition = opts.bannerHorizontalPosition
                                         ctx.banner.update()
 //                                                byid("fuckingDiff").scrollBodyToShit()
-                                        nextDiff().scrollBodyToShit(dy = -70)
+                                        scroll.body.toShit(nextDiff(), dy = -70)
                                     })
                                     if (captureExists) {
                                         o- Button(title = "VDiff", style = ctx.bannerButtonStyle, key = buttons.assertionBanner.vdiff, onClicka = {

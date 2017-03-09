@@ -155,8 +155,11 @@ open class Button(
     val jqel get()= byid(elementID)
 }
 
-suspend fun buttonClick(key: TestRef<ButtonKey>, handOpts: HandOpts = HandOpts()) {
-    val target = Button.instance(key.it)
+suspend fun buttonClick(key: TestRef<ButtonKey>, subscript: Any? = null, handOpts: HandOpts = HandOpts()) {
+    val target = Button.instance(when {
+        subscript == null -> key.it
+        else -> SubscriptButtonKey(key.it, subscript)
+    })
     await(TestUserActionAnimation.hand(target, handOpts))
     notAwait {target.click()}
 }

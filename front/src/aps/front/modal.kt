@@ -4,7 +4,6 @@ import aps.*
 import aps.const.text.symbols.times
 import aps.front.fconst.test.testOffClassSuffix
 import into.kommon.*
-import jquery.jq
 import kotlin.js.json
 
 private var currentModalOperations: ModalOperations? = null
