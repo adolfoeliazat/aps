@@ -136,22 +136,30 @@ suspend fun twoStepBlinkingSut(blinkElement: jquery.JQuery, act: suspend () -> U
 }
 
 fun renderMoney(cents: Int) = kspan{o->
-    o- when {
+    o- formatMoney(cents)
+}
+
+fun formatMoney(cents: Int): String {
+    return when {
         (cents == -1) -> const.text.na
         else -> {
-            check(cents % 100 == 0){"34c8b8ef-33b4-4689-8857-d38f1709551b"}
-            check(Globus.lang == Language.UA){"ae44a9b2-fd8b-4081-9132-6a2ca0d96c88"}
+            check(cents % 100 == 0) {"cents = $cents    34c8b8ef-33b4-4689-8857-d38f1709551b"}
+            check(Globus.lang == Language.UA) {"ae44a9b2-fd8b-4081-9132-6a2ca0d96c88"}
             (cents / 100).toString() + ",00 грн."
         }
     }
 }
 
 fun renderDurationHours(hours: Int) = kspan{o->
-    o- when {
+    o- formatDurationHours(hours)
+}
+
+fun formatDurationHours(hours: Int): String {
+    return when {
         (hours == -1) -> const.text.na
         else -> {
-            check(hours % 24 == 0){"7f12dba3-33bf-402c-b35c-d51a8cda10df"}
-            check(Globus.lang == Language.UA){"0de29a21-b061-4e98-8367-9f203b92e7f3"}
+            check(hours % 24 == 0) {"7f12dba3-33bf-402c-b35c-d51a8cda10df"}
+            check(Globus.lang == Language.UA) {"0de29a21-b061-4e98-8367-9f203b92e7f3"}
             (hours / 24).toString() + " дн."
         }
     }

@@ -686,6 +686,14 @@ object css {
         background: $LIME_100;
         border-top: 0.2rem dashed $LIME_900;
         border-bottom: 0.2rem dashed $LIME_900;
+        margin-bottom: 0.5em;
+    """)
+
+    val bidsSummaryInStoreItem by Style("""
+        background: $TEAL_50;
+        border-top: 0.2rem dashed $TEAL_900;
+        border-bottom: 0.2rem dashed $TEAL_900;
+        margin-bottom: 0.5em;
     """)
 
     init {touchObjectGraph(this)}

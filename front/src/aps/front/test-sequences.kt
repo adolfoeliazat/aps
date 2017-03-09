@@ -193,6 +193,14 @@ suspend fun seq.rejectShit(reason: String, aid: String) {
          lock = TestGlobal.pageLoadedLock, aid = "$aid--3")
 }
 
+suspend fun seq.bid(price: Int, duration: Int, comment: String, aid: String) {
+    button_modal(buttons.bid_testRef, "$aid--1")
+    inputSetValue(fields.bidPriceOffer_testRef, price.toString())
+    inputSetValue(fields.bidDurationOffer_testRef, duration.toString())
+    inputSetValue(fields.bidComment_testRef, comment)
+    submitForm("$aid--2")
+}
+
 
 
 

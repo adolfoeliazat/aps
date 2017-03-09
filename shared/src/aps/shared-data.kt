@@ -69,7 +69,8 @@ class UAOrderRTO(
     var minAllowedDurationOffer: Int,
     var maxAllowedDurationOffer: Int,
     val documentCategory: UADocumentCategoryRTO,
-    val myBid: BidRTO?
+    val myBid: BidRTO?,
+    val bidsSummary: BidsSummaryRTO?
 ) : MelindaItemRTO, RTOWithAdminNotes, TabithaEntityRTO
 
 data class IntRangeRTO(
@@ -175,6 +176,17 @@ class BidRTO(
     val comment: String
 ) : MelindaItemRTO, RTOWithAdminNotes
 
+class ValueAndWhetherMineRTO<out T>(val value: T, val mine: Boolean)
+
+class BidsSummaryRTO(
+    val numParticipants: Int,
+    val firstBidAt: ValueAndWhetherMineRTO<Long>,
+    val lastBidAt: ValueAndWhetherMineRTO<Long>,
+    val minPriceOffer: ValueAndWhetherMineRTO<Int>,
+    val maxPriceOffer: ValueAndWhetherMineRTO<Int>,
+    val minDurationOffer: ValueAndWhetherMineRTO<Int>,
+    val maxDurationOffer: ValueAndWhetherMineRTO<Int>
+)
 
 
 

@@ -21,7 +21,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
     object sessionIndex {
         val ivo1=1; val ivo2=2; val ivo3=3; val ivo4=4; val ivo5=5
-        val kafka1=1; val kafka2=2; val kafka3=3
+        val kafka1=1; val kafka2=2; val kafka3=3; val kafka4=4
         val gogol1=1; val gogol2=2
         val dasja1=1; val dasja2=2; val dasja3=3; val dasja4=4; val dasja5=5; val dasja6=6
     }
@@ -588,18 +588,16 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
         definePoint (14) {
             mirandaSeedSomeStuff1()
-            bootWriterWithToken("gogol", sessionIndex.gogol2, makeURL(pages.uaWriter.store, listOf()), aid = "8ce00463-19a8-4239-a113-7cd1d2255189")
+            bootWriterWithTokenToStore("gogol", sessionIndex.gogol2, "0dd26e71-43e6-410d-a032-d12846bfe231")
             seq.halfway_done({tselect.writerStoreFilter.setValue(WriterStoreFilter.ALL)}, "c4282033-c71e-4145-8f78-3315ded330ae")
             seq.halfway_done({tselect.writerStoreFilter.setValue(WriterStoreFilter.MY_SPECIALIZATION)}, "16ab30bd-ec58-4533-84ca-585cb161a867")
-            seq.button_modal(buttons.bid_testRef, "e8ec6357-a848-4ce1-94b2-b7888e931285")
-            inputSetValue(fields.bidPriceOffer_testRef, "700")
-            inputSetValue(fields.bidDurationOffer_testRef, "10")
-            inputSetValue(fields.bidComment_testRef, "Наваяю, а хуле. Я ж писатель")
-            seq.submitForm("39cb9d18-26ae-4bb7-987a-2a19ff4ec5a2")
-            ___stopEverywhere()
+            seq.bid(price = 700, duration = 10, comment = "Наваяю, а хуле. Я ж писатель", aid = "b2bcbed7-9eca-46b2-84b6-862b9b0b650c")
+            seq.halfway_done({tselect.writerStoreFilter.setValue(WriterStoreFilter.ALL)}, "85f566ec-9d74-4144-b8bd-9fcf6d5a37a7")
+
+            bootWriterWithTokenToStore("kafka", sessionIndex.kafka4, "4a52d83e-5c4a-4da4-abe3-56a045b342d0")
+            seq.bid(price = 750, duration = 9, comment = "Тю, я тоже ни хуя себе писатель. Отдайте лучше мне", aid = "f23382a5-9ef3-405c-a0ad-a187184e8959")
         }
     }
-
 
     private suspend fun lipsTitleClick(subscript: Long, aid: String) {
         seq.halfway_done({linkClick(links.lipsTitle_testRef, subscript = subscript)}, aid)
@@ -637,6 +635,10 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
 
     private suspend fun bootWriterWithTokenToProfilePage(nick: String, sessionNumber: Int, aid: String) {
         bootWriterWithToken(nick, sessionNumber, makeURL(pages.uaWriter.profile, listOf()), aid = aid)
+    }
+
+    private suspend fun bootWriterWithTokenToStore(nick: String, sessionNumber: Int, aid: String) {
+        bootWriterWithToken(nick, sessionNumber, makeURL(pages.uaWriter.store, listOf()), aid = aid)
     }
 
     private suspend fun bootFreshWriter_signUp_checkEmail_signIn(nick: String, sessionNumber: Int, firstName: String, lastName: String, aid: String) {

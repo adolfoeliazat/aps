@@ -1,6 +1,8 @@
 package aps.front
 
 import aps.*
+import aps.const.text.symbols.emdash
+import aps.const.text.symbols.endash
 import into.kommon.*
 
 class StorePage {
@@ -55,6 +57,7 @@ class StorePage {
 fun renderStoreItem(tongue: MelindaTongueInterface<UAOrderRTO>): ToReactElementable {
     val order = tongue.item
     val myBid = order.myBid
+    val bidsSummary = order.bidsSummary
     val m = MelindaTools
     return kdiv(position = "relative"){o->
         o- m.row{o->
@@ -73,6 +76,32 @@ fun renderStoreItem(tongue: MelindaTongueInterface<UAOrderRTO>): ToReactElementa
         }
 
         o- renderOrderStoreBoundaries(order)
+
+        if (bidsSummary != null) {
+            fun withMineSuffix(value: String, mine: Boolean, gender: GrammarGender) =
+                value + ifOrEmpty(mine){
+                    val word = when (gender) {
+                        GrammarGender.FEMININE -> "моя"
+                        GrammarGender.MASCULINE -> "мой"
+                        GrammarGender.NEUTER -> "мое"
+                    }
+                    t("TOTE", " $endash $word")
+                }
+
+            o- kdiv(className = css.bidsSummaryInStoreItem){o->
+                o- m.row{o->
+                    o- m.col(3, t("TOTE", "Желающих ваять"), bidsSummary.numParticipants.toString() + ifOrEmpty(myBid != null){t("TOTE", " (со мной)")})
+                    o- m.col(3, t("TOTE", "Первая заявка"), withMineSuffix(formatUnixTime(bidsSummary.firstBidAt.value), bidsSummary.firstBidAt.mine, GrammarGender.FEMININE))
+                    o- m.col(3, t("TOTE", "Последняя заявка"), withMineSuffix(formatUnixTime(bidsSummary.lastBidAt.value), bidsSummary.lastBidAt.mine, GrammarGender.FEMININE))
+                }
+                o- m.row{o->
+                    o- m.col(3, t("TOTE", "Мин. цена"), withMineSuffix(formatMoney(bidsSummary.minPriceOffer.value), bidsSummary.minPriceOffer.mine, GrammarGender.FEMININE))
+                    o- m.col(3, t("TOTE", "Макс. цена"), withMineSuffix(formatMoney(bidsSummary.maxPriceOffer.value), bidsSummary.maxPriceOffer.mine, GrammarGender.FEMININE))
+                    o- m.col(3, t("TOTE", "Мин. срок"), withMineSuffix(formatDurationHours(bidsSummary.minDurationOffer.value), bidsSummary.minDurationOffer.mine, GrammarGender.MASCULINE))
+                    o- m.col(3, t("TOTE", "Макс. срок"), withMineSuffix(formatDurationHours(bidsSummary.maxDurationOffer.value), bidsSummary.maxDurationOffer.mine, GrammarGender.MASCULINE))
+                }
+            }
+        }
 
         if (myBid != null) {
             o- kdiv(className = css.myBidInStoreItem){o->
@@ -109,6 +138,7 @@ fun renderStoreItem(tongue: MelindaTongueInterface<UAOrderRTO>): ToReactElementa
         }
     }
 }
+
 
 
 

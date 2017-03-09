@@ -350,13 +350,54 @@ class UAOrder(@Embedded var order: UAOrderFields)
             minAllowedDurationOffer = order.minAllowedDurationOffer,
             maxAllowedDurationOffer = order.maxAllowedDurationOffer,
             documentCategory = order.category.toRTO(),
-            myBid = when (requestUser.kind) {
-                UserKind.CUSTOMER, UserKind.ADMIN -> null
-                UserKind.WRITER -> bidRepo.findByBidder(requestUserEntity)?.toRTO(searchWords = listOf())
+            myBid = ifInStoreAndWriterLooking(this) {bidRepo.findByOrderAndBidder(this, requestUserEntity)?.toRTO(searchWords = listOf())},
+            bidsSummary = ifInStoreAndWriterOrAdminLooking(this) {
+                val bids = bidRepo.findByOrder(this)
+                if (bids.isEmpty())
+                    null
+                else {
+                    var firstBidAt = ValueAndWhetherMineRTO(Long.MAX_VALUE, false)
+                    var lastBidAt = ValueAndWhetherMineRTO(Long.MIN_VALUE, false)
+                    var minPriceOffer = ValueAndWhetherMineRTO(Int.MAX_VALUE, false)
+                    var maxPriceOffer = ValueAndWhetherMineRTO(Int.MIN_VALUE, false)
+                    var minDurationOffer = ValueAndWhetherMineRTO(Int.MAX_VALUE, false)
+                    var maxDurationOffer = ValueAndWhetherMineRTO(Int.MIN_VALUE, false)
+                    for (bid in bids) {
+                        val mine = bid.bidder.id == requestUserEntity.id
+                        if (bid.common.createdAt.time < firstBidAt.value) firstBidAt = ValueAndWhetherMineRTO(bid.common.createdAt.time, mine)
+                        if (bid.common.createdAt.time > lastBidAt.value) lastBidAt = ValueAndWhetherMineRTO(bid.common.createdAt.time, mine)
+                        if (bid.priceOffer < minPriceOffer.value) minPriceOffer = ValueAndWhetherMineRTO(bid.priceOffer, mine)
+                        if (bid.priceOffer > maxPriceOffer.value) maxPriceOffer = ValueAndWhetherMineRTO(bid.priceOffer, mine)
+                        if (bid.durationOffer < minDurationOffer.value) minDurationOffer = ValueAndWhetherMineRTO(bid.durationOffer, mine)
+                        if (bid.durationOffer > maxDurationOffer.value) maxDurationOffer = ValueAndWhetherMineRTO(bid.durationOffer, mine)
+                    }
+                    BidsSummaryRTO(
+                        numParticipants = bids.size,
+                        minPriceOffer = minPriceOffer,
+                        maxPriceOffer = maxPriceOffer,
+                        minDurationOffer = minDurationOffer,
+                        maxDurationOffer = maxDurationOffer,
+                        firstBidAt = firstBidAt,
+                        lastBidAt = lastBidAt
+                    )
+                }
             }
         )
     }
 }
+
+private fun <T> ifInStoreAndWriterLooking(order: UAOrder, block: () -> T): T? =
+    ifInStore(order, {requestUser.kind in setOf(UserKind.WRITER)}, block)
+
+private fun <T> ifInStoreAndWriterOrAdminLooking(order: UAOrder, block: () -> T): T? =
+    ifInStore(order, {requestUser.kind in setOf(UserKind.WRITER, UserKind.ADMIN)}, block)
+
+private fun <T> ifInStore(order: UAOrder, isAppropriateUser: () -> Boolean, block: () -> T): T? {
+    if (!isAppropriateUser()) return null
+    if (order.order.state != UAOrderState.IN_STORE) return null
+    return block()
+}
+
 
 interface UAOrderRepository : CrudRepository<UAOrder, Long> {
     fun findByOrder_ConfirmationSecret(x: String): UAOrder?
@@ -537,7 +578,8 @@ class Bid(
 }
 
 interface BidRepository : CrudRepository<Bid, Long> {
-    fun findByBidder(x: User): Bid?
+    fun findByOrderAndBidder(order: UAOrder, bidder: User): Bid?
+    fun findByOrder(order: UAOrder): List<Bid>
 }
 
 

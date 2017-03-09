@@ -110,7 +110,9 @@ interface SingleValueResponse<out T> {
     val value: T
 }
 
-
+enum class GrammarGender {
+    FEMININE, MASCULINE, NEUTER
+}
 
 
 
