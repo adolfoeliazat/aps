@@ -109,7 +109,10 @@ fun openModal(p: OpenModalParams): ModalOperations {
 fun <Req : RequestMatumba, Res : CommonResponseFields>
     openEditModal(title: String,
                   formSpec: FormSpec<Req, Res>,
-                  onSuccessa: suspend (Res) -> Unit): ModalOperations
+                  onSuccessBeforeClosingModal: suspend (Res) -> Unit = {},
+                  onSuccessAfterClosingModal: suspend (Res) -> Unit = {}
+)
+    : ModalOperations
 {
     var modal by notNullOnce<ModalOperations>()
 
@@ -118,8 +121,9 @@ fun <Req : RequestMatumba, Res : CommonResponseFields>
         primaryButtonTitle = t("TOTE", "Сохранить"),
         cancelButtonTitle = t("TOTE", "Не стоит"),
         onSuccessa = {res->
+            onSuccessBeforeClosingModal(res)
             modal.close()
-            onSuccessa(res)
+            onSuccessAfterClosingModal(res)
         },
         onCancela = {
             modal.close()

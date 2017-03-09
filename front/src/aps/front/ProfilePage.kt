@@ -56,7 +56,7 @@ class ProfilePage {
                         },
                         primaryButtonTitle = t("TOTE", "Отправить на проверку"),
                         onSuccessa = {res->
-                            showingModalIfError({reginaGetMyself()}) {myself->
+                            showingModalIfShittyResponse({reginaGetMyself()}) {myself->
                                 Globus.world.userMaybe = myself
                                 Globus.world.replaceNavigate(makeURL(
                                     when (user().kind) {

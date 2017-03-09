@@ -310,22 +310,6 @@ import java.util.*
     return order.toRTO(listOf())
 }
 
-//@Servant class ServeLoadUAOrder(
-//    val orderRepo: UAOrderRepository,
-//    val userRepo: UserRepository,
-//    val userTokenRepo: UserTokenRepository
-//) : BitchyProcedure() {
-//    override fun serve() {
-//        fuckAnyUser(FuckAnyUserParams(
-//            bpc = bpc,
-//            makeRequest = {LoadUAOrderRequest()},
-//            runShit = fun(ctx, req: LoadUAOrderRequest): LoadUAOrderRequest.Response {
-//            }
-//        ))
-//    }
-//}
-
-
 @Remote fun reginaGetDocumentCategories(): UADocumentCategoryRTO {
     // TODO:vgrechka Security
     val cat = uaDocumentCategoryRepo.findOrDie(const.uaDocumentCategoryID.root).toRTO(loadChildren = true)
@@ -336,9 +320,6 @@ import java.util.*
     // TODO:vgrechka Security
     return requestUserEntity.toRTO(searchWords = listOf())
 }
-
-
-
 
 
 

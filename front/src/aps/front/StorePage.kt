@@ -39,7 +39,7 @@ class StorePage {
                     icon = {fa.folderOpen},
                     initialLipsState = Unit,
                     renderContent = {o->
-                        o- renderStoreItem(tongue.item)
+                        o- renderStoreItem(tongue)
                     },
                     titleLinkURL = makeURL(pages.uaAdmin.order, listOf( // TODO:vgrechka ....................
                         URLParamValue(TabithaURLQuery.id, tongue.item.id)
@@ -52,7 +52,8 @@ class StorePage {
 }
 
 
-fun renderStoreItem(order: UAOrderRTO): ToReactElementable {
+fun renderStoreItem(tongue: MelindaTongueInterface<UAOrderRTO>): ToReactElementable {
+    val order = tongue.item
     val m = MelindaTools
     return kdiv(position = "relative"){o->
         o- m.row{o->
@@ -75,19 +76,26 @@ fun renderStoreItem(order: UAOrderRTO): ToReactElementable {
         o- renderAdminNotesIfNeeded(order)
 
         if (user().kind == UserKind.WRITER) {
-            o- Button(icon = fa.usd, title = t("TOTE", "Дайте мне"), className = css.bidButton, key = buttons.bid) {
-                openEditModal(
-                    title = t("TOTE", "Заявка на выполнение"),
-                    formSpec = FormSpec<BidRequest, GenericResponse>(
-                        primaryButtonTitle = t("TOTE", "Да!"),
-                        cancelButtonTitle = t("TOTE", "Та не..."),
-                        req = BidRequest()-{o->
-                            o.orderID.value = order.id
+            if (!order.wasBidByMe) {
+                o- Button(icon = fa.usd, title = t("TOTE", "Дайте мне"), className = css.bidButton, key = buttons.bid) {
+                    openEditModal(
+                        title = t("TOTE", "Заявка на выполнение"),
+                        formSpec = FormSpec<BidRequest, GenericResponse>(
+                            primaryButtonTitle = t("TOTE", "Да!"),
+                            cancelButtonTitle = t("TOTE", "Та не..."),
+                            req = BidRequest()-{o->
+                                o.orderID.value = order.id
+                            }
+                        ),
+                        onSuccessBeforeClosingModal = {
+                            showingModalIfShittyResponse({reginaLoadUAOrder(order.id)}) {
+                                tongue.replaceItem(it)
+                            }
                         }
-                    ),
-                    onSuccessa = {
-                    }
-                )
+                    )
+                }
+            } else {
+                o- "I bid for it"
             }
         }
     }

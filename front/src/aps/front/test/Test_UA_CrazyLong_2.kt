@@ -34,9 +34,9 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
         val rapunzelDetails = "Одна пара жила по соседству с колдуньей. Однажды беременная жена увидела, что у соседки растёт рапунцель и попросила мужа добыть ей этого лакомства. Муж решил украсть листьев для жены, но колдунья поймала его и разрешила брать у неё рапунцеля сколько угодно в обмен на обещание отдать ей первенца. Когда у жены родилась девочка, колдунья забрала её в падчерицы и назвала Рапунцель."
     }
 
-    val startPoint = 1
+//    val startPoint = 1
 //    val startPoint = 10 // 14 // 9 // 12
-//    val startPoint = 14
+    val startPoint = 14
 
     init {
 //        TestGlobal.describeStateConfig = DescribeStateConfig(showBanners = true, autoResumeAfterMs = null)

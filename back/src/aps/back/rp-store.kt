@@ -60,11 +60,12 @@ import org.springframework.data.repository.findOrDie
                 checkingAllFieldsRetrieved(req) {
                     val order = uaOrderRepo.findOrDie(req.orderID.value)
                     bidRepo.save(Bid(
-                        bidPriceOffer = req.bidPriceOffer.value,
-                        bidDurationOffer = req.bidDurationOffer.value,
-                        bidComment = req.bidComment.value,
+                        priceOffer = req.bidPriceOffer.value,
+                        durationOffer = req.bidDurationOffer.value,
+                        comment = req.bidComment.value,
                         adminNotes = "",
-                        order = order
+                        order = order,
+                        bidder = requestUserEntity
                     ))
                 }
                 return GenericResponse()
@@ -72,7 +73,6 @@ import org.springframework.data.repository.findOrDie
         ))
     }
 }
-
 
 
 

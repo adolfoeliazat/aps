@@ -42,11 +42,12 @@ interface MelindaLipsInterface {
     fun renderItem(): ToReactElementable
 }
 
-interface MelindaTongueInterface<out Item> {
+interface MelindaTongueInterface<Item> {
     suspend fun onEdit()
     suspend fun onDelete()
     val items: List<Item>
     val itemIndex: Int
+    fun replaceItem(newItem: Item)
 }
 
 val <Item> MelindaTongueInterface<Item>.item get() = items[itemIndex]
@@ -125,7 +126,7 @@ class MelindaBoobs<
                                     procedureName = createParams.createProcedureNameIfNotDefault,
                                     req = createParams.makeCreateRequest()
                                 ),
-                                onSuccessa = {res->
+                                onSuccessAfterClosingModal = {res->
                                     Globus.world.replaceNavigate(createParams.makeURLAfterCreation(res))
                                 }
                             )
@@ -325,11 +326,16 @@ class MelindaBoobs<
                         procedureName = uparams.updateItemProcedureNameIfNotDefault,
                         req = uparams.makeUpdateItemRequest(item)
                     ),
-                    onSuccessa = {res->
-                        _item = uparams.getItemFromUpdateItemResponse(res)
-                        itemPlace.setContent(renderView())
+                    onSuccessAfterClosingModal = {res->
+                        val newItem = uparams.getItemFromUpdateItemResponse(res)
+                        replaceItem(newItem)
                     }
                 )
+            }
+
+            override fun replaceItem(newItem: Item) {
+                _item = newItem
+                itemPlace.setContent(renderView())
             }
         }
 

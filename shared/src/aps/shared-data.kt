@@ -68,7 +68,8 @@ class UAOrderRTO(
     var maxAllowedPriceOffer: Int,
     var minAllowedDurationOffer: Int,
     var maxAllowedDurationOffer: Int,
-    val documentCategory: UADocumentCategoryRTO
+    val documentCategory: UADocumentCategoryRTO,
+    val wasBidByMe: Boolean
 ) : MelindaItemRTO, RTOWithAdminNotes, TabithaEntityRTO
 
 data class IntRangeRTO(

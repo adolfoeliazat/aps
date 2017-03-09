@@ -252,7 +252,7 @@ where
                             openEditModal(
                                 title = editModalTitle,
                                 formSpec = makeFormSpec(),
-                                onSuccessa = {
+                                onSuccessAfterClosingModal = {
                                     tabitha.reloadPage()
                                 }
                             )

@@ -349,7 +349,13 @@ class UAOrder(@Embedded var order: UAOrderFields)
             maxAllowedPriceOffer = order.maxAllowedPriceOffer,
             minAllowedDurationOffer = order.minAllowedDurationOffer,
             maxAllowedDurationOffer = order.maxAllowedDurationOffer,
-            documentCategory = order.category.toRTO()
+            documentCategory = order.category.toRTO(),
+            wasBidByMe = when (requestUser.kind) {
+                UserKind.CUSTOMER, UserKind.ADMIN -> false
+                UserKind.WRITER -> {
+                    bidRepo.findByBidder(requestUserEntity) != null
+                }
+            }
         )
     }
 }
@@ -505,11 +511,12 @@ interface UADocumentCategoryRepository : CrudRepository<UADocumentCategory, Long
                indexes = arrayOf(Index(columnList = "order__id")))
 class Bid(
     @Embedded var common: CommonFields = CommonFields(),
-    var bidPriceOffer: Int,
-    var bidDurationOffer: Int,
-    @Column(length = MAX_STRING) var bidComment: String,
+    var priceOffer: Int,
+    var durationOffer: Int,
+    @Column(length = MAX_STRING) var comment: String,
     override @Column(length = MAX_STRING) var adminNotes: String,
-    @ManyToOne(fetch = FetchType.LAZY) var order: UAOrder
+    @ManyToOne(fetch = FetchType.LAZY) var order: UAOrder,
+    @ManyToOne(fetch = FetchType.LAZY) var bidder: User
 )
     : ClitoralEntity0(), FieldsWithAdminNotes
 {
@@ -529,6 +536,7 @@ class Bid(
 }
 
 interface BidRepository : CrudRepository<Bid, Long> {
+    fun findByBidder(x: User): Bid?
 }
 
 

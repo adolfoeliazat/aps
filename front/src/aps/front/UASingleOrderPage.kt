@@ -160,7 +160,7 @@ fun renderOrderParams(order: UAOrderRTO, storeEditingParams: RenderOrderParamsSt
                                     o.maxAllowedDurationOffer.setValue(order.maxAllowedDurationOffer)
                                 }
                             ),
-                            onSuccessa = {
+                            onSuccessAfterClosingModal = {
                                 storeEditingParams.tabitha.reloadPage(p = LoadPageForURLParams(
                                     scroll = LoadPageForURLParams.Scroll.PRESERVE))
                             }
