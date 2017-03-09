@@ -22,10 +22,10 @@ class SingleUserPage {
                     UserState.PROFILE_APPROVAL_PENDING -> acceptOrRejectDolly(
                         message = t("TOTE", "Что будем делать с засранцем?"),
                         acceptButtonTitle = t("TOTE", "Принять"),
-                        blankRejectionRequest = RejectProfileRequest(),
+                        blankRejectingRequest = RejectProfileRequest(),
                         entityID = user.id,
                         tabitha = tabitha,
-                        makeAcceptanceRequestParams = ::ReginaAcceptProfile,
+                        sendAcceptingRequest = {entityID-> askRegina(ReginaAcceptProfile(entityID))},
                         bottomGap = true)
                     UserState.PROFILE_REJECTED -> renderMaybeRejectionReasonBanner(user.profileRejectionReason)
                     else -> NOTRE

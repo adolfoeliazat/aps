@@ -15,13 +15,15 @@ import aps.*
 // REMOTE PROCEDURE TOS
 // ==================================================================
 
-@Generated @Ser class MirandaImposeNextGeneratedPassword(val password: String)
-@Generated class MirandaImposeNextGeneratedPassword_Response(val value: Unit) : CommonResponseFieldsImpl()
-@Generated @Ser class MirandaImposeNextGeneratedUserToken(val token: String)
-@Generated class MirandaImposeNextGeneratedUserToken_Response(val value: Unit) : CommonResponseFieldsImpl()
-@Generated @Ser class MirandaImposeNextOrderID(val id: Long)
-@Generated class MirandaImposeNextOrderID_Response(val value: Unit) : CommonResponseFieldsImpl()
-@Generated @Ser class MirandaGetGeneratedTestTimestamps()
-@Generated class MirandaGetGeneratedTestTimestamps_Response(val value: List<String>) : CommonResponseFieldsImpl()
-@Generated @Ser class MirandaSeedSomeStuff1()
-@Generated class MirandaSeedSomeStuff1_Response(val value: Unit) : CommonResponseFieldsImpl()
+@Generated @Ser class __MirandaImposeNextGeneratedPassword(val password: String)
+@Generated class __MirandaImposeNextGeneratedPassword_Response(override val value: Unit) : CommonResponseFieldsImpl(), SingleValueResponse<Unit>
+@Generated @Ser class __MirandaImposeNextGeneratedUserToken(val token: String)
+@Generated class __MirandaImposeNextGeneratedUserToken_Response(override val value: Unit) : CommonResponseFieldsImpl(), SingleValueResponse<Unit>
+@Generated @Ser class __MirandaImposeNextOrderID(val id: Long)
+@Generated class __MirandaImposeNextOrderID_Response(override val value: Unit) : CommonResponseFieldsImpl(), SingleValueResponse<Unit>
+@Generated @Ser class __MirandaGetGeneratedTestTimestamps()
+@Generated class __MirandaGetGeneratedTestTimestamps_Response(override val value: List<String>) : CommonResponseFieldsImpl(), SingleValueResponse<List<String>>
+@Generated @Ser class __MirandaSeedSomeStuff1()
+@Generated class __MirandaSeedSomeStuff1_Response(override val value: Unit) : CommonResponseFieldsImpl(), SingleValueResponse<Unit>
+@Generated @Ser class __ReginaAdminSendOrderToStore(val orderID: Long)
+@Generated class __ReginaAdminSendOrderToStore_Response(override val value: Unit) : CommonResponseFieldsImpl(), SingleValueResponse<Unit>

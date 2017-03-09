@@ -51,11 +51,11 @@ class UASingleOrderPage {
                         UserKind.ADMIN -> acceptOrRejectDolly(
                             message = t("TOTE", "Что будем делать с заказом?"),
                             jokeOptions = listOf("Заказать заказчика", "Купить молока"),
-                            blankRejectionRequest = ReturnOrderToCustomerForFixingRequest(),
+                            blankRejectingRequest = ReturnOrderToCustomerForFixingRequest(),
                             entityID = order.id,
                             tabitha = tabitha,
                             acceptButtonTitle = t("TOTE", "В стор"),
-                            makeAcceptanceRequestParams = ::ReginaAdminSendOrderToStore)
+                            sendAcceptingRequest = {entityID-> reginaAdminSendOrderToStore(entityID)})
                         UserKind.WRITER -> wtf("a1f98aad-8f31-40da-8d93-0f48208bcb5c")
                     }
 

@@ -90,11 +90,11 @@ class Dolly(val p: DollyParams): ToReactElementable {
 
 fun <EntityRTO : TabithaEntityRTO> acceptOrRejectDolly(
     message: String,
-    blankRejectionRequest: RejectionRequest,
+    blankRejectingRequest: RejectingRequest,
     entityID: Long,
     tabitha: Tabitha<EntityRTO>,
     acceptButtonTitle: String,
-    makeAcceptanceRequestParams: KFunction1<Long, Any>,
+    sendAcceptingRequest: suspend (entityID: Long) -> FormResponse2<*>,
     bottomGap: Boolean = false,
     jokeOptions: List<String> = listOf()
 ): Dolly {
@@ -117,7 +117,7 @@ fun <EntityRTO : TabithaEntityRTO> acceptOrRejectDolly(
                         title = t("TOTE", "Возвращаем на доработку"),
                         primaryButtonTitle = t("TOTE", "Завернуть"),
                         cancelButtonTitle = t("TOTE", "Не надо"),
-                        req = blankRejectionRequest-{o->
+                        req = blankRejectingRequest-{o->
                             o.entityID.value = entityID
                             o.rejectionReason.value = t("TOTE", "Что нужно исправить?")
                         }
@@ -129,7 +129,7 @@ fun <EntityRTO : TabithaEntityRTO> acceptOrRejectDolly(
                 title = acceptButtonTitle, level = Button.Level.PRIMARY, key = buttons.accept,
                 onClick = sendingDollyButtonHandler(
                     sendRequest = {
-                        askRegina(makeAcceptanceRequestParams(entityID))
+                        sendAcceptingRequest(entityID)
                     },
                     onSuccess = {
                         tabitha.reloadPage()

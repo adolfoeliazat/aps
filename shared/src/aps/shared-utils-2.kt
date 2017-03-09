@@ -106,6 +106,10 @@ fun String.orDefaultIfBlank(default: String) = when {
     else -> this
 }
 
+interface SingleValueResponse<out T> {
+    val value: T
+}
+
 
 
 

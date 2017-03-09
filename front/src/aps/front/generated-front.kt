@@ -15,11 +15,12 @@ import aps.*
 // REMOTE PROCEDURE STUBS
 // ==================================================================
 
-@Generated suspend fun mirandaImposeNextGeneratedPassword(password:String): Unit = _askMiranda<MirandaImposeNextGeneratedPassword_Response>(MirandaImposeNextGeneratedPassword(password = password)).value
-@Generated suspend fun mirandaImposeNextGeneratedUserToken(token:String): Unit = _askMiranda<MirandaImposeNextGeneratedUserToken_Response>(MirandaImposeNextGeneratedUserToken(token = token)).value
-@Generated suspend fun mirandaImposeNextOrderID(id:Long): Unit = _askMiranda<MirandaImposeNextOrderID_Response>(MirandaImposeNextOrderID(id = id)).value
-@Generated suspend fun mirandaGetGeneratedTestTimestamps(): List<String> = _askMiranda<MirandaGetGeneratedTestTimestamps_Response>(MirandaGetGeneratedTestTimestamps()).value
-@Generated suspend fun mirandaSeedSomeStuff1(): Unit = _askMiranda<MirandaSeedSomeStuff1_Response>(MirandaSeedSomeStuff1()).value
+@Generated suspend fun mirandaImposeNextGeneratedPassword(password:String): Unit = _askMiranda<__MirandaImposeNextGeneratedPassword_Response>(__MirandaImposeNextGeneratedPassword(password = password)).value
+@Generated suspend fun mirandaImposeNextGeneratedUserToken(token:String): Unit = _askMiranda<__MirandaImposeNextGeneratedUserToken_Response>(__MirandaImposeNextGeneratedUserToken(token = token)).value
+@Generated suspend fun mirandaImposeNextOrderID(id:Long): Unit = _askMiranda<__MirandaImposeNextOrderID_Response>(__MirandaImposeNextOrderID(id = id)).value
+@Generated suspend fun mirandaGetGeneratedTestTimestamps(): List<String> = _askMiranda<__MirandaGetGeneratedTestTimestamps_Response>(__MirandaGetGeneratedTestTimestamps()).value
+@Generated suspend fun mirandaSeedSomeStuff1(): Unit = _askMiranda<__MirandaSeedSomeStuff1_Response>(__MirandaSeedSomeStuff1()).value
+@Generated suspend fun reginaAdminSendOrderToStore(orderID:Long): FormResponse2<Unit> = _simplifyFormResponseMeat(_askRegina<__ReginaAdminSendOrderToStore_Response>(__ReginaAdminSendOrderToStore(orderID = orderID)))
 
 // ==================================================================
 // CONTROL TESTING HELPERS

@@ -209,14 +209,14 @@ class UAAdminGetStuffToDoRequest : RequestMatumba() {
 }
 
 
-abstract class RejectionRequest : RequestMatumba() {
+abstract class RejectingRequest : RequestMatumba() {
     val entityID by longHiddenField()
     val rejectionReason = TextField(this, fields.rejectionReason)
 }
 
-class ReturnOrderToCustomerForFixingRequest : RejectionRequest()
+class ReturnOrderToCustomerForFixingRequest : RejectingRequest()
 
-class RejectProfileRequest : RejectionRequest()
+class RejectProfileRequest : RejectingRequest()
 
 
 class UAOrderStoreParamsRequest : RequestMatumba() {
@@ -256,9 +256,9 @@ class ObjectRequest : RequestMatumba() {
 
 
 
-@Ser class ReginaAdminSendOrderToStore(val orderID: Long) {
-    class Response : CommonResponseFieldsImpl()
-}
+//@Ser class ReginaAdminSendOrderToStore(val orderID: Long) {
+//    class Response : CommonResponseFieldsImpl()
+//}
 
 @Ser class ReginaLoadUser(val userID: Long) {
     class Response(override val entity: UserRTO) : CommonResponseFieldsImpl(), EntityResponse<UserRTO>

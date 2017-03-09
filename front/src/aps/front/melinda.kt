@@ -319,7 +319,7 @@ class MelindaBoobs<
             override suspend fun onEdit() {
                 val uparams = bang(vaginalInterface.updateParams)
                 openEditModal(
-                    title = t("TOTE", "Файл") + " " + numberSign + item.id,
+                    title = t("TOTE", "Файл") + " " + numberSign + item.id, // TODO:vgrechka Generalize title
                     formSpec = FormSpec<UpdateItemRequest, UpdateItemResponse>(
                         ui = Globus.world,
                         procedureName = uparams.updateItemProcedureNameIfNotDefault,

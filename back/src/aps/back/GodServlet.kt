@@ -117,10 +117,6 @@ class GodServlet : HttpServlet() {
                     }
                 }
 
-                pathInfo == "/orderFile" -> {
-                    serveOrderFile(req, res)
-                }
-
                 else -> bitch("Weird request path: $pathInfo")
             }
         } catch(fuckup: Throwable) {
@@ -134,65 +130,6 @@ class GodServlet : HttpServlet() {
         }
     }
 
-    private fun serveOrderFile(req: HttpServletRequest, res: HttpServletResponse) {
-        val id = req.getParameter("id") ?: bitch("I want `id`")
-        val token = req.getHeader("token") ?: req.getParameter("token") ?: bitch("I want `token`")
-
-        RequestGlobus.commonRequestFields = CommonRequestFieldsHolder()-{o->
-        }
-
-        // TODO:vgrechka Check permissions
-        imf("serveOrderFile")
-
-//        val db = DB.byID(databaseID)
-//        db.joo {q->
-//            val user = userByToken(q, token)
-//            val rows = tracingSQL("Select file") {q
-//                .select().from(FILES)
-//                .where(FILES.ID.eq(id.toLong()))
-//                .fetch().into(JQFiles::class.java)
-//            }
-//            if (rows.isEmpty()) bitch("No fucking file with ID $id")
-//            val file = rows[0]
-//
-//            val forbidden = run {
-//                val rows = tracingSQL("Select file-user permissions") {q
-//                    .select().from(FILE_USER_PERMISSIONS)
-//                    .where(FILE_USER_PERMISSIONS.FILE_ID.eq(id.toLong()))
-//                    .and(FILE_USER_PERMISSIONS.USER_ID.eq(user.id.toLong()))
-//                    .fetch().into(JQFileUserPermissions::class.java)
-//                }
-//                rows.isEmpty()
-//            }
-//
-//            BackGlobus.lastDownloadedPieceOfShit = PieceOfShitDownload(file.id, file.name, forbidden, file.sha1)
-//
-////        if (forbidden) bitch("Some asshole, namely ${user.id}, wants to download forbidden shit, namely ${file.id}")
-//            if (forbidden) {
-//                log.info("Some asshole, namely ${user.id}, wants to download forbidden shit, namely ${file.id}")
-//                res.writer.println("""
-//                    <html>
-//                        <body>
-//                            This shit is forbidden for you
-//
-//                            <script>
-//                                window.addEventListener('message', e => {
-//                                    if (e.data === '${const.windowMessage.whatsUp.escapeSingleQuotes()}') {
-//                                        e.source.postMessage('${const.windowMessage.fileForbidden.escapeSingleQuotes()}', e.origin)
-//                                    }
-//                                })
-//                            </script>
-//                        </body>
-//                    </html>
-//                """)
-//            } else {
-//                res.contentType = file.mime
-//                res.setHeader("Content-disposition", "attachment; filename=${file.name}")
-//                res.outputStream.write(file.content)
-//                res.outputStream.flush()
-//            }
-//        }
-    }
 }
 
 private fun HttpServletResponse.spitText(text: String) {

@@ -50,8 +50,7 @@ suspend fun send(req: UADownloadOrderFileRequest): FormResponse2<DownloadFileRes
 suspend fun send(req: UACustomerSendOrderDraftForApprovalRequest): FormResponse2<UACustomerSendOrderDraftForApprovalRequest.Response> = _send3(req)
 suspend fun send(req: UAAdminGetStuffToDoRequest): FormResponse2<UAAdminGetStuffToDoRequest.Response> = _send3(req)
 
-suspend fun askRegina(p: Any): FormResponse2<*> = _askRegina<Any>(p)
-suspend fun askRegina(p: ReginaAdminSendOrderToStore): FormResponse2<ReginaAdminSendOrderToStore.Response> = _askRegina(p)
+//suspend fun askRegina(p: ReginaAdminSendOrderToStore): FormResponse2<ReginaAdminSendOrderToStore.Response> = _askRegina(p)
 suspend fun askRegina(p: ReginaLoadUser): FormResponse2<ReginaLoadUser.Response> = _askRegina(p)
 suspend fun askRegina(p: ReginaAcceptProfile): FormResponse2<ReginaAcceptProfile.Response> = _askRegina(p)
 suspend fun askRegina(p: ReginaCustomerSendOrderForApprovalAfterFixing): FormResponse2<ReginaCustomerSendOrderForApprovalAfterFixing.Response> = _askRegina(p)
@@ -65,10 +64,17 @@ suspend fun <Res> _askMiranda(p: Any): Res =
         o.params.value = p
     })
 
-private suspend fun <Res> _askRegina(p: Any): FormResponse2<Res> =
+suspend fun <Res> _askRegina(p: Any): FormResponse2<Res> =
     _send3SofteningShit(ObjectRequest()-{o->
         o.params.value = p
     }, procName = "Regina")
+
+fun <T> _simplifyFormResponseMeat(res: FormResponse2<SingleValueResponse<T>>): FormResponse2<T> {
+    return when (res) {
+        is FormResponse2.Shitty -> FormResponse2.Shitty<T>(res.error, res.fieldErrors)
+        is FormResponse2.Hunky -> FormResponse2.Hunky<T>(res.meat.value)
+    }
+}
 
 private fun <T, R> sendDangerousJSONProcedure(req: T): Promisoid<R> = async {
     val jpreq = JsonProcedureRequest()-{o->
