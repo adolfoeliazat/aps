@@ -14,14 +14,14 @@ import kotlin.browser.*
 
 external class JQuery() {
     fun addClass(className: String): JQuery
-    fun addClass(f: Element.(Int, String) -> String): JQuery
+//    fun addClass(f: Element.(Int, String) -> String): JQuery
 
     fun attr(attrName: String): String
     fun attr(attrName: String, value: String): JQuery
 
     fun html(): String
     fun html(s: String): JQuery
-    fun html(f: Element.(Int, String) -> String): JQuery
+//    fun html(f: Element.(Int, String) -> String): JQuery
 
 
     fun hasClass(className: String): Boolean
@@ -38,15 +38,15 @@ external class JQuery() {
 //    fun dblclick(handler: Element.(MouseClickEvent) -> Unit): JQuery
 //    fun click(handler: Element.(MouseClickEvent) -> Unit): JQuery
 
-    fun load(handler: Element.() -> Unit): JQuery
-    fun change(handler: Element.() -> Unit): JQuery
+//    fun load(handler: Element.() -> Unit): JQuery
+//    fun change(handler: Element.() -> Unit): JQuery
 
     fun append(str: String): JQuery
     fun ready(handler: () -> Unit): JQuery
     fun text(text: String): JQuery
     fun slideUp(): JQuery
-    fun hover(handlerInOut: Element.() -> Unit): JQuery
-    fun hover(handlerIn: Element.() -> Unit, handlerOut: Element.() -> Unit): JQuery
+//    fun hover(handlerInOut: Element.() -> Unit): JQuery
+//    fun hover(handlerIn: Element.() -> Unit, handlerOut: Element.() -> Unit): JQuery
     fun next(): JQuery
     fun parent(): JQuery
     fun `val`(): String?
