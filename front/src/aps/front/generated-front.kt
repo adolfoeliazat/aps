@@ -21,6 +21,7 @@ import kotlin.reflect.KClass
 @Generated suspend fun mirandaImposeNextOrderID(id:Long): Unit = _askMiranda<__MirandaImposeNextOrderID_Response>(__MirandaImposeNextOrderID(id = id)).value
 @Generated suspend fun mirandaGetGeneratedTestTimestamps(): List<String> = _askMiranda<__MirandaGetGeneratedTestTimestamps_Response>(__MirandaGetGeneratedTestTimestamps()).value
 @Generated suspend fun mirandaSeedSomeStuff1(): Unit = _askMiranda<__MirandaSeedSomeStuff1_Response>(__MirandaSeedSomeStuff1()).value
+@Generated suspend fun mirandaSaveRequestResponseLog(name:String): Unit = _askMiranda<__MirandaSaveRequestResponseLog_Response>(__MirandaSaveRequestResponseLog(name = name)).value
 @Generated suspend fun reginaLoadUser(userID:Long): FormResponse2<UserRTO> = _simplifyFormResponseMeat(_askRegina<__ReginaLoadUser_Response>(__ReginaLoadUser(userID = userID)))
 @Generated suspend fun reginaAcceptProfile(userID:Long): FormResponse2<Unit> = _simplifyFormResponseMeat(_askRegina<__ReginaAcceptProfile_Response>(__ReginaAcceptProfile(userID = userID)))
 @Generated suspend fun reginaCustomerSendOrderForApprovalAfterFixing(orderID:Long): FormResponse2<Unit> = _simplifyFormResponseMeat(_askRegina<__ReginaCustomerSendOrderForApprovalAfterFixing_Response>(__ReginaCustomerSendOrderForApprovalAfterFixing(orderID = orderID)))
@@ -76,5 +77,13 @@ import kotlin.reflect.KClass
     object __UserParamsHistoryFilterTester {
         suspend fun setRawValue(value: String) = tselect.setValue(selects.userParamsHistoryFilter, value)
         suspend fun setValue(value: CustomerFileFilter) = setRawValue(value.name)
+    }
+
+// adminBidFilter
+
+    val tselect.adminBidFilter get() = __AdminBidFilterTester
+    object __AdminBidFilterTester {
+        suspend fun setRawValue(value: String) = tselect.setValue(selects.adminBidFilter, value)
+        suspend fun setValue(value: AdminBidFilter) = setRawValue(value.name)
     }
 

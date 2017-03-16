@@ -40,6 +40,7 @@ import java.beans.Introspector
 import java.lang.reflect.Modifier
 import javax.persistence.EntityManager
 import javax.persistence.EntityManagerFactory
+import javax.servlet.DispatcherType
 import kotlin.properties.Delegates.notNull
 import kotlin.reflect.jvm.internal.impl.load.kotlin.JvmType
 
@@ -96,14 +97,15 @@ fun reallyBoot() {
     enhanceDB()
 
     val port = (System.getenv("PORT") ?: "8080").toInt()
-    Server(port).apply {
-        handler = ServletHandler().apply {
-            addServletWithMapping(GodServlet::class.java, "/*")
+    Server(port)-{o->
+        o.handler = ServletHandler()-{o->
+            o.addServletWithMapping(GodServlet::class.java, "/*")
+            o.addFilterWithMapping(GodFilter::class.java, "/*", EnumSet.of(DispatcherType.REQUEST))
         }
 
-        start()
+        o.start()
         println("APS backend shit is spinning...")
-        join()
+        o.join()
     }
 }
 

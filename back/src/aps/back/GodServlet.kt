@@ -7,24 +7,24 @@
 package aps.back
 
 import aps.*
-import aps.RedisLogMessage.Separator.Type.*
-import aps.back.generated.jooq.*
-import aps.back.generated.jooq.Tables.*
-import aps.back.generated.jooq.tables.pojos.*
 import into.kommon.*
 import org.jooq.Result
 import org.springframework.beans.factory.NoSuchBeanDefinitionException
-import org.springframework.orm.jpa.JpaTransactionManager
 import org.springframework.transaction.PlatformTransactionManager
 import org.springframework.transaction.support.TransactionTemplate
+import java.io.*
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.servlet.*
-import javax.servlet.annotation.MultipartConfig
 import javax.servlet.http.*
-import kotlin.concurrent.thread
-import kotlin.system.exitProcess
+import kotlin.properties.Delegates.notNull
+import java.io.PrintWriter
+import java.io.CharArrayWriter
+import javax.servlet.http.HttpServletResponse
+import javax.servlet.http.HttpServletResponseWrapper
+
+
 
 private val requestGlobusThreadLocal = ThreadLocal<RequestGlobusType>()
 
@@ -132,6 +132,55 @@ class GodServlet : HttpServlet() {
 
 }
 
+class GodFilter : Filter {
+    override fun doFilter(request: ServletRequest, response: ServletResponse, chain: FilterChain) {
+        val responseWrapper = object:HttpServletResponseWrapper(response as HttpServletResponse) {
+            val stringWriter = StringWriter()
+            val printWriter = PrintWriter(stringWriter)
+            override fun getWriter() = printWriter
+        }
+
+        request as HttpServletRequest
+        val pathInfo = request.pathInfo
+
+        request.characterEncoding = "UTF-8"
+        val requestJSON = request.reader.readText()
+//        if (pathInfo.contains("CreateOrder")) {
+//            "break on me"
+//        }
+
+        val requestWrapper = object:HttpServletRequestWrapper(request) {
+            val stringReader = StringReader(requestJSON)
+            val bufferedReader = BufferedReader(stringReader)
+            override fun getReader() = bufferedReader
+        }
+
+        chain.doFilter(requestWrapper, responseWrapper)
+
+        if (responseWrapper.contentType.startsWith("application/json;")) {
+            response.contentType = responseWrapper.contentType
+            val out = response.writer
+
+            val responseJSON = responseWrapper.stringWriter.toString()
+
+            val ignoredShit = listOf(
+                "GetSoftwareVersion", "PrivilegedRedisCommand", "GetGeneratedShit", "Ping")
+            if (!ignoredShit.any {pathInfo.endsWith("/$it")}) {
+                BackGlobus.rrlog.entries += RRLogEntry(pathInfo, requestJSON, responseJSON)
+            }
+
+            out.write(responseJSON)
+            out.close()
+        } else {
+            wtf("10e5d515-1ef0-4a60-ad2d-995c13bad634")
+        }
+    }
+
+    override fun init(filterConfig: FilterConfig?) {}
+    override fun destroy() {}
+}
+
+
 private fun HttpServletResponse.spitText(text: String) {
     this-{o->
         o.contentType = "text/plain; charset=utf-8"
@@ -145,6 +194,13 @@ val patternsToExcludeRedisLoggingCompletely = listOf(
     "getSoftwareVersion", "mapStack", "getLiveStatus",
     "getRedisLogMessages", "getGeneratedShit", "imposeNextGeneratedPassword"
 )
+
+
+
+
+
+
+
 
 
 

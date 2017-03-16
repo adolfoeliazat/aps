@@ -133,6 +133,9 @@
       <root url="jar://$USER_HOME$/.ideaLibSources/spring-jdbc-4.3.6.RELEASE-sources.jar!/" />
       <root url="jar://$USER_HOME$/.ideaLibSources/spring-data-jpa-1.10.7.RELEASE-sources.jar!/" />
       <root url="jar://$USER_HOME$/.ideaLibSources/spring-aop-4.2.9.RELEASE-sources.jar!/" />
+      <root url="jar://$USER_HOME$/.ideaLibSources/jetty-servlet-9.3.11.v20160721-sources.jar!/" />
+      <root url="jar://$USER_HOME$/.ideaLibSources/javax.servlet-api-3.1.0-sources.jar!/" />
+      <root url="jar://$USER_HOME$/.ideaLibSources/jetty-server-9.3.11.v20160721-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

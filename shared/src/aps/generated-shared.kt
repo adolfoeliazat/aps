@@ -26,6 +26,8 @@ import kotlin.reflect.KClass
 @Generated class __MirandaGetGeneratedTestTimestamps_Response(override val value: List<String>) : CommonResponseFieldsImpl(), SingleValueResponse<List<String>>
 @Generated @Ser class __MirandaSeedSomeStuff1()
 @Generated class __MirandaSeedSomeStuff1_Response(override val value: Unit) : CommonResponseFieldsImpl(), SingleValueResponse<Unit>
+@Generated @Ser class __MirandaSaveRequestResponseLog(val name: String)
+@Generated class __MirandaSaveRequestResponseLog_Response(override val value: Unit) : CommonResponseFieldsImpl(), SingleValueResponse<Unit>
 @Generated @Ser class __ReginaLoadUser(val userID: Long)
 @Generated class __ReginaLoadUser_Response(override val value: UserRTO) : CommonResponseFieldsImpl(), SingleValueResponse<UserRTO>
 @Generated @Ser class __ReginaAcceptProfile(val userID: Long)

@@ -31,6 +31,9 @@ import kotlin.reflect.KClass
 @Generated fun __MirandaSeedSomeStuff1.serve(): __MirandaSeedSomeStuff1_Response {
     return __MirandaSeedSomeStuff1_Response(mirandaSeedSomeStuff1())
 }
+@Generated fun __MirandaSaveRequestResponseLog.serve(): __MirandaSaveRequestResponseLog_Response {
+    return __MirandaSaveRequestResponseLog_Response(mirandaSaveRequestResponseLog(name = this.name))
+}
 @Generated fun __ReginaLoadUser.serve(): __ReginaLoadUser_Response {
     return __ReginaLoadUser_Response(reginaLoadUser(userID = this.userID))
 }

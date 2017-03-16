@@ -1,68 +1,72 @@
 Java
 ====
 
-Import Gradle dependencies
+    Import Gradle dependencies
 
-    cd /d e:\work\aps\back
-    import-deps
-    File -> Project Structure -> Libraries -> aps-gradle-lib
-    Remove/add necessary shit from aps/back/lib-gradle
+        cd /d e:\work\aps\back
+        import-deps
+        File -> Project Structure -> Libraries -> aps-gradle-lib
+        Remove/add necessary shit from aps/back/lib-gradle
+
+    Generate shit
+
+        _run.cmd aps.Spew
 
 PostgreSQL
 ==========
 
-Stuff
+    Stuff
 
-    imdisk -a -t vm -s 100M -m r:
+        imdisk -a -t vm -s 100M -m r:
 
-    Click "Format"
+        Click "Format"
 
-    cd /d E:\work\aps\back\bin\dev\win
-    title pg-test & pg-test-start.cmd
-        | It will output following shit, which is OK: FATAL:  role "Vladimir" does not exist
-        | In the end it should say, "server started"
+        cd /d E:\work\aps\back\bin\dev\win
+        title pg-test & pg-test-start.cmd
+            | It will output following shit, which is OK: FATAL:  role "Vladimir" does not exist
+            | In the end it should say, "server started"
 
 
-    cd /d E:\work\aps\back\bin\dev\win
-    title pg-dev & pg-dev-start.cmd
-        | It will output following shit, which is OK: FATAL:  role "Vladimir" does not exist
-        | In the end it should say, "server started"
+        cd /d E:\work\aps\back\bin\dev\win
+        title pg-dev & pg-dev-start.cmd
+            | It will output following shit, which is OK: FATAL:  role "Vladimir" does not exist
+            | In the end it should say, "server started"
 
-    // cd /d e:\work\aps
-    // ant java -Dclass=aps.back.GenerateJOOQKt
+        // cd /d e:\work\aps
+        // ant java -Dclass=aps.back.GenerateJOOQKt
 
-    cd /d e:\work\aps
-    (Don't forget to compile code before this, as schema.sql should end up in resources)
-    _run aps.back.GenerateJOOQKt
+        cd /d e:\work\aps
+        (Don't forget to compile code before this, as schema.sql should end up in resources)
+        _run aps.back.GenerateJOOQKt
 
-    ant java -Dclass=aps.back.Fiddle -Dhow=RecreateSchema_bmix_fuckingAround_apsdevua
+        ant java -Dclass=aps.back.Fiddle -Dhow=RecreateSchema_bmix_fuckingAround_apsdevua
 
-PSQL to aps-test
-    psql -h 127.0.0.1 -p 5433 -U postgres -w aps-test
+    PSQL to aps-test
+        psql -h 127.0.0.1 -p 5433 -U postgres -w aps-test
 
-Create test database
-    %pg_home%\bin\psql.exe -h 127.0.0.1 -p 5433 postgres postgres
-    create database "aps-test" encoding 'UTF8';
-    \l
+    Create test database
+        %pg_home%\bin\psql.exe -h 127.0.0.1 -p 5433 postgres postgres
+        create database "aps-test" encoding 'UTF8';
+        \l
 
-Drop all shit
-    drop schema public cascade;
+    Drop all shit
+        drop schema public cascade;
 
-PSQL stuff
-    \x auto                         Automatic output format (rows/columns) depending on whether data fits on screen
-    \pset pager
+    PSQL stuff
+        \x auto                         Automatic output format (rows/columns) depending on whether data fits on screen
+        \pset pager
 
 
 JavaScript
 ==========
 
-F.dumpLocalStorage()
-localStorage.setItem('reloadTest', 'true')
-localStorage.setItem('dontScrollOnTestPassed', 'true')
-F.dumpShames()
+    F.dumpLocalStorage()
+    localStorage.setItem('reloadTest', 'true')
+    localStorage.setItem('dontScrollOnTestPassed', 'true')
+    F.dumpShames()
 
-cd /d e:\work\aps
-node run.js runAllUnitTests
+    cd /d e:\work\aps
+    node run.js runAllUnitTests
 
 
 Static Sites
@@ -103,82 +107,65 @@ Misc
 Links
 =====
 
-http://aps-ua-writer.local:3022/faq.html?test=Test_UACustomer_Order_Files_EditFile&stopOnAssertions=true&dontStopOnCorrectAssertions=true&animateUserActions=true&handPauses=true
+    http://aps-ua-writer.local:3022/faq.html?test=Test_UACustomer_Order_Files_EditFile&stopOnAssertions=true&dontStopOnCorrectAssertions=true&animateUserActions=true&handPauses=true
 
 
-http://aps-ua-writer.local:3022/faq.html?test=Test_UA_CrazyLong_1&stopOnAssertions=true&dontStopOnCorrectAssertions=true&animateUserActions=true&handPauses=true
+    http://aps-ua-writer.local:3022/faq.html?test=Test_UA_CrazyLong_1&stopOnAssertions=true&dontStopOnCorrectAssertions=true&animateUserActions=true&handPauses=true
 
-http://aps-ua-writer.local:3022/debug.html?page=log&cut=last_boot
-http://aps-ua-writer.local:3022/debug.html?page=log&cut=last_boot&skipCrap=true
+    http://aps-ua-writer.local:3022/debug.html?page=log&cut=last_boot
+    http://aps-ua-writer.local:3022/debug.html?page=log&cut=last_boot&skipCrap=true
 
-http://aps-ua-writer.local:3022/faq.html?test=TestWriter_Boot_ProfileRejected
-http://aps-ua-writer.local:3022/faq.html?test=TestWriter_Boot_Cool
+    http://aps-ua-writer.local:3022/faq.html?test=TestWriter_Boot_ProfileRejected
+    http://aps-ua-writer.local:3022/faq.html?test=TestWriter_Boot_Cool
 
 
 CloudFoundry
 ============
 
-ant BundleForCloudFoundry
-cf push -f back\manifest.yml
+    ant BundleForCloudFoundry
+    cf push -f back\manifest.yml
 
-ant PushSlimShitToCF
-
-
-Static
-======
-
-ant PublishStaticSitesOnGH
-
-
-Kotlin Version Upgrade Procedure
-================================
-
-* File -> Invalidate Caches / Restart
-* Allow IDEA to update runtimes
-* Ensure that into-kommon/lib/kotlin/<prev-version>/**/*.jar files were replaced with new versions by looking into jar's META-INF/build.txt
-* Copy into-kommon/lib/kotlin/<prev-version> to into-kommon/lib/kotlin/<new-version>
-// * File -> Project Structure -> Libraries, change <prev-version> to <new-version> in paths of KotlinJavaRuntime and KotlinJavaScript
-* In KotlinJavaRuntime.xml and KotlinJavaScript.xml (E:\work\aps\.idea\libraries) change <prev-version> to <new-version>
-* File -> Invalidate Caches / Restart
-* Remove into-kommon/lib/kotlin/<prev-version>
-* In build-into-kommon-inc.xml change `kotlin.version` to <new-version>
-* File -> Synchronize
-* Build -> Rebuild Project
-* Fix shit
+    ant PushSlimShitToCF
 
 
 Kotlin compiler command line arguments
 ======================================
 
--Xplugin
-C:\Users\Vladimir\.IdeaIC2017.1\config\plugins\Kotlin\kotlinc\lib\noarg-compiler-plugin.jar
--P
-plugin:org.jetbrains.kotlin.noarg:annotation=aps.back.Fucking
--P
-plugin:org.jetbrains.kotlin.noarg:annotation=javax.persistence.MappedSuperclass
--P
-plugin:org.jetbrains.kotlin.noarg:annotation=javax.persistence.Entity
--P
-plugin:org.jetbrains.kotlin.noarg:annotation=javax.persistence.Embeddable
--P
-plugin:org.jetbrains.kotlin.noarg:annotation=aps.NoArgCtor
--P
-plugin:org.jetbrains.kotlin.noarg:annotation=aps.Ser
--Xplugin
-C:\Users\Vladimir\.IdeaIC2017.1\config\plugins\Kotlin\kotlinc\lib\allopen-compiler-plugin.jar
--P
-plugin:org.jetbrains.kotlin.allopen:annotation=aps.back.Fucking
--P
-plugin:org.jetbrains.kotlin.allopen:annotation=javax.persistence.MappedSuperclass
--P
-plugin:org.jetbrains.kotlin.allopen:annotation=javax.persistence.Entity
--P
-plugin:org.jetbrains.kotlin.allopen:annotation=javax.persistence.Embeddable
--P
-plugin:org.jetbrains.kotlin.allopen:annotation=aps.AllOpen
--P
-plugin:org.jetbrains.kotlin.allopen:annotation=aps.Ser
--version
+    -Xplugin
+    C:\Users\Vladimir\.IdeaIC2017.1\config\plugins\Kotlin\kotlinc\lib\noarg-compiler-plugin.jar
+    -P
+    plugin:org.jetbrains.kotlin.noarg:annotation=aps.back.Fucking
+    -P
+    plugin:org.jetbrains.kotlin.noarg:annotation=javax.persistence.MappedSuperclass
+    -P
+    plugin:org.jetbrains.kotlin.noarg:annotation=javax.persistence.Entity
+    -P
+    plugin:org.jetbrains.kotlin.noarg:annotation=javax.persistence.Embeddable
+    -P
+    plugin:org.jetbrains.kotlin.noarg:annotation=aps.NoArgCtor
+    -P
+    plugin:org.jetbrains.kotlin.noarg:annotation=aps.Ser
+    -Xplugin
+    C:\Users\Vladimir\.IdeaIC2017.1\config\plugins\Kotlin\kotlinc\lib\allopen-compiler-plugin.jar
+    -P
+    plugin:org.jetbrains.kotlin.allopen:annotation=aps.back.Fucking
+    -P
+    plugin:org.jetbrains.kotlin.allopen:annotation=javax.persistence.MappedSuperclass
+    -P
+    plugin:org.jetbrains.kotlin.allopen:annotation=javax.persistence.Entity
+    -P
+    plugin:org.jetbrains.kotlin.allopen:annotation=javax.persistence.Embeddable
+    -P
+    plugin:org.jetbrains.kotlin.allopen:annotation=aps.AllOpen
+    -P
+    plugin:org.jetbrains.kotlin.allopen:annotation=aps.Ser
+    -version
+
+
+Git
+===
+
+    git config --global core.pager cat
 
 
 Misc

@@ -1,10 +1,12 @@
 package aps.back
 
 import aps.*
+import aps.const.file.APS_TEMP
 import into.kommon.*
 import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.data.repository.findOrDie
 import java.io.File
+import java.io.FileWriter
 import java.io.PrintWriter
 import java.io.StringWriter
 import java.sql.PreparedStatement
@@ -12,6 +14,8 @@ import java.sql.SQLException
 import java.util.*
 import javax.persistence.EntityManagerFactory
 import javax.sql.DataSource
+import javax.xml.bind.JAXB
+import javax.xml.bind.annotation.*
 import kotlin.properties.Delegates.notNull
 
 class TestState {
@@ -255,7 +259,20 @@ annotation class Remote
     }
 }
 
+@Remote fun mirandaSaveRequestResponseLog(name: String) {
+    val fileWriter = FileWriter("$APS_TEMP/rrlog-$name.xml")
+    JAXB.marshal(BackGlobus.rrlog, fileWriter)
+    fileWriter.close()
+}
 
+@Ser @XmlRootElement(name = "rrlog") @XmlAccessorType(XmlAccessType.FIELD)
+class RRLog {
+    @XmlElement(name = "entry")
+    val entries = Collections.synchronizedList(mutableListOf<RRLogEntry>())
+}
+
+@Ser @XmlRootElement @XmlAccessorType(XmlAccessType.FIELD)
+class RRLogEntry(val pathInfo: String, val requestJSON: String, val responseJSON: String)
 
 
 
