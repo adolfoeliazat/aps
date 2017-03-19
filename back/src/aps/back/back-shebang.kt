@@ -17,30 +17,30 @@ import kotlin.properties.Delegates
 import kotlin.properties.Delegates.notNull
 import kotlin.reflect.KClass
 
-class QueryBuilder(val shortDescription: String) {
-    private val sql = StringBuilder()
-    private val bindings = mutableListOf<Any?>()
-
-    fun text(s: String): QueryBuilder {
-        sql.append(" " + s)
-        return this
-    }
-
-    fun arg(x: Any?): QueryBuilder {
-        sql.append("?")
-        bindings.add(x)
-        return this
-    }
-
-    fun run(f: (QueryBuilder) -> Unit): QueryBuilder {
-        f(this)
-        return this
-    }
-
-    fun fetch(q: DSLContext): List<Record> {
-        return tracingSQL(shortDescription) {q.fetch("" + sql, *bindings.toTypedArray())}
-    }
-}
+//class QueryBuilder(val shortDescription: String) {
+//    private val sql = StringBuilder()
+//    private val bindings = mutableListOf<Any?>()
+//
+//    fun text(s: String): QueryBuilder {
+//        sql.append(" " + s)
+//        return this
+//    }
+//
+//    fun arg(x: Any?): QueryBuilder {
+//        sql.append("?")
+//        bindings.add(x)
+//        return this
+//    }
+//
+//    fun run(f: (QueryBuilder) -> Unit): QueryBuilder {
+//        f(this)
+//        return this
+//    }
+//
+//    fun fetch(q: DSLContext): List<Record> {
+//        return tracingSQL(shortDescription) {q.fetch("" + sql, *bindings.toTypedArray())}
+//    }
+//}
 
 class Chunk<T>(val items: List<T>, val moreFromId: Long?)
 

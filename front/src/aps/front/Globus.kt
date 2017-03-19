@@ -37,7 +37,7 @@ enum class Mode { DEBUG, PROD }
 object Globus {
     val version = "____VERSION____"
     var lastAttemptedRPCName: String? = null
-    var rootRedisLogMessageID: String? = null
+//    var rootRedisLogMessageID: String? = null
     val lang: Language get() = Language.valueOf(ExternalGlobus.LANG)
     val mode by lazy {Mode.valueOf(ExternalGlobus.MODE)}
     var worldMaybe: World? = null

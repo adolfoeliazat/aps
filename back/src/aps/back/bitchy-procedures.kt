@@ -273,10 +273,11 @@ fun <Req : RequestMatumba, Res : CommonResponseFields>
                 }
 
                 val pathInfo = p.bpc.servletRequest.pathInfo
-                if (pathInfo.contains("privilegedRedisCommand"))
-                    serviceShit()
-                else
-                    redisLog.group("Request: $pathInfo", ::serviceShit)
+                serviceShit()
+//                if (pathInfo.contains("privilegedRedisCommand"))
+//                    serviceShit()
+//                else
+//                    redisLog.group("Request: $pathInfo", ::serviceShit)
             }
             catch (e: ExpectedRPCShit) {
                 if (p.wrapInFormResponse) {

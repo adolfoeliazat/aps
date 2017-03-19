@@ -278,7 +278,7 @@ fun jsonizeToObject2(shit: Any?): Any? {
 }
 
 fun <Res> callRemoteProcedurePassingJSONObject(procedureName: String, requestJSONObject: CommonRequestFields, wideClientKind: WideClientKind, descr: String? = null): Promisoid<Res> = async {
-    requestJSONObject.rootRedisLogMessageID = Globus.rootRedisLogMessageID
+//    requestJSONObject.rootRedisLogMessageID = Globus.rootRedisLogMessageID
     requestJSONObject.databaseID = ExternalGlobus.DB
     if (wideClientKind is WideClientKind.User) {
         requestJSONObject.clientURL = windowLocationHrefToClientURL(loc.href)

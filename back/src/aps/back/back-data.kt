@@ -14,39 +14,39 @@ import into.kommon.*
 import org.jooq.*
 import java.sql.Timestamp
 
-@Suppress("UNCHECKED_CAST")
-fun <Res, R : Record> ProcedureContext.insertShit(
-    descr: String,
-    table: Table<R>,
-    block: (InsertSetMoreStep<R>) -> Res
-): Res {
-    return tracingSQL(descr) {
-        var step = q
-            .insertInto(table)
-            .set(table.field("inserted_at") as Field<Timestamp>, RequestGlobus.stamp)
-            .set(table.field("updated_at") as Field<Timestamp>, RequestGlobus.stamp)
+//@Suppress("UNCHECKED_CAST")
+//fun <Res, R : Record> ProcedureContext.insertShit(
+//    descr: String,
+//    table: Table<R>,
+//    block: (InsertSetMoreStep<R>) -> Res
+//): Res {
+//    return tracingSQL(descr) {
+//        var step = q
+//            .insertInto(table)
+//            .set(table.field("inserted_at") as Field<Timestamp>, RequestGlobus.stamp)
+//            .set(table.field("updated_at") as Field<Timestamp>, RequestGlobus.stamp)
+//
+//        table.field("creator_id")?.let {
+//            step = step.set(it as Field<Long>, this.user_killme.id.toLong())
+//        }
+//
+//        block(step)
+//    }
+//}
 
-        table.field("creator_id")?.let {
-            step = step.set(it as Field<Long>, this.user_killme.id.toLong())
-        }
-
-        block(step)
-    }
-}
-
-@Suppress("UNCHECKED_CAST")
-fun <Res, R : Record> ProcedureContext.updateShit(
-    descr: String,
-    table: Table<R>,
-    block: (UpdateSetMoreStep<R>) -> Res
-): Res {
-    return tracingSQL(descr) {
-        val step = q
-            .update(table)
-            .set(table.field("updated_at") as Field<Timestamp>, RequestGlobus.stamp)
-        block(step)
-    }
-}
+//@Suppress("UNCHECKED_CAST")
+//fun <Res, R : Record> ProcedureContext.updateShit(
+//    descr: String,
+//    table: Table<R>,
+//    block: (UpdateSetMoreStep<R>) -> Res
+//): Res {
+//    return tracingSQL(descr) {
+//        val step = q
+//            .update(table)
+//            .set(table.field("updated_at") as Field<Timestamp>, RequestGlobus.stamp)
+//        block(step)
+//    }
+//}
 
 @Suppress("UNCHECKED_CAST")
 fun <R : Record> InsertSetMoreStep<R>.returnID(table: Table<R>): Long {
@@ -210,15 +210,15 @@ fun JQUaOrderFilesRecord.toRTO(ctx: ProcedureContext, searchWords: List<String> 
 //    )
 }
 
-fun insertFileUserPermission(ctx: ProcedureContext, fileID: Long, userID: Long) {
-    FILE_USER_PERMISSIONS.let {t->
-        ctx.insertShit("Insert file permission", t) {it
-            .set(t.FILE_ID, fileID)
-            .set(t.USER_ID, userID)
-            .execute()
-        }
-    }
-}
+//fun insertFileUserPermission(ctx: ProcedureContext, fileID: Long, userID: Long) {
+//    FILE_USER_PERMISSIONS.let {t->
+//        ctx.insertShit("Insert file permission", t) {it
+//            .set(t.FILE_ID, fileID)
+//            .set(t.USER_ID, userID)
+//            .execute()
+//        }
+//    }
+//}
 
 fun userKindToAreaName(userKind: UserKind): String {
     return when (userKind) {
@@ -228,24 +228,24 @@ fun userKindToAreaName(userKind: UserKind): String {
     }
 }
 
-fun selectUAOrderFile(ctx: ProcedureContext, orderFileID: Long): JQUaOrderFilesRecord {
-    return tracingSQL("Select updated order file") {ctx.q
-        .selectFrom(UA_ORDER_FILES)
-        .where(UA_ORDER_FILES.ID.eq(orderFileID))
-        .fetchOne()!!
-    }
-}
-
-fun selectUAOrderAreaByName(ctx: ProcedureContext, orderID: Long, name: String): JQUaOrderAreasRecord {
-    return UA_ORDER_AREAS.let {
-        tracingSQL("Select area") {ctx.q
-            .selectFrom(it)
-            .where(it.NAME.eq(name))
-            .and(it.UA_ORDER_ID.eq(orderID))
-            .fetchOne()!!
-        }
-    }
-}
+//fun selectUAOrderFile(ctx: ProcedureContext, orderFileID: Long): JQUaOrderFilesRecord {
+//    return tracingSQL("Select updated order file") {ctx.q
+//        .selectFrom(UA_ORDER_FILES)
+//        .where(UA_ORDER_FILES.ID.eq(orderFileID))
+//        .fetchOne()!!
+//    }
+//}
+//
+//fun selectUAOrderAreaByName(ctx: ProcedureContext, orderID: Long, name: String): JQUaOrderAreasRecord {
+//    return UA_ORDER_AREAS.let {
+//        tracingSQL("Select area") {ctx.q
+//            .selectFrom(it)
+//            .where(it.NAME.eq(name))
+//            .and(it.UA_ORDER_ID.eq(orderID))
+//            .fetchOne()!!
+//        }
+//    }
+//}
 
 
 

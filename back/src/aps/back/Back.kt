@@ -7,7 +7,7 @@
 package aps.back
 
 import aps.*
-import aps.RedisLogMessage.Separator.Type.*
+//import aps.RedisLogMessage.Separator.Type.*
 import into.kommon.*
 import org.eclipse.jetty.server.Server
 import org.eclipse.jetty.servlet.ServletHandler
@@ -74,10 +74,10 @@ fun reallyBoot() {
         springctx.getBean("brutalWelcomer", Welcomer::class.java).sayHello()
     }
 
-    redisLog.send(RedisLogMessage.Separator()-{o->
-        o.type = THICK_SEPARATOR
-        o.text = "Booting fucking backend"
-    })
+//    redisLog.send(RedisLogMessage.Separator()-{o->
+//        o.type = THICK_SEPARATOR
+//        o.text = "Booting fucking backend"
+//    })
 
     run { // Gather meta
         val refl = Reflections(ConfigurationBuilder()

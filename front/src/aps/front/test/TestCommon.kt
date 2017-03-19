@@ -163,7 +163,7 @@ private fun runTest(scenario: TestScenario, urlQuery: Map<String, String>, showT
     TestGlobal.lastTestMaybe = scenario
     TestGlobal.lastTestOptsMaybe = opts
 
-    Globus.rootRedisLogMessageID = await(fedis.beginLogGroup("Test: ${scenario.name}"))
+//    Globus.rootRedisLogMessageID = await(fedis.beginLogGroup("Test: ${scenario.name}"))
 
     TestGlobal.testRunning = true
     try {
@@ -247,8 +247,8 @@ private fun runTest(scenario: TestScenario, urlQuery: Map<String, String>, showT
     }
     finally {
         TestGlobal.testRunning = false
-        await(fedis.endLogGroup(Globus.rootRedisLogMessageID!!))
-        Globus.rootRedisLogMessageID = null
+//        await(fedis.endLogGroup(Globus.rootRedisLogMessageID!!))
+//        Globus.rootRedisLogMessageID = null
     }
 }
 

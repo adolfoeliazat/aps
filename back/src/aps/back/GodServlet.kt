@@ -38,15 +38,14 @@ fun isRequestThread() =
 class RequestGlobusType {
     val stamp by lazy {
         TestServerFiddling.nextRequestTimestamp.getAndReset()
-            ?: Timestamp(System.currentTimeMillis())
+            ?: Timestamp(platform.currentTimeMillis())
     }
 
-    var skipLoggingToRedis = false
+//    var skipLoggingToRedis = false
     var actualSQLFromJOOQ: String? = null
-    var resultFromJOOQ: Result<*>? = null
-    val redisLogParentIDs = Stack<String>()
+//    var resultFromJOOQ: Result<*>? = null
+//    val redisLogParentIDs = Stack<String>()
     lateinit var commonRequestFields: CommonRequestFieldsHolder
-    lateinit var servletRequest: HttpServletRequest
     var procedureCtx by notNullOnce<ProcedureContext>()
     val retrievedFields = mutableSetOf<FormFieldBack>()
     var requesterOrAnonymous by notNullOnce<User>()
@@ -61,8 +60,7 @@ class GodServlet : HttpServlet() {
         val pathInfo = req.pathInfo
 
         requestGlobusThreadLocal.set(RequestGlobusType())
-        RequestGlobus.skipLoggingToRedis = patternsToExcludeRedisLoggingCompletely.any {pathInfo.contains(it)}
-        RequestGlobus.servletRequest = req
+//        RequestGlobus.skipLoggingToRedis = patternsToExcludeRedisLoggingCompletely.any {pathInfo.contains(it)}
 
         res.addHeader("Access-Control-Allow-Origin", "*")
 
@@ -83,15 +81,10 @@ class GodServlet : HttpServlet() {
                 pathInfo.startsWith("/rpc/") -> {
                     val procedureName = req.pathInfo.substring("/rpc/".length)
                     try {
-                        val pnc = procedureName.capitalize()
-//                        run {
-//                            val server = springctx.getBean("serve" + pnc, BitchyProcedure::class.java)
-//                            server.bpc = BitchyProcedureContext(req, res)
-//                        }
-                        val server = springctx.getBean("serve" + pnc, BitchyProcedure::class.java)
+                        val procNameCaps = procedureName.capitalize()
+                        val server = springctx.getBean("serve" + procNameCaps, BitchyProcedure::class.java)
                         server.bpc = BitchyProcedureContext(req, res)
 
-//                        val useTx = true
                         val useTx = !pathInfo.contains("RecreateTestDatabaseSchema") // XXX
 
                         if (useTx) {
@@ -133,6 +126,8 @@ class GodServlet : HttpServlet() {
 }
 
 class GodFilter : Filter {
+    var requestID = 0L
+
     override fun doFilter(request: ServletRequest, response: ServletResponse, chain: FilterChain) {
         val responseWrapper = object:HttpServletResponseWrapper(response as HttpServletResponse) {
             val stringWriter = StringWriter()
@@ -166,7 +161,7 @@ class GodFilter : Filter {
             val ignoredShit = listOf(
                 "GetSoftwareVersion", "PrivilegedRedisCommand", "GetGeneratedShit", "Ping")
             if (!ignoredShit.any {pathInfo.endsWith("/$it")}) {
-                BackGlobus.rrlog.entries += RRLogEntry(pathInfo, requestJSON, responseJSON)
+                BackGlobus.rrlog.entries += RRLogEntry(++requestID, pathInfo, requestJSON, responseJSON)
             }
 
             out.write(responseJSON)
@@ -190,10 +185,10 @@ private fun HttpServletResponse.spitText(text: String) {
 }
 
 
-val patternsToExcludeRedisLoggingCompletely = listOf(
-    "getSoftwareVersion", "mapStack", "getLiveStatus",
-    "getRedisLogMessages", "getGeneratedShit", "imposeNextGeneratedPassword"
-)
+//val patternsToExcludeRedisLoggingCompletely = listOf(
+//    "getSoftwareVersion", "mapStack", "getLiveStatus",
+//    "getRedisLogMessages", "getGeneratedShit", "imposeNextGeneratedPassword"
+//)
 
 
 

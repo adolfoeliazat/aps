@@ -374,22 +374,22 @@ fun send(req: TestSetUserFieldsRequest): Promisoid<GenericResponse> = callDanger
 //    fun send(): Promise<Response> = callDangerousMatumba(this)
 //}
 
-class SendRedisLogMessageRequest : RequestMatumba() {
-    val type = EnumHiddenField(this, "type", RedisLogMessage.Separator.Type.values())
-    val text = StringHiddenField(this, "text")
-}
-fun send(req: SendRedisLogMessageRequest): Promisoid<GenericResponse> = callDangerousMatumba(req)
+//class SendRedisLogMessageRequest : RequestMatumba() {
+//    val type = EnumHiddenField(this, "type", RedisLogMessage.Separator.Type.values())
+//    val text = StringHiddenField(this, "text")
+//}
+//fun send(req: SendRedisLogMessageRequest): Promisoid<GenericResponse> = callDangerousMatumba(req)
 
 
 class JSONResponse(val json: String) : CommonResponseFieldsImpl()
 
-class PrivilegedRedisCommandRequest : RequestMatumba() {
-    val json = StringHiddenField(this, "json")
-}
-fun send(req: PrivilegedRedisCommandRequest): Promisoid<JSONResponse> = callDangerousMatumba(req)
+//class PrivilegedRedisCommandRequest : RequestMatumba() {
+//    val json = StringHiddenField(this, "json")
+//}
+//fun send(req: PrivilegedRedisCommandRequest): Promisoid<JSONResponse> = callDangerousMatumba(req)
 
 interface CommonRequestFields {
-    var rootRedisLogMessageID: String?
+//    var rootRedisLogMessageID: String?
     var databaseID: String?
     var fakeEmail: Boolean
     var clientURL: String

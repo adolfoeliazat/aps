@@ -72,7 +72,7 @@ class ProcedureSpec<Req : RequestMatumba, Res : Any>(
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 class CommonRequestFieldsHolder : CommonRequestFields {
-    override var rootRedisLogMessageID: String? = null
+//    override var rootRedisLogMessageID: String? = null
     override var databaseID: String? = null
     override var fakeEmail = false
     override lateinit var clientURL: String
@@ -160,11 +160,11 @@ remoteProcedure(spec: ProcedureSpec<Req, Res>): (HttpServletRequest, HttpServlet
                         val db = DB.byID(RequestGlobus.commonRequestFields.databaseID!!)
 
 //                        redisLog.group("Some shit 2") {
-                            db.joo {q->
-                                ctx.q = q
+//                            db.joo {q->
+//                                ctx.q = q
 //                                ctx.qshit = DSLContextProxyFactory(q)
                                 runShitWithMaybeDB()
-                            }
+//                            }
 //                        }
                     } else {
                         runShitWithMaybeDB()
@@ -175,10 +175,11 @@ remoteProcedure(spec: ProcedureSpec<Req, Res>): (HttpServletRequest, HttpServlet
                 }
 
                 val pathInfo = servletRequest.pathInfo
-                if (pathInfo.contains("privilegedRedisCommand"))
-                    serviceShit()
-                else
-                    redisLog.group("Request: $pathInfo", ::serviceShit)
+                serviceShit()
+//                if (pathInfo.contains("privilegedRedisCommand"))
+//                    serviceShit()
+//                else
+//                    redisLog.group("Request: $pathInfo", ::serviceShit)
             }
             catch (e: ExpectedRPCShit) {
                 if (spec.wrapInFormResponse) {

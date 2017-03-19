@@ -112,13 +112,13 @@ testProcedure(
     }
 )
 
-@RemoteProcedureFactory fun resetTestDatabase() = testProcedure(
-    {ResetTestDatabaseRequest()},
-    runShit = fun(ctx, req): GenericResponse {
-        DB.apsTestOnTestServer.recreate()
-        return GenericResponse()
-    }
-)
+//@RemoteProcedureFactory fun resetTestDatabase() = testProcedure(
+//    {ResetTestDatabaseRequest()},
+//    runShit = fun(ctx, req): GenericResponse {
+//        DB.apsTestOnTestServer.recreate()
+//        return GenericResponse()
+//    }
+//)
 
 @Servant class ServeRecreateTestDatabaseSchema : BitchyProcedure() {
     override fun serve() {
@@ -324,19 +324,19 @@ testProcedure(
     }
 }
 
-@RemoteProcedureFactory fun resetTestDatabaseAlongWithTemplate() = testProcedure(
-    {ResetTestDatabaseAlongWithTemplateRequest()},
-    runShit = fun(ctx, req): GenericResponse {
-        val templateDB = DB.byNameOnTestServer(req.templateDB.value)
-
-        if (req.recreateTemplate.value) {
-            templateDB.recreate()
-        }
-
-        DB.apsTestOnTestServer.recreate(template = templateDB)
-        return GenericResponse()
-    }
-)
+//@RemoteProcedureFactory fun resetTestDatabaseAlongWithTemplate() = testProcedure(
+//    {ResetTestDatabaseAlongWithTemplateRequest()},
+//    runShit = fun(ctx, req): GenericResponse {
+//        val templateDB = DB.byNameOnTestServer(req.templateDB.value)
+//
+//        if (req.recreateTemplate.value) {
+//            templateDB.recreate()
+//        }
+//
+//        DB.apsTestOnTestServer.recreate(template = templateDB)
+//        return GenericResponse()
+//    }
+//)
 
 @RemoteProcedureFactory fun serveGetSentEmails() = testProcedure(
     {RequestMatumba()},
@@ -353,40 +353,40 @@ testProcedure(
     }
 )
 
-@RemoteProcedureFactory fun worldPoint() = testProcedure(
-    {WorldPointRequest()},
-    runShit = fun(ctx, req): GenericResponse {
-        val oldRejectAllRequests = TestServerFiddling.rejectAllRequestsNeedingDB
-        TestServerFiddling.rejectAllRequestsNeedingDB = true
-
-        try {
-            val snapshotDBName = "world_point_${req.pointName.value}"
-
-            val databaseToCreate: String; val databaseToUseAsTemplate: String
-            when (req.action.value) {
-                WorldPointRequest.Action.SAVE -> {
-                    databaseToCreate = snapshotDBName
-                    databaseToUseAsTemplate = DB.apsTestOnTestServer.name
-                }
-                WorldPointRequest.Action.RESTORE -> {
-                    databaseToCreate = DB.apsTestOnTestServer.name
-                    databaseToUseAsTemplate = snapshotDBName
-                }
-            }
-
-            DB.apsTestOnTestServer.close()
-            DB.postgresOnTestServer.joo {
-                tracingSQL("Recreate database") {it.execute(""""
-                    drop database if exists "$databaseToCreate";
-                    create database "$databaseToCreate" template = "$databaseToUseAsTemplate";
-                """)}
-            }
-        } finally {
-            TestServerFiddling.rejectAllRequestsNeedingDB = oldRejectAllRequests
-        }
-        return GenericResponse()
-    }
-)
+//@RemoteProcedureFactory fun worldPoint() = testProcedure(
+//    {WorldPointRequest()},
+//    runShit = fun(ctx, req): GenericResponse {
+//        val oldRejectAllRequests = TestServerFiddling.rejectAllRequestsNeedingDB
+//        TestServerFiddling.rejectAllRequestsNeedingDB = true
+//
+//        try {
+//            val snapshotDBName = "world_point_${req.pointName.value}"
+//
+//            val databaseToCreate: String; val databaseToUseAsTemplate: String
+//            when (req.action.value) {
+//                WorldPointRequest.Action.SAVE -> {
+//                    databaseToCreate = snapshotDBName
+//                    databaseToUseAsTemplate = DB.apsTestOnTestServer.name
+//                }
+//                WorldPointRequest.Action.RESTORE -> {
+//                    databaseToCreate = DB.apsTestOnTestServer.name
+//                    databaseToUseAsTemplate = snapshotDBName
+//                }
+//            }
+//
+//            DB.apsTestOnTestServer.close()
+//            DB.postgresOnTestServer.joo {
+//                tracingSQL("Recreate database") {it.execute(""""
+//                    drop database if exists "$databaseToCreate";
+//                    create database "$databaseToCreate" template = "$databaseToUseAsTemplate";
+//                """)}
+//            }
+//        } finally {
+//            TestServerFiddling.rejectAllRequestsNeedingDB = oldRejectAllRequests
+//        }
+//        return GenericResponse()
+//    }
+//)
 
 val backendInstanceID = "" + UUID.randomUUID()
 
@@ -444,29 +444,29 @@ val backendInstanceID = "" + UUID.randomUUID()
     }
 )
 
-@RemoteProcedureFactory fun testSetUserFields() = testProcedure(
-    {TestSetUserFieldsRequest()},
-    needsDB = true,
-    runShit = fun(ctx, req): GenericResponse {
-        var step = tracingSQL("Update user") {ctx.q
-            .update(USERS)
-            .set(USERS.ID, USERS.ID)
-        }
-
-        req.state.let {if (it.specified) step = step.set(USERS.STATE, it.value.name)}
-        req.profileRejectionReason.let {if (it.specified) step = step.set(USERS.PROFILE_REJECTION_REASON, it.value)}
-        req.phone.let {if (it.specified) step = step.set(USERS.PHONE, it.value)}
-        req.aboutMe.let {if (it.specified) step = step.set(USERS.ABOUT_ME, it.value)}
-        req.banReason.let {if (it.specified) step = step.set(USERS.BAN_REASON, it.value)}
-        req.profileUpdatedAt.let {if (it.specified) step = step.set(USERS.PROFILE_UPDATED_AT, stringToStamp(it.value))}
-        req.insertedAt.let {if (it.specified) step = step.set(USERS.INSERTED_AT, stringToStamp(it.value))}
-
-        step
-            .where(USERS.EMAIL.eq(req.email.value))
-            .execute()
-        return GenericResponse()
-    }
-)
+//@RemoteProcedureFactory fun testSetUserFields() = testProcedure(
+//    {TestSetUserFieldsRequest()},
+//    needsDB = true,
+//    runShit = fun(ctx, req): GenericResponse {
+//        var step = tracingSQL("Update user") {ctx.q
+//            .update(USERS)
+//            .set(USERS.ID, USERS.ID)
+//        }
+//
+//        req.state.let {if (it.specified) step = step.set(USERS.STATE, it.value.name)}
+//        req.profileRejectionReason.let {if (it.specified) step = step.set(USERS.PROFILE_REJECTION_REASON, it.value)}
+//        req.phone.let {if (it.specified) step = step.set(USERS.PHONE, it.value)}
+//        req.aboutMe.let {if (it.specified) step = step.set(USERS.ABOUT_ME, it.value)}
+//        req.banReason.let {if (it.specified) step = step.set(USERS.BAN_REASON, it.value)}
+//        req.profileUpdatedAt.let {if (it.specified) step = step.set(USERS.PROFILE_UPDATED_AT, stringToStamp(it.value))}
+//        req.insertedAt.let {if (it.specified) step = step.set(USERS.INSERTED_AT, stringToStamp(it.value))}
+//
+//        step
+//            .where(USERS.EMAIL.eq(req.email.value))
+//            .execute()
+//        return GenericResponse()
+//    }
+//)
 
 @RemoteProcedureFactory fun fuckingRemoteProcedure() = testProcedure(
     {FuckingRemoteProcedureRequest()},
@@ -483,7 +483,7 @@ val backendInstanceID = "" + UUID.randomUUID()
             "ping" -> frp_ping(rmap)
             "resetLastDownloadedFile" -> frp_resetLastDownloadedFile(rmap)
             "getLastDownloadedPieceOfShit" -> frp_getLastDownloadedPieceOfShit(rmap)
-            "executeSQL" -> frp_executeSQL(ctx, rmap)
+//            "executeSQL" -> frp_executeSQL(ctx, rmap)
             "luceneParseRussian" -> frp_luceneParseRussian(rmap)
             else -> wtf("proc: $proc")
 
@@ -562,11 +562,11 @@ fun frp_ping(rmap: Map<*, *>): String {
     return "pong"
 }
 
-fun frp_executeSQL(ctx: ProcedureContext, rmap: Map<*, *>) {
-    val descr: String = cast(rmap["descr"])
-    val sql: String = cast(rmap["sql"])
-    tracingSQL(descr) {ctx.q.execute(sql)}
-}
+//fun frp_executeSQL(ctx: ProcedureContext, rmap: Map<*, *>) {
+//    val descr: String = cast(rmap["descr"])
+//    val sql: String = cast(rmap["sql"])
+//    tracingSQL(descr) {ctx.q.execute(sql)}
+//}
 
 private fun robotTypeTextCR(text: String) {
     val robot = Robot()
@@ -614,28 +614,28 @@ fun serveHardenScreenHTMLRequest(req: HardenScreenHTMLRequest) {
     file.writeText(req.html)
 }
 
-@RemoteProcedureFactory
-fun serveTestCopyOrderFileToArea() = adminProcedure(
-    {TestCopyOrderFileToAreaRequest()},
-    runShit = fun(ctx, req): TestCopyOrderFileToAreaRequest.Response {
-        val protoOrderFile: JQUaOrderFilesRecord = selectUAOrderFile(ctx, req.orderFileID.value.toLong())
-        val area: JQUaOrderAreasRecord = selectUAOrderAreaByName(ctx, protoOrderFile.uaOrderId, req.areaName.value)
-
-        val orderFileID = UA_ORDER_FILES.let {t->
-            ctx.insertShit("Insert order file", t) {it
-                .set(t.UA_ORDER_ID, protoOrderFile.uaOrderId)
-                .set(t.FILE_ID, protoOrderFile.fileId)
-                .set(t.UA_ORDER_AREA_ID, area.id)
-                .set(t.SEEN_AS_FROM, protoOrderFile.seenAsFrom)
-                .returnID(t)
-            }
-        }
-
-        insertFileUserPermission(ctx, protoOrderFile.fileId, req.permissionForUserID.value.toLong())
-
-        return TestCopyOrderFileToAreaRequest.Response(orderFileID.toString())
-    }
-)
+//@RemoteProcedureFactory
+//fun serveTestCopyOrderFileToArea() = adminProcedure(
+//    {TestCopyOrderFileToAreaRequest()},
+//    runShit = fun(ctx, req): TestCopyOrderFileToAreaRequest.Response {
+//        val protoOrderFile: JQUaOrderFilesRecord = selectUAOrderFile(ctx, req.orderFileID.value.toLong())
+//        val area: JQUaOrderAreasRecord = selectUAOrderAreaByName(ctx, protoOrderFile.uaOrderId, req.areaName.value)
+//
+//        val orderFileID = UA_ORDER_FILES.let {t->
+//            ctx.insertShit("Insert order file", t) {it
+//                .set(t.UA_ORDER_ID, protoOrderFile.uaOrderId)
+//                .set(t.FILE_ID, protoOrderFile.fileId)
+//                .set(t.UA_ORDER_AREA_ID, area.id)
+//                .set(t.SEEN_AS_FROM, protoOrderFile.seenAsFrom)
+//                .returnID(t)
+//            }
+//        }
+//
+//        insertFileUserPermission(ctx, protoOrderFile.fileId, req.permissionForUserID.value.toLong())
+//
+//        return TestCopyOrderFileToAreaRequest.Response(orderFileID.toString())
+//    }
+//)
 
 
 

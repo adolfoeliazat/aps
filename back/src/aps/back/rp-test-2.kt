@@ -272,7 +272,7 @@ class RRLog {
 }
 
 @Ser @XmlRootElement @XmlAccessorType(XmlAccessType.FIELD)
-class RRLogEntry(val pathInfo: String, val requestJSON: String, val responseJSON: String)
+class RRLogEntry(val id: Long, val pathInfo: String, val requestJSON: String, val responseJSON: String)
 
 
 
