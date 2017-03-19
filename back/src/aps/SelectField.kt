@@ -10,7 +10,7 @@ import aps.back.*
 
     val value: T get() {
         check(include){"Attempt to read back SelectField $name, which is not included"}
-        RequestGlobus.retrievedFields += this
+        backPlatform.requestGlobus.retrievedFields += this
         return _value
     }
 

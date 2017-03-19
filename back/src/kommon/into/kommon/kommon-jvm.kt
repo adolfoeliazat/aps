@@ -8,9 +8,6 @@ package aps
 
 import java.io.File
 
-fun currentTimeMillis(): Long = System.currentTimeMillis()
-
-fun getenv(name: String): String? = System.getenv(name)
 
 fun inspectMatchResult(mr: MatchResult): String =
     mr.groups.mapIndexed {i, g -> "Group $i: ${g?.value}"}.joinToString("\n")

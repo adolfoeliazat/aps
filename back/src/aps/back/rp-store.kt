@@ -1,7 +1,6 @@
 package aps.back
 
 import aps.*
-import org.springframework.data.repository.findOrDie
 
 @Servant class ServeGetStoreItems : BitchyProcedure() {
     override fun serve() {
@@ -57,8 +56,8 @@ import org.springframework.data.repository.findOrDie
             runShit = fun(ctx, req: BidRequest): GenericResponse {
                 // TODO:vgrechka Security
                 checkingAllFieldsRetrieved(req) {
-                    val order = uaOrderRepo.findOrDie(req.orderID.value)
-                    bidRepo.save(Bid(
+                    val order = backPlatform.uaOrderRepo.findOrDie(req.orderID.value)
+                    backPlatform.bidRepo.save(Bid(
                         priceOffer = req.bidPriceOffer.value,
                         durationOffer = req.bidDurationOffer.value,
                         comment = req.bidComment.value,

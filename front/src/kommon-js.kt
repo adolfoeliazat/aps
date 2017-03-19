@@ -16,10 +16,8 @@ fun isNodeJS(): Boolean = !aps.isBrowser()
 
 val process: dynamic get()= js("process")
 
-fun currentTimeMillis(): Long = Date().getTime().toLong()
 fun currentTimeInt(): Double = Date().getTime()
 
-fun getenv(name: String): String? = aps.process.env[name]
 
 fun <T> newNativePromise(arg: dynamic): Promise<T> {
     return js("new Promise(arg)")

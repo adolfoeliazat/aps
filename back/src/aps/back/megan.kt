@@ -4,14 +4,6 @@ import aps.*
 import org.postgresql.util.PSQLException
 import javax.persistence.EntityManagerFactory
 
-interface ToRtoable<out RTO> {
-    fun toRTO(searchWords: List<String>): RTO
-}
-
-interface MeganItem<out RTO> : ToRtoable<RTO> {
-    val idBang: Long
-}
-
 class MeganQueryParam(val name: String, val value: Any)
 
 fun <Item, ItemRTO> megan(

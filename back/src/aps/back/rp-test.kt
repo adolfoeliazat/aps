@@ -36,29 +36,6 @@ import java.util.*
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-object TestServerFiddling {
-    val nextRequestTimestamp = SetGetResetShit<Timestamp>()
-    val nextGeneratedPassword = SetGetResetShit<String>()
-    val nextRequestError = SetGetResetShit<String>()
-    val nextGeneratedConfirmationSecret = SetGetResetShit<String>()
-    val nextGeneratedUserToken = SetGetResetShit<String>()
-    val nextOrderID = SetGetResetShit<Long>()
-    @Volatile var rejectAllRequestsNeedingDB: Boolean = false
-}
-
-class SetGetResetShit<T> {
-    private @Volatile var value: T? = null
-
-    fun getAndReset(): T? {
-        val res = value
-        value = null
-        return res
-    }
-
-    fun set(newValue: T) {
-        value = newValue
-    }
-}
 
 fun <Req : RequestMatumba, Res : CommonResponseFields>
 testProcedure(
@@ -133,7 +110,7 @@ testProcedure(
     }
 
     fun seed() {
-        userRepo.save(User(user = UserFields(email = "dasja@test.shit.ua", firstName = "Дася", lastName = "Админовна", profilePhone = "911", kind = UserKind.ADMIN, state = UserState.COOL, passwordHash = BCrypt.hashpw("dasja-secret", BCrypt.gensalt()), adminNotes = "", subscribedToAllCategories = false)))
+        backPlatform.userRepo.save(User(user = UserFields(email = "dasja@test.shit.ua", firstName = "Дася", lastName = "Админовна", profilePhone = "911", kind = UserKind.ADMIN, state = UserState.COOL, passwordHash = BCrypt.hashpw("dasja-secret", BCrypt.gensalt()), adminNotes = "", subscribedToAllCategories = false)))
 
         fun makeCategory(title: String, id: Long, children: List<UADocumentCategory> = listOf()) =
             UADocumentCategory(UADocumentCategoryFields(title = title, parent = null, children = children.toMutableList()))-{o->
@@ -315,7 +292,7 @@ testProcedure(
     }
 
     private fun saveCategoryTree(root: UADocumentCategory) {
-        val savedRoot = uaDocumentCategoryRepo.save(root)
+        val savedRoot = backPlatform.uaDocumentCategoryRepo.save(root)
         for (child in root.category.children) {
             child.category.parent = savedRoot
             saveCategoryTree(child)
@@ -471,7 +448,7 @@ val backendInstanceID = "" + UUID.randomUUID()
     {FuckingRemoteProcedureRequest()},
     needsDB = false,
     runShit = fun (ctx, req): JSONResponse {
-        val rmap = shittyObjectMapper.readValue(req.json.value, Map::class.java)
+        val rmap = _shittyObjectMapper.readValue(req.json.value, Map::class.java)
         val proc: String = cast(rmap["proc"])
 
         val res: Any? = run {when (proc) {
@@ -488,7 +465,7 @@ val backendInstanceID = "" + UUID.randomUUID()
 
         }}
 
-        return JSONResponse(shittyObjectMapper.writeValueAsString(res))
+        return JSONResponse(_shittyObjectMapper.writeValueAsString(res))
     }
 )
 

@@ -10,18 +10,18 @@ import aps.*
         val requestClassName = mr.groupValues[1]
         val requestClass = Class.forName(requestClassName)
         val res: Any = when (requestClass) {
-            VisualShitCapturedRequest::class.java -> serveVisualShitCapturedRequest(shittyObjectMapper.readValue(reqJSON, VisualShitCapturedRequest::class.java))
-            SaveCapturedVisualShitRequest::class.java -> serveSaveCapturedVisualShitRequest(shittyObjectMapper.readValue(reqJSON, SaveCapturedVisualShitRequest::class.java))
-            GetCapturedVisualShitRequest::class.java -> serveGetCapturedVisualShitRequest(shittyObjectMapper.readValue(reqJSON, GetCapturedVisualShitRequest::class.java))
-            CapturedVisualShitExistsRequest::class.java -> serveCapturedVisualShitExistsRequest(shittyObjectMapper.readValue(reqJSON, CapturedVisualShitExistsRequest::class.java))
-            GetCurrentCapturedVisualShitRequest::class.java -> serveGetCurrentCapturedVisualShitRequest(shittyObjectMapper.readValue(reqJSON, GetCurrentCapturedVisualShitRequest::class.java))
-            DiffCapturedVisualShitWithSavedRequest::class.java -> serveDiffCapturedVisualShitWithSavedRequest(shittyObjectMapper.readValue(reqJSON, DiffCapturedVisualShitWithSavedRequest::class.java))
-            MoveMouseAwayFromPageRequest::class.java -> serveMoveMouseAwayFromPageRequest(shittyObjectMapper.readValue(reqJSON, MoveMouseAwayFromPageRequest::class.java))
-            ReturnMouseWhereItWasRequest::class.java -> serveReturnMouseWhereItWasRequest(shittyObjectMapper.readValue(reqJSON, ReturnMouseWhereItWasRequest::class.java))
-            HardenScreenHTMLRequest::class.java -> serveHardenScreenHTMLRequest(shittyObjectMapper.readValue(reqJSON, HardenScreenHTMLRequest::class.java))
+            VisualShitCapturedRequest::class.java -> serveVisualShitCapturedRequest(_shittyObjectMapper.readValue(reqJSON, VisualShitCapturedRequest::class.java))
+            SaveCapturedVisualShitRequest::class.java -> serveSaveCapturedVisualShitRequest(_shittyObjectMapper.readValue(reqJSON, SaveCapturedVisualShitRequest::class.java))
+            GetCapturedVisualShitRequest::class.java -> serveGetCapturedVisualShitRequest(_shittyObjectMapper.readValue(reqJSON, GetCapturedVisualShitRequest::class.java))
+            CapturedVisualShitExistsRequest::class.java -> serveCapturedVisualShitExistsRequest(_shittyObjectMapper.readValue(reqJSON, CapturedVisualShitExistsRequest::class.java))
+            GetCurrentCapturedVisualShitRequest::class.java -> serveGetCurrentCapturedVisualShitRequest(_shittyObjectMapper.readValue(reqJSON, GetCurrentCapturedVisualShitRequest::class.java))
+            DiffCapturedVisualShitWithSavedRequest::class.java -> serveDiffCapturedVisualShitWithSavedRequest(_shittyObjectMapper.readValue(reqJSON, DiffCapturedVisualShitWithSavedRequest::class.java))
+            MoveMouseAwayFromPageRequest::class.java -> serveMoveMouseAwayFromPageRequest(_shittyObjectMapper.readValue(reqJSON, MoveMouseAwayFromPageRequest::class.java))
+            ReturnMouseWhereItWasRequest::class.java -> serveReturnMouseWhereItWasRequest(_shittyObjectMapper.readValue(reqJSON, ReturnMouseWhereItWasRequest::class.java))
+            HardenScreenHTMLRequest::class.java -> serveHardenScreenHTMLRequest(_shittyObjectMapper.readValue(reqJSON, HardenScreenHTMLRequest::class.java))
             else -> wtf("requestClass: $requestClass")
         }
-        val resJSON = shittyObjectMapper.writeValueAsString(res)
+        val resJSON = _shittyObjectMapper.writeValueAsString(res)
         return JsonProcedureRequest.Response(resJSON)
     }
 )

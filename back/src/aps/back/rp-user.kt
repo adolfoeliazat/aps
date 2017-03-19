@@ -1,11 +1,10 @@
 package aps.back
 
 import aps.*
-import org.springframework.data.repository.findOrDie
 
 @Remote fun reginaLoadUser(userID: Long): UserRTO {
     check(isAdmin()){"14b9cd37-57e6-4c82-a16d-ef37a2e38a4d"}
-    return userRepo.findOrDie(userID).toRTO(searchWords = listOf())
+    return backPlatform.userRepo.findOrDie(userID).toRTO(searchWords = listOf())
 }
 
 @Servant class ServeUpdateProfile : BitchyProcedure() {
@@ -21,8 +20,8 @@ import org.springframework.data.repository.findOrDie
                         o.user.lastName = req.lastName.value
                         o.user.profilePhone = req.profilePhone.value
                         o.user.aboutMe = req.aboutMe.value
-                        o.user.common.updatedAt = RequestGlobus.stamp
-                        o.user.profileUpdatedAt = RequestGlobus.stamp
+                        o.user.common.updatedAt = backPlatform.requestGlobus.stamp
+                        o.user.profileUpdatedAt = backPlatform.requestGlobus.stamp
 
                         if (o.user.kind == UserKind.WRITER) {
                             val subs = req.categorySubscriptions.value
@@ -36,9 +35,9 @@ import org.springframework.data.repository.findOrDie
                                     user.documentCategorySubscriptions.clear()
                                     for (cat in subs.categories) {
                                         user.documentCategorySubscriptions.add(
-                                            userTimesDocumentCategoryRepo.save(UserTimesDocumentCategory(
+                                            backPlatform.userTimesDocumentCategoryRepo.save(UserTimesDocumentCategory(
                                                 user = user,
-                                                category = uaDocumentCategoryRepo.findOrDie(cat.id)
+                                                category = backPlatform.uaDocumentCategoryRepo.findOrDie(cat.id)
                                             ))
                                         )
                                     }
@@ -120,7 +119,7 @@ import org.springframework.data.repository.findOrDie
                 // TODO:vgrechka Security
                 check(isAdmin()){"f15046b7-c5ba-471e-836b-36fbaa56a0d6"}
                 checkingAllFieldsRetrieved(req) {
-                    val user = userRepo.findOrDie(req.userID.value)
+                    val user = backPlatform.userRepo.findOrDie(req.userID.value)
                     user-{o->
                         o.user.firstName = req.firstName.value
                         o.user.lastName = req.lastName.value
@@ -140,7 +139,7 @@ import org.springframework.data.repository.findOrDie
         fuckAdmin(FuckAdminParams(
             bpc = bpc, makeRequest = {RejectProfileRequest()},
             runShit = fun(ctx, req): GenericResponse {
-                userRepo.findOrDie(req.entityID.value)-{o->
+                backPlatform.userRepo.findOrDie(req.entityID.value)-{o->
                     o.user.state = UserState.PROFILE_REJECTED
                     o.user.profileRejectionReason = req.rejectionReason.value
                 }
@@ -154,7 +153,7 @@ import org.springframework.data.repository.findOrDie
 @Remote fun reginaAcceptProfile(userID: Long) {
     // TODO:vgrechka Security
     check(requestUserEntity.user.kind == UserKind.ADMIN){"0efef8d0-8598-4056-ba55-cd8bb1910cb8"}
-    userRepo.findOrDie(userID)-{o->
+    backPlatform.userRepo.findOrDie(userID)-{o->
         check(o.user.state in setOf(UserState.PROFILE_APPROVAL_PENDING)){"7af262c7-2a28-43f8-910a-ccf3569142e9"}
         o.user.profileRejectionReason = null
         o.user.state = UserState.COOL

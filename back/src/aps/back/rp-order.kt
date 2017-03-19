@@ -8,7 +8,6 @@ package aps.back
 
 import aps.*
 import com.google.common.hash.Hashing
-import org.springframework.data.repository.findOrDie
 import sun.net.www.content.text.Generic
 import java.util.*
 
@@ -45,7 +44,7 @@ import java.util.*
                         maxAllowedPriceOffer = -1,
                         minAllowedDurationOffer = -1,
                         maxAllowedDurationOffer = -1,
-                        category = uaDocumentCategoryRepo.findOrDie(const.uaDocumentCategoryID.misc)
+                        category = backPlatform.uaDocumentCategoryRepo.findOrDie(const.uaDocumentCategoryID.misc)
                     )
                 )-{o->
                     o.imposedIDToGenerate = TestServerFiddling.nextOrderID.getAndReset()
@@ -109,7 +108,7 @@ import java.util.*
             runShit = fun(ctx, req: UAOrderParamsRequest): UAUpdateOrderResponse {
                 // TODO:vgrechka Security
                 checkingAllFieldsRetrieved(req) {
-                    uaOrderRepo.findOrDie(req.orderID.value)-{o->
+                    backPlatform.uaOrderRepo.findOrDie(req.orderID.value)-{o->
                         o.order.documentType = req.documentType.value
                         o.order.title = req.documentTitle.value
                         o.order.numPages = req.numPages.value
@@ -136,7 +135,7 @@ import java.util.*
             runShit = fun(ctx, req: UAOrderStoreParamsRequest): GenericResponse {
                 // TODO:vgrechka Security
                 checkingAllFieldsRetrieved(req) {
-                    uaOrderRepo.findOrDie(req.orderID.value)-{o->
+                    backPlatform.uaOrderRepo.findOrDie(req.orderID.value)-{o->
                         o.order.minAllowedPriceOffer = req.minAllowedPriceOffer.value
                         o.order.maxAllowedPriceOffer = req.maxAllowedPriceOffer.value
                         o.order.minAllowedDurationOffer = req.minAllowedDurationOffer.value
@@ -157,13 +156,13 @@ import java.util.*
             bpc = bpc, makeRequest = {UAOrderFileParamsRequest(isAdmin = isAdmin(),
                                                                isUpdate = false)},
             runShit = fun(ctx, req): UACreateOrderFileResponse {
-                val order = uaOrderRepo.findOrDie(req.orderID.value)
+                val order = backPlatform.uaOrderRepo.findOrDie(req.orderID.value)
                 // TODO:vgrechka Security
 
                 val requestFile = req.file.value as? FileField.Value.Provided ?: wtf("6ae5b17c-9d66-4569-aa17-4ea142e8f383")
 
                 val content = Base64.getDecoder().decode(requestFile.base64)
-                val file = uaOrderFileRepo.save(UAOrderFile(
+                val file = backPlatform.uaOrderFileRepo.save(UAOrderFile(
                     orderFile = UAOrderFileFields(
                         order = order,
                         name = requestFile.fileName,
@@ -193,7 +192,7 @@ import java.util.*
                                                                isUpdate = true)},
             runShit = fun(ctx, req): UAUpdateOrderFileResponse {
                 return checkingAllFieldsRetrieved(req) {
-                    val file = uaOrderFileRepo.findOrDie(req.fileID.value)
+                    val file = backPlatform.uaOrderFileRepo.findOrDie(req.fileID.value)
                     // TODO:vgrechka Check permissions
                     file-{o->
                         o.orderFile.title = req.title.value
@@ -278,7 +277,7 @@ import java.util.*
 @Remote fun reginaCustomerSendOrderForApprovalAfterFixing(orderID: Long) {
     check(requestUserEntity.user.kind == UserKind.CUSTOMER){"70630d2d-6796-4af8-8ac6-16e09a8b37e1"}
     // TODO:vgrechka Security
-    val order = uaOrderRepo.findOrDie(orderID)
+    val order = backPlatform.uaOrderRepo.findOrDie(orderID)
     check(order.order.state == UAOrderState.RETURNED_TO_CUSTOMER_FOR_FIXING){"698dd409-f382-45df-9e65-fff590302dd0"}
     order.order.state = UAOrderState.WAITING_ADMIN_APPROVAL
 }
@@ -287,7 +286,7 @@ import java.util.*
     check(requestUserEntity.user.kind == UserKind.ADMIN){"0af9f1b0-b5fb-4fb2-b3a9-198a0185ee15"}
     // TODO:vgrechka Security
 
-    val order = uaOrderRepo.findOrDie(orderID)
+    val order = backPlatform.uaOrderRepo.findOrDie(orderID)
     val ord = order.order
     check(ord.state in setOf(UAOrderState.WAITING_ADMIN_APPROVAL)){"7af262c7-2a28-43f8-910a-ccf3569142e9"}
     if (-1 in setOf(ord.minAllowedDurationOffer, ord.maxAllowedDurationOffer,
@@ -296,7 +295,7 @@ import java.util.*
     }
 
     ord.whatShouldBeFixedByCustomer = null
-    ord.movedToStoreAt = RequestGlobus.stamp
+    ord.movedToStoreAt = backPlatform.requestGlobus.stamp
     ord.state = UAOrderState.IN_STORE
 }
 
@@ -305,13 +304,13 @@ import java.util.*
 
     fun bitchNotFound(): Nothing = bitchExpectedly(t("TOTE", "Нет такого заказа (по крайней мере, для тебя)"))
 
-    val order = uaOrderRepo.findOne(id) ?: bitchNotFound()
+    val order = backPlatform.uaOrderRepo.findOne(id) ?: bitchNotFound()
     return order.toRTO(listOf())
 }
 
 @Remote fun reginaGetDocumentCategories(): UADocumentCategoryRTO {
     // TODO:vgrechka Security
-    val cat = uaDocumentCategoryRepo.findOrDie(const.uaDocumentCategoryID.root).toRTO(loadChildren = true)
+    val cat = backPlatform.uaDocumentCategoryRepo.findOrDie(const.uaDocumentCategoryID.root).toRTO(loadChildren = true)
     return cat
 }
 

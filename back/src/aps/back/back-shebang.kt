@@ -92,22 +92,6 @@ class Chunk<T>(val items: List<T>, val moreFromId: Long?)
 //    return users.first().toRTO(ctx.q)
 //}
 
-object BackGlobus {
-    var tracingEnabled = true
-    lateinit var startMoment: Date
-    val slimJarName = "apsback-slim.jar"
-    val killResponse = "Aarrgghh..."
-
-//    val version by lazy {
-//        this::class.java.classLoader.getResource("aps/version.txt").readText()
-//    }
-
-    val version: String get() = this::class.java.classLoader.getResource("aps/version.txt").readText()
-    @Volatile var lastDownloadedPieceOfShit: PieceOfShitDownload? = null
-
-    val rrlog = RRLog()
-}
-
 
 
 

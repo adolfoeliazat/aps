@@ -3,7 +3,6 @@ package aps.back
 import aps.*
 import aps.const.file.APS_TEMP
 import org.springframework.context.annotation.AnnotationConfigApplicationContext
-import org.springframework.data.repository.findOrDie
 import java.io.File
 import java.io.FileWriter
 import java.io.PrintWriter
@@ -36,7 +35,7 @@ class TestState {
             runShit = fun(ctx, req: TestTakeTestPointSnapshotRequest): TestTakeTestPointSnapshotRequest.Response {
                 val snapshotName = req.snapshotName.value
 
-                val PG_HOME = getenv("PG_HOME") ?: die("No fucking PG_HOME")
+                val PG_HOME = sharedPlatform.getenv("PG_HOME") ?: die("No fucking PG_HOME")
                 val sqlFileName = snapshotDBDumpFile(snapshotName)
                 val res = runProcessAndWait(listOf(
                     "$PG_HOME\\bin\\pg_dump.exe",
@@ -77,7 +76,7 @@ class TestState {
                 val snapshotName = req.snapshotName.value
                 val testState = objectMapper.readValue(snapshotJSONFile(snapshotName), TestState::class.java)
 
-                val PG_HOME = getenv("PG_HOME") ?: die("No fucking PG_HOME")
+                val PG_HOME = sharedPlatform.getenv("PG_HOME") ?: die("No fucking PG_HOME")
                 val sqlFileName = snapshotDBDumpFile(snapshotName)
                 val res = runProcessAndWait(listOf(
                     "$PG_HOME\\bin\\psql.exe",
@@ -212,7 +211,7 @@ annotation class Remote
 }
 
 @Remote fun mirandaSeedSomeStuff1() {
-    val vit = userRepo.save(User(UserFields(
+    val vit = backPlatform.userRepo.save(User(UserFields(
         firstName = "Tony", lastName = "De Vit", email = "vit@test.shit.ua", profilePhone = "+38 (01) 2345678",
         kind = UserKind.CUSTOMER, state = UserState.COOL, passwordHash = hashPassword("vit-secret"),
         aboutMe = "Я Тони-длинный-макарони", adminNotes = "Тони мудак",
@@ -220,7 +219,7 @@ annotation class Remote
         common = CommonFields(createdAt = nextRandomOldStamp(), updatedAt = nextRandomOldStamp()), profileUpdatedAt = nextRandomOldStamp()
     )))
 
-    val warren = userRepo.save(User(UserFields(
+    val warren = backPlatform.userRepo.save(User(UserFields(
         firstName = "Nick", lastName = "Warren", email = "warren@test.shit.ua", profilePhone = "+38 (01) 8498577",
         kind = UserKind.CUSTOMER, state = UserState.COOL, passwordHash = hashPassword("warren-secret"),
         aboutMe = "Я Ник -- нахуй поник", adminNotes = "Че, музычка нормальная, но как заказчик -- говно",
@@ -230,9 +229,9 @@ annotation class Remote
 
     run {
         val customer = vit
-        uaOrderRepo.save(UAOrder(UAOrderFields(
+        backPlatform.uaOrderRepo.save(UAOrder(UAOrderFields(
             title = "Король-лягушонок", documentType = UADocumentType.ESSAY, state = UAOrderState.IN_STORE,
-            category = uaDocumentCategoryRepo.findOrDie(const.uaDocumentCategoryID.linguistics),
+            category = backPlatform.uaDocumentCategoryRepo.findOrDie(const.uaDocumentCategoryID.linguistics),
             numPages = 53, numSources = 20,
             minAllowedPriceOffer = 1000_00, maxAllowedPriceOffer = 5000_00,
             minAllowedDurationOffer = 10 * 24, maxAllowedDurationOffer = 15 * 24,
@@ -244,9 +243,9 @@ annotation class Remote
     }
     run {
         val customer = warren
-        uaOrderRepo.save(UAOrder(UAOrderFields(
+        backPlatform.uaOrderRepo.save(UAOrder(UAOrderFields(
             title = "Дружба кошки и мышки", documentType = UADocumentType.DRAWING, state = UAOrderState.IN_STORE,
-            category = uaDocumentCategoryRepo.findOrDie(const.uaDocumentCategoryID.advocacy),
+            category = backPlatform.uaDocumentCategoryRepo.findOrDie(const.uaDocumentCategoryID.advocacy),
             numPages = 3, numSources = 0,
             minAllowedPriceOffer = 100_00, maxAllowedPriceOffer = 300_00,
             minAllowedDurationOffer = 1 * 24, maxAllowedDurationOffer = 3 * 24,
@@ -263,15 +262,6 @@ annotation class Remote
     JAXB.marshal(BackGlobus.rrlog, fileWriter)
     fileWriter.close()
 }
-
-@Ser @XmlRootElement(name = "rrlog") @XmlAccessorType(XmlAccessType.FIELD)
-class RRLog {
-    @XmlElement(name = "entry")
-    val entries = Collections.synchronizedList(mutableListOf<RRLogEntry>())
-}
-
-@Ser @XmlRootElement @XmlAccessorType(XmlAccessType.FIELD)
-class RRLogEntry(val id: Long, val pathInfo: String, val requestJSON: String, val responseJSON: String)
 
 
 

@@ -36,7 +36,7 @@ val objectFieldObjectMapper = ObjectMapper()-{mapper->
     })
 }
 
-val shittyObjectMapper = object:ObjectMapper() {
+val _shittyObjectMapper = object:ObjectMapper() {
 
     override fun createDeserializationContext(p: JsonParser, cfg: DeserializationConfig): DefaultDeserializationContext {
         class FuckingContext : DefaultDeserializationContext {
@@ -208,7 +208,7 @@ val shittyObjectMapper = object:ObjectMapper() {
     }
 }
 
-val hackyObjectMapper = ObjectMapper().applet {om ->
+val _hackyObjectMapper = ObjectMapper().applet {om ->
     om.serializerFactory = object:BeanSerializerFactory(null) {
         override fun findBeanProperties(prov: SerializerProvider,
                                         beanDesc: BeanDescription,

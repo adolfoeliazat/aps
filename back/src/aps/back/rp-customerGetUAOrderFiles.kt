@@ -7,7 +7,6 @@
 package aps.back
 
 import aps.*
-import org.springframework.data.repository.findOrDie
 
 @Servant class ServeUAAdminGetOrders : BitchyProcedure() {
     override fun serve() {

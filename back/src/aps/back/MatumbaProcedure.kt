@@ -20,41 +20,8 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 import kotlin.properties.Delegates.notNull
 
-fun systemDangerousToken(): String = System.getenv("APS_DANGEROUS_TOKEN") ?: die("I want APS_DANGEROUS_TOKEN environment variable")
-
 // typealias ServletService = (HttpServletRequest, HttpServletResponse) -> Unit
 
-class ProcedureContext {
-    var q by notNullOnce<DSLContext>()
-    var wideClientKind by notNullOnce<WideClientKind>()
-    var clientKind by notNullOnce<ClientKind>()
-    var lang by notNullOnce<Language>()
-    var clientDomain by notNullOnce<String>()
-    var clientPortSuffix by notNullOnce<String>()
-    var user_killme by notNullOnce<UserRTO>()
-    var token by notNullOnce<String>()
-    var hasUser by notNullOnce<Boolean>()
-    var user: User? = null
-
-    val fieldErrors = mutableListOf<FieldError>()
-
-    val xlobal = object:Xlobal {
-        val ctx = this@ProcedureContext
-
-        override val user get()=
-            if (ctx.hasUser) ctx.user_killme
-            else null
-    }
-
-    val clientProtocol = "http" // TODO:vgrechka Switch everything to HTTPS
-    val clientRootPath = ""
-
-    val clientRoot get()= "$clientProtocol://$clientDomain$clientPortSuffix$clientRootPath"
-}
-
-enum class NeedsUser {
-    YES, NO, MAYBE
-}
 
 class ProcedureSpec<Req : RequestMatumba, Res : Any>(
     val req: (ProcedureContext) -> Req,
@@ -69,19 +36,11 @@ class ProcedureSpec<Req : RequestMatumba, Res : Any>(
     val logRequestJSON: Boolean
 )
 
-@JsonIgnoreProperties(ignoreUnknown = true)
-class CommonRequestFieldsHolder : CommonRequestFields {
-//    override var rootRedisLogMessageID: String? = null
-    override var databaseID: String? = null
-    override var fakeEmail = false
-    override lateinit var clientURL: String
-}
-
 fun <Req : RequestMatumba, Res : CommonResponseFields>
 remoteProcedure(spec: ProcedureSpec<Req, Res>): (HttpServletRequest, HttpServletResponse) -> Unit =
     fun(servletRequest, servletResponse) { object {
         lateinit var responseBean: CommonResponseFields
-        val log = debugLog
+        val log = backPlatform.debugLog
         val ctx = ProcedureContext()
 
         init {
@@ -91,8 +50,8 @@ remoteProcedure(spec: ProcedureSpec<Req, Res>): (HttpServletRequest, HttpServlet
                 if (spec.logRequestJSON) {
                     log.info("${servletRequest.pathInfo}: $requestJSON")
                 }
-                val rmap = hackyObjectMapper.readValue(requestJSON, Map::class.java)
-                RequestGlobus.commonRequestFields = hackyObjectMapper.readValue(requestJSON, CommonRequestFieldsHolder::class.java)
+                val rmap = _hackyObjectMapper.readValue(requestJSON, Map::class.java)
+                backPlatform.requestGlobus.commonRequestFields = _hackyObjectMapper.readValue(requestJSON, CommonRequestFieldsHolder::class.java)
                 // log.section("rmap:", rmap)
 
                 fun serviceShit() {
@@ -156,7 +115,7 @@ remoteProcedure(spec: ProcedureSpec<Req, Res>): (HttpServletRequest, HttpServlet
                         if (TestServerFiddling.rejectAllRequestsNeedingDB) bitch("Fuck you. I mean nothing personal, I do this to everyone...")
 
 //                        val db = DB.apsTestOnTestServer
-                        val db = DB.byID(RequestGlobus.commonRequestFields.databaseID!!)
+                        val db = DB.byID(backPlatform.requestGlobus.commonRequestFields.databaseID!!)
 
 //                        redisLog.group("Some shit 2") {
 //                            db.joo {q->
@@ -193,7 +152,7 @@ remoteProcedure(spec: ProcedureSpec<Req, Res>): (HttpServletRequest, HttpServlet
 
             servletResponse-{o->
                 o.contentType = "application/json; charset=utf-8"
-                o.writer.println(hackyObjectMapper.writeValueAsString(responseBean))
+                o.writer.println(_hackyObjectMapper.writeValueAsString(responseBean))
                 o.status = HttpServletResponse.SC_OK
             }
         }
@@ -290,11 +249,6 @@ adminProcedure(
 //
 //    return rows[0].toRTO(q)
 //}
-
-fun userByToken2(token: String): User {
-    val ut = userTokenRepo.findByToken(token) ?: bitch("Invalid token")
-    return ut.user!!
-}
 
 
 

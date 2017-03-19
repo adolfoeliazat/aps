@@ -1,7 +1,6 @@
 package aps
 
 import aps.back.*
-import org.springframework.data.repository.findOrDie
 import kotlin.properties.Delegates
 import kotlin.properties.Delegates.notNull
 
@@ -12,7 +11,7 @@ import kotlin.properties.Delegates.notNull
 
     val value: DocumentCategorySetFieldValue get() {
         check(include){"Attempt to read back DocumentCategorySetField $name, which is not included"}
-        RequestGlobus.retrievedFields += this
+        backPlatform.requestGlobus.retrievedFields += this
         return _value
     }
 
@@ -23,7 +22,7 @@ import kotlin.properties.Delegates.notNull
             else -> {
                 val stringIDs: List<String> = cast(jsonValue)
                 DocumentCategorySetFieldValue.Specific(stringIDs.map {
-                    uaDocumentCategoryRepo.findOrDie(it.toLong()).toRTO()
+                    backPlatform.uaDocumentCategoryRepo.findOrDie(it.toLong()).toRTO()
                 })
             }
         }

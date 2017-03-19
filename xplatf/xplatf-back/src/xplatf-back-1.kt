@@ -1,12 +1,54 @@
 package aps.back
 
 import aps.*
-import org.springframework.data.repository.findOrDie
+import kotlin.reflect.KClass
 
-interface XBackendPlatform {
+interface XBackPlatform {
+    val userRepo: UserRepository
+    val userTokenRepo: UserTokenRepository
+    val userParamsHistoryItemRepo: UserParamsHistoryItemRepository
+    val uaOrderRepo: UAOrderRepository
+    val uaOrderFileRepo: UAOrderFileRepository
+    val uaDocumentCategoryRepo: UADocumentCategoryRepository
+    val userTimesDocumentCategoryRepo: UserTimesDocumentCategoryRepository
+    val userParamsHistoryItemTimesDocumentCategoryRepo: UserParamsHistoryItemTimesDocumentCategoryRepository
+    val bidRepo: BidRepository
+    val requestGlobus: RequestGlobusType
+    val debugLog: XLogger
+
     fun getServeObjectRequestFunction(params: Any): (Any) -> Any
-    fun currentTimeMillis(): Long
     fun captureStackTrace(): Array<out XStackTraceElement>
+    fun isRequestThread(): Boolean
+    fun getResourceAsText(path: String): String
+    fun highlightRanges(text: String, searchWords: List<String>): List<IntRangeRTO>
+    val hackyObjectMapper: XHackyObjectMapper
+    val shittyObjectMapper: XShittyObjectMapper
+}
+
+interface XShittyObjectMapper {
+    fun writeValueAsString(shit: Any): String
+}
+
+interface XHackyObjectMapper {
+    fun <T : Any> readValue(content: String, valueType: KClass<T>): T
+}
+
+class RequestGlobusType {
+    val stamp by lazy {
+        TestServerFiddling.nextRequestTimestamp.getAndReset()
+            ?: XTimestamp(sharedPlatform.currentTimeMillis())
+    }
+
+//    var skipLoggingToRedis = false
+    var actualSQLFromJOOQ: String? = null
+//    var resultFromJOOQ: Result<*>? = null
+//    val redisLogParentIDs = Stack<String>()
+    lateinit var commonRequestFields: CommonRequestFieldsHolder
+    var procedureCtx by notNullOnce<ProcedureContext>()
+    val retrievedFields = mutableSetOf<FormFieldBack>()
+    var requesterOrAnonymous by notNullOnce<User>()
+    var requesterOrAnonymousInitialFields by notNullOnce<UserFields>()
+    var shitIsDangerous by notNullOnce<Boolean>()
 }
 
 interface XStackTraceElement
@@ -21,7 +63,7 @@ interface WithCulprit {
     val culprit: Culprit
 }
 
-class ExceptionWithCulprit(e: Throwable, override val culprit: Culprit): Exception(e.message, e), WithCulprit
+class ExceptionWithCulprit(e: Throwable, override val culprit: Culprit): Throwable(e.message, e), WithCulprit
 
 fun <T> beingCulprit(culprit: Culprit, f: () -> T): T {
     return try {
@@ -42,7 +84,7 @@ abstract class FormFieldBack(
 
     var _specified by notNull<Boolean>()
     val specified: Boolean get() = _specified
-    override val constructionStack = backendPlatform.captureStackTrace()
+    override val constructionStack = backPlatform.captureStackTrace()
 
     init {
         if (include) {
@@ -94,6 +136,9 @@ interface XHttpServletRequest {
     }
 }
 
+inline fun <reified T> XCrudRepository<T, Long>.findOrDie(id: Long): T {
+    return findOne(id) ?: die("No fucking ${T::class.simpleName} with ID $id")
+}
 
 class FuckSomeoneParams<Req : RequestMatumba, out Res : CommonResponseFields>(
     val bpc: BitchyProcedureContext,
@@ -114,19 +159,19 @@ fun <Req : RequestMatumba, Res : CommonResponseFields>
 {
     object {
         lateinit var responseBean: CommonResponseFields
-        val log = debugLog
+        val log = backPlatform.debugLog
         val ctx = ProcedureContext()
 
         init {
-            RequestGlobus.procedureCtx = ctx
+            backPlatform.requestGlobus.procedureCtx = ctx
             try {
                 p.bpc.servletRequest.characterEncoding = "UTF-8"
                 val requestJSON = p.bpc.servletRequest.reader.readText()
                 if (p.logRequestJSON) {
                     log.info("${p.bpc.servletRequest.pathInfo}: $requestJSON")
                 }
-                val rmap = hackyObjectMapper.readValue(requestJSON, Map::class.java)
-                RequestGlobus.commonRequestFields = hackyObjectMapper.readValue(requestJSON, CommonRequestFieldsHolder::class.java)
+                val rmap = backPlatform.hackyObjectMapper.readValue(requestJSON, Map::class)
+                backPlatform.requestGlobus.commonRequestFields = backPlatform.hackyObjectMapper.readValue(requestJSON, CommonRequestFieldsHolder::class)
                 // log.section("rmap:", rmap)
 
                 fun serviceShit() {
@@ -178,20 +223,20 @@ fun <Req : RequestMatumba, Res : CommonResponseFields>
                             if (rmap["token"] != systemDangerousToken()) {
                                 bitch("Invalid dangerous token")
                             }
-                            RequestGlobus.shitIsDangerous = true
+                            backPlatform.requestGlobus.shitIsDangerous = true
                         } else {
-                            RequestGlobus.shitIsDangerous = false
+                            backPlatform.requestGlobus.shitIsDangerous = false
                         }
 
                         p.validate(ctx, req)
                         if (ctx.fieldErrors.isNotEmpty()) bitchExpectedly(t("Please fix errors below", "Пожалуйста, исправьте ошибки ниже"))
 
-                        if (!RequestGlobus.shitIsDangerous) {
-                            RequestGlobus.requesterOrAnonymous = ctx.user ?: when (ctx.clientKind) {
-                                ClientKind.UA_CUSTOMER -> userRepo.findOrDie(const.userID.anonymousCustomer)
-                                ClientKind.UA_WRITER -> userRepo.findOrDie(const.userID.anonymousWriter)
+                        if (!backPlatform.requestGlobus.shitIsDangerous) {
+                            backPlatform.requestGlobus.requesterOrAnonymous = ctx.user ?: when (ctx.clientKind) {
+                                ClientKind.UA_CUSTOMER -> backPlatform.userRepo.findOrDie(const.userID.anonymousCustomer)
+                                ClientKind.UA_WRITER -> backPlatform.userRepo.findOrDie(const.userID.anonymousWriter)
                             }
-                            RequestGlobus.requesterOrAnonymousInitialFields = RequestGlobus.requesterOrAnonymous.user.copy()
+                            backPlatform.requestGlobus.requesterOrAnonymousInitialFields = backPlatform.requestGlobus.requesterOrAnonymous.user.copy()
                         }
 
                         return p.runShit(ctx, req)
@@ -200,12 +245,7 @@ fun <Req : RequestMatumba, Res : CommonResponseFields>
                     val res = if (p.needsDB) {
                         if (TestServerFiddling.rejectAllRequestsNeedingDB) bitch("Fuck you. I mean nothing personal, I do this to everyone...")
 
-//                        val db = DB.byID(RequestGlobus.commonRequestFields.databaseID!!)
-
-//                        db.joo {q->
-//                            ctx.q = q
                         runShitWithMaybeDB()
-//                        }
                     } else {
                         runShitWithMaybeDB()
                     }
@@ -234,12 +274,140 @@ fun <Req : RequestMatumba, Res : CommonResponseFields>
 
             p.bpc.servletResponse-{o->
                 o.contentType = "application/json; charset=utf-8"
-                o.writer.println(shittyObjectMapper.writeValueAsString(responseBean))
-//                o.writer.println(hackyObjectMapper.writeValueAsString(responseBean))
+                o.writer.println(backPlatform.shittyObjectMapper.writeValueAsString(responseBean))
                 o.status = XHttpServletResponse.Status.OK
             }
         }
     }
 }
+
+
+object TestServerFiddling {
+    val nextRequestTimestamp = SetGetResetShit<XTimestamp>()
+    val nextGeneratedPassword = SetGetResetShit<String>()
+    val nextRequestError = SetGetResetShit<String>()
+    val nextGeneratedConfirmationSecret = SetGetResetShit<String>()
+    val nextGeneratedUserToken = SetGetResetShit<String>()
+    val nextOrderID = SetGetResetShit<Long>()
+    @Volatile var rejectAllRequestsNeedingDB: Boolean = false
+}
+
+class SetGetResetShit<T> {
+    private @Volatile var value: T? = null
+
+    fun getAndReset(): T? {
+        val res = value
+        value = null
+        return res
+    }
+
+    fun set(newValue: T) {
+        value = newValue
+    }
+}
+
+@XJsonIgnoreProperties(ignoreUnknown = true)
+class CommonRequestFieldsHolder : CommonRequestFields {
+    //    override var rootRedisLogMessageID: String? = null
+    override var databaseID: String? = null
+    override var fakeEmail = false
+    override lateinit var clientURL: String
+}
+
+class ProcedureContext {
+    var wideClientKind by notNullOnce<WideClientKind>()
+    var clientKind by notNullOnce<ClientKind>()
+    var lang by notNullOnce<Language>()
+    var clientDomain by notNullOnce<String>()
+    var clientPortSuffix by notNullOnce<String>()
+    var user_killme by notNullOnce<UserRTO>()
+    var token by notNullOnce<String>()
+    var hasUser by notNullOnce<Boolean>()
+    var user: User? = null
+
+    val fieldErrors = mutableListOf<FieldError>()
+
+    val clientProtocol = "http" // TODO:vgrechka Switch everything to HTTPS
+    val clientRootPath = ""
+
+    val clientRoot get()= "$clientProtocol://$clientDomain$clientPortSuffix$clientRootPath"
+}
+
+enum class NeedsUser {
+    YES, NO, MAYBE
+}
+
+fun userByToken2(token: String): User {
+    val ut = backPlatform.userTokenRepo.findByToken(token) ?: bitch("Invalid token")
+    return ut.user!!
+}
+
+fun systemDangerousToken(): String = sharedPlatform.getenv("APS_DANGEROUS_TOKEN") ?: die("I want APS_DANGEROUS_TOKEN environment variable")
+
+fun bitchExpectedly(msg: String): Nothing {
+    throw ExpectedRPCShit(msg)
+}
+
+object BackGlobus {
+    var tracingEnabled = true
+    lateinit var startMoment: XDate
+    val slimJarName = "apsback-slim.jar"
+    val killResponse = "Aarrgghh..."
+
+//    val version by lazy {
+//        this::class.java.classLoader.getResource("aps/version.txt").readText()
+//    }
+
+    val version: String get() = backPlatform.getResourceAsText("aps/version.txt")
+
+    @Volatile var lastDownloadedPieceOfShit: PieceOfShitDownload? = null
+
+    val rrlog = RRLog()
+}
+
+class ExpectedRPCShit(override val message: String) : Throwable(message)
+
+@Ser @XXmlRootElement(name = "rrlog") @XXmlAccessorType(XXmlAccessType.FIELD)
+class RRLog {
+    @XXmlElement(name = "entry")
+    val entries = XCollections.synchronizedList(mutableListOf<RRLogEntry>())
+}
+
+@Ser @XXmlRootElement @XXmlAccessorType(XXmlAccessType.FIELD)
+class RRLogEntry(val id: Long, val pathInfo: String, val requestJSON: String, val responseJSON: String)
+
+interface MeganItem<out RTO> : ToRtoable<RTO> {
+    val idBang: Long
+}
+
+interface ToRtoable<out RTO> {
+    fun toRTO(searchWords: List<String>): RTO
+}
+
+val requestUserMaybe get() = backPlatform.requestGlobus.procedureCtx.user
+val requestUserEntity get() = requestUserMaybe!!
+val requestUser get() = requestUserEntity.user
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

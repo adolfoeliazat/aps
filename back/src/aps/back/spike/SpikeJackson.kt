@@ -14,7 +14,7 @@ fun main(args: Array<String>) {
 private fun test4() {
     class Cunt(val name: String)
 
-    val om = shittyObjectMapper
+    val om = _shittyObjectMapper
 
 //    val obj = mutableListOf<Any>()-{o->
 //        o += mutableMapOf<String, Any?>()-{o->
@@ -46,7 +46,7 @@ private fun test4() {
 }
 
 private fun test3() {
-    val om = shittyObjectMapper
+    val om = _shittyObjectMapper
 
     val obj = VisualShitCapturedRequest()-{o->
         o.id = "fucking id"

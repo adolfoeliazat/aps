@@ -8,7 +8,7 @@ object EmailMatumba {
     val sentEmails = Collections.synchronizedList(mutableListOf<Email>())
 
     fun send(email: Email) {
-        if (RequestGlobus.commonRequestFields.fakeEmail) {
+        if (backPlatform.requestGlobus.commonRequestFields.fakeEmail) {
             return sentEmails.add(email).toUnit()
         }
 

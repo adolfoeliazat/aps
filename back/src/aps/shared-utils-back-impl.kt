@@ -20,10 +20,9 @@ import kotlin.system.exitProcess
 //val dontCallMe: Nothing get() = wtf("Don't call me, motherfucker")
 
 fun clog(vararg xs: Any?): Unit = println(xs.joinToString(" "))
-fun dlog(vararg xs: Any?) = debugLog.info(xs.joinToString(" "))
-fun dwarn(vararg xs: Any?) = debugLog.info(xs.joinToString(" "))
+fun dlog(vararg xs: Any?) = backPlatform.debugLog.info(xs.joinToString(" "))
+fun dwarn(vararg xs: Any?) = backPlatform.debugLog.info(xs.joinToString(" "))
 
-fun t(en: String, ru: String) = ru
 
 
 @Dummy interface Promisoid<T>
@@ -61,7 +60,7 @@ fun t(en: String, ru: String) = ru
 
     val value: E get() {
         check(include){"Attempt to read back EnumHiddenField $name, which is not included"}
-        RequestGlobus.retrievedFields += this
+        backPlatform.requestGlobus.retrievedFields += this
         return _value
     }
 
@@ -80,7 +79,7 @@ fun t(en: String, ru: String) = ru
 
     val value: String get() {
         check(include){"Attempt to read back StringHiddenField $name, which is not included"}
-        RequestGlobus.retrievedFields += this
+        backPlatform.requestGlobus.retrievedFields += this
         return _value
     }
 
@@ -100,7 +99,7 @@ fun t(en: String, ru: String) = ru
 
     val value: T get() {
         check(include){"Attempt to read back ObjectHiddenField $name, which is not included"}
-        RequestGlobus.retrievedFields += this
+        backPlatform.requestGlobus.retrievedFields += this
         return _value
     }
 
@@ -129,7 +128,7 @@ fun t(en: String, ru: String) = ru
 
     val value: Long get() {
         check(include){"Attempt to read back LongHiddenField $name, which is not included"}
-        RequestGlobus.retrievedFields += this
+        backPlatform.requestGlobus.retrievedFields += this
         return _value
     }
 
@@ -150,7 +149,7 @@ fun t(en: String, ru: String) = ru
 
     val value: Int get() {
         check(include){"Attempt to read back IntHiddenField $name, which is not included"}
-        RequestGlobus.retrievedFields += this
+        backPlatform.requestGlobus.retrievedFields += this
         return _value
     }
 
@@ -171,7 +170,7 @@ fun t(en: String, ru: String) = ru
 
     val value: Long? get() {
         check(include){"Attempt to read back MaybeLongHiddenField $name, which is not included"}
-        RequestGlobus.retrievedFields += this
+        backPlatform.requestGlobus.retrievedFields += this
         return _value
     }
 
@@ -194,7 +193,7 @@ fun t(en: String, ru: String) = ru
     val value: String? get() {
         check(include){"Attempt to read back IntHiddenField $name, which is not included"}
         if (!loaded) bitch("I am not loaded")
-        RequestGlobus.retrievedFields += this
+        backPlatform.requestGlobus.retrievedFields += this
         return _value
     }
 
@@ -221,7 +220,7 @@ fun t(en: String, ru: String) = ru
     var value: Boolean
         get() {
             check(include){"Attempt to read back BooleanHiddenField $name, which is not included"}
-            RequestGlobus.retrievedFields += this
+            backPlatform.requestGlobus.retrievedFields += this
             return _value.booleanValue()
         }
         @Dummy set(x) = wtf("@Back BooleanHiddenField.value.set should not be called")

@@ -16,7 +16,7 @@ import kotlin.properties.Delegates.notNull
 
     val value: String get() {
         check(include){"Attempt to read back TextField $name, which is not included"}
-        RequestGlobus.retrievedFields += this
+        backPlatform.requestGlobus.retrievedFields += this
         return _value
     }
 

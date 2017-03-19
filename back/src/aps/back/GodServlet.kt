@@ -25,32 +25,6 @@ import javax.servlet.http.HttpServletResponseWrapper
 
 
 
-private val requestGlobusThreadLocal = ThreadLocal<RequestGlobusType>()
-
-val RequestGlobus
-    get() = requestGlobusThreadLocal.get() ?: bitch("RequestGlobus? What else?")
-
-fun isRequestThread() =
-    requestGlobusThreadLocal.get() != null
-
-
-class RequestGlobusType {
-    val stamp by lazy {
-        TestServerFiddling.nextRequestTimestamp.getAndReset()
-            ?: Timestamp(backendPlatform.currentTimeMillis())
-    }
-
-//    var skipLoggingToRedis = false
-    var actualSQLFromJOOQ: String? = null
-//    var resultFromJOOQ: Result<*>? = null
-//    val redisLogParentIDs = Stack<String>()
-    lateinit var commonRequestFields: CommonRequestFieldsHolder
-    var procedureCtx by notNullOnce<ProcedureContext>()
-    val retrievedFields = mutableSetOf<FormFieldBack>()
-    var requesterOrAnonymous by notNullOnce<User>()
-    var requesterOrAnonymousInitialFields by notNullOnce<UserFields>()
-    var shitIsDangerous by notNullOnce<Boolean>()
-}
 
 class GodServlet : HttpServlet() {
     val log by logger()

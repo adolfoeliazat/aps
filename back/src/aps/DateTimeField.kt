@@ -12,7 +12,7 @@ import java.sql.Timestamp
 
     val value: Timestamp get() {
         check(include){"Attempt to read back DateTimeField $name, which is not included"}
-        RequestGlobus.retrievedFields += this
+        backPlatform.requestGlobus.retrievedFields += this
         return _value
     }
 

@@ -83,7 +83,7 @@ fun reallyBoot() {
                                    .setUrls(ClasspathHelper.forPackage("aps.back"))
                                    .setScanners(MethodAnnotationsScanner()))
         val methods = refl.getMethodsAnnotatedWith(RemoteProcedureFactory::class.java)
-        debugLog.section("Remote procedure factories:", methods.map {it.name}.joinToString())
+        backPlatform.debugLog.section("Remote procedure factories:", methods.map {it.name}.joinToString())
         for (m in methods) {
             val procName =
                 if (m.name.startsWith("serve")) m.name.substring("serve".length)
@@ -203,12 +203,6 @@ private fun instrumentShit() {
 
 
 fun t(en: String, ua: String) = ua
-
-fun bitchExpectedly(msg: String): Nothing {
-    throw ExpectedRPCShit(msg)
-}
-
-class ExpectedRPCShit(override val message: String) : Throwable(message)
 
 fun Timestamp?.toMaybePortable(): TimestampRTO? = this?.let {it.toPortable()}
 

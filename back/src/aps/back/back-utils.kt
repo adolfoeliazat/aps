@@ -20,8 +20,6 @@ fun <T: Any> T.logger(): Lazy<Logger> {
     return lazy { LoggerFactory.getLogger(this.javaClass) }
 }
 
-val debugLog = LoggerFactory.getLogger("::::: DEBUG :::::")
-
 fun Throwable.stackString(): String {
     val sw = StringWriter()
     PrintWriter(sw).use {this.printStackTrace(it)}
@@ -80,9 +78,6 @@ fun generatePassword() =
 fun hashPassword(clearText: String): String = BCrypt.hashpw(clearText, BCrypt.gensalt())
 
 
-val requestUserMaybe get() = RequestGlobus.procedureCtx.user
-val requestUserEntity get() = requestUserMaybe!!
-val requestUser get() = requestUserEntity.user
 
 fun isAdmin() = requestUserMaybe?.user?.kind == UserKind.ADMIN
 
@@ -97,10 +92,10 @@ fun updateAdminNotes(fields: FieldsWithAdminNotes, req: RequestWithAdminNotes) {
 }
 
 fun <T> checkingAllFieldsRetrieved(req: RequestMatumba, block: () -> T): T {
-    RequestGlobus.retrievedFields.clear()
+    backPlatform.requestGlobus.retrievedFields.clear()
     val res = block()
     for (field in req._fields) {
-        if (field.include && field !in RequestGlobus.retrievedFields)
+        if (field.include && field !in backPlatform.requestGlobus.retrievedFields)
             bitch("Field ${field.name} of ${req::class.simpleName} should be retrieved")
     }
     return res

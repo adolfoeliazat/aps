@@ -18,8 +18,5 @@ interface CrudRepository<T, ID : Serializable> : Repository<T, ID> {
     fun deleteAll()
 }
 
-inline fun <reified T, ID : java.io.Serializable> CrudRepository<T, ID>.findOrDie(id: ID): T {
-    return findOne(id) ?: die("No fucking ${T::class.simpleName} with ID $id")
-}
 
 

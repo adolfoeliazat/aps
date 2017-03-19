@@ -88,11 +88,6 @@ class TestLoadSnapshotRequest: RequestMatumba() {
     val name by stringHiddenField()
 }
 
-interface Xlobal {
-    val user: UserRTO?
-}
-
-
 class UserParamsRequest(isUpdate: Boolean) : RequestMatumba(), RequestWithAdminNotes {
     val userID by longHiddenField(include = isUpdate)
     val firstName = TextField(this, fields.signUpFirstName)
@@ -245,10 +240,6 @@ class BidRequest(isAdmin: Boolean, isUpdate: Boolean) : RequestMatumba(), Reques
     val bidComment = TextField(this, fields.bidComment)
     override val adminNotes = TextField(this, fields.adminNotes, include = isAdmin)
 }
-
-annotation class NoArgCtor
-annotation class AllOpen
-annotation class Ser
 
 class ObjectRequest : RequestMatumba() {
     val params = ObjectHiddenField<Any>(this, "params")

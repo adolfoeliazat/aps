@@ -102,9 +102,6 @@ inline fun <T> Sequence<T>.saforEachIndexed(action: (Int, T) -> Unit): Unit {
 
 inline fun <T, FRet> T.applet(f: (T) -> FRet): T { f(this); return this }
 
-// Rapier operator: x-{o->
-inline operator fun <T, FRet> T.minus(f: (T) -> FRet): T { f(this); return this }
-
 inline fun <T, reified CastTo> T.calet(f: (T) -> Unit): Unit { f(this) }
 
 inline fun <T> T?.letOrEmpty(f: (T) -> String): String =
@@ -206,8 +203,6 @@ fun puid(): String = puidPrefix + _puid++
 
 fun <T> Iterable<T>.without(xs: Iterable<T>) = this.filter{!xs.contains(it)}
 
-var exhaustive: Any? = null
-
 fun <T> cast(x: Any?): T = x as T
 
 fun want(b: Boolean, msg: () -> String = {"I want that"}) {
@@ -281,14 +276,6 @@ fun <E : Enum<E>> String?.relaxedToEnum(values: Array<E>, default: E): E {
 fun <E : Enum<E>> String?.relaxedToEnumOrDie(values: Array<E>): E =
     relaxedToEnumOrNull(values) ?: wtf("this = $this    c526f090-69ce-4ffe-9faa-beb678c6e409")
 
-fun String.lastIndexOfOrNull(s: String): Int? {
-    val index = lastIndexOf(s)
-    return if (index == -1) null else index
-}
-
-fun String.chopOffFileExtension(): String =
-    substring(0, lastIndexOfOrNull(".") ?: length)
-
 fun <T: Any> selfy(make: (() -> T) -> T): T {
     val obj = object {
         var prop by Delegates.notNull<T>()
@@ -336,20 +323,6 @@ fun StringBuilder.lnappendln2(s: String) {
     append("\n" + s + "\n\n")
 }
 
-fun <T: Any> notNullOnce(): ReadWriteProperty<Any?, T> = NotNullOnceVar()
-
-private class NotNullOnceVar<T: Any> : ReadWriteProperty<Any?, T> {
-    private var value: T? = null
-
-    override fun getValue(thisRef: Any?, property: KProperty<*>): T {
-        return value ?: throw IllegalStateException("Property `${property.name}` should be initialized before get.")
-    }
-
-    override fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
-        check(this.value == null) {"Property `${property.name}` should be assigned only once"}
-        this.value = value
-    }
-}
 
 class TestRef<out T>(val it: T)
 

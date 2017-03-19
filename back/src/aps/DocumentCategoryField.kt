@@ -11,13 +11,13 @@ import kotlin.properties.Delegates.notNull
 
     val value: UADocumentCategory get() {
         check(include){"Attempt to read back DocumentCategoryField $name, which is not included"}
-        RequestGlobus.retrievedFields += this
+        backPlatform.requestGlobus.retrievedFields += this
         return _value
     }
 
     override fun loadOrBitch(input: Map<String, Any?>, fieldErrors: MutableList<FieldError>) {
         val stringID = (input[name] ?: bitch("Gimme $name, motherfucker")) as String
-        val cat = uaDocumentCategoryRepo.findOne(stringID.toLong())
+        val cat = backPlatform.uaDocumentCategoryRepo.findOne(stringID.toLong())
         if (cat == null) {
             fieldErrors += FieldError(name, t("TOTE", "Я не признаю такую категорию"))
             return

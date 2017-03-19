@@ -2,7 +2,6 @@ package aps.back
 
 import aps.*
 import org.springframework.data.jpa.repository.JpaContext
-import org.springframework.data.repository.findOrDie
 import java.sql.Timestamp
 import java.util.*
 import javax.servlet.http.HttpServletRequest
