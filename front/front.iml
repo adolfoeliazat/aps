@@ -11,6 +11,9 @@
     <content url="file://$MODULE_DIR$/../shared-front-junction">
       <sourceFolder url="file://$MODULE_DIR$/../shared-front-junction/src" isTestSource="false" />
     </content>
+    <content url="file://$MODULE_DIR$/../xplatf-shared-front-junction">
+      <sourceFolder url="file://$MODULE_DIR$/../xplatf-shared-front-junction/src" isTestSource="false" />
+    </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="KotlinJavaScript" level="project" />

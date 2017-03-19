@@ -9,7 +9,6 @@
 package aps.front
 
 import aps.*
-import into.kommon.*
 
 // TODO:vgrechka Test case: User unchecks "subscribed to all categories", but doesn't select anything specific
 

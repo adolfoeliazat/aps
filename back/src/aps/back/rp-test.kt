@@ -14,7 +14,6 @@ import aps.back.generated.jooq.tables.records.*
 import com.google.debugging.sourcemap.SourceMapConsumerFactory
 import com.google.debugging.sourcemap.SourceMapping
 import com.sun.jna.platform.win32.User32
-import into.kommon.*
 import org.apache.lucene.analysis.ru.RussianAnalyzer
 import org.jooq.Record
 import org.jooq.UpdateSetMoreStep

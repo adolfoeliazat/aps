@@ -2,7 +2,6 @@ package aps.front
 
 import aps.*
 import aps.front.testutils.*
-import into.kommon.*
 import org.w3c.dom.events.Event
 import org.w3c.dom.events.KeyboardEvent
 import org.w3c.files.File
@@ -81,7 +80,7 @@ class Test_UA_CrazyLong_2 : FuckingScenario() {
                 debugMailboxCheck("b9196719-9e01-45f3-987c-cb8259c7f9e6")
             }
             mirandaSaveRequestResponseLog("pizda")
-//            ___stopHereAndEverywhereAfter()
+            ___stopHereAndEverywhereAfter()
 
 
             // TODO:vgrechka Try to access order page before it's confirmed (should say "fuck you" to user)

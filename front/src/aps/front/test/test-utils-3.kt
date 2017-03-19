@@ -2,7 +2,6 @@ package aps.front
 
 import aps.*
 import aps.front.testutils.*
-import into.kommon.*
 import into.mochka.assert
 import into.mochka.assertEquals
 import kotlin.browser.window

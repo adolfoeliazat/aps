@@ -7,7 +7,6 @@
 package aps.front
 
 import aps.*
-import into.kommon.*
 import kotlin.js.*
 
 class EnumSelectKey<E>(override val fqn: String) : Fucker(), FQNed

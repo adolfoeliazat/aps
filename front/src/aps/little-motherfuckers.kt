@@ -2,7 +2,6 @@ package aps
 
 import aps.front.*
 import aps.Color.*
-import into.kommon.*
 
 fun errorLabel(title: String): ToReactElementable =
     kdiv(color = RED_300, marginTop = 5, marginRight = 9, textAlign = "right"){o->

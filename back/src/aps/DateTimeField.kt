@@ -1,7 +1,6 @@
 package aps
 
 import aps.back.*
-import into.kommon.*
 import java.sql.Timestamp
 
 @Back class DateTimeField(

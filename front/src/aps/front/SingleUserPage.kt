@@ -1,7 +1,6 @@
 package aps.front
 
 import aps.*
-import into.kommon.*
 
 class SingleUserPage {
     var tabitha by notNullOnce<Tabitha<UserRTO>>()

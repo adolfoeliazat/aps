@@ -1,7 +1,6 @@
 package aps.front
 
 import aps.*
-import into.kommon.*
 
 class BidsPage {
     suspend fun load() = booby.load()

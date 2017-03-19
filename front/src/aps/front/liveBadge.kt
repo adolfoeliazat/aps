@@ -7,7 +7,6 @@
 package aps.front
 
 import aps.*
-import into.kommon.*
 
 fun jsFacing_liveBadge(ui: World, def: dynamic): dynamic {
     imf("jsFacing_liveBadge")

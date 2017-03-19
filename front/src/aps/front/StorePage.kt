@@ -2,7 +2,6 @@ package aps.front
 
 import aps.*
 import aps.const.text.symbols.endash
-import into.kommon.*
 
 class StorePage {
     suspend fun load() = booby.load()

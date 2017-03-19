@@ -1,7 +1,6 @@
 package aps.front
 
 import aps.*
-import into.kommon.*
 import org.w3c.dom.url.URL
 import kotlin.browser.window
 

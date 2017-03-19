@@ -7,7 +7,6 @@
 package aps.front
 
 import aps.*
-import into.kommon.imf
 import kotlin.browser.*
 
 class TestWriter_Boot_ProfileRejected : WriterBootTestScenario_FuckerToken() {

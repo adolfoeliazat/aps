@@ -3,7 +3,6 @@
 package aps.front
 
 import aps.*
-import into.kommon.*
 import org.w3c.dom.HTMLElement
 import kotlin.browser.document
 import kotlin.browser.window

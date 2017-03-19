@@ -12,7 +12,6 @@ import aps.*
 import aps.Color.*
 import aps.const.text.symbols.nbsp
 import aps.front.testutils.*
-import into.kommon.*
 import org.w3c.dom.events.KeyboardEvent
 import kotlin.js.json
 import kotlin.properties.Delegates

@@ -8,7 +8,6 @@ package aps.back
 
 import aps.*
 import aps.back.generated.jooq.tables.pojos.JQUsers
-import into.kommon.*
 import org.jooq.*
 import kotlin.reflect.KClass
 

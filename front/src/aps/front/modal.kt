@@ -3,7 +3,6 @@ package aps.front
 import aps.*
 import aps.const.text.symbols.times
 import aps.front.fconst.test.testOffClassSuffix
-import into.kommon.*
 import kotlin.js.json
 
 private var currentModalOperations: ModalOperations? = null

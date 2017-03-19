@@ -1,7 +1,6 @@
 package aps.back
 
 import aps.*
-import into.kommon.*
 import org.jooq.EnumType
 
 //fun <T> tracingSQL(descr: String, block: () -> T): T {

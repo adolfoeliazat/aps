@@ -4,7 +4,6 @@ package aps.front
 
 import aps.*
 import aps.front.frontSymbols.numberSign
-import into.kommon.*
 
 class UASingleOrderPage {
     var tabitha by notNullOnce<Tabitha<UAOrderRTO>>()

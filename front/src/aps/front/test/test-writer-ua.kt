@@ -8,7 +8,6 @@ package aps.front
 
 import aps.*
 import aps.front.*
-import into.kommon.*
 import kotlin.js.json
 
 //class TS_UA_Writer_SignUp_1 : TestScenario() {

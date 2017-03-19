@@ -7,7 +7,6 @@
 package aps.back
 
 import aps.*
-import into.kommon.*
 import org.jooq.DSLContext
 import java.sql.Timestamp
 import java.util.*

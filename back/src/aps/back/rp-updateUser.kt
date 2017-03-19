@@ -10,7 +10,6 @@ import aps.*
 import aps.UserState.*
 import aps.back.generated.jooq.Tables.*
 import aps.back.generated.jooq.tables.pojos.*
-import into.kommon.*
 
 //@RemoteProcedureFactory fun updateUser() = adminProcedure(
 //    {UpdateUserRequest()},

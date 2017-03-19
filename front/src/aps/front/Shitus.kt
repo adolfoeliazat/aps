@@ -10,7 +10,6 @@ package aps.front
 
 import aps.*
 import aps.Color.*
-import into.kommon.*
 import kotlin.js.json
 
 external val lodash: dynamic

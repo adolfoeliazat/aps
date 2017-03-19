@@ -4,7 +4,6 @@ package aps
 
 import aps.Color.*
 import aps.front.*
-import into.kommon.*
 import org.w3c.files.File
 import org.w3c.files.FileList
 import org.w3c.files.FileReader

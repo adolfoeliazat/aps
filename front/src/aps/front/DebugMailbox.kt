@@ -9,7 +9,6 @@
 package aps.front
 
 import aps.*
-import into.kommon.*
 
 var debugCheckEmail: () -> Promisoid<Unit> = {bitch("Debug mailbox is not initialized")}
 var debugHideMailbox: () -> Unit = {bitch("Debug mailbox is not initialized")}

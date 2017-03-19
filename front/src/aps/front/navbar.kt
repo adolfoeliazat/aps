@@ -9,7 +9,6 @@ package aps.front
 import aps.*
 import aps.ClientKind.*
 import aps.UserKind.*
-import into.kommon.*
 import kotlin.js.json
 
 fun renderTopNavbar(clientKind: ClientKind,

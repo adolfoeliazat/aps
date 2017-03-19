@@ -3,7 +3,6 @@
 package aps.front
 
 import aps.*
-import into.kommon.*
 
 class DebugPage(val world: World) {
     class URLQuery {

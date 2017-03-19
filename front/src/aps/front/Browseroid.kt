@@ -2,7 +2,6 @@ package aps.front
 
 import aps.*
 import aps.front.testutils.*
-import into.kommon.*
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.url.URL
 import kotlin.browser.window

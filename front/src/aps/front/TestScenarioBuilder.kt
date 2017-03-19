@@ -12,7 +12,6 @@ import aps.*
 import aps.Color.*
 import aps.const.text.symbols.threeQuotes
 import aps.front.testutils.*
-import into.kommon.*
 import into.mochka.assert
 import org.w3c.dom.events.Event
 import org.w3c.dom.events.KeyboardEvent

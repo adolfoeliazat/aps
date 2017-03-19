@@ -15,7 +15,6 @@ import aps.front.TestUtils.putTinyTestContextLabel
 import aps.front.WriterTestUtils.assert_staticHomePage_rightNavbarSignIn
 import aps.front.WriterTestUtils.goto_signUpForm
 import aps.front.testutils.*
-import into.kommon.*
 import kotlin.browser.*
 
 class TestWriter_SignUp_HappyPath : WriterBootTestScenario() {

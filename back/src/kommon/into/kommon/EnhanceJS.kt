@@ -6,7 +6,7 @@
 
 package kommon.into.kommon
 
-import into.kommon.*
+import aps.*
 import jdk.nashorn.internal.ir.*
 import jdk.nashorn.internal.ir.visitor.NodeVisitor
 import jdk.nashorn.internal.parser.Parser

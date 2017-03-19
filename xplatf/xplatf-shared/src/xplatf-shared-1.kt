@@ -1,12 +1,4 @@
-/*
- * Into Kommon
- *
- * (C) Copyright 2015-2016 Vladimir Grechka
- */
-
-package into.kommon
-
-import aps.*
+package aps
 
 val KOMMON_HOME: String get()= getenv("INTO_KOMMON_HOME") ?: die("I want INTO_KOMMON_HOME environment variable")
 
@@ -30,15 +22,3 @@ inline fun ifOrEmpty(test: Boolean, block: () -> String): String =
     else ""
 
 inline fun <T> T.letu(block: (T) -> Unit): Unit = block(this)
-
-
-
-
-
-
-
-
-
-
-
-

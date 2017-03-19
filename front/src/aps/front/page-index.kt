@@ -1,7 +1,6 @@
 package aps.front
 
 import aps.*
-import into.kommon.*
 
 object pages {
     object uaCustomer : Fuckers<PageSpec>(null) {

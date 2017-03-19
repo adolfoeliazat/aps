@@ -1,7 +1,6 @@
 package aps
 
 import aps.back.*
-import into.kommon.*
 import org.springframework.data.repository.findOrDie
 import kotlin.properties.Delegates
 import kotlin.properties.Delegates.notNull

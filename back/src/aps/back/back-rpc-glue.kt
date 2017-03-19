@@ -1,7 +1,6 @@
 package aps.back
 
 import aps.*
-import into.kommon.*
 
 @RemoteProcedureFactory fun jsonProcedure() = testProcedure(
     {JsonProcedureRequest()},

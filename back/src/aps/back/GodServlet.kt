@@ -7,7 +7,6 @@
 package aps.back
 
 import aps.*
-import into.kommon.*
 import org.jooq.Result
 import org.springframework.beans.factory.NoSuchBeanDefinitionException
 import org.springframework.transaction.PlatformTransactionManager

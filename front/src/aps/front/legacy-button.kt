@@ -8,7 +8,6 @@ package aps.front
 
 import aps.*
 import aps.const.text.symbols.nbsp
-import into.kommon.*
 import kotlin.js.json
 
 fun jsFacing_button(def: dynamic, key: ButtonKey? = null): dynamic {

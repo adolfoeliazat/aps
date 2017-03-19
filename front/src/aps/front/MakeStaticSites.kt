@@ -12,7 +12,6 @@ import aps.*
 import aps.const.text.symbols.emdash
 import aps.const.text.symbols.nbsp
 import aps.const.text.symbols.endash
-import into.kommon.*
 import kotlin.js.json
 
 object MakeStaticSites {

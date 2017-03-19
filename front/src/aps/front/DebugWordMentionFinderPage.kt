@@ -1,7 +1,6 @@
 package aps.front
 
 import aps.*
-import into.kommon.*
 
 class DebugWordMentionFinderPage(val world: World) {
     private val typedStorageLocal = Globus.realTypedStorageLocal

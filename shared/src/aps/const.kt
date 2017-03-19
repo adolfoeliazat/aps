@@ -1,6 +1,5 @@
 package aps
 
-import into.kommon.*
 
 object const {
 

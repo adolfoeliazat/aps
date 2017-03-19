@@ -12,7 +12,6 @@ import com.fasterxml.jackson.databind.type.TypeFactory
 import com.fasterxml.jackson.databind.util.*
 import com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping.*
 import com.fasterxml.jackson.databind.module.SimpleModule
-import into.kommon.*
 import java.io.IOException
 import kotlin.reflect.KClass
 

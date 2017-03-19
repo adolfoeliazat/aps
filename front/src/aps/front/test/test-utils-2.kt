@@ -3,7 +3,6 @@ package aps.front.testutils
 import aps.*
 import aps.front.*
 import aps.front.Globus.effectsPane
-import into.kommon.*
 import into.mochka.assertEquals
 import org.w3c.dom.Storage
 import org.w3c.dom.events.Event

@@ -1,7 +1,7 @@
 package aps.front
 
+import aps.*
 import aps.front.testutils.*
-import into.kommon.*
 
 class Test_UACustomer_SignUp_HappyPath : StepBasedTestScenario() {
     override fun buildSteps() {

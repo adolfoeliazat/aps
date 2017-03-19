@@ -7,7 +7,6 @@
 package aps.front
 
 import aps.*
-import into.kommon.*
 
 fun jsFacing_pollLiveStatus(ui: World): Promisoid<Unit> = async {
 }

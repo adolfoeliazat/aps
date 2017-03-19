@@ -9,7 +9,6 @@
 package aps.front
 
 import aps.*
-import into.kommon.*
 import org.w3c.dom.events.MouseEvent
 import kotlin.js.Json
 import kotlin.js.json

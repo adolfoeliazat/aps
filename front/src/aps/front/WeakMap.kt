@@ -1,7 +1,6 @@
 package aps.front
 
 import aps.*
-import into.kommon.*
 
 external class WeakMap<in K: Any, V: Any?> {
     fun delete(key: K): Boolean

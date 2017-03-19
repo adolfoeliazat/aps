@@ -9,7 +9,6 @@
 package aps.front
 
 import aps.*
-import into.kommon.*
 import org.w3c.dom.MessageEvent
 import org.w3c.dom.events.Event
 import org.w3c.dom.events.KeyboardEvent

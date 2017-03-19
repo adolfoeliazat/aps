@@ -1,7 +1,6 @@
 package aps.front
 
 import aps.*
-import into.kommon.*
 
 abstract class WriterBootTestScenario : BootTestScenario() {
     override val clientKind = ClientKind.UA_WRITER

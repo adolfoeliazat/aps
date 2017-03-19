@@ -9,7 +9,6 @@
 package aps.front
 
 import aps.*
-import into.kommon.*
 import kotlin.js.json
 
 interface ICheckbox {

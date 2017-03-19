@@ -2,7 +2,6 @@ package aps.front
 
 import aps.*
 import aps.front.testutils.*
-import into.kommon.*
 import org.w3c.dom.Storage
 import kotlin.browser.localStorage
 import kotlin.browser.window

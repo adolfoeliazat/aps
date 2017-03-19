@@ -2,7 +2,6 @@ package aps.back
 
 import aps.*
 import aps.const.file.APS_TEMP
-import into.kommon.*
 import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.data.repository.findOrDie
 import java.io.File

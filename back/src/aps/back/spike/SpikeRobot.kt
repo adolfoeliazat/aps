@@ -1,8 +1,8 @@
 package aps.back.spike
 
+import aps.*
 import com.sun.jna.platform.win32.User32
 import com.sun.jna.platform.win32.User32Util
-import into.kommon.*
 import java.awt.Event
 import java.awt.Robot
 import java.awt.event.InputEvent

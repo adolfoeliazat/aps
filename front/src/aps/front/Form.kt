@@ -10,7 +10,6 @@ package aps.front
 
 import aps.*
 import aps.front.testutils.*
-import into.kommon.*
 import kotlin.js.Json
 import kotlin.js.json
 

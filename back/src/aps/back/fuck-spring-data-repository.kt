@@ -1,6 +1,6 @@
 package org.springframework.data.repository
 
-import into.kommon.*
+import aps.*
 import java.io.Serializable
 
 @NoRepositoryBean

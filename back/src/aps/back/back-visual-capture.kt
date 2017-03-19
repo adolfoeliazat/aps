@@ -1,7 +1,6 @@
 package aps.back
 
 import aps.*
-import into.kommon.*
 import java.awt.BasicStroke
 import java.awt.Color
 import java.awt.image.BufferedImage

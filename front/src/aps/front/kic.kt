@@ -1,7 +1,6 @@
 package aps.front
 
 import aps.*
-import into.kommon.*
 
 open class KicKey(override val fqn: String) : Fucker(), FQNed
 

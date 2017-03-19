@@ -10,7 +10,6 @@ import aps.*
 import aps.back.generated.jooq.Tables.*
 import aps.back.generated.jooq.tables.pojos.*
 import com.google.common.hash.Hashing
-import into.kommon.*
 import java.util.*
 
 //@RemoteProcedureFactory fun serveCustomerEditUAOrderFile() = customerProcedure(

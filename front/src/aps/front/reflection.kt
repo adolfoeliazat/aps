@@ -2,7 +2,8 @@
 
 package aps.front
 
-import into.kommon.bitch
+import aps.*
+
 
 fun ctorName(x: Any): String = x.asDynamic().__proto__.constructor.name
 

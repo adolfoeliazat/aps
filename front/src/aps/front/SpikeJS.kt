@@ -7,7 +7,6 @@
 package aps.front
 
 import aps.*
-import into.kommon.*
 
 object SpikeJS {
     @JsName("runShit")

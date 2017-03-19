@@ -3,7 +3,6 @@
 package aps.front
 
 import aps.*
-import into.kommon.*
 
 fun setPropertyOrBackingField(obj: Any, prop: String, value: Any?) {
     try {

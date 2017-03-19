@@ -9,7 +9,6 @@
 package aps.front
 
 import aps.*
-import into.kommon.*
 import kotlin.browser.window
 import kotlin.js.json
 import kotlin.reflect.KClass

@@ -1,7 +1,6 @@
 package aps.front
 
 import aps.*
-import into.kommon.*
 
 fun send(req: RecreateTestDatabaseSchemaRequest): Promisoid<GenericResponse> = callDangerousMatumba(req)
 fun send(req: ResetTestDatabaseRequest): Promisoid<GenericResponse> = callDangerousMatumba(req)

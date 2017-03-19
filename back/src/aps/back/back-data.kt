@@ -10,7 +10,6 @@ import aps.back.generated.jooq.tables.JQUserRoles.*
 import aps.back.generated.jooq.tables.JQUsers.*
 import aps.back.generated.jooq.tables.pojos.*
 import aps.back.generated.jooq.tables.records.*
-import into.kommon.*
 import org.jooq.*
 import java.sql.Timestamp
 

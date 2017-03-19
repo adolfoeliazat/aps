@@ -2,7 +2,6 @@ package aps.front
 
 import aps.*
 import aps.Color.*
-import into.kommon.*
 import org.w3c.dom.events.Event
 import org.w3c.dom.events.KeyboardEvent
 import kotlin.browser.document

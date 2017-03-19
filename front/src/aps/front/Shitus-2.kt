@@ -11,7 +11,6 @@ package aps.front
 import aps.*
 import aps.Color.*
 import aps.const.text.symbols.nbsp
-import into.kommon.*
 import kotlin.browser.window
 import kotlin.js.json
 

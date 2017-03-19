@@ -7,7 +7,6 @@
 package aps
 
 import aps.back.*
-import into.kommon.*
 import org.apache.tools.ant.Project
 import java.io.File
 import org.apache.tools.ant.taskdefs.*

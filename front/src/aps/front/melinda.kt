@@ -2,7 +2,6 @@ package aps.front
 
 import aps.*
 import aps.const.text.numberSign
-import into.kommon.*
 import org.w3c.dom.Element
 import org.w3c.dom.events.MouseEvent
 import kotlin.js.json

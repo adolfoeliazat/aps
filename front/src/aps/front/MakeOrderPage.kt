@@ -1,7 +1,6 @@
 package aps.front
 
 import aps.*
-import into.kommon.*
 
 class MakeOrderPage(val world: World) {
     val place: Placeholder by mere(Placeholder(

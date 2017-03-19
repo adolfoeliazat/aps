@@ -1,7 +1,6 @@
 package aps.back
 
 import aps.*
-import into.kommon.*
 import org.hibernate.annotations.GenericGenerator
 import org.hibernate.engine.spi.SharedSessionContractImplementor
 import org.hibernate.id.IdentityGenerator
