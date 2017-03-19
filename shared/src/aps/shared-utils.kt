@@ -61,8 +61,6 @@ fun String?.nullifyBlank(): String? =
     if (this.isNullOrBlank()) null
     else this
 
-annotation class Dummy
-
 fun <T> tryOrDefault(attempt: () -> T, default: () -> T): T =
     try {attempt()}
     catch (e: Throwable) {default()}

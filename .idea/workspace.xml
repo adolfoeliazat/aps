@@ -9,14 +9,14 @@
     <bookmark url="file://$PROJECT_DIR$/shared-back-junction/src/aps/generated-shared.kt" line="5" />
     <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/generated-front.kt" line="5" />
     <bookmark url="file://$PROJECT_DIR$/back/src/aps/back/rp-test-2.kt" line="194" />
-    <bookmark url="file://$PROJECT_DIR$/shared-back-junction/src/aps/shared-stuff.kt" line="276" />
+    <bookmark url="file://$PROJECT_DIR$/shared-back-junction/src/aps/shared-stuff.kt" line="274" />
     <bookmark url="file://$PROJECT_DIR$/shared-back-junction/src/aps/field-shared.kt" line="26" />
     <bookmark url="file://$PROJECT_DIR$/back/src/aps/SelectField.kt" line="4" />
     <bookmark url="file://$PROJECT_DIR$/front/src/aps/SelectField.kt" line="8" />
     <bookmark url="file://$PROJECT_DIR$/shared-front-junction/src/aps/field-shared.kt" line="26" />
     <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/melinda.kt" line="75" />
     <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/AdminUsersPage.kt" line="46" />
-    <bookmark url="file://$PROJECT_DIR$/shared-back-junction/src/aps/shared-utils.kt" line="275" />
+    <bookmark url="file://$PROJECT_DIR$/shared-back-junction/src/aps/shared-utils.kt" line="273" />
     <bookmark url="file://$PROJECT_DIR$/front/src/aps/front/StorePage.kt" line="25" />
     <bookmark url="file://$PROJECT_DIR$/back/src/aps/back/rp-store.kt" line="23" />
     <bookmark url="file://$PROJECT_DIR$/back/src/aps/back/rp-store.kt" line="51" />
@@ -40,167 +40,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="623d9374-21ec-4085-99fa-3e54b1e3521c" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/xplatf/xplatf-back/src/xplatf-back-1.kt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/xplatf/xplatf-shared/src/fuck.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/xplatf/xplatf-shared/src/xplatf-shared-1.kt" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/shared/src/aps/kommon-both.kt" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dictionaries/Vladimir.xml" afterPath="$PROJECT_DIR$/.idea/dictionaries/Vladimir.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/xplatf/xplatf-back/src/xplatf-back-shared-impl-1.kt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/KotlinJavaRuntime.xml" afterPath="$PROJECT_DIR$/.idea/libraries/KotlinJavaRuntime.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/back.iml" afterPath="$PROJECT_DIR$/back/back.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/AfterCompilationShit.kt" afterPath="$PROJECT_DIR$/back/src/aps/AfterCompilationShit.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/DateTimeField.kt" afterPath="$PROJECT_DIR$/back/src/aps/DateTimeField.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/DocumentCategoryField.kt" afterPath="$PROJECT_DIR$/back/src/aps/DocumentCategoryField.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/DocumentCategorySetField.kt" afterPath="$PROJECT_DIR$/back/src/aps/DocumentCategorySetField.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/FileField.kt" afterPath="$PROJECT_DIR$/back/src/aps/FileField.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/IntField.kt" afterPath="$PROJECT_DIR$/back/src/aps/IntField.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/LintShit.kt" afterPath="$PROJECT_DIR$/back/src/aps/LintShit.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/TextField.kt" afterPath="$PROJECT_DIR$/back/src/aps/TextField.kt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/Back.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/Back.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/BundleForCloudFoundry.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/BundleForCloudFoundry.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/Forever.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/Forever.kt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/GodServlet.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/GodServlet.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/MatumbaProcedure.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/MatumbaProcedure.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/Postmark.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/Postmark.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/PublishStaticSitesOnGH.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/PublishStaticSitesOnGH.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/PushSlimShitToCF.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/PushSlimShitToCF.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/Run.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/Run.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/ServeConfirmOrder.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/ServeConfirmOrder.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/ServeSignUp.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/ServeSignUp.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/back-data.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/back-data.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/back-rpc-glue.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/back-rpc-glue.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/back-utils.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/back-utils.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/back-visual-capture.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/back-visual-capture.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/bconst.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/bconst.kt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/bitchy-procedures.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/bitchy-procedures.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/clitoral-entities.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/clitoral-entities.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/db.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/db.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/email.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/email.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/fuck-spring-data-repository.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/fuck-spring-data-repository.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/jackson-abomination.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/jackson-abomination.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/jooq-proxies.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/jooq-proxies.kt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/miranda-vs-regina.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/miranda-vs-regina.kt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/platform.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/platform.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/rp-customerGetUAOrderFiles.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/rp-customerGetUAOrderFiles.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/rp-editUAOrderFile.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/rp-editUAOrderFile.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/rp-getUsers.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/rp-getUsers.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/rp-history.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/rp-history.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/rp-mapStack.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/rp-mapStack.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/rp-order.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/rp-order.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/rp-store.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/rp-store.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/rp-test-2.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/rp-test-2.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/rp-test.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/rp-test.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/rp-updateUser.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/rp-updateUser.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/rp-user.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/rp-user.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/spike/SpikeJackson.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/spike/SpikeJackson.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/spike/SpikeRobot.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/spike/SpikeRobot.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/back/tracing.kt" afterPath="$PROJECT_DIR$/back/src/aps/back/tracing.kt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/shared-utils-back-impl.kt" afterPath="$PROJECT_DIR$/back/src/aps/shared-utils-back-impl.kt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/aps/version.txt" afterPath="$PROJECT_DIR$/back/src/aps/version.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/back/src/kommon/into/kommon/EnhanceJS.kt" afterPath="$PROJECT_DIR$/back/src/kommon/into/kommon/EnhanceJS.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/front.iml" afterPath="$PROJECT_DIR$/front/front.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/CheckboxField.kt" afterPath="$PROJECT_DIR$/front/src/aps/CheckboxField.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/DateTimeField.kt" afterPath="$PROJECT_DIR$/front/src/aps/DateTimeField.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/DocumentCategoryField.kt" afterPath="$PROJECT_DIR$/front/src/aps/DocumentCategoryField.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/DocumentCategorySetField.kt" afterPath="$PROJECT_DIR$/front/src/aps/DocumentCategorySetField.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/FileField.kt" afterPath="$PROJECT_DIR$/front/src/aps/FileField.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/FileField_separateUpload.kt" afterPath="$PROJECT_DIR$/front/src/aps/FileField_separateUpload.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/AdminUsersPage.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/AdminUsersPage.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/BidsPage.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/BidsPage.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/Browseroid.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/Browseroid.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/Buttonius.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/Buttonius.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/Checkbox.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/Checkbox.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/ConfirmOrderPage.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/ConfirmOrderPage.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/Control.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/Control.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/Control2.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/Control2.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/DashboardPage.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/DashboardPage.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/DebugLogPage.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/DebugLogPage.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/DebugMailbox.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/DebugMailbox.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/DebugPage.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/DebugPage.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/DebugWordMentionFinderPage.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/DebugWordMentionFinderPage.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/EnumSelect.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/EnumSelect.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/Form.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/Form.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/Globus.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/Globus.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/Input.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/Input.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/MakeOrderPage.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/MakeOrderPage.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/MakeStaticSites.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/MakeStaticSites.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/Old_Panes.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/Old_Panes.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/Pizdalinda.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/Pizdalinda.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/ProfilePage.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/ProfilePage.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/Select.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/Select.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/Shitus-2.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/Shitus-2.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/Shitus.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/Shitus.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/SingleUserPage.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/SingleUserPage.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/SpikeJS.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/SpikeJS.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/StatefulElement.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/StatefulElement.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/StorePage.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/StorePage.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/Tabs.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/Tabs.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/TestScenarioBuilder.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/TestScenarioBuilder.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/TestShit.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/TestShit.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/TestUserActionAnimation.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/TestUserActionAnimation.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/UACustomerSingleOrderPageFilesTab.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/UACustomerSingleOrderPageFilesTab.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/UASingleOrderPage.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/UASingleOrderPage.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/WeakMap.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/WeakMap.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/World.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/World.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/WriterBootTestScenario.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/WriterBootTestScenario.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/WriterOrdersPage.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/WriterOrdersPage.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/aps-css.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/aps-css.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/art.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/art.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/assertScreenHTML.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/assertScreenHTML.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/async.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/async.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/basic-controls.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/basic-controls.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/diff.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/diff.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/dolly.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/dolly.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/front-killme.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/front-killme.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/front-rpc-glue.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/front-rpc-glue.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/front-shebang.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/front-shebang.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/front-spikes.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/front-spikes.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/front-utils-2.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/front-utils-2.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/front-utils.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/front-utils.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/highlightedShit.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/highlightedShit.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/igniter.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/igniter.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/kic.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/kic.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/kjs-reflection.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/kjs-reflection.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/legacy-button.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/legacy-button.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/link.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/link.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/live-status.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/live-status.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/liveBadge.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/liveBadge.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/location.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/location.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/melinda.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/melinda.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/mochka.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/mochka.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/modal.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/modal.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/navbar.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/navbar.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/new-shit.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/new-shit.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/page-index.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/page-index.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/page-orders.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/page-orders.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/react.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/react.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/reflection.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/reflection.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/rpc.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/rpc.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/structural-capture.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/structural-capture.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/tabitha.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/tabitha.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/test-sequences.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/test-sequences.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/test/TestCommon.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/test/TestCommon.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/test/TestWriter_Boot_ProfileApprovalPending.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/test/TestWriter_Boot_ProfileApprovalPending.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/test/TestWriter_Boot_ProfilePending.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/test/TestWriter_Boot_ProfilePending.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/test/TestWriter_Boot_ProfileRejected.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/test/TestWriter_Boot_ProfileRejected.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/test/TestWriter_SignUp_HappyPath.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/test/TestWriter_SignUp_HappyPath.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/test/Test_UA_CrazyLong_1.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/test/Test_UA_CrazyLong_1.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/test/Test_UA_CrazyLong_2.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/test/Test_UA_CrazyLong_2.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/test/customer/Test_UACustomer_NewOrder_HappyPath.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/test/customer/Test_UACustomer_NewOrder_HappyPath.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/test/customer/Test_UACustomer_SignUp_HappyPath.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/test/customer/Test_UACustomer_SignUp_HappyPath.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/test/test-utils-2.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/test/test-utils-2.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/test/test-utils-3.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/test/test-utils-3.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/test/test-utils.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/test/test-utils.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/test/test-writer-ua.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/test/test-writer-ua.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/test/writer-test-utils.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/test/writer-test-utils.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/front/visual-capture.kt" afterPath="$PROJECT_DIR$/front/src/aps/front/visual-capture.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/little-motherfuckers.kt" afterPath="$PROJECT_DIR$/front/src/aps/little-motherfuckers.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/front/src/aps/shared-utils-front-impl.kt" afterPath="$PROJECT_DIR$/front/src/aps/shared-utils-front-impl.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shared/src/aps/const.kt" afterPath="$PROJECT_DIR$/shared/src/aps/const.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shared/src/aps/field-shared.kt" afterPath="$PROJECT_DIR$/shared/src/aps/field-shared.kt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shared/src/aps/shared-stuff.kt" afterPath="$PROJECT_DIR$/shared/src/aps/shared-stuff.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shared/src/aps/shared-utils-2.kt" afterPath="$PROJECT_DIR$/shared/src/aps/shared-utils-2.kt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shared/src/aps/shared-utils.kt" afterPath="$PROJECT_DIR$/shared/src/aps/shared-utils.kt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xplatf/xplatf-back/src/xplatf-back-1.kt" afterPath="$PROJECT_DIR$/xplatf/xplatf-back/src/xplatf-back-1.kt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xplatf/xplatf-shared/src/xplatf-shared-1.kt" afterPath="$PROJECT_DIR$/xplatf/xplatf-shared/src/xplatf-shared-1.kt" />
     </list>
     <ignored path="aps.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -283,105 +136,113 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="AfterCompilationShit.kt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/back/src/aps/AfterCompilationShit.kt">
+      <file leaf-file-name="xplatf-back-1.kt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/xplatf/xplatf-back/src/xplatf-back-1.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="9" column="0" lean-forward="false" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DateTimeField.kt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/back/src/aps/DateTimeField.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="72">
-              <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Forever.kt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/back/src/aps/back/Forever.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="96">
-              <caret line="8" column="0" lean-forward="false" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
+            <state relative-caret-position="280">
+              <caret line="216" column="59" lean-forward="false" selection-start-line="216" selection-start-column="59" selection-end-line="216" selection-end-column="59" />
               <folding>
-                <element signature="e#80#244#0" expanded="true" />
+                <element signature="e#18#83#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="bconst.kt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/back/src/aps/back/bconst.kt">
+      <file leaf-file-name="GodServlet.kt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/back/src/aps/back/GodServlet.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="72">
-              <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="email.kt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/back/src/aps/back/email.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="72">
-              <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="jooq-proxies.kt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/back/src/aps/back/jooq-proxies.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="96">
-              <caret line="4" column="0" lean-forward="false" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="rp-editUAOrderFile.kt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/back/src/aps/back/rp-editUAOrderFile.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="192">
-              <caret line="12" column="0" lean-forward="false" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="rp-getUsers.kt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/back/src/aps/back/rp-getUsers.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="144">
-              <caret line="10" column="0" lean-forward="false" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="rp-updateUser.kt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/back/src/aps/back/rp-updateUser.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="192">
-              <caret line="12" column="0" lean-forward="false" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+            <state relative-caret-position="336">
+              <caret line="131" column="8" lean-forward="false" selection-start-line="131" selection-start-column="8" selection-end-line="131" selection-end-column="8" />
               <folding>
-                <element signature="e#80#201#0" expanded="true" />
+                <element signature="e#80#666#0" expanded="true" />
+                <marker date="1489922633848" expanded="false" signature="87:466" ph="..." />
+                <marker date="1489922633848" expanded="true" signature="6301:6312" ph="{...}" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="tracing.kt" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/back/src/aps/back/tracing.kt">
+      <file leaf-file-name="HttpServletResponse.java" pinned="false" current-in-tab="false">
+        <entry file="jar://$USER_HOME$/.ideaLibSources/javax.servlet-api-3.1.0-sources.jar!/javax/servlet/http/HttpServletResponse.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="294">
+              <caret line="467" column="28" lean-forward="false" selection-start-line="467" selection-start-column="28" selection-end-line="467" selection-end-column="28" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="bitchy-procedures.kt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/back/src/aps/back/bitchy-procedures.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="360">
+              <caret line="15" column="0" lean-forward="false" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
+              <folding>
+                <element signature="e#18#277#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Test_UA_CrazyLong_2.kt" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/front/src/aps/front/test/Test_UA_CrazyLong_2.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="360">
+              <caret line="82" column="12" lean-forward="false" selection-start-line="82" selection-start-column="12" selection-end-line="82" selection-end-column="12" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="shared-utils-back-impl.kt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/back/src/aps/shared-utils-back-impl.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="283">
+              <caret line="73" column="0" lean-forward="false" selection-start-line="73" selection-start-column="0" selection-end-line="73" selection-end-column="0" />
+              <folding>
+                <element signature="e#75#298#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Back.kt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/back/src/aps/back/Back.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="318">
+              <caret line="450" column="0" lean-forward="false" selection-start-line="450" selection-start-column="0" selection-end-line="450" selection-end-column="0" />
+              <folding>
+                <element signature="e#80#1563#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="shared-stuff.kt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/shared-back-junction/src/aps/shared-stuff.kt">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="72">
-              <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+              <caret line="394" column="0" lean-forward="false" selection-start-line="394" selection-start-column="0" selection-end-line="394" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="xplatf-shared-1.kt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/xplatf-shared-back-junction/src/xplatf-shared-1.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="696">
+              <caret line="36" column="0" lean-forward="false" selection-start-line="36" selection-start-column="0" selection-end-line="36" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="xplatf-back-shared-impl-1.kt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/xplatf/xplatf-back/src/xplatf-back-shared-impl-1.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="96">
+              <caret line="4" column="17" lean-forward="false" selection-start-line="4" selection-start-column="17" selection-end-line="4" selection-end-column="17" />
               <folding />
             </state>
           </provider>
@@ -492,13 +353,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/back/src/aps/IntField.kt" />
-        <option value="$PROJECT_DIR$/back/src/aps/LintShit.kt" />
-        <option value="$PROJECT_DIR$/back/src/aps/TextField.kt" />
-        <option value="$PROJECT_DIR$/back/src/aps/back/Back.kt" />
-        <option value="$PROJECT_DIR$/back/src/aps/back/BundleForCloudFoundry.kt" />
-        <option value="$PROJECT_DIR$/back/src/aps/back/GodServlet.kt" />
-        <option value="$PROJECT_DIR$/back/src/aps/back/MatumbaProcedure.kt" />
         <option value="$PROJECT_DIR$/back/src/aps/back/Postmark.kt" />
         <option value="$PROJECT_DIR$/back/src/aps/back/PublishStaticSitesOnGH.kt" />
         <option value="$PROJECT_DIR$/back/src/aps/back/PushSlimShitToCF.kt" />
@@ -514,7 +368,6 @@
         <option value="$PROJECT_DIR$/back/src/aps/back/fuck-spring-data-repository.kt" />
         <option value="$PROJECT_DIR$/back/src/aps/back/jackson-abomination.kt" />
         <option value="$PROJECT_DIR$/back/src/aps/back/miranda-vs-regina.kt" />
-        <option value="$PROJECT_DIR$/back/src/aps/back/platform.kt" />
         <option value="$PROJECT_DIR$/back/src/aps/back/rp-customerGetUAOrderFiles.kt" />
         <option value="$PROJECT_DIR$/back/src/aps/back/rp-history.kt" />
         <option value="$PROJECT_DIR$/back/src/aps/back/rp-mapStack.kt" />
@@ -525,14 +378,11 @@
         <option value="$PROJECT_DIR$/back/src/aps/back/rp-user.kt" />
         <option value="$PROJECT_DIR$/back/src/aps/back/spike/SpikeJackson.kt" />
         <option value="$PROJECT_DIR$/back/src/aps/back/spike/SpikeRobot.kt" />
-        <option value="$PROJECT_DIR$/back/src/aps/shared-utils-back-impl.kt" />
         <option value="$PROJECT_DIR$/back/src/kommon/into/kommon/EnhanceJS.kt" />
         <option value="$PROJECT_DIR$/xplatf/xplatf-back/src/xplatf-back-shebang.kt" />
-        <option value="$PROJECT_DIR$/back/src/aps/back/bitchy-procedures.kt" />
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/shared-front-junction/src/aps/field-shared.kt" />
         <option value="$PROJECT_DIR$/shared-back-junction/src/aps/kommon-both.kt" />
-        <option value="$PROJECT_DIR$/xplatf-shared-back-junction/src/xplatf-shared-1.kt" />
         <option value="$PROJECT_DIR$/back/src/aps/AfterCompilationShit.kt" />
         <option value="$PROJECT_DIR$/back/src/aps/DateTimeField.kt" />
         <option value="$PROJECT_DIR$/back/src/aps/back/Forever.kt" />
@@ -543,6 +393,17 @@
         <option value="$PROJECT_DIR$/back/src/aps/back/rp-getUsers.kt" />
         <option value="$PROJECT_DIR$/back/src/aps/back/rp-updateUser.kt" />
         <option value="$PROJECT_DIR$/back/src/aps/back/tracing.kt" />
+        <option value="$PROJECT_DIR$/shared-back-junction/src/aps/shared-utils.kt" />
+        <option value="$PROJECT_DIR$/xplatf/xplatf-back/src/xplatf-back-shared-impl-1.kt" />
+        <option value="$PROJECT_DIR$/back/src/aps/back/platform.kt" />
+        <option value="$PROJECT_DIR$/back/src/aps/back/Back.kt" />
+        <option value="$PROJECT_DIR$/back/src/aps/shared-utils-back-impl.kt" />
+        <option value="$PROJECT_DIR$/shared-back-junction/src/aps/shared-stuff.kt" />
+        <option value="$PROJECT_DIR$/xplatf-shared-back-junction/src/xplatf-shared-1.kt" />
+        <option value="$PROJECT_DIR$/back/src/aps/back/bitchy-procedures.kt" />
+        <option value="$PROJECT_DIR$/back/src/aps/back/GodServlet.kt" />
+        <option value="$PROJECT_DIR$/xplatf/xplatf-back/src/xplatf-back-1.kt" />
+        <option value="$PROJECT_DIR$/front/src/aps/front/test/Test_UA_CrazyLong_2.kt" />
       </list>
     </option>
   </component>
@@ -721,6 +582,14 @@
               <option name="myItemId" value="back" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
             </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="xplatf-back" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -744,6 +613,16 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="aps" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="back" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
       <pane id="Scratches" />
@@ -755,9 +634,9 @@
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15407854" />
     <property name="project.structure.side.proportion" value="0.29066667" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/xplatf-shared-front-junction" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/lib/kotlin-runtime-sources.jar!/" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$2/Languages" value="TEXT&#10;kotlin" />
-    <property name="SearchEverywhereHistoryKey" value="ant-mss&#9;RUN_CONFIGURATION&#9;ant-MakeStaticSites&#10;genericresponse&#9;null&#9;null&#10;fielderror&#9;null&#9;null&#10;commonrespons&#9;null&#9;null&#10;formfieldba&#9;null&#9;null&#10;RequestMatu&#9;null&#9;null&#10;backglo&#9;null&#9;null&#10;ant-ms&#9;RUN_CONFIGURATION&#9;ant-MakeStaticSites&#10;clog&#9;null&#9;null&#10;external&#9;null&#9;null&#10;makestat&#9;null&#9;null&#10;spew&#9;FILE&#9;file://E:/work/aps/tools/src/aps/Spew.kt&#10;entityresponse&#9;null&#9;null&#10;rp-sh&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/rp-shebang.kt&#10;reginaload&#9;null&#9;null&#10;reginaloaduser&#9;null&#9;null&#10;s-r&#9;FILE&#9;file://E:/work/aps/shared-back-junction/src/aps/shared-rpc.kt&#10;relaxed&#9;null&#9;null&#10;storefilter&#9;null&#9;null&#10;front-glue&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/front-rpc-glue.kt&#10;servemirand&#9;null&#9;null&#10;ktfunction&#9;PSI&#9;JAVA://org.jetbrains.kotlin.psi.KtFunction&#10;ktfile&#9;FILE&#9;file://E:/work/vendor/kotlin/kotlin-1.1/compiler/frontend/src/org/jetbrains/kotlin/psi/KtFile.java&#10;k2&#9;FILE&#9;file://E:/work/vendor/kotlin/kotlin-1.1/compiler/cli/src/org/jetbrains/kotlin/cli/jvm/K2JVMCompiler.kt&#10;kotlinparser&#9;PSI&#9;JAVA://org.jetbrains.kotlin.parsing.KotlinParser&#10;k2jvm&#9;null&#9;null&#10;generate&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/generated-shit.kt&#10;serveobje&#9;null&#9;null&#10;servemi&#9;null&#9;null&#10;generated-&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/generated-shit.kt&#10;seed&#9;null&#9;null&#10;assertscre&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/assertScreenHTML.kt&#10;definedex&#9;null&#9;null&#10;imposetimestamp&#9;null&#9;null&#10;testdata&#9;null&#9;null&#10;kotlin-bugs&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/kotlin-bugs.kt&#10;renderprofile&#9;null&#9;null&#10;tabitha&#9;null&#9;null&#10;selenapicker&#9;null&#9;null&#10;front-utils2&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/front-utils-2.kt&#10;profilepage&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/ProfilePage.kt&#10;const&#9;FILE&#9;file://E:/work/aps/shared-back-junction/src/aps/const.kt&#10;fconst&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/fconst.kt&#10;profilepa&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/ProfilePage.kt&#10;serveupdatepro&#9;null&#9;null&#10;serveupdateprofile&#9;null&#9;null&#10;kotlinj&#9;FILE&#9;jar://E:/work/aps/back/lib-gradle/kotlin-script-util-1.1.0.jar!/org/jetbrains/kotlin/script/jsr223/KotlinJsr223JvmLocalScriptEngineFactory.class&#10;build.gra&#9;FILE&#9;file://E:/work/aps/back/build.gradle&#10;apshome&#9;null&#9;null&#10;build.xml&#9;FILE&#9;file://E:/work/aps/build.xml" />
+    <property name="SearchEverywhereHistoryKey" value="ant-mss&#9;RUN_CONFIGURATION&#9;ant-MakeStaticSites&#10;delegates&#9;null&#9;null&#10;delegate&#9;FILE&#9;jar://E:/work/aps/lib/kotlin-runtime.jar!/kotlin/properties/Delegates.class&#10;readonlyproperty&#9;null&#9;null&#10;genericresponse&#9;null&#9;null&#10;fielderror&#9;null&#9;null&#10;commonrespons&#9;null&#9;null&#10;formfieldba&#9;null&#9;null&#10;RequestMatu&#9;null&#9;null&#10;backglo&#9;null&#9;null&#10;ant-ms&#9;RUN_CONFIGURATION&#9;ant-MakeStaticSites&#10;clog&#9;null&#9;null&#10;external&#9;null&#9;null&#10;makestat&#9;null&#9;null&#10;spew&#9;FILE&#9;file://E:/work/aps/tools/src/aps/Spew.kt&#10;entityresponse&#9;null&#9;null&#10;rp-sh&#9;FILE&#9;file://E:/work/aps/back/src/aps/back/rp-shebang.kt&#10;reginaload&#9;null&#9;null&#10;reginaloaduser&#9;null&#9;null&#10;s-r&#9;FILE&#9;file://E:/work/aps/shared-back-junction/src/aps/shared-rpc.kt&#10;relaxed&#9;null&#9;null&#10;storefilter&#9;null&#9;null&#10;front-glue&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/front-rpc-glue.kt&#10;servemirand&#9;null&#9;null&#10;ktfunction&#9;PSI&#9;JAVA://org.jetbrains.kotlin.psi.KtFunction&#10;ktfile&#9;FILE&#9;file://E:/work/vendor/kotlin/kotlin-1.1/compiler/frontend/src/org/jetbrains/kotlin/psi/KtFile.java&#10;k2&#9;FILE&#9;file://E:/work/vendor/kotlin/kotlin-1.1/compiler/cli/src/org/jetbrains/kotlin/cli/jvm/K2JVMCompiler.kt&#10;kotlinparser&#9;PSI&#9;JAVA://org.jetbrains.kotlin.parsing.KotlinParser&#10;k2jvm&#9;null&#9;null&#10;generate&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/generated-shit.kt&#10;serveobje&#9;null&#9;null&#10;servemi&#9;null&#9;null&#10;generated-&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/generated-shit.kt&#10;seed&#9;null&#9;null&#10;assertscre&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/assertScreenHTML.kt&#10;definedex&#9;null&#9;null&#10;imposetimestamp&#9;null&#9;null&#10;testdata&#9;null&#9;null&#10;kotlin-bugs&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/kotlin-bugs.kt&#10;renderprofile&#9;null&#9;null&#10;tabitha&#9;null&#9;null&#10;selenapicker&#9;null&#9;null&#10;front-utils2&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/front-utils-2.kt&#10;profilepage&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/ProfilePage.kt&#10;const&#9;FILE&#9;file://E:/work/aps/shared-back-junction/src/aps/const.kt&#10;fconst&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/fconst.kt&#10;profilepa&#9;FILE&#9;file://E:/work/aps/front/src/aps/front/ProfilePage.kt&#10;serveupdatepro&#9;null&#9;null&#10;serveupdateprofile&#9;null&#9;null&#10;kotlinj&#9;FILE&#9;jar://E:/work/aps/back/lib-gradle/kotlin-script-util-1.1.0.jar!/org/jetbrains/kotlin/script/jsr223/KotlinJsr223JvmLocalScriptEngineFactory.class" />
     <property name="two.files.diff.last.used.file" value="C:/opt/Redis/redis.windows-service.conf" />
     <property name="last.edited.regexp" value="" />
   </component>
@@ -1191,13 +1070,6 @@
       <option name="presentableId" value="Default" />
       <updated>1473062986795</updated>
     </task>
-    <task id="LOCAL-00491" summary="A piece of... code">
-      <created>1488388702779</created>
-      <option name="number" value="00491" />
-      <option name="presentableId" value="LOCAL-00491" />
-      <option name="project" value="LOCAL" />
-      <updated>1488388702780</updated>
-    </task>
     <task id="LOCAL-00492" summary="A piece of... code">
       <created>1488393442869</created>
       <option name="number" value="00492" />
@@ -1534,7 +1406,14 @@
       <option name="project" value="LOCAL" />
       <updated>1489907325779</updated>
     </task>
-    <option name="localTasksCounter" value="540" />
+    <task id="LOCAL-00540" summary="A piece of... code">
+      <created>1489911122732</created>
+      <option name="number" value="00540" />
+      <option name="presentableId" value="LOCAL-00540" />
+      <option name="project" value="LOCAL" />
+      <updated>1489911122732</updated>
+    </task>
+    <option name="localTasksCounter" value="541" />
     <servers />
   </component>
   <component name="TodoView">
@@ -1721,7 +1600,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/back/src/aps/back/GodServlet.kt</url>
-          <line>142</line>
+          <line>178</line>
           <properties />
           <option name="timeStamp" value="234" />
         </line-breakpoint>
@@ -1816,131 +1695,6 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/back/src/aps/IntField.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="72">
-          <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/back/src/aps/LintShit.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="96">
-          <caret line="8" column="0" lean-forward="false" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
-          <folding>
-            <element signature="e#75#127#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/back/src/aps/TextField.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="96">
-          <caret line="4" column="0" lean-forward="false" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/back/src/aps/back/Back.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="144">
-          <caret line="10" column="0" lean-forward="false" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/back/src/aps/back/BundleForCloudFoundry.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="72">
-          <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/back/src/aps/back/GodServlet.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="9" column="0" lean-forward="false" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
-          <folding>
-            <marker date="1489909747749" expanded="true" signature="87:466" ph="..." />
-            <marker date="1489909747749" expanded="true" signature="4952:4963" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/back/src/aps/back/MatumbaProcedure.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="9" column="0" lean-forward="false" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/back/src/aps/back/Postmark.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="96">
-          <caret line="4" column="0" lean-forward="false" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/back/src/aps/back/PublishStaticSitesOnGH.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="72">
-          <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/back/src/aps/back/PushSlimShitToCF.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="96">
-          <caret line="4" column="0" lean-forward="false" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/back/src/aps/back/Run.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="9" column="0" lean-forward="false" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/back/src/aps/back/ServeConfirmOrder.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="9" column="0" lean-forward="false" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/back/src/aps/back/ServeSignUp.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="9" column="0" lean-forward="false" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/back/src/aps/back/back-data.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="12" column="0" lean-forward="false" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/back/src/aps/back/back-rpc-glue.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="72">
-          <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/back/src/aps/back/back-utils.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="120">
@@ -1999,16 +1753,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/back/src/aps/back/platform.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="600">
-          <caret line="25" column="12" lean-forward="false" selection-start-line="25" selection-start-column="12" selection-end-line="25" selection-end-column="12" />
-          <folding>
-            <element signature="e#18#108#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/back/src/aps/back/rp-customerGetUAOrderFiles.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="120">
@@ -2033,52 +1777,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/back/src/aps/back/rp-order.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="144">
-          <caret line="10" column="0" lean-forward="false" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/back/src/aps/back/rp-store.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="72">
-          <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/back/src/aps/back/rp-test-2.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="96">
-          <caret line="4" column="0" lean-forward="false" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/back/src/aps/back/rp-test.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="16" column="0" lean-forward="false" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/back/src/aps/back/rp-user.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="72">
-          <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/back/src/aps/back/spike/SpikeJackson.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="120">
           <caret line="5" column="0" lean-forward="false" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
           <folding>
-            <element signature="e#24#100#0" expanded="true" />
+            <element signature="e#24#100#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -2088,33 +1792,7 @@
         <state relative-caret-position="307">
           <caret line="49" column="49" lean-forward="false" selection-start-line="49" selection-start-column="49" selection-end-line="49" selection-end-column="49" />
           <folding>
-            <element signature="e#24#263#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/back/src/aps/shared-utils-back-impl.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="144">
-          <caret line="10" column="0" lean-forward="false" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/back/src/aps/back/bitchy-procedures.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="72">
-          <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/xplatf/xplatf-back/src/xplatf-back-1.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="9" column="32" lean-forward="false" selection-start-line="9" selection-start-column="32" selection-end-line="9" selection-end-column="32" />
-          <folding>
-            <element signature="e#18#129#0" expanded="true" />
+            <element signature="e#24#263#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -2153,14 +1831,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/xplatf-shared-back-junction/src/xplatf-shared-1.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/back/src/aps/AfterCompilationShit.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="120">
@@ -2182,7 +1852,7 @@
         <state relative-caret-position="96">
           <caret line="8" column="0" lean-forward="false" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
           <folding>
-            <element signature="e#80#244#0" expanded="true" />
+            <element signature="e#80#244#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -2232,15 +1902,246 @@
         <state relative-caret-position="192">
           <caret line="12" column="0" lean-forward="false" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
           <folding>
-            <element signature="e#80#201#0" expanded="true" />
+            <element signature="e#80#201#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/back/src/aps/back/tracing.kt">
       <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="9" column="35" lean-forward="false" selection-start-line="9" selection-start-column="35" selection-end-line="9" selection-end-column="35" />
+          <folding>
+            <element signature="e#18#55#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/opt/jdk1.8.0_102/src.zip!/java/lang/StackTraceElement.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="432">
+          <caret line="41" column="19" lean-forward="false" selection-start-line="41" selection-start-column="19" selection-end-line="41" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/shared-back-junction/src/aps/shared-utils.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="62" column="0" lean-forward="false" selection-start-line="62" selection-start-column="0" selection-end-line="62" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/back/src/aps/back/ServeConfirmOrder.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="14" column="21" lean-forward="false" selection-start-line="14" selection-start-column="21" selection-end-line="14" selection-end-column="21" />
+          <folding>
+            <element signature="e#80#145#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/back/src/aps/back/rp-order.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="667">
+          <caret line="267" column="31" lean-forward="false" selection-start-line="267" selection-start-column="31" selection-end-line="267" selection-end-column="31" />
+          <folding>
+            <element signature="e#80#242#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/back/src/aps/back/rp-store.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="403">
+          <caret line="58" column="43" lean-forward="false" selection-start-line="58" selection-start-column="43" selection-end-line="58" selection-end-column="43" />
+          <folding>
+            <element signature="e#18#83#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/back/src/aps/back/rp-test-2.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="774">
+          <caret line="171" column="24" lean-forward="false" selection-start-line="171" selection-start-column="24" selection-end-line="171" selection-end-column="24" />
+          <folding>
+            <element signature="e#18#557#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/back/src/aps/back/rp-test.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="355">
+          <caret line="554" column="23" lean-forward="false" selection-start-line="554" selection-start-column="23" selection-end-line="554" selection-end-column="23" />
+          <folding>
+            <element signature="e#80#1268#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/back/src/aps/back/rp-user.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="774">
+          <caret line="141" column="31" lean-forward="false" selection-start-line="141" selection-start-column="31" selection-end-line="141" selection-end-column="31" />
+          <folding>
+            <element signature="e#18#83#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/shared-back-junction/src/aps/shared-rpc.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="510">
+          <caret line="96" column="18" lean-forward="false" selection-start-line="96" selection-start-column="18" selection-end-line="96" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/lib/kotlin-stdlib-js-sources.jar!/kotlin/properties/Interfaces.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="4" column="0" lean-forward="false" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/lib/kotlin-runtime.jar!/kotlin/properties/Delegates.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="144">
+          <caret line="6" column="38" lean-forward="false" selection-start-line="6" selection-start-column="38" selection-end-line="6" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/lib/kotlin-stdlib-js-sources.jar!/kotlin/properties/Delegates.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="43" column="0" lean-forward="false" selection-start-line="43" selection-start-column="0" selection-end-line="43" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/opt/jdk1.8.0_102/src.zip!/java/lang/Throwable.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="294">
+          <caret line="814" column="31" lean-forward="false" selection-start-line="814" selection-start-column="31" selection-end-line="814" selection-end-column="31" />
+          <folding>
+            <element signature="e#33047#33048#0" expanded="true" />
+            <element signature="e#33096#33097#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/lib/kotlin-runtime-sources.jar!/kotlin/TypeAliases.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="144">
+          <caret line="20" column="37" lean-forward="false" selection-start-line="20" selection-start-column="37" selection-end-line="20" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/back/src/aps/back/platform.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="144">
+          <caret line="6" column="29" lean-forward="false" selection-start-line="6" selection-start-column="29" selection-end-line="6" selection-end-column="29" />
+          <folding>
+            <element signature="e#18#108#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/back/src/aps/back/Back.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="318">
+          <caret line="450" column="0" lean-forward="false" selection-start-line="450" selection-start-column="0" selection-end-line="450" selection-end-column="0" />
+          <folding>
+            <element signature="e#80#1563#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/back/src/aps/shared-utils-back-impl.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="283">
+          <caret line="73" column="0" lean-forward="false" selection-start-line="73" selection-start-column="0" selection-end-line="73" selection-end-column="0" />
+          <folding>
+            <element signature="e#75#298#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xplatf/xplatf-back/src/xplatf-back-shared-impl-1.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="96">
+          <caret line="4" column="17" lean-forward="false" selection-start-line="4" selection-start-column="17" selection-end-line="4" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xplatf-shared-back-junction/src/xplatf-shared-1.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="696">
+          <caret line="36" column="0" lean-forward="false" selection-start-line="36" selection-start-column="0" selection-end-line="36" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/shared-back-junction/src/aps/shared-stuff.kt">
+      <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="72">
-          <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+          <caret line="394" column="0" lean-forward="false" selection-start-line="394" selection-start-column="0" selection-end-line="394" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/back/src/aps/back/bitchy-procedures.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="15" column="0" lean-forward="false" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
+          <folding>
+            <element signature="e#18#277#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.ideaLibSources/javax.servlet-api-3.1.0-sources.jar!/javax/servlet/http/HttpServletResponse.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="294">
+          <caret line="467" column="28" lean-forward="false" selection-start-line="467" selection-start-column="28" selection-end-line="467" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/back/src/aps/back/GodServlet.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="336">
+          <caret line="131" column="8" lean-forward="false" selection-start-line="131" selection-start-column="8" selection-end-line="131" selection-end-column="8" />
+          <folding>
+            <element signature="e#80#666#0" expanded="true" />
+            <marker date="1489922633848" expanded="false" signature="87:466" ph="..." />
+            <marker date="1489922633848" expanded="true" signature="6301:6312" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xplatf/xplatf-back/src/xplatf-back-1.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="280">
+          <caret line="216" column="59" lean-forward="false" selection-start-line="216" selection-start-column="59" selection-end-line="216" selection-end-column="59" />
+          <folding>
+            <element signature="e#18#83#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/src/aps/front/test/Test_UA_CrazyLong_2.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="82" column="12" lean-forward="false" selection-start-line="82" selection-start-column="12" selection-end-line="82" selection-end-column="12" />
           <folding />
         </state>
       </provider>

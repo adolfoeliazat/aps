@@ -37,7 +37,7 @@ fun isRequestThread() =
 class RequestGlobusType {
     val stamp by lazy {
         TestServerFiddling.nextRequestTimestamp.getAndReset()
-            ?: Timestamp(platform.currentTimeMillis())
+            ?: Timestamp(backendPlatform.currentTimeMillis())
     }
 
 //    var skipLoggingToRedis = false
@@ -82,7 +82,7 @@ class GodServlet : HttpServlet() {
                     try {
                         val procNameCaps = procedureName.capitalize()
                         val server = springctx.getBean("serve" + procNameCaps, BitchyProcedure::class.java)
-                        server.bpc = BitchyProcedureContext(req, res)
+                        server.bpc = BitchyProcedureContext(req.tox(), res.tox())
 
                         val useTx = !pathInfo.contains("RecreateTestDatabaseSchema") // XXX
 
@@ -122,6 +122,42 @@ class GodServlet : HttpServlet() {
         }
     }
 
+}
+
+private fun HttpServletResponse.tox(): XHttpServletResponse {
+    val self = this
+    return object:XHttpServletResponse {
+        override var contentType get() = self.contentType; set(value) {self.contentType = value}
+
+        override var status: XHttpServletResponse.Status
+            get() {
+                return when (self.status) {
+                    HttpServletResponse.SC_OK -> XHttpServletResponse.Status.OK
+                    else -> wtf("b652b37b-7bf9-4df7-af64-7b237a2955e0    self.status = ${self.status}")
+                }
+            }
+            set(value) {
+                self.status = when (value) {
+                    XHttpServletResponse.Status.OK -> HttpServletResponse.SC_OK
+                }
+            }
+
+        override val writer = object:XHttpServletResponse.Writer {
+            override fun println(s: String) = self.writer.println(s)
+        }
+    }
+}
+
+private fun HttpServletRequest.tox(): XHttpServletRequest {
+    val self = this
+    return object:XHttpServletRequest {
+        override var characterEncoding get() = self.characterEncoding; set(value) {self.characterEncoding = value}
+        override val pathInfo get() = self.pathInfo
+
+        override val reader = object:XHttpServletRequest.Reader {
+            override fun readText() = self.reader.readText()
+        }
+    }
 }
 
 class GodFilter : Filter {

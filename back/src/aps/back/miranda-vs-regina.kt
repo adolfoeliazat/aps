@@ -30,7 +30,7 @@ import java.util.concurrent.ConcurrentHashMap
 
 private fun serveObjectRequest(req: ObjectRequest): CommonResponseFields {
     val p = req.params.value
-    val serveFunction = platform.getServeObjectRequestFunction(p)
+    val serveFunction = backendPlatform.getServeObjectRequestFunction(p)
     val res = serveFunction(p)
     return when (res) {
         null /*Unit*/ -> GenericResponse()

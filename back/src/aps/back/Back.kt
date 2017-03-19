@@ -447,16 +447,6 @@ fun Logger.striking(msg: Any?) {
 
 
 
-interface Culprit {
-    val constructionStack: Array<StackTraceElement>
-}
-
-interface WithCulprit {
-    val culprit: Culprit
-}
-
-class ExceptionWithCulprit(e: Throwable, override val culprit: Culprit): Exception(e.message, e), WithCulprit {
-}
 
 fun compactPhone(s: String): String {
     return s.replace(Regex("[^0-9]"), "")

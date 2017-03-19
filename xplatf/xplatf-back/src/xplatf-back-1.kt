@@ -2,7 +2,98 @@ package aps.back
 
 import aps.*
 import org.springframework.data.repository.findOrDie
-import javax.servlet.http.HttpServletResponse
+
+interface XBackendPlatform {
+    fun getServeObjectRequestFunction(params: Any): (Any) -> Any
+    fun currentTimeMillis(): Long
+    fun captureStackTrace(): Array<out XStackTraceElement>
+}
+
+interface XStackTraceElement
+
+annotation class Back
+
+interface Culprit {
+    val constructionStack: Array<out XStackTraceElement>
+}
+
+interface WithCulprit {
+    val culprit: Culprit
+}
+
+class ExceptionWithCulprit(e: Throwable, override val culprit: Culprit): Exception(e.message, e), WithCulprit
+
+fun <T> beingCulprit(culprit: Culprit, f: () -> T): T {
+    return try {
+        f()
+    } catch (e: Exception) {
+        throw ExceptionWithCulprit(e, culprit)
+    }
+}
+
+
+abstract class FormFieldBack(
+    container: RequestMatumba,
+    val name: String,
+    val possiblyUnspecified: Boolean = false,
+    val include: Boolean = true
+) : Culprit {
+    abstract fun loadOrBitch(input: Map<String, Any?>, fieldErrors: MutableList<FieldError>)
+
+    var _specified by notNull<Boolean>()
+    val specified: Boolean get() = _specified
+    override val constructionStack = backendPlatform.captureStackTrace()
+
+    init {
+        if (include) {
+            @Suppress("LeakingThis")
+            container._fields.add(this)
+        }
+    }
+
+    fun load(input: Map<String, Any?>, fieldErrors: MutableList<FieldError>) {
+        if (include) {
+            beingCulprit(this, {
+                if (possiblyUnspecified) {
+                    _specified = input["$name-specified"] as Boolean
+                }
+                loadOrBitch(input, fieldErrors)
+            })
+        }
+    }
+
+    override fun toString(): String = bitch("Use field.value to get value of field [$name]")
+}
+
+class BitchyProcedureContext(
+    val servletRequest: XHttpServletRequest,
+    val servletResponse: XHttpServletResponse
+)
+
+interface XHttpServletResponse {
+    var contentType: String
+    val writer: Writer
+    var status: Status
+
+    interface Writer {
+        fun println(s: String)
+    }
+
+    enum class Status {
+        OK
+    }
+}
+
+interface XHttpServletRequest {
+    var characterEncoding: String
+    val reader: Reader
+    val pathInfo: String
+
+    interface Reader {
+        fun readText(): String
+    }
+}
+
 
 class FuckSomeoneParams<Req : RequestMatumba, out Res : CommonResponseFields>(
     val bpc: BitchyProcedureContext,
@@ -145,7 +236,7 @@ fun <Req : RequestMatumba, Res : CommonResponseFields>
                 o.contentType = "application/json; charset=utf-8"
                 o.writer.println(shittyObjectMapper.writeValueAsString(responseBean))
 //                o.writer.println(hackyObjectMapper.writeValueAsString(responseBean))
-                o.status = HttpServletResponse.SC_OK
+                o.status = XHttpServletResponse.Status.OK
             }
         }
     }

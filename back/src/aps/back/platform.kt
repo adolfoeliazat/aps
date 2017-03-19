@@ -4,12 +4,7 @@ import aps.*
 import java.lang.reflect.Method
 import java.util.concurrent.ConcurrentHashMap
 
-interface BackendPlatformAbstraction {
-    fun getServeObjectRequestFunction(params: Any): (Any) -> Any
-    fun currentTimeMillis(): Long
-}
-
-val platform = object:BackendPlatformAbstraction {
+val backendPlatform = object:XBackendPlatform {
     private val paramClassToServeMethod = ConcurrentHashMap<Class<*>, Method>()
 
     override fun currentTimeMillis() = System.currentTimeMillis()
@@ -29,6 +24,31 @@ val platform = object:BackendPlatformAbstraction {
         val serveFunction = {p: Any -> method.invoke(null, p)}
         return serveFunction
     }
+
+    override fun captureStackTrace() = Exception().stackTrace.map(::JVM_XStackTraceElement).toTypedArray()
 }
+
+
+class JVM_XStackTraceElement(val stackTraceElement: StackTraceElement) : XStackTraceElement {
+    override fun toString(): String {
+        return stackTraceElement.toString()
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

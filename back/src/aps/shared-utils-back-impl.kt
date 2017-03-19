@@ -25,7 +25,6 @@ fun dwarn(vararg xs: Any?) = debugLog.info(xs.joinToString(" "))
 
 fun t(en: String, ru: String) = ru
 
-annotation class Back
 
 @Dummy interface Promisoid<T>
 @Dummy fun <Res> callRemoteProcedure(req: Any): Promisoid<Res> = fuckOff()
@@ -37,12 +36,6 @@ annotation class Back
 @Dummy fun <Res> callDangerousMatumba(req: RequestMatumba): Promisoid<Res> = fuckOff()
 @Dummy fun <Res> callZimbabwe(req: RequestMatumba, token: String?): Promisoid<ZimbabweResponse<Res>> = fuckOff()
 @Dummy fun <Res> callZimbabwe(procedureName: String, req: RequestMatumba, token: String?): Promisoid<ZimbabweResponse<Res>> = fuckOff()
-
-@Back open class RequestMatumba {
-    val _fields = mutableListOf<FormFieldBack>()
-    @Dummy fun beginHorizontal() {}
-    @Dummy fun endHorizontal() {}
-}
 
 //abstract class HiddenFormFieldBack<T>(val container: RequestMatumba, val name: String) {
 //    init {
@@ -75,14 +68,6 @@ annotation class Back
     override fun loadOrBitch(input: Map<String, Any?>, fieldErrors: MutableList<FieldError>) {
         val string = input[name] as String
         _value = values.find{it.name == string} ?: bitch("Bad enum value: [$string]")
-    }
-}
-
-fun <T> culprit(culprit: Culprit, f: () -> T): T {
-    return try {
-        f()
-    } catch (e: Exception) {
-        throw ExceptionWithCulprit(e, culprit)
     }
 }
 
@@ -244,39 +229,6 @@ fun <T> culprit(culprit: Culprit, f: () -> T): T {
     override fun loadOrBitch(input: Map<String, Any?>, fieldErrors: MutableList<FieldError>) {
         _value = input[name] as java.lang.Boolean
     }
-}
-
-abstract class FormFieldBack(
-    container: RequestMatumba,
-    val name: String,
-    val possiblyUnspecified: Boolean = false,
-    val include: Boolean = true
-) : Culprit {
-    abstract fun loadOrBitch(input: Map<String, Any?>, fieldErrors: MutableList<FieldError>)
-
-    lateinit var _specified: java.lang.Boolean
-    val specified: Boolean get() = _specified.booleanValue()
-    override val constructionStack = Exception().stackTrace
-
-    init {
-        if (include) {
-            @Suppress("LeakingThis")
-            container._fields.add(this)
-        }
-    }
-
-    fun load(input: Map<String, Any?>, fieldErrors: MutableList<FieldError>) {
-        if (include) {
-            culprit(this, {
-                if (possiblyUnspecified) {
-                    _specified = input["$name-specified"] as java.lang.Boolean
-                }
-                loadOrBitch(input, fieldErrors)
-            })
-        }
-    }
-
-    override fun toString(): String = bitch("Use field.value to get value of field [$name]")
 }
 
 

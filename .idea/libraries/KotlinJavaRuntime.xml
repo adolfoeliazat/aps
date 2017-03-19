@@ -7,6 +7,10 @@
     <JAVADOC />
     <SOURCES>
       <root url="jar://$PROJECT_DIR$/lib/kotlin-runtime-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/kotlin-runtime-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/kotlin-runtime-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/kotlin-runtime-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/kotlin-runtime-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

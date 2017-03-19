@@ -13,8 +13,6 @@ import aps.front.*
 import kotlin.properties.Delegates
 import kotlin.properties.Delegates.notNull
 
-class FieldError(val field: String, val error: String)
-
 enum class UserRole {
     SUPPORT
 }
@@ -392,10 +390,6 @@ interface CommonRequestFields {
     var databaseID: String?
     var fakeEmail: Boolean
     var clientURL: String
-}
-
-interface CommonResponseFields {
-    var backendVersion: String
 }
 
 class FuckingRemoteProcedureRequest : RequestMatumba() {

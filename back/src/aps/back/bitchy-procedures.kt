@@ -13,11 +13,6 @@ abstract class BitchyProcedure {
     abstract fun serve()
 }
 
-class BitchyProcedureContext(
-    val servletRequest: HttpServletRequest,
-    val servletResponse: HttpServletResponse
-)
-
 class FuckAnonymousParams<Req : RequestMatumba, out Res : CommonResponseFields>(
     val bpc: BitchyProcedureContext,
     val makeRequest: (ProcedureContext) -> Req,
