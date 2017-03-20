@@ -7,11 +7,6 @@ import java.util.*
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-abstract class BitchyProcedure {
-    var bpc by notNullOnce<BitchyProcedureContext>()
-    abstract fun serve()
-}
-
 class FuckAnonymousParams<Req : RequestMatumba, out Res : CommonResponseFields>(
     val bpc: BitchyProcedureContext,
     val makeRequest: (ProcedureContext) -> Req,
@@ -123,27 +118,7 @@ fun <Req : RequestMatumba, Res : CommonResponseFields>
     ))
 }
 
-fun <Req : RequestMatumba, Res : CommonResponseFields>
-    fuckDangerously(p: FuckDangerouslyParams<Req, Res>)
-{
-    fuckSomeone(FuckSomeoneParams(
-        bpc = p.bpc,
-        req = p.makeRequest,
-        runShit = p.runShit,
-        wrapInFormResponse = false,
-        needsDB = true,
-        needsDangerousToken = true,
-        needsUser = NeedsUser.NO,
-        userKinds = setOf(),
-        considerNextRequestTimestampFiddling = false,
-        logRequestJSON = false
-    ))
-}
 
-class FuckDangerouslyParams<Req : RequestMatumba, out Res : CommonResponseFields>(
-    val bpc: BitchyProcedureContext,
-    val makeRequest: (ProcedureContext) -> Req,
-    val runShit: (ProcedureContext, Req) -> Res)
 
 
 

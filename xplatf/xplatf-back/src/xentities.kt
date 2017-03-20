@@ -3,7 +3,8 @@ package aps.back
 import aps.*
 
 
-private const val MAX_STRING = 10000
+//private const val MAX_STRING = 10000
+private const val MAX_INDEXED_STRING = 255
 private const val MAX_BLOB = 10 * 1024 * 1024
 
 
@@ -94,18 +95,18 @@ class User(
 @XEmbeddable
 data class UserFields(
     @XEmbedded var common: CommonFields = CommonFields(),
-    @XColumn(length = MAX_STRING) var firstName: String,
-    @XColumn(length = MAX_STRING) var email: String,
-    @XColumn(length = MAX_STRING) var lastName: String,
-    @XColumn(length = MAX_STRING) var passwordHash: String,
-    @XColumn(length = MAX_STRING) var profilePhone: String,
+    @XColumn(columnDefinition = "text") var firstName: String,
+    @XColumn(columnDefinition = "varchar($MAX_INDEXED_STRING)") var email: String,
+    @XColumn(columnDefinition = "text") var lastName: String,
+    @XColumn(columnDefinition = "text") var passwordHash: String,
+    @XColumn(columnDefinition = "text") var profilePhone: String,
     @XEnumerated(XEnumType.STRING) var kind: UserKind,
     @XEnumerated(XEnumType.STRING) var state: UserState,
-    override @XColumn(length = MAX_STRING) var adminNotes: String,
+    override @XColumn(columnDefinition = "text") var adminNotes: String,
     var profileUpdatedAt: XTimestamp? = null,
-    @XColumn(length = MAX_STRING) var aboutMe: String = "",
-    @XColumn(length = MAX_STRING) var profileRejectionReason: String? = null,
-    @XColumn(length = MAX_STRING) var banReason: String? = null,
+    @XColumn(columnDefinition = "text") var aboutMe: String = "",
+    @XColumn(columnDefinition = "text") var profileRejectionReason: String? = null,
+    @XColumn(columnDefinition = "text") var banReason: String? = null,
     var subscribedToAllCategories: Boolean
 ) : FieldsWithAdminNotes
 
@@ -184,7 +185,7 @@ interface UserParamsHistoryItemTimesDocumentCategoryRepository : XCrudRepository
 
 @XEmbeddable class HistoryFields(
     val entityID: Long,
-    @XColumn(length = MAX_STRING) var descr: String,
+    @XColumn(columnDefinition = "text") var descr: String,
     var createdAt: XTimestamp = currentTimestampForEntity(),
     @XManyToOne(fetch = XFetchType.LAZY) var requester: User,
     @XEmbedded var thenRequester: UserFields
@@ -272,19 +273,19 @@ interface FieldsWithAdminNotes {
 @XEmbeddable
 data class UAOrderFields(
     @XEmbedded var common: CommonFields = CommonFields(),
-    @XColumn(length = MAX_STRING) var title: String,
+    @XColumn(columnDefinition = "text") var title: String,
     @XEnumerated(XEnumType.STRING) var documentType: UADocumentType,
     var numPages: Int,
     var numSources: Int,
-    @XColumn(length = MAX_STRING) var details: String,
+    @XColumn(columnDefinition = "text") var details: String,
     @XEnumerated(XEnumType.STRING) var state: UAOrderState,
-    @XColumn(length = MAX_STRING) var confirmationSecret: String,
-    @XColumn(length = MAX_STRING) var customerFirstName: String,
-    @XColumn(length = MAX_STRING) var customerLastName: String,
-    @XColumn(length = MAX_STRING) var customerPhone: String,
-    @XColumn(length = MAX_STRING) var customerEmail: String,
-    @XColumn(length = MAX_STRING) var whatShouldBeFixedByCustomer : String? = null,
-    override @XColumn(length = MAX_STRING) var adminNotes: String,
+    @XColumn(columnDefinition = "varchar($MAX_INDEXED_STRING)") var confirmationSecret: String,
+    @XColumn(columnDefinition = "text") var customerFirstName: String,
+    @XColumn(columnDefinition = "text") var customerLastName: String,
+    @XColumn(columnDefinition = "text") var customerPhone: String,
+    @XColumn(columnDefinition = "text") var customerEmail: String,
+    @XColumn(columnDefinition = "text") var whatShouldBeFixedByCustomer : String? = null,
+    override @XColumn(columnDefinition = "text") var adminNotes: String,
     var movedToStoreAt: XTimestamp? = null,
     var minAllowedPriceOffer: Int,
     var maxAllowedPriceOffer: Int,
@@ -391,7 +392,7 @@ interface UAOrderRepository : XCrudRepository<UAOrder, Long> {
                indexes = arrayOf(XIndex(columnList = "user__id"),
                                  XIndex(columnList = "token")))
 class UserToken(
-    @XColumn(length = MAX_STRING) var token: String,
+    @XColumn(columnDefinition = "varchar($MAX_INDEXED_STRING)") var token: String,
     @XManyToOne(fetch = XFetchType.LAZY) var user: User?
 ) : ClitoralEntity()
 
@@ -403,12 +404,12 @@ interface UserTokenRepository : XCrudRepository<UserToken, Long> {
 @XEmbeddable
 data class UAOrderFileFields(
     @XEmbedded var common: CommonFields = CommonFields(),
-    @XColumn(length = MAX_STRING) var name: String,
-    @XColumn(length = MAX_STRING) var title: String,
-    @XColumn(length = MAX_STRING) var mime: String,
-    @XColumn(length = MAX_STRING) var details: String,
-    override @XColumn(length = MAX_STRING) var adminNotes: String,
-    @XColumn(length = MAX_STRING) var sha256: String,
+    @XColumn(columnDefinition = "text") var name: String,
+    @XColumn(columnDefinition = "text") var title: String,
+    @XColumn(columnDefinition = "text") var mime: String,
+    @XColumn(columnDefinition = "text") var details: String,
+    override @XColumn(columnDefinition = "text") var adminNotes: String,
+    @XColumn(columnDefinition = "text") var sha256: String,
     var sizeBytes: Int,
     @Suppress("ArrayInDataClass") @XColumn(length = MAX_BLOB) var content: ByteArray,
     @XEnumerated(XEnumType.STRING) var forCustomerSeenAsFrom: UserKind,
@@ -505,7 +506,7 @@ class UADocumentCategory(@XEmbedded var category: UADocumentCategoryFields)
 @XEmbeddable
 data class UADocumentCategoryFields(
     @XEmbedded var common: CommonFields = CommonFields(),
-    @XColumn(length = MAX_STRING) var title: String,
+    @XColumn(columnDefinition = "text") var title: String,
     @XManyToOne(fetch = XFetchType.LAZY) var parent: UADocumentCategory?,
     @XOneToMany(fetch = XFetchType.LAZY, mappedBy = "category.parent") var children: MutableList<UADocumentCategory>
 )
@@ -523,8 +524,8 @@ class Bid(
     @XEmbedded var common: CommonFields = CommonFields(),
     var priceOffer: Int,
     var durationOffer: Int,
-    @XColumn(length = MAX_STRING) var comment: String,
-    override @XColumn(length = MAX_STRING) var adminNotes: String,
+    @XColumn(columnDefinition = "text") var comment: String,
+    override @XColumn(columnDefinition = "text") var adminNotes: String,
     @XManyToOne(fetch = XFetchType.LAZY) var order: UAOrder,
     @XManyToOne(fetch = XFetchType.LAZY) var bidder: User,
     var toConsiderByAdmin: Boolean

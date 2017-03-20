@@ -21,8 +21,15 @@ interface XBackPlatform {
     fun isRequestThread(): Boolean
     fun getResourceAsText(path: String): String
     fun highlightRanges(text: String, searchWords: List<String>): List<IntRangeRTO>
+    fun recreateDBSchema()
+    fun hashPassword(clearText: String): String
+    fun dbTransaction(block: (ShitToDoInTransaction) -> Unit)
     val hackyObjectMapper: XHackyObjectMapper
     val shittyObjectMapper: XShittyObjectMapper
+}
+
+interface ShitToDoInTransaction {
+    fun executeUpdate(sql: String): Int
 }
 
 interface XShittyObjectMapper {
@@ -349,6 +356,9 @@ fun bitchExpectedly(msg: String): Nothing {
 }
 
 object BackGlobus {
+    val db = DB.testLocalMariaDB
+//    val db = DB.apsTestOnTestServer
+
     var tracingEnabled = true
     lateinit var startMoment: XDate
     val slimJarName = "apsback-slim.jar"
@@ -387,6 +397,84 @@ interface ToRtoable<out RTO> {
 val requestUserMaybe get() = backPlatform.requestGlobus.procedureCtx.user
 val requestUserEntity get() = requestUserMaybe!!
 val requestUser get() = requestUserEntity.user
+
+abstract class BitchyProcedure {
+    var bpc by notNullOnce<BitchyProcedureContext>()
+    abstract fun serve()
+}
+
+class FuckDangerouslyParams<Req : RequestMatumba, out Res : CommonResponseFields>(
+    val bpc: BitchyProcedureContext,
+    val makeRequest: (ProcedureContext) -> Req,
+    val runShit: (ProcedureContext, Req) -> Res)
+
+fun <Req : RequestMatumba, Res : CommonResponseFields>
+    fuckDangerously(p: FuckDangerouslyParams<Req, Res>)
+{
+    fuckSomeone(FuckSomeoneParams(
+        bpc = p.bpc,
+        req = p.makeRequest,
+        runShit = p.runShit,
+        wrapInFormResponse = false,
+        needsDB = true,
+        needsDangerousToken = true,
+        needsUser = NeedsUser.NO,
+        userKinds = setOf(),
+        considerNextRequestTimestampFiddling = false,
+        logRequestJSON = false
+    ))
+}
+
+fun enhanceDB() {
+    exhaustive=when (BackGlobus.db.engine) {
+        DB.DatabaseEngine.POSTGRESQL -> {
+            backPlatform.dbTransaction {shit->
+                val forTest = true
+                if (forTest) {
+                    shit.executeUpdate("""
+                drop function if exists ua_order_files__tsv_trigger();
+            """)
+                }
+
+                shit.executeUpdate("""
+            alter table ua_order_files add column tsv tsvector not null;
+            create index ua_order_files__tsv_idx on ua_order_files using gin (tsv);
+
+            create function ua_order_files__tsv_trigger() returns trigger as $$
+            begin
+              new.tsv \:=
+                 setweight(to_tsvector('pg_catalog.russian', ' '
+                     ||' '|| regexp_replace(coalesce(new.orderFile_name, ''), '\..*$', '')
+                     ||' '|| coalesce(new.orderFile_title, '')
+                     ),'A')
+                 ||
+                 setweight(to_tsvector('pg_catalog.russian', ' '
+                     ||' '|| coalesce(new.orderFile_details, '')
+                     ),'B')
+              ;
+              return new;
+            end
+            $$ language plpgsql;
+
+            create trigger ua_order_files__tsvector_update
+                before insert or update on ua_order_files
+                for each row execute procedure ua_order_files__tsv_trigger();
+        """)
+            }
+        }
+
+        DB.DatabaseEngine.MARIADB -> {
+
+        }
+    }
+
+    backPlatform.userRepo.save(User(UserFields(CommonFields(), firstName = "Anonymous", lastName = "Customer", email = "No fucking email", passwordHash = "No fucking password", profilePhone = "No fucking phone", kind = UserKind.CUSTOMER, state = UserState.COOL, adminNotes = "", subscribedToAllCategories = false))-{o->
+        o.id = const.userID.anonymousCustomer
+    })
+    backPlatform.userRepo.save(User(UserFields(CommonFields(), firstName = "Anonymous", lastName = "Writer", email = "No fucking email", passwordHash = "No fucking password", profilePhone = "No fucking phone", kind = UserKind.WRITER, state = UserState.COOL, adminNotes = "", subscribedToAllCategories = false))-{o->
+        o.id = const.userID.anonymousWriter
+    })
+}
 
 
 

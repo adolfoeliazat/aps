@@ -639,6 +639,10 @@ fun String.lastIndexOfOrNull(s: String): Int? {
     return if (index == -1) null else index
 }
 
+class RecreateTestDatabaseSchemaRequest() : RequestMatumba() {
+}
+
+class GenericResponse : CommonResponseFieldsImpl()
 
 
 

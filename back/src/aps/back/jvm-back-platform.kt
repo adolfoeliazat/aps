@@ -4,7 +4,9 @@ import aps.*
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import org.hibernate.engine.spi.SharedSessionContractImplementor
 import org.hibernate.id.IdentityGenerator
+import org.mindrot.jbcrypt.BCrypt
 import org.slf4j.LoggerFactory
+import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import java.lang.reflect.Method
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
@@ -45,6 +47,10 @@ typealias XXmlAccessorType = XmlAccessorType
 typealias XXmlAccessType = XmlAccessType
 typealias XXmlElement = XmlElement
 typealias XCollections = Collections
+typealias XBeanDefinition = org.springframework.beans.factory.config.BeanDefinition
+typealias XScope = org.springframework.context.annotation.Scope
+typealias XComponent =  org.springframework.stereotype.Component
+
 
 internal val requestGlobusThreadLocal = ThreadLocal<RequestGlobusType>()
 private val paramClassToServeMethod = ConcurrentHashMap<Class<*>, Method>()
@@ -113,6 +119,28 @@ val backPlatform = object : XBackPlatform {
         }
     }
 
+    override fun recreateDBSchema() {
+        springctx = AnnotationConfigApplicationContext(AppConfig::class.java)
+    }
+
+    override fun hashPassword(clearText: String): String = BCrypt.hashpw(clearText, BCrypt.gensalt())
+
+    override fun dbTransaction(block: (ShitToDoInTransaction) -> Unit) {
+        // TODO:vgrechka Check if necessary columns/indexes are already there
+        val emf = springctx.getBean(EntityManagerFactory::class.java)
+        val em = emf.createEntityManager()
+        em.transaction.begin()
+        try {
+            block(object:ShitToDoInTransaction {
+                override fun executeUpdate(sql: String): Int {
+                    return em.createNativeQuery(sql).executeUpdate()
+                }
+            })
+        } finally {
+            em.transaction.commit()
+            em.close()
+        }
+    }
 }
 
 

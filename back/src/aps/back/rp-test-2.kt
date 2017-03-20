@@ -213,15 +213,15 @@ annotation class Remote
 @Remote fun mirandaSeedSomeStuff1() {
     val vit = backPlatform.userRepo.save(User(UserFields(
         firstName = "Tony", lastName = "De Vit", email = "vit@test.shit.ua", profilePhone = "+38 (01) 2345678",
-        kind = UserKind.CUSTOMER, state = UserState.COOL, passwordHash = hashPassword("vit-secret"),
-        aboutMe = "Я Тони-длинный-макарони", adminNotes = "Тони мудак",
+        kind = UserKind.CUSTOMER, state = UserState.COOL, passwordHash = backPlatform.hashPassword("vit-secret"),
+        aboutMe = "Я Тони -- длинный-макарони", adminNotes = "Тони мудак",
         profileRejectionReason = "", banReason = "", subscribedToAllCategories = false,
         common = CommonFields(createdAt = nextRandomOldStamp(), updatedAt = nextRandomOldStamp()), profileUpdatedAt = nextRandomOldStamp()
     )))
 
     val warren = backPlatform.userRepo.save(User(UserFields(
         firstName = "Nick", lastName = "Warren", email = "warren@test.shit.ua", profilePhone = "+38 (01) 8498577",
-        kind = UserKind.CUSTOMER, state = UserState.COOL, passwordHash = hashPassword("warren-secret"),
+        kind = UserKind.CUSTOMER, state = UserState.COOL, passwordHash = backPlatform.hashPassword("warren-secret"),
         aboutMe = "Я Ник -- нахуй поник", adminNotes = "Че, музычка нормальная, но как заказчик -- говно",
         profileRejectionReason = "", banReason = "", subscribedToAllCategories = false,
         common = CommonFields(createdAt = nextRandomOldStamp(), updatedAt = nextRandomOldStamp()), profileUpdatedAt = nextRandomOldStamp()

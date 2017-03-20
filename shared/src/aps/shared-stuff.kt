@@ -46,8 +46,6 @@ class ImposeNextRequestErrorRequest : RequestMatumba() {
 
 class ResetTestDatabaseRequest() : RequestMatumba()
 
-class RecreateTestDatabaseSchemaRequest() : RequestMatumba() {
-}
 
 class ResetTestDatabaseAlongWithTemplateRequest() : RequestMatumba() {
     val templateDB = StringHiddenField(this, "templateDB")
@@ -62,8 +60,6 @@ class ResetTestDatabaseAlongWithTemplateRequest() : RequestMatumba() {
 
 //    fun rpc(): Promise<GenericResponse> = callRemoteProcedure(this)
 }
-
-class GenericResponse : CommonResponseFieldsImpl()
 
 sealed class ZimbabweResponse<T> {
     class Hunky<T>(val meat: T): ZimbabweResponse<T>()

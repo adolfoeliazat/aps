@@ -58,46 +58,51 @@ object DB {
 
     val dbs = mutableListOf<Database>()
 //    val testTemplateUA1 = Database("testTemplateUA1", "127.0.0.1", PORT_TEST, "test-template-ua-1", "postgres", allowRecreation = true, populate = {q -> populate_testTemplateUA1(q)})
-    val postgresOnTestServer = Database("postgresOnTestServer", "127.0.0.1", PORT_TEST, "postgres", "postgres")
-    val apsTestOnTestServer = Database("apsTestOnTestServer", "127.0.0.1", PORT_TEST, "aps-test", "postgres", allowRecreation = true, correspondingAdminDB = postgresOnTestServer)
-    val postgresOnDevServer = Database("postgresOnDevServer", "127.0.0.1", PORT_DEV, "postgres", "postgres")
-    val localDevUA = Database("localDevUA", "127.0.0.1", PORT_DEV, "aps-dev-ua", user = "postgres", password = null)
-    val bmix_fuckingAround_postgres by lazy {databaseFromEnv("bmix_fuckingAround_postgres")}
-    val bmix_fuckingAround_apsdevua by lazy {databaseFromEnv("bmix_fuckingAround_apsdevua", allowRecreation = true, correspondingAdminDB = bmix_fuckingAround_postgres)}
+    val postgresOnTestServer = Database(DatabaseEngine.POSTGRESQL, "postgresOnTestServer", "127.0.0.1", PORT_TEST, "postgres", "postgres")
+    val apsTestOnTestServer = Database(DatabaseEngine.POSTGRESQL, "apsTestOnTestServer", "127.0.0.1", PORT_TEST, "aps-test", "postgres", allowRecreation = true, correspondingAdminDB = postgresOnTestServer)
+    val testLocalMariaDB = Database(DatabaseEngine.MARIADB, "testLocalMariaDB", "127.0.0.1", 3306, "aps-test", "aps-test", password = "aps-test")
+    val postgresOnDevServer = Database(DatabaseEngine.POSTGRESQL, "postgresOnDevServer", "127.0.0.1", PORT_DEV, "postgres", "postgres")
+    val localDevUA = Database(DatabaseEngine.POSTGRESQL, "localDevUA", "127.0.0.1", PORT_DEV, "aps-dev-ua", user = "postgres", password = null)
+//    val bmix_fuckingAround_postgres by lazy {databaseFromEnv("bmix_fuckingAround_postgres")}
+//    val bmix_fuckingAround_apsdevua by lazy {databaseFromEnv("bmix_fuckingAround_apsdevua", allowRecreation = true, correspondingAdminDB = bmix_fuckingAround_postgres)}
 
-    fun apsTestSnapshotOnTestServer(id: String) =
-        Database(snapshotPrefix + id, "127.0.0.1", PORT_TEST, snapshotPrefix + id, "postgres", allowRecreation = true, correspondingAdminDB = postgresOnTestServer)
+//    fun apsTestSnapshotOnTestServer(id: String) =
+//        Database(snapshotPrefix + id, "127.0.0.1", PORT_TEST, snapshotPrefix + id, "postgres", allowRecreation = true, correspondingAdminDB = postgresOnTestServer)
+//
+//    val systemDatabases = mapOf(
+//        PORT_DEV to postgresOnDevServer,
+//        PORT_TEST to postgresOnTestServer
+//    )
 
-    val systemDatabases = mapOf(
-        PORT_DEV to postgresOnDevServer,
-        PORT_TEST to postgresOnTestServer
-    )
-
-    fun databaseFromEnv(id: String, allowRecreation: Boolean = false, correspondingAdminDB: Database? = null): Database {
-        val pname = "APS_DB_URI_$id"
-        val uri = System.getenv(pname) ?: wtf("I want env property $pname")
-        val mr = Regex("postgres://(.*?):(.*?)@(.*?):(.*?)/(.*?)").matchEntire(uri) ?: wtf("Bad database URI")
-        return Database(id,
-                        user = mr.groupValues[1],
-                        password = mr.groupValues[2],
-                        host = mr.groupValues[3],
-                        port = mr.groupValues[4].toInt(),
-                        name = mr.groupValues[5],
-                        allowRecreation = allowRecreation,
-                        correspondingAdminDB = correspondingAdminDB)
-    }
+//    fun databaseFromEnv(id: String, allowRecreation: Boolean = false, correspondingAdminDB: Database? = null): Database {
+//        val pname = "APS_DB_URI_$id"
+//        val uri = System.getenv(pname) ?: wtf("I want env property $pname")
+//        val mr = Regex("postgres://(.*?):(.*?)@(.*?):(.*?)/(.*?)").matchEntire(uri) ?: wtf("Bad database URI")
+//        return Database(id,
+//                        user = mr.groupValues[1],
+//                        password = mr.groupValues[2],
+//                        host = mr.groupValues[3],
+//                        port = mr.groupValues[4].toInt(),
+//                        name = mr.groupValues[5],
+//                        allowRecreation = allowRecreation,
+//                        correspondingAdminDB = correspondingAdminDB)
+//    }
 
     fun byNameOnTestServer(name: String): Database =
         dbs.find {it.port == PORT_TEST && it.name == name} ?: wtf("No database [$name] on test server")
 
     fun byID(id: String): Database = when {
-        id == "bmix_fuckingAround_apsdevua" -> bmix_fuckingAround_apsdevua
+//        id == "bmix_fuckingAround_apsdevua" -> bmix_fuckingAround_apsdevua
         id == "apsTestOnTestServer" -> apsTestOnTestServer
         else -> wtf("No database with ID $id")
     }
 
+    enum class DatabaseEngine {
+        POSTGRESQL, MARIADB
+    }
 
     class Database(
+        val engine: DatabaseEngine,
         val id: String,
         val host: String, val port: Int, val name: String,
         val user: String, val password: String? = null,
@@ -106,7 +111,10 @@ object DB {
         val correspondingAdminDB: Database? = null
     ) {
         private val dslazy = relazy {HikariDataSource().applet {o->
-            o.dataSourceClassName = "org.postgresql.ds.PGSimpleDataSource"
+            o.dataSourceClassName = when (engine) {
+                DB.DatabaseEngine.POSTGRESQL -> "org.postgresql.ds.PGSimpleDataSource"
+                DB.DatabaseEngine.MARIADB -> "org.mariadb.jdbc.MariaDbDataSource" // "org.mariadb.jdbc.Driver"
+            }
             o.dataSourceProperties.let {o->
                 o.put("serverName", host)
                 o.put("databaseName", name)
@@ -114,7 +122,10 @@ object DB {
                 o.put("user", user)
                 password?.let {o.put("password", it)}
             }
-            o.connectionInitSql = "set time zone 'UTC'"
+            o.connectionInitSql = when (engine) {
+                DB.DatabaseEngine.POSTGRESQL -> "set time zone 'UTC';"
+                DB.DatabaseEngine.MARIADB -> "set time_zone = '+0:00';"
+            }
         }}
         val ds by dslazy
 
@@ -374,57 +385,6 @@ class PostgresJSONBJacksonJsonNodeConverter : Converter<Any?, JsonNode> {
     }
 }
 
-fun enhanceDB() {
-    // TODO:vgrechka Check if necessary columns/indexes are already there
-    val emf = springctx.getBean(EntityManagerFactory::class.java)
-    val em = emf.createEntityManager()
-    em.transaction.begin()
-    try {
-        val forTest = true
-        if (forTest) {
-            em.createNativeQuery("""
-                drop function if exists ua_order_files__tsv_trigger();
-            """).executeUpdate()
-        }
-
-        val q = em.createNativeQuery("""
-            alter table ua_order_files add column tsv tsvector not null;
-            create index ua_order_files__tsv_idx on ua_order_files using gin (tsv);
-
-            create function ua_order_files__tsv_trigger() returns trigger as $$
-            begin
-              new.tsv \:=
-                 setweight(to_tsvector('pg_catalog.russian', ' '
-                     ||' '|| regexp_replace(coalesce(new.orderFile_name, ''), '\..*$', '')
-                     ||' '|| coalesce(new.orderFile_title, '')
-                     ),'A')
-                 ||
-                 setweight(to_tsvector('pg_catalog.russian', ' '
-                     ||' '|| coalesce(new.orderFile_details, '')
-                     ),'B')
-              ;
-              return new;
-            end
-            $$ language plpgsql;
-
-            create trigger ua_order_files__tsvector_update
-                before insert or update on ua_order_files
-                for each row execute procedure ua_order_files__tsv_trigger();
-
-        """)
-        q.executeUpdate()
-    } finally {
-        em.transaction.commit()
-        em.close()
-    }
-
-    backPlatform.userRepo.save(User(UserFields(CommonFields(), firstName = "Anonymous", lastName = "Customer", email = "No fucking email", passwordHash = "No fucking password", profilePhone = "No fucking phone", kind = UserKind.CUSTOMER, state = UserState.COOL, adminNotes = "", subscribedToAllCategories = false))-{o->
-        o.id = const.userID.anonymousCustomer
-    })
-    backPlatform.userRepo.save(User(UserFields(CommonFields(), firstName = "Anonymous", lastName = "Writer", email = "No fucking email", passwordHash = "No fucking password", profilePhone = "No fucking phone", kind = UserKind.WRITER, state = UserState.COOL, adminNotes = "", subscribedToAllCategories = false))-{o->
-        o.id = const.userID.anonymousWriter
-    })
-}
 
 
 class APSHibernateNamingStrategy : ImplicitNamingStrategyJpaCompliantImpl() {

@@ -23,9 +23,6 @@ import kotlin.system.exitProcess
 
 @Volatile var springctx = AnnotationConfigApplicationContext(AppConfig::class.java)
 
-@Component @Scope(SCOPE_PROTOTYPE)
-annotation class Servant
-
 @Configuration
 @EnableJpaRepositories
 @EnableTransactionManagement
@@ -42,7 +39,8 @@ open class AppConfig {
     }
 
     @Bean open fun dataSource(): DataSource {
-        val db = DB.apsTestOnTestServer
+        val db = BackGlobus.db
+        backPlatform.debugLog.info("Using database ${db.id}")
         return db.ds
 //        return JdbcDataSource()-{o->
 //            o.setURL("jdbc:h2:mem:pizdabase;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=false") // XXX This DB_* shit is actually needed

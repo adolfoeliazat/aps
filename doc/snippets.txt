@@ -12,12 +12,43 @@ Java
 
         _run.cmd aps.Spew
 
+
+MySQL
+=====
+    phpMyAdmin
+        In config.inc.php:
+            $cfg['Servers'][$i]['user'] = 'root';
+            $cfg['Servers'][$i]['password'] = '';
+            $cfg['Servers'][$i]['controluser'] = 'root';
+            $cfg['Servers'][$i]['controlpass'] = '';
+
+    Setting up
+        drop user ''@'localhost'; -- Otherwise no one with `%` host will be able to connect
+        After creating a database change its collation to utf8_general_ci
+
+    Console
+        mysqld
+        mysql -u root
+        mysql -u root -e shutdown
+        show databases;
+        select host, user, password from mysql.user;
+
+    Memory drive
+        mysql -u root -e shutdown
+        imdisk -a -t vm -s 300M -m r:
+        Click "Format"
+        Copy all freaking C:\opt\mariadb-10.1.22-winx64\data to R:
+        Rename original `data` to something
+        mklink /j C:\opt\mariadb-10.1.22-winx64\data r:\data
+        mysqld
+
+
 PostgreSQL
 ==========
 
     Stuff
 
-        imdisk -a -t vm -s 100M -m r:
+        imdisk -a -t vm -s 300M -m r:
 
         Click "Format"
 

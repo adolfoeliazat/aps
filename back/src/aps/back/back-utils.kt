@@ -75,7 +75,6 @@ fun generatePassword() =
     TestServerFiddling.nextGeneratedPassword.getAndReset()
     ?: UUID.randomUUID().toString()
 
-fun hashPassword(clearText: String): String = BCrypt.hashpw(clearText, BCrypt.gensalt())
 
 
 

@@ -33,7 +33,7 @@ import java.util.*
                                 email = order.order.customerEmail,
                                 firstName = order.order.customerFirstName,
                                 lastName = order.order.customerLastName,
-                                passwordHash = hashPassword(generatePassword()),
+                                passwordHash = backPlatform.hashPassword(generatePassword()),
                                 profilePhone = order.order.customerPhone,
                                 kind = UserKind.CUSTOMER,
                                 state = UserState.COOL,

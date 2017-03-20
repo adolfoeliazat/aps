@@ -27,7 +27,7 @@ import aps.*
                         firstName = req.firstName.value,
                         email = req.email.value,
                         lastName = req.lastName.value,
-                        passwordHash = hashPassword(password),
+                        passwordHash = backPlatform.hashPassword(password),
                         profilePhone = "",
                         kind = kind,
                         state = when (ctx.clientKind) {
