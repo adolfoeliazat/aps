@@ -17,7 +17,7 @@ class InitAutoReload {
         fun inita(): Promisoid<Unit> = async {
             if (Globus.mode != Mode.DEBUG) return@async
 
-            initialCtime = await(GetSoftwareVersionRequest.send()).ctime
+            initialCtime = mirandaGetSoftwareVersion().ctime
             schedule()
         }
         inita()
@@ -28,7 +28,7 @@ class InitAutoReload {
     }
 
     private fun tick() = async {
-        if (initialCtime != await(GetSoftwareVersionRequest.send()).ctime) {
+        if (initialCtime != mirandaGetSoftwareVersion().ctime) {
             if (realTypedStorageLocal.reloadTest) {
                 TestGlobal.lastTestHrefMaybe?.let {
                     Globus.realLocation.href = it

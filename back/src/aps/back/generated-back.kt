@@ -34,6 +34,30 @@ import kotlin.reflect.KClass
 @Generated fun __MirandaSaveRequestResponseLog.serve(): __MirandaSaveRequestResponseLog_Response {
     return __MirandaSaveRequestResponseLog_Response(mirandaSaveRequestResponseLog(name = this.name))
 }
+@Generated fun __MirandaMapStack.serve(): __MirandaMapStack_Response {
+    return __MirandaMapStack_Response(mirandaMapStack(rawStack = this.rawStack))
+}
+@Generated fun __MirandaGetSentEmails.serve(): __MirandaGetSentEmails_Response {
+    return __MirandaGetSentEmails_Response(mirandaGetSentEmails())
+}
+@Generated fun __MirandaClearSentEmails.serve(): __MirandaClearSentEmails_Response {
+    return __MirandaClearSentEmails_Response(mirandaClearSentEmails())
+}
+@Generated fun __MirandaImposeNextRequestTimestamp.serve(): __MirandaImposeNextRequestTimestamp_Response {
+    return __MirandaImposeNextRequestTimestamp_Response(mirandaImposeNextRequestTimestamp(stamp = this.stamp))
+}
+@Generated fun __MirandaImposeNextRequestError.serve(): __MirandaImposeNextRequestError_Response {
+    return __MirandaImposeNextRequestError_Response(mirandaImposeNextRequestError(error = this.error))
+}
+@Generated fun __MirandaImposeNextGeneratedConfirmationSecret.serve(): __MirandaImposeNextGeneratedConfirmationSecret_Response {
+    return __MirandaImposeNextGeneratedConfirmationSecret_Response(mirandaImposeNextGeneratedConfirmationSecret(secret = this.secret))
+}
+@Generated fun __MirandaPing.serve(): __MirandaPing_Response {
+    return __MirandaPing_Response(mirandaPing())
+}
+@Generated fun __MirandaGetSoftwareVersion.serve(): __MirandaGetSoftwareVersion_Response {
+    return __MirandaGetSoftwareVersion_Response(mirandaGetSoftwareVersion())
+}
 @Generated fun __ReginaLoadUser.serve(): __ReginaLoadUser_Response {
     return __ReginaLoadUser_Response(reginaLoadUser(userID = this.userID))
 }

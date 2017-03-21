@@ -369,7 +369,10 @@ private fun Spew.generateSeparateShit.processRemoteFunctionTemplate(function: Kt
     """)
 
     val frontFuckers1 = function.valueParameters
-        .map {it.name + ":" + (it.typeReference?.node?.chars ?: wtf("b5c1e203-e1e0-476a-9f52-5f360fe79406"))}
+        .map {
+            val maybeDefaultValue = it.defaultValue?.let {" = ${it.text}"} ?: ""
+            it.name + ": " + (it.typeReference?.node?.chars ?: wtf("b5c1e203-e1e0-476a-9f52-5f360fe79406")) + maybeDefaultValue
+        }
         .joinToString(", ")
     val frontFuckers2 = function.valueParameters
         .map {"${it.name} = ${it.name}"}

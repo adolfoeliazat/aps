@@ -2,11 +2,20 @@ package aps.back
 
 import aps.*
 import aps.const.file.APS_TEMP
+import aps.const.text.symbols.nbsp
+import com.google.common.cache.CacheBuilder
+import com.google.common.cache.CacheLoader
+import com.google.common.cache.LoadingCache
+import com.google.debugging.sourcemap.SourceMapConsumerFactory
+import com.google.debugging.sourcemap.SourceMapping
 import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import java.io.File
 import java.io.FileWriter
 import java.io.PrintWriter
 import java.io.StringWriter
+import java.nio.file.Files
+import java.nio.file.Paths
+import java.nio.file.attribute.BasicFileAttributes
 import java.sql.PreparedStatement
 import java.sql.SQLException
 import java.util.*
@@ -263,8 +272,144 @@ annotation class Remote
     fileWriter.close()
 }
 
+private val CACHE_MAPPINGS_BETWEEN_REQUESTS = false
+private val sharedMappingCache by lazy {makeMappingCache()}
+
+private fun makeMappingCache(): LoadingCache<String, SourceMapping> {
+    return CacheBuilder.newBuilder().build(object:CacheLoader<String, SourceMapping>() {
+        override fun load(mapPath: String): SourceMapping {
+            return SourceMapConsumerFactory.parse(File(mapPath).readText())
+        }
+    })
+}
+
+@Remote fun mirandaMapStack(rawStack: String): String {
+    val noisy = false
+
+    // Ex:    at Object.die_61zpoe$ (http://aps-ua-writer.local:3022/into-kommon-js-enhanced.js:32:17)
+    // Ex:    at http://aps-ua-writer.local:3022/front-enhanced.js:12225:48
+    // Ex:    at Generator.next (<anonymous>)
+    // Ex:    at __awaiter (http://aps-ua-writer.local:3022/into-kommon-js-enhanced.js:1:138)
+
+    val NORMAL_APS_HOME = normalizePath(const.file.APS_HOME)
+    val NORMAL_KOMMON_HOME = normalizePath(KOMMON_HOME)
+
+    val mappingCache =
+        if (CACHE_MAPPINGS_BETWEEN_REQUESTS) sharedMappingCache
+        else makeMappingCache()
+
+    val resultLines = mutableListOf<String>()
+
+    for (mangledLine in rawStack.lines()) {
+        class Skip(val reason: String) : Exception()
+        class Verbatim(val reason: String) : Exception()
+
+        try {
+            if (!mangledLine.startsWith("    at ")) throw Verbatim("Doesn't start with [at]")
+
+            val mr = Regex("(.*?)\\(?(https?://.*):(\\d+):(\\d+)\\)?").matchEntire(mangledLine)
+                ?: run {
+                if (mangledLine.contains("at Generator.next")) throw Skip("Useless junk")
+                throw Verbatim("Unrecognized")
+            }
+            if (noisy) dwarnStriking("Recognized: \n" + inspectMatchResult(mr))
+            val (prefix, resource, lineString, columnString) = mr.destructured
+
+            val (line, column) = try {Pair(lineString.toInt(), columnString.toInt())}
+            catch (e: NumberFormatException) {throw Verbatim("Bad line or column number")}
+
+            if (line == 1) throw Skip("Ignoring line 1, as it's probably __awaiter() or some other junk")
+
+            val mapPath = when {
+                resource.contains("/front-enhanced.js") -> "${const.file.APS_HOME}/front/out/front.js.map"
+                resource.contains("/into-kommon-js-enhanced.js") -> "$KOMMON_HOME/js/out/into-kommon-js.js.map"
+                else -> throw Verbatim("No map file for $resource")
+            }
+
+            val sourceMapping = mappingCache[mapPath]
+
+            val orig = sourceMapping.getMappingForLine(line, column)
+                ?: throw Verbatim("No mapping for line")
+
+            var longPath = orig.originalFile
+            var shortPath = orig.originalFile
+            if (longPath.startsWith("file://")) {
+                longPath = normalizePath(shortPath.substring("file://".length))
+                shortPath = when {
+                    longPath.startsWith(NORMAL_APS_HOME) -> "APS" + longPath.substring(NORMAL_APS_HOME.length)
+                    longPath.startsWith(NORMAL_KOMMON_HOME) -> "KOMMON" + longPath.substring(NORMAL_KOMMON_HOME.length)
+                    else -> shortPath
+                }
+            }
+
+            var marginNotes = mutableListOf<String>()
+            try {
+                val line = File(longPath).readLines()[orig.lineNumber - 1]
+                if (line.contains(Regex("\\so\\."))) marginNotes.add("o.")
+                Regex("\\bassert(\\w|\\d|_)*").find(line)?.let {marginNotes.add(it.value)}
+                when {
+                    line.contains("\"\"\"") -> marginNotes.add("\"\"\"")
+                    line.contains("\"") -> marginNotes.add("\"")
+                }
+            } catch (e: Exception) {}
+
+            val result = "$prefix ($shortPath:${orig.lineNumber}:${orig.columnPosition})" +
+                nbsp.repeat(5) + marginNotes.joinToString(nbsp.repeat(3))
+            resultLines.add(result)
+        }
+        catch (e: Skip) {
+            if (noisy) dwarnStriking("Skip: ${e.reason}: $mangledLine")
+        }
+        catch (e: Verbatim) {
+            if (noisy) dwarnStriking("Verbatim: ${e.reason}: $mangledLine")
+            resultLines.add(
+                if (mangledLine.startsWith("    at ")) mangledLine.replaceRange(0, 1, when {
+                    mangledLine.contains("kotlin") -> "K" // Standard library
+                    else -> "?"
+                })
+                else mangledLine
+            )
+        }
+    }
+
+    return resultLines.joinToString("\n")
+}
+
+@Remote fun mirandaGetSentEmails(): MutableList<Email> {
+    return EmailMatumba.sentEmails
+}
+
+@Remote fun mirandaClearSentEmails() {
+    EmailMatumba.sentEmails.clear()
+}
+
+@Remote fun mirandaImposeNextRequestTimestamp(stamp: String) {
+    TestServerFiddling.nextRequestTimestamp.set(stringToStamp(stamp))
+}
+
+@Remote fun mirandaImposeNextRequestError(error: String? = null) {
+    TestServerFiddling.nextRequestError.set(error ?: const.msg.serviceFuckedUp)
+}
+
+@Remote fun mirandaImposeNextGeneratedConfirmationSecret(secret: String) {
+    TestServerFiddling.nextGeneratedConfirmationSecret.set(secret)
+}
+
+@Remote fun mirandaPing() {
+    // XXX This shit exists merely for the purpose of returning backend version
+    //     (as part of common response fields)
+}
+
+val backendInstanceID = "" + UUID.randomUUID()
 
 
+@Remote fun mirandaGetSoftwareVersion(): MirandaGetSoftwareVersionResult {
+    val path = Paths.get("${const.file.APS_HOME}/front/out/front-enhanced.js")
+    val attrs = Files.readAttributes(path, BasicFileAttributes::class.java)
+    return MirandaGetSoftwareVersionResult(
+        ctime = "" + Math.max(attrs.creationTime().toMillis(), attrs.lastModifiedTime().toMillis()),
+        backendInstanceID = backendInstanceID)
+}
 
 
 

@@ -218,10 +218,10 @@ private fun runTest(scenario: TestScenario, urlQuery: Map<String, String>, showT
 
         hrss.urlQueryBeforeRunningTest = parseQueryString(Globus.realLocation.href)
 
-        measure("Load generated shit") {
-            // TODO:vgrechka Load generated shit once for whole suite
-            eval(await(GetGeneratedShitRequest.send()).code)
-        }
+//        measure("Load generated shit") {
+//            // TODO:vgrechka Load generated shit once for whole suite
+//            eval(await(GetGeneratedShitRequest.send()).code)
+//        }
 
         val res = await(scenario.run(showTestPassedPane))
         hrss.hotCodeUpdateDisabled = oldHotCodeUpdateDisabled

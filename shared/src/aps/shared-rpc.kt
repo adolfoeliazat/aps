@@ -252,6 +252,7 @@ class PairOfLastHistoryItems<out HistoryItemRTO : HistoryItemRTOFields>(
     val prelastItem: HistoryItemRTO?
 )
 
+class MirandaGetSoftwareVersionResult(val ctime: String, val backendInstanceID: String)
 
 
 

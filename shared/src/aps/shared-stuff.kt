@@ -30,14 +30,14 @@ open class Request {
 
 open class GenericRequest : RequestMatumba()
 
-class ImposeNextRequestTimestampRequest : RequestMatumba() {
-    class Response : CommonResponseFieldsImpl()
-    val stamp = StringHiddenField(this, "stamp")
-}
+//class ImposeNextRequestTimestampRequest : RequestMatumba() {
+//    class Response : CommonResponseFieldsImpl()
+//    val stamp = StringHiddenField(this, "stamp")
+//}
 
-class ImposeNextRequestErrorRequest : RequestMatumba() {
-    val error = MaybeStringHiddenField(this, "error")
-}
+//class ImposeNextRequestErrorRequest : RequestMatumba() {
+//    val error = MaybeStringHiddenField(this, "error")
+//}
 
 //class ImposeNextRequestTimestampRequest(val stamp: String) : Request() {
 //    constructor() : this(SHITS) // For fucking Jackson
@@ -120,49 +120,42 @@ class WorldPointRequest() : RequestMatumba() {
 //    }
 }
 
-class GetSoftwareVersionRequest : RequestMatumba() {
-    class Response(val ctime: String, val backendInstanceID: String) : CommonResponseFieldsImpl()
-
-    companion object {
-        fun send(): Promisoid<Response> = callDangerousMatumba(GetSoftwareVersionRequest())
-    }
-}
 
 class Email(val to: String, val subject: String, val html: String)
 
-class GetSentEmailsRequest : RequestMatumba() {
-    class Response(val emails: List<Email>) : CommonResponseFieldsImpl()
+//class GetSentEmailsRequest : RequestMatumba() {
+//    class Response(val emails: List<Email>) : CommonResponseFieldsImpl()
+//
+//    companion object {
+//        fun send(): Promisoid<Response> = callDangerousMatumba(GetSentEmailsRequest())
+//    }
+//}
 
-    companion object {
-        fun send(): Promisoid<Response> = callDangerousMatumba(GetSentEmailsRequest())
-    }
-}
+//class GetGeneratedShitRequest : RequestMatumba() {
+//    class Response(val code: String) : CommonResponseFieldsImpl()
+//
+//    companion object {
+//        fun send(): Promisoid<Response> = callDangerousMatumba(GetGeneratedShitRequest())
+//    }
+//}
 
-class GetGeneratedShitRequest : RequestMatumba() {
-    class Response(val code: String) : CommonResponseFieldsImpl()
+//class ClearSentEmailsRequest : RequestMatumba() {
+//    companion object {
+//        fun send(): Promisoid<Unit> = callDangerousMatumba(ClearSentEmailsRequest())
+//    }
+//
+////    fun rpc(): Promise<GenericResponse> = callRemoteProcedure(this)
+//}
 
-    companion object {
-        fun send(): Promisoid<Response> = callDangerousMatumba(GetGeneratedShitRequest())
-    }
-}
+//class ImposeNextGeneratedPasswordRequest : RequestMatumba() {
+//    class Response : CommonResponseFieldsImpl()
+//    val password = StringHiddenField(this, "password")
+//}
 
-class ClearSentEmailsRequest : RequestMatumba() {
-    companion object {
-        fun send(): Promisoid<Unit> = callDangerousMatumba(ClearSentEmailsRequest())
-    }
-
-//    fun rpc(): Promise<GenericResponse> = callRemoteProcedure(this)
-}
-
-class ImposeNextGeneratedPasswordRequest : RequestMatumba() {
-    class Response : CommonResponseFieldsImpl()
-    val password = StringHiddenField(this, "password")
-}
-
-class ImposeNextGeneratedConfirmationSecretRequest : RequestMatumba() {
-    class Response : CommonResponseFieldsImpl()
-    val secret = StringHiddenField(this, "secret")
-}
+//class ImposeNextGeneratedConfirmationSecretRequest : RequestMatumba() {
+//    class Response : CommonResponseFieldsImpl()
+//    val secret = StringHiddenField(this, "secret")
+//}
 
 
 class GetLiveStatusRequest : RequestMatumba() {
@@ -284,17 +277,6 @@ enum class Ordering(override val title: String) : Titled {
 
 fun <T : Any> T?.orDefault(default: () -> T): T = if (this != null) this else default()
 
-class MapStackRequest : RequestMatumba() {
-    class Response(val originalStack: String) : CommonResponseFieldsImpl()
-
-    val mangledStack = StringHiddenField(this, "mangledStack")
-
-//    companion object {
-//        fun send(mangledStack: String): Promisoid<Response> = callDangerousMatumba(MapStackRequest()-{o->
-//            o.mangledStack.value = mangledStack
-//        })
-//    }
-}
 
 class OpenSourceCodeRequest : RequestMatumba() {
     class Response(val error: String?) : CommonResponseFieldsImpl()
@@ -408,17 +390,13 @@ fun uaPageCost(type: UADocumentType, urgency: DocumentUrgency): Int =
         UADocumentType.OTHER -> 123
     }
 
-abstract class CommonResponseFieldsImpl : CommonResponseFields {
-    override lateinit var backendVersion: String
-}
-
 //class LoadUAOrderRequest : RequestMatumba() {
 //    val id by longHiddenField()
 //    class Response(override val entity: UAOrderRTO) : CommonResponseFieldsImpl(), EntityResponse<UAOrderRTO>
 //}
 
 
-class PingRequest : RequestMatumba()
+//class PingRequest : RequestMatumba()
 
 class LuceneParseToken {
     var type: String by notNull()

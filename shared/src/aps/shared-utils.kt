@@ -112,15 +112,6 @@ inline fun <T> T?.letoes(f: (T) -> String): String = this.letOrEmpty(f)
 
 fun <T> T.oneOf(vararg xs: T) = xs.contains(this)
 
-class relazy<out T>(val initializer: () -> T) {
-    private var backing = lazy(initializer)
-
-    operator fun getValue(thisRef: Any?, property: KProperty<*>): T = backing.value
-
-    fun reset() {
-        backing = lazy(initializer)
-    }
-}
 
 
 

@@ -56,37 +56,6 @@ testProcedure(
         logRequestJSON = logRequestJSON ?: true
     ))
 
-@RemoteProcedureFactory fun imposeNextRequestTimestamp() = testProcedure(
-    {ImposeNextRequestTimestampRequest()},
-    runShit = fun(ctx, req): GenericResponse {
-        TestServerFiddling.nextRequestTimestamp.set(stringToStamp(req.stamp.value))
-        return GenericResponse()
-    }
-)
-
-@RemoteProcedureFactory fun imposeNextRequestError() = testProcedure(
-    {ImposeNextRequestErrorRequest()},
-    runShit = fun(ctx, req): GenericResponse {
-        TestServerFiddling.nextRequestError.set(req.error.value ?: const.msg.serviceFuckedUp)
-        return GenericResponse()
-    }
-)
-
-@RemoteProcedureFactory fun imposeNextGeneratedPassword() = testProcedure(
-    {ImposeNextGeneratedPasswordRequest()},
-    runShit = fun(ctx, req): ImposeNextGeneratedPasswordRequest.Response {
-        TestServerFiddling.nextGeneratedPassword.set(req.password.value)
-        return ImposeNextGeneratedPasswordRequest.Response()
-    }
-)
-
-@RemoteProcedureFactory fun imposeNextGeneratedConfirmationSecret() = testProcedure(
-    {ImposeNextGeneratedConfirmationSecretRequest()},
-    runShit = fun(ctx, req): ImposeNextGeneratedConfirmationSecretRequest.Response {
-        TestServerFiddling.nextGeneratedConfirmationSecret.set(req.secret.value)
-        return ImposeNextGeneratedConfirmationSecretRequest.Response()
-    }
-)
 
 //@RemoteProcedureFactory fun resetTestDatabase() = testProcedure(
 //    {ResetTestDatabaseRequest()},
@@ -110,21 +79,6 @@ testProcedure(
 //        return GenericResponse()
 //    }
 //)
-
-@RemoteProcedureFactory fun serveGetSentEmails() = testProcedure(
-    {RequestMatumba()},
-    runShit = fun(ctx, req): GetSentEmailsRequest.Response {
-        return GetSentEmailsRequest.Response(EmailMatumba.sentEmails)
-    }
-)
-
-@RemoteProcedureFactory fun serveClearSentEmails() = testProcedure(
-    {RequestMatumba()},
-    runShit = fun(ctx, req): GenericResponse {
-        EmailMatumba.sentEmails.clear()
-        return GenericResponse()
-    }
-)
 
 //@RemoteProcedureFactory fun worldPoint() = testProcedure(
 //    {WorldPointRequest()},
@@ -161,26 +115,13 @@ testProcedure(
 //    }
 //)
 
-val backendInstanceID = "" + UUID.randomUUID()
 
-@RemoteProcedureFactory fun getSoftwareVersion() = testProcedure(
-    {GetSoftwareVersionRequest()},
-    logRequestJSON = false,
-    runShit = fun(ctx, req): GetSoftwareVersionRequest.Response {
-        val path = Paths.get("${const.file.APS_HOME}/front/out/front-enhanced.js")
-        val attrs = Files.readAttributes(path, BasicFileAttributes::class.java)
-        return GetSoftwareVersionRequest.Response(
-            ctime = "" + Math.max(attrs.creationTime().toMillis(), attrs.lastModifiedTime().toMillis()),
-            backendInstanceID = backendInstanceID)
-    }
-)
-
-@RemoteProcedureFactory fun getGeneratedShit() = testProcedure(
-    {RequestMatumba()},
-    runShit = fun(ctx, req): GetGeneratedShitRequest.Response {
-        return GetGeneratedShitRequest.Response(GodServlet::class.java.getResource("generated-shit.js").readText())
-    }
-)
+//@RemoteProcedureFactory fun getGeneratedShit() = testProcedure(
+//    {RequestMatumba()},
+//    runShit = fun(ctx, req): GetGeneratedShitRequest.Response {
+//        return GetGeneratedShitRequest.Response(GodServlet::class.java.getResource("generated-shit.js").readText())
+//    }
+//)
 
 
 @RemoteProcedureFactory fun openSourceCode() = testProcedure(
@@ -323,13 +264,6 @@ fun frp_robotTypeTextCRIntoWindowTitledOpen(rmap: Map<*, *>) {
     bitch("I'm sick of waiting for Open window")
 }
 
-@RemoteProcedureFactory fun ping() = publicProcedure(
-    {GenericRequest()},
-    needsDB = false,
-    runShit = fun(ctx, req): GenericResponse {
-        return GenericResponse()
-    }
-)
 
 fun frp_ping(rmap: Map<*, *>): String {
     return "pong"

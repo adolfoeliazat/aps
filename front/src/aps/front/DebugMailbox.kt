@@ -70,7 +70,7 @@ fun initDebugMailbox() {
 }
 
 suspend fun debugMailboxClear() {
-    await(send(ClearSentEmailsRequest()))
+    mirandaClearSentEmails()
 }
 
 suspend fun debugMailboxCheck(aid: String) {

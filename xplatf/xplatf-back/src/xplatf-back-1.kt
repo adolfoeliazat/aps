@@ -1,6 +1,13 @@
 package aps.back
 
 import aps.*
+import org.springframework.beans.factory.NoSuchBeanDefinitionException
+import org.springframework.transaction.PlatformTransactionManager
+import org.springframework.transaction.support.TransactionTemplate
+import java.text.SimpleDateFormat
+import javax.servlet.ServletException
+import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpServletResponse
 import kotlin.reflect.KClass
 
 interface XBackPlatform {
@@ -14,6 +21,7 @@ interface XBackPlatform {
     val userParamsHistoryItemTimesDocumentCategoryRepo: UserParamsHistoryItemTimesDocumentCategoryRepository
     val bidRepo: BidRepository
     val requestGlobus: RequestGlobusType
+    val log: XLogger
     val debugLog: XLogger
 
     fun getServeObjectRequestFunction(params: Any): (Any) -> Any
@@ -26,6 +34,7 @@ interface XBackPlatform {
     fun dbTransaction(block: (ShitToDoInTransaction) -> Unit)
     val hackyObjectMapper: XHackyObjectMapper
     val shittyObjectMapper: XShittyObjectMapper
+    fun makeDataSource(db: DB.Database): XDataSource
 }
 
 interface ShitToDoInTransaction {
@@ -115,11 +124,11 @@ abstract class FormFieldBack(
 }
 
 class BitchyProcedureContext(
-    val servletRequest: XHttpServletRequest,
-    val servletResponse: XHttpServletResponse
+    val servletRequest: HttpServletRequest,
+    val servletResponse: HttpServletResponse
 )
 
-interface XHttpServletResponse {
+interface FuckingHttpServletResponse {
     var contentType: String
     val writer: Writer
     var status: Status
@@ -133,7 +142,7 @@ interface XHttpServletResponse {
     }
 }
 
-interface XHttpServletRequest {
+interface FuckingHttpServletRequest {
     var characterEncoding: String
     val reader: Reader
     val pathInfo: String
@@ -282,7 +291,7 @@ fun <Req : RequestMatumba, Res : CommonResponseFields>
             p.bpc.servletResponse-{o->
                 o.contentType = "application/json; charset=utf-8"
                 o.writer.println(backPlatform.shittyObjectMapper.writeValueAsString(responseBean))
-                o.status = XHttpServletResponse.Status.OK
+                o.status = HttpServletResponse.SC_OK
             }
         }
     }
@@ -476,7 +485,137 @@ fun enhanceDB() {
     })
 }
 
+object DB {
+    val PORT_DEV = 5432   // On disk
+    val PORT_TEST = 5433  // On memory drive
+    val snapshotPrefix = "apsTestSnapshotOnTestServer-"
 
+    val dbs = mutableListOf<Database>()
+    //    val testTemplateUA1 = Database("testTemplateUA1", "127.0.0.1", PORT_TEST, "test-template-ua-1", "postgres", allowRecreation = true, populate = {q -> populate_testTemplateUA1(q)})
+    val postgresOnTestServer = Database(DatabaseEngine.POSTGRESQL, "postgresOnTestServer", "127.0.0.1", PORT_TEST, "postgres", "postgres")
+    val apsTestOnTestServer = Database(DatabaseEngine.POSTGRESQL, "apsTestOnTestServer", "127.0.0.1", PORT_TEST, "aps-test", "postgres", allowRecreation = true, correspondingAdminDB = postgresOnTestServer)
+    val testLocalMariaDB = Database(DatabaseEngine.MARIADB, "testLocalMariaDB", "127.0.0.1", 3306, "aps-test", "aps-test", password = "aps-test")
+    val postgresOnDevServer = Database(DatabaseEngine.POSTGRESQL, "postgresOnDevServer", "127.0.0.1", PORT_DEV, "postgres", "postgres")
+    val localDevUA = Database(DatabaseEngine.POSTGRESQL, "localDevUA", "127.0.0.1", PORT_DEV, "aps-dev-ua", user = "postgres", password = null)
+//    val bmix_fuckingAround_postgres by lazy {databaseFromEnv("bmix_fuckingAround_postgres")}
+//    val bmix_fuckingAround_apsdevua by lazy {databaseFromEnv("bmix_fuckingAround_apsdevua", allowRecreation = true, correspondingAdminDB = bmix_fuckingAround_postgres)}
+
+//    fun apsTestSnapshotOnTestServer(id: String) =
+//        Database(snapshotPrefix + id, "127.0.0.1", PORT_TEST, snapshotPrefix + id, "postgres", allowRecreation = true, correspondingAdminDB = postgresOnTestServer)
+//
+//    val systemDatabases = mapOf(
+//        PORT_DEV to postgresOnDevServer,
+//        PORT_TEST to postgresOnTestServer
+//    )
+
+//    fun databaseFromEnv(id: String, allowRecreation: Boolean = false, correspondingAdminDB: Database? = null): Database {
+//        val pname = "APS_DB_URI_$id"
+//        val uri = System.getenv(pname) ?: wtf("I want env property $pname")
+//        val mr = Regex("postgres://(.*?):(.*?)@(.*?):(.*?)/(.*?)").matchEntire(uri) ?: wtf("Bad database URI")
+//        return Database(id,
+//                        user = mr.groupValues[1],
+//                        password = mr.groupValues[2],
+//                        host = mr.groupValues[3],
+//                        port = mr.groupValues[4].toInt(),
+//                        name = mr.groupValues[5],
+//                        allowRecreation = allowRecreation,
+//                        correspondingAdminDB = correspondingAdminDB)
+//    }
+
+    fun byNameOnTestServer(name: String): Database =
+        dbs.find {it.port == PORT_TEST && it.name == name} ?: wtf("No database [$name] on test server")
+
+    fun byID(id: String): Database = when {
+//        id == "bmix_fuckingAround_apsdevua" -> bmix_fuckingAround_apsdevua
+        id == "apsTestOnTestServer" -> apsTestOnTestServer
+        else -> wtf("No database with ID $id")
+    }
+
+    enum class DatabaseEngine {
+        POSTGRESQL, MARIADB
+    }
+
+    class Database(
+        val engine: DatabaseEngine,
+        val id: String,
+        val host: String, val port: Int, val name: String,
+        val user: String, val password: String? = null,
+        val allowRecreation: Boolean = false,
+        val correspondingAdminDB: Database? = null
+    ) {
+        private val dslazy = relazy {backPlatform.makeDataSource(this)}
+
+        init {
+            dbs.add(this)
+        }
+
+        val ds: XDataSource by dslazy
+
+        fun close() {
+            ds.close()
+            dslazy.reset()
+        }
+
+        override fun toString() = "Database(id='$id')"
+    }
+}
+
+
+fun serviceShit(req: HttpServletRequest, res: HttpServletResponse) {
+    requestGlobusThreadLocal.set(RequestGlobusType())
+
+    res.addHeader("Access-Control-Allow-Origin", "*")
+
+    val pathInfo = run {
+        val ss = req.queryString.split("=")
+        check(ss.size == 2) {"6b774739-3c19-4cfd-b02f-487d98b4740f"}
+        check(ss[0] == "pathInfo") {"5144ffd0-9703-497b-82af-fa92e265b33c"}
+        ss[1]
+    }
+
+    try {
+        when {
+//            pathInfo == "/welcome" -> {
+//                res.spitText("FUCK YOU")
+//            }
+//
+//            pathInfo == "/startMoment" -> {
+//                res.spitText(SimpleDateFormat("YYYYMMDD-hhmmss").format(BackGlobus.startMoment))
+//            }
+//
+//            pathInfo == "/version" -> {
+//                res.spitText(BackGlobus.version)
+//            }
+
+            pathInfo.startsWith("/rpc/") -> {
+                val procedureName = pathInfo.substring("/rpc/".length)
+                val procNameCaps = procedureName.capitalize()
+                val server = springctx.getBean("serve" + procNameCaps, BitchyProcedure::class.java)
+                server.bpc = BitchyProcedureContext(req, res)
+
+                val useTx = !pathInfo.contains("RecreateTestDatabaseSchema") // XXX
+
+                if (useTx) {
+                    TransactionTemplate(springctx.getBean(PlatformTransactionManager::class.java)).execute {
+                        server.serve()
+                    }
+                } else {
+                    server.serve()
+                }
+            }
+
+            else -> bitch("Weird pathInfo: $pathInfo")
+        }
+    } catch(fuckup: Throwable) {
+        backPlatform.log.error("Can't fucking service [$pathInfo]: ${fuckup.message}", fuckup)
+
+        if (fuckup is WithCulprit) {
+            backPlatform.log.section("Culprit:\n\n" + fuckup.culprit.constructionStack.joinToString("\n") {it.toString()})
+        }
+
+        throw ServletException(fuckup)
+    }
+}
 
 
 

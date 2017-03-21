@@ -84,13 +84,13 @@ suspend fun assertCustomerSignUpScreen() {
     assertScreenHTML("Customer sign-up screen", "1de9ffb2-3215-42e0-a67c-c9c2856880b8")
 }
 
-fun TestScenarioBuilder.assertEmailThenClear(descr: String, expectedTo: String, expectedSubject: String, expectedBody: String) {
-    act {initDebugMailbox()}
-    acta {debugCheckEmail()}
-    assertMailInFooter(descr, expectedTo, expectedSubject, expectedBody)
-    acta {ClearSentEmailsRequest.send()}
-    act {debugHideMailbox()}
-}
+//fun TestScenarioBuilder.assertEmailThenClear(descr: String, expectedTo: String, expectedSubject: String, expectedBody: String) {
+//    act {initDebugMailbox()}
+//    acta {debugCheckEmail()}
+//    assertMailInFooter(descr, expectedTo, expectedSubject, expectedBody)
+//    acta {ClearSentEmailsRequest.send()}
+//    act {debugHideMailbox()}
+//}
 
 //fun TestScenarioBuilder.imposeNextRequestTimestampUTC(stamp: String) {
 //    acta {ImposeNextRequestTimestampRequest.send(stamp)}
@@ -185,9 +185,7 @@ class TestShit {
         if (nextRequestTimestampIndex > timestamps().lastIndex) bitch("Out of fucking timestamps")
         val stamp = timestamps()[nextRequestTimestampIndex++]
         clog("Imposing timestamp: $stamp")
-        send(ImposeNextRequestTimestampRequest()-{o->
-            o.stamp.value = stamp
-        })
+        mirandaImposeNextRequestTimestamp(stamp)
     }
 
 }
@@ -285,12 +283,10 @@ fun TestScenarioBuilder.setUpDasja(testShit: TestShit) {
 //    })
 
 suspend fun imposeNextGeneratedConfirmationSecret(secret: String) =
-    send(ImposeNextGeneratedConfirmationSecretRequest()-{o->
-        o.secret.value = secret
-    })
+    mirandaImposeNextGeneratedConfirmationSecret(secret)
 
 suspend fun imposeNextRequestGenericError() =
-    send(ImposeNextRequestErrorRequest())
+    mirandaImposeNextRequestError()
 
 fun setUpFilesByBobul_1(testShit: TestShit, orderID: String) = async<Unit> {
     imf("Reimplement setUpFilesByBobul_1")

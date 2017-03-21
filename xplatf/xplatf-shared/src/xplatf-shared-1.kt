@@ -644,7 +644,20 @@ class RecreateTestDatabaseSchemaRequest() : RequestMatumba() {
 
 class GenericResponse : CommonResponseFieldsImpl()
 
+class relazy<out T>(val initializer: () -> T) {
+    private var backing = lazy(initializer)
 
+    operator fun getValue(thisRef: Any?, property: KProperty<*>): T = backing.value
+
+    fun reset() {
+        backing = lazy(initializer)
+    }
+}
+
+
+abstract class CommonResponseFieldsImpl : CommonResponseFields {
+    override lateinit var backendVersion: String
+}
 
 
 

@@ -111,8 +111,22 @@ private fun tillBodyHTMLContains(needle: String): Promisoid<Unit> = async {
     }
 }
 
-fun blowUp() {
-    throw Exception("fuck you")
+fun blowUpAndShowMappedStack() {
+    fun fuck() {
+        fun shit() {
+            throw Exception("bitch")
+        }
+        shit()
+    }
+    try {
+        fuck()
+    } catch(e: Throwable) {
+        async {
+            val stack = await(errorToMappedClientStackString(e))
+            console.log("------------- Mapped stack -------------")
+            console.log(stack)
+        }
+    }
 }
 
 fun haltShit() {

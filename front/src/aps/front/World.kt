@@ -66,8 +66,8 @@ class World(val name: String) {
 
         if (isTest()) {
             TestLocationBar.update()
+            mirandaPing()
         }
-        send(PingRequest())
     }
 
 //    fun urlLink(def: dynamic): dynamic {

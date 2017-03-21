@@ -2,6 +2,7 @@ package aps.back
 
 import aps.*
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.zaxxer.hikari.HikariDataSource
 import org.hibernate.engine.spi.SharedSessionContractImplementor
 import org.hibernate.id.IdentityGenerator
 import org.mindrot.jbcrypt.BCrypt
@@ -50,12 +51,34 @@ typealias XCollections = Collections
 typealias XBeanDefinition = org.springframework.beans.factory.config.BeanDefinition
 typealias XScope = org.springframework.context.annotation.Scope
 typealias XComponent =  org.springframework.stereotype.Component
+typealias XDataSource = com.zaxxer.hikari.HikariDataSource
 
 
 internal val requestGlobusThreadLocal = ThreadLocal<RequestGlobusType>()
 private val paramClassToServeMethod = ConcurrentHashMap<Class<*>, Method>()
 
 val backPlatform = object : XBackPlatform {
+
+    override fun makeDataSource(db: DB.Database): XDataSource {
+        return HikariDataSource().applet {o->
+            o.dataSourceClassName = when (db.engine) {
+                DB.DatabaseEngine.POSTGRESQL -> "org.postgresql.ds.PGSimpleDataSource"
+                DB.DatabaseEngine.MARIADB -> "org.mariadb.jdbc.MariaDbDataSource"
+            }
+            o.dataSourceProperties.let {o->
+                o.put("serverName", db.host)
+                o.put("databaseName", db.name)
+                o.put("portNumber", db.port)
+                o.put("user", db.user)
+                db.password?.let {o.put("password", it)}
+            }
+            o.connectionInitSql = when (db.engine) {
+                DB.DatabaseEngine.POSTGRESQL -> "set time zone 'UTC';"
+                DB.DatabaseEngine.MARIADB -> "set time_zone = '+0:00';"
+            }
+        }
+    }
+
     override val userRepo get() = springctx.getBean(UserRepository::class.java)!!
     override val userTokenRepo get() = springctx.getBean(UserTokenRepository::class.java)!!
     override val userParamsHistoryItemRepo get() = springctx.getBean(UserParamsHistoryItemRepository::class.java)!!
@@ -91,6 +114,7 @@ val backPlatform = object : XBackPlatform {
 
     override fun captureStackTrace() = Exception().stackTrace.map(::JVM_XStackTraceElement).toTypedArray()
 
+    override val log = LoggerFactory.getLogger("")
     override val debugLog = LoggerFactory.getLogger("::::: DEBUG :::::")
 
     override val hackyObjectMapper = object:XHackyObjectMapper {

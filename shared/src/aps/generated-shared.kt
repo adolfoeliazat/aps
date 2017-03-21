@@ -28,6 +28,22 @@ import kotlin.reflect.KClass
 @Generated class __MirandaSeedSomeStuff1_Response(override val value: Unit) : CommonResponseFieldsImpl(), SingleValueResponse<Unit>
 @Generated @Ser class __MirandaSaveRequestResponseLog(val name: String)
 @Generated class __MirandaSaveRequestResponseLog_Response(override val value: Unit) : CommonResponseFieldsImpl(), SingleValueResponse<Unit>
+@Generated @Ser class __MirandaMapStack(val rawStack: String)
+@Generated class __MirandaMapStack_Response(override val value: String) : CommonResponseFieldsImpl(), SingleValueResponse<String>
+@Generated @Ser class __MirandaGetSentEmails()
+@Generated class __MirandaGetSentEmails_Response(override val value: MutableList<Email>) : CommonResponseFieldsImpl(), SingleValueResponse<MutableList<Email>>
+@Generated @Ser class __MirandaClearSentEmails()
+@Generated class __MirandaClearSentEmails_Response(override val value: Unit) : CommonResponseFieldsImpl(), SingleValueResponse<Unit>
+@Generated @Ser class __MirandaImposeNextRequestTimestamp(val stamp: String)
+@Generated class __MirandaImposeNextRequestTimestamp_Response(override val value: Unit) : CommonResponseFieldsImpl(), SingleValueResponse<Unit>
+@Generated @Ser class __MirandaImposeNextRequestError(val error: String? = null)
+@Generated class __MirandaImposeNextRequestError_Response(override val value: Unit) : CommonResponseFieldsImpl(), SingleValueResponse<Unit>
+@Generated @Ser class __MirandaImposeNextGeneratedConfirmationSecret(val secret: String)
+@Generated class __MirandaImposeNextGeneratedConfirmationSecret_Response(override val value: Unit) : CommonResponseFieldsImpl(), SingleValueResponse<Unit>
+@Generated @Ser class __MirandaPing()
+@Generated class __MirandaPing_Response(override val value: Unit) : CommonResponseFieldsImpl(), SingleValueResponse<Unit>
+@Generated @Ser class __MirandaGetSoftwareVersion()
+@Generated class __MirandaGetSoftwareVersion_Response(override val value: MirandaGetSoftwareVersionResult) : CommonResponseFieldsImpl(), SingleValueResponse<MirandaGetSoftwareVersionResult>
 @Generated @Ser class __ReginaLoadUser(val userID: Long)
 @Generated class __ReginaLoadUser_Response(override val value: UserRTO) : CommonResponseFieldsImpl(), SingleValueResponse<UserRTO>
 @Generated @Ser class __ReginaAcceptProfile(val userID: Long)

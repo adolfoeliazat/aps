@@ -605,23 +605,13 @@ fun pageHeader3(
 }
 
 fun errorToMappedClientStackString(shit: Throwable): Promisoid<String> {
-    val mangledStack: String = shit.asDynamic().stack
-    // dwarnStriking("mangledStack", mangledStack)
-    return stackToMappedClientStackString(mangledStack)
+    val rawStack: String = shit.asDynamic().stack
+    return stackToMappedClientStackString(rawStack)
 }
 
-fun stackToMappedClientStackString(mangledStack: String): Promisoid<String> = async {
-    val res = await(callDangerousMatumba<MapStackRequest.Response>(MapStackRequest()-{o->
-        o.mangledStack.value = mangledStack
-    }))
-//    val res = await(MapStackRequest.send(mangledStack))
-    res.originalStack
-}
+fun stackToMappedClientStackString(rawStack: String): Promisoid<String> =
+    async {mirandaMapStack(rawStack)}
 
-//interface Errorish {
-//    @JsName("message") val message: String?
-//    @JsName("stack") val stack: String?
-//}
 
 enum class DeliveryOption(override val title: String) : Titled {
     D8(t("8+ days", "8+ дней")),

@@ -27,108 +27,46 @@ import javax.servlet.http.HttpServletResponseWrapper
 
 
 class GodServlet : HttpServlet() {
-    val log by logger()
+//    val log by logger()
 
     override fun service(req: HttpServletRequest, res: HttpServletResponse) {
-        val pathInfo = req.pathInfo
-
-        requestGlobusThreadLocal.set(RequestGlobusType())
-//        RequestGlobus.skipLoggingToRedis = patternsToExcludeRedisLoggingCompletely.any {pathInfo.contains(it)}
-
-        res.addHeader("Access-Control-Allow-Origin", "*")
-
-        try {
-            when {
-                pathInfo == "/welcome" -> {
-                    res.spitText("FUCK YOU")
-                }
-
-                pathInfo == "/startMoment" -> {
-                    res.spitText(SimpleDateFormat("YYYYMMDD-hhmmss").format(BackGlobus.startMoment))
-                }
-
-                pathInfo == "/version" -> {
-                    res.spitText(BackGlobus.version)
-                }
-
-                pathInfo.startsWith("/rpc/") -> {
-                    val procedureName = req.pathInfo.substring("/rpc/".length)
-                    try {
-                        val procNameCaps = procedureName.capitalize()
-                        val server = springctx.getBean("serve" + procNameCaps, BitchyProcedure::class.java)
-                        server.bpc = BitchyProcedureContext(req.tox(), res.tox())
-
-                        val useTx = !pathInfo.contains("RecreateTestDatabaseSchema") // XXX
-
-                        if (useTx) {
-                            TransactionTemplate(springctx.getBean(PlatformTransactionManager::class.java)).execute {
-                                server.serve()
-                            }
-                        } else {
-                            server.serve()
-                        }
-                    } catch (e: NoSuchBeanDefinitionException) {
-//                        clog("NoSuchBeanDefinitionException: $e")
-                        val factory = remoteProcedureNameToFactory[procedureName] ?: die("No fucking factory for procedure $procedureName")
-                        @Suppress("UNCHECKED_CAST")
-                        val service = factory.invoke(null) as (HttpServletRequest, HttpServletResponse) -> Unit
-
-                        if (!pathInfo.contains("GetSoftwareVersion")) { // XXX
-                            TransactionTemplate(springctx.getBean(PlatformTransactionManager::class.java)).execute {
-                                service(req, res)
-                            }
-                        } else {
-                            service(req, res)
-                        }
-                    }
-                }
-
-                else -> bitch("Weird request path: $pathInfo")
-            }
-        } catch(fuckup: Throwable) {
-            log.error("Can't fucking service [$pathInfo]: ${fuckup.message}", fuckup)
-
-            if (fuckup is WithCulprit) {
-                log.section("Culprit:\n\n" + fuckup.culprit.constructionStack.joinToString("\n"){it.toString()})
-            }
-
-            throw ServletException(fuckup)
-        }
+        serviceShit(req, res)
     }
+
 
 }
 
-private fun HttpServletResponse.tox(): XHttpServletResponse {
+private fun HttpServletResponse.tox(): FuckingHttpServletResponse {
     val self = this
-    return object:XHttpServletResponse {
+    return object: FuckingHttpServletResponse {
         override var contentType get() = self.contentType; set(value) {self.contentType = value}
 
-        override var status: XHttpServletResponse.Status
+        override var status: FuckingHttpServletResponse.Status
             get() {
                 return when (self.status) {
-                    HttpServletResponse.SC_OK -> XHttpServletResponse.Status.OK
+                    HttpServletResponse.SC_OK -> FuckingHttpServletResponse.Status.OK
                     else -> wtf("b652b37b-7bf9-4df7-af64-7b237a2955e0    self.status = ${self.status}")
                 }
             }
             set(value) {
                 self.status = when (value) {
-                    XHttpServletResponse.Status.OK -> HttpServletResponse.SC_OK
+                    FuckingHttpServletResponse.Status.OK -> HttpServletResponse.SC_OK
                 }
             }
 
-        override val writer = object:XHttpServletResponse.Writer {
+        override val writer = object: FuckingHttpServletResponse.Writer {
             override fun println(s: String) = self.writer.println(s)
         }
     }
 }
 
-private fun HttpServletRequest.tox(): XHttpServletRequest {
+private fun HttpServletRequest.tox(): FuckingHttpServletRequest {
     val self = this
-    return object:XHttpServletRequest {
+    return object: FuckingHttpServletRequest {
         override var characterEncoding get() = self.characterEncoding; set(value) {self.characterEncoding = value}
         override val pathInfo get() = self.pathInfo
 
-        override val reader = object:XHttpServletRequest.Reader {
+        override val reader = object: FuckingHttpServletRequest.Reader {
             override fun readText() = self.reader.readText()
         }
     }
@@ -185,7 +123,7 @@ class GodFilter : Filter {
 }
 
 
-private fun HttpServletResponse.spitText(text: String) {
+fun HttpServletResponse.spitText(text: String) {
     this-{o->
         o.contentType = "text/plain; charset=utf-8"
         o.writer.println(text)

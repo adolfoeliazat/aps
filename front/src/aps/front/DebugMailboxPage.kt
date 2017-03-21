@@ -10,7 +10,7 @@ class DebugMailboxPage(val world: World) {
     val urlQuery = URLQuery()
 
     suspend fun load() {
-        val res = await(send(GetSentEmailsRequest()))
+        val emails = mirandaGetSentEmails()
         world.setPage(Page(
             header = pageHeader2("Mailbox"),
 
@@ -27,7 +27,7 @@ class DebugMailboxPage(val world: World) {
                 fun String.div(block: (ElementBuilder) -> Unit) = kdiv(this, block)
 
                 o- c.messages.div {o->
-                    for (email in res.emails) {
+                    for (email in emails) {
                         o- c.message.div {o->
                             fun section(title: String, value: String) = c.section.div {o->
                                 o- c.sectionTitle.div {it-title}
