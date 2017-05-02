@@ -8,6 +8,8 @@ import org.hibernate.id.IdentityGenerator
 import org.mindrot.jbcrypt.BCrypt
 import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.AnnotationConfigApplicationContext
+import org.springframework.transaction.PlatformTransactionManager
+import org.springframework.transaction.support.TransactionTemplate
 import java.lang.reflect.Method
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
@@ -52,9 +54,12 @@ typealias XBeanDefinition = org.springframework.beans.factory.config.BeanDefinit
 typealias XScope = org.springframework.context.annotation.Scope
 typealias XComponent =  org.springframework.stereotype.Component
 typealias XDataSource = com.zaxxer.hikari.HikariDataSource
+typealias XServletException = javax.servlet.ServletException
+typealias XHttpServletRequest = javax.servlet.http.HttpServletRequest
+typealias XHttpServletResponse = javax.servlet.http.HttpServletResponse
+typealias XThreadLocal<T> = ThreadLocal<T>
 
 
-internal val requestGlobusThreadLocal = ThreadLocal<RequestGlobusType>()
 private val paramClassToServeMethod = ConcurrentHashMap<Class<*>, Method>()
 
 val backPlatform = object : XBackPlatform {
@@ -165,6 +170,25 @@ val backPlatform = object : XBackPlatform {
             em.close()
         }
     }
+
+    override fun makeServant(procedureName: String): BitchyProcedure {
+        val procNameCaps = procedureName.capitalize()
+        val server = springctx.getBean("serve" + procNameCaps, BitchyProcedure::class.java)
+        return server
+    }
+
+    override fun requestTransaction(pathInfo: String, block: () -> Unit) {
+        val useTx = !pathInfo.contains("RecreateTestDatabaseSchema") // XXX
+        if (useTx) {
+            TransactionTemplate(springctx.getBean(PlatformTransactionManager::class.java)).execute {
+                block()
+            }
+        } else {
+            block()
+        }
+    }
+
+
 }
 
 

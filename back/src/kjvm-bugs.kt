@@ -4,6 +4,8 @@ fun main(args: Array<String>) {
     }
 
     f({when {}}) // WTF?
+
+    listOf(123).indexOfFirst {false}
 }
 
 

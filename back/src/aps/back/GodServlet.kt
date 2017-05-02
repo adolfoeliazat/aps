@@ -7,33 +7,18 @@
 package aps.back
 
 import aps.*
-import org.jooq.Result
-import org.springframework.beans.factory.NoSuchBeanDefinitionException
-import org.springframework.transaction.PlatformTransactionManager
-import org.springframework.transaction.support.TransactionTemplate
 import java.io.*
-import java.sql.Timestamp
-import java.text.SimpleDateFormat
-import java.util.*
 import javax.servlet.*
 import javax.servlet.http.*
-import kotlin.properties.Delegates.notNull
 import java.io.PrintWriter
-import java.io.CharArrayWriter
 import javax.servlet.http.HttpServletResponse
 import javax.servlet.http.HttpServletResponseWrapper
 
 
-
-
 class GodServlet : HttpServlet() {
-//    val log by logger()
-
     override fun service(req: HttpServletRequest, res: HttpServletResponse) {
-        serviceShit(req, res)
+        serveShit(req, res)
     }
-
-
 }
 
 private fun HttpServletResponse.tox(): FuckingHttpServletResponse {
@@ -84,6 +69,7 @@ class GodFilter : Filter {
 
         request as HttpServletRequest
         val pathInfo = request.pathInfo
+        val queryString = request.queryString
 
         request.characterEncoding = "UTF-8"
         val requestJSON = request.reader.readText()
@@ -108,7 +94,7 @@ class GodFilter : Filter {
             val ignoredShit = listOf(
                 "GetSoftwareVersion", "PrivilegedRedisCommand", "GetGeneratedShit", "Ping")
             if (!ignoredShit.any {pathInfo.endsWith("/$it")}) {
-                BackGlobus.rrlog.entries += RRLogEntry(++requestID, pathInfo, requestJSON, responseJSON)
+                BackGlobus.rrlog.entries += RRLogEntry(++requestID, pathInfo, queryString, requestJSON, responseJSON)
             }
 
             out.write(responseJSON)

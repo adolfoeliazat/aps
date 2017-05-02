@@ -12,11 +12,11 @@
     <content url="file://$MODULE_DIR$/../shared-back-junction">
       <sourceFolder url="file://$MODULE_DIR$/../shared-back-junction/src" isTestSource="false" />
     </content>
+    <content url="file://$MODULE_DIR$/../xplatf-back">
+      <sourceFolder url="file://$MODULE_DIR$/../xplatf-back/src" isTestSource="false" />
+    </content>
     <content url="file://$MODULE_DIR$/../xplatf-shared-back-junction">
       <sourceFolder url="file://$MODULE_DIR$/../xplatf-shared-back-junction/src" isTestSource="false" />
-    </content>
-    <content url="file://$MODULE_DIR$/../xplatf/xplatf-back">
-      <sourceFolder url="file://$MODULE_DIR$/../xplatf/xplatf-back/src" isTestSource="false" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
